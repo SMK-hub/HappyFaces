@@ -10,17 +10,8 @@ public class OrphanageDetails {
 
 	@Id
 	private String id;
-	@Field
+
 	private String orpId;
-
-	public String getOrpId() {
-		return orpId;
-	}
-
-	public void setOrpId(String orpId) {
-		this.orpId = orpId;
-	}
-
 	private String orphanageName;
 	private String directorName;
 	private String contact;
@@ -45,6 +36,14 @@ public class OrphanageDetails {
 		this.verificationStatus = verificationStatus;
 		this.website = website;
 		this.requirements = requirements;
+	}
+
+	public String getOrpId() {
+		return orpId;
+	}
+
+	public void setOrpId(String orpId) {
+		this.orpId = orpId;
 	}
 
 	public String getId() {

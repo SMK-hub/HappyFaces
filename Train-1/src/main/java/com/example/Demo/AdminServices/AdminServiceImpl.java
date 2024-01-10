@@ -102,8 +102,8 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public Optional<OrphanageDetails> getOrphanageDetailByOrphanageId(String orpId) {
-		return orphanageDetailsRepository.findByOrpId(orpId);
+	public OrphanageDetails getOrphanageDetailByOrphanageId(String orpId) {
+		return orphanageDetailsRepository.findByOrpId(orpId).orElse(null);
 	}
 
 	@Override

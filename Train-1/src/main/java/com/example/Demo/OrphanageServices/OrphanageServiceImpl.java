@@ -2,6 +2,8 @@ package com.example.Demo.OrphanageServices;
 
 import java.util.Optional;
 
+import com.example.Demo.Model.Events;
+import com.example.Demo.Repository.EventsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,8 @@ public class OrphanageServiceImpl implements OrphanageService {
 
 	@Autowired
 	private OrphanageRepository userRepository;
+	@Autowired
+	private EventsRepository eventsRepository;
 	@Autowired
 	private OrphanageDetailsRepository detailRepository;
 	@Autowired
@@ -55,8 +59,17 @@ public class OrphanageServiceImpl implements OrphanageService {
 	}
 
 	@Override
+	public String createEvents(Events event) {
+		event.setEventStatus(Events.EventStatus.PLANNED);
+		event.setVerificationStatus(Events.VerificationStatus.NOT_VERIFIED);
+		eventsRepository.save(event);
+		return null;
+	}
+
+	@Override
 	public Optional<OrphanageDetails> getDetailById(String orpId) {
 		return detailRepository.findByOrpId(orpId);
 	}
+
 
 }

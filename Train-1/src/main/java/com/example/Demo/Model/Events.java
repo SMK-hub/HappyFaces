@@ -11,8 +11,14 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class Events {
 	@Id
 	private String id;
-	@Field
 	private ObjectId orpId;
+    private String title;
+    private String description;
+    private String date;
+    private String time;
+    private EventStatus eventStatus;
+    private List<InterestedPerson> interestedPersons;
+    private VerificationStatus verificationStatus;
 	
 	public Events(String id, ObjectId orpId, String title, String description, String date, String time,
 			VerificationStatus verificationStatus, List<InterestedPerson> interestedPersons) {
@@ -43,13 +49,18 @@ public class Events {
 		this.id = id;
 	}
 
-	private String title;
-	private String description;
-	private String date;
-	private String time;
-	private VerificationStatus verificationStatus;
-	private List<InterestedPerson> interestedPersons;
 
+
+    public EventStatus getEventStatus() {
+        return eventStatus;
+    }
+
+    public void setEventStatus(EventStatus eventStatus) {
+        this.eventStatus = eventStatus;
+    }
+    public enum EventStatus{
+        PLANNED,ONGOING,COMPLETED,CANCELLED
+    }
     public enum VerificationStatus {
         NOT_VERIFIED, VALID, IN_VALID
     }

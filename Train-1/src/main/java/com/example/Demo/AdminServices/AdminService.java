@@ -20,7 +20,7 @@ public interface AdminService {
 	public List<Donations> getAllDonations();
 	String registerUser(Admin user);
     boolean loginUser(String email, String password);
-    Optional<OrphanageDetails> getOrphanageDetailByOrphanageId(String orpId);
+    OrphanageDetails getOrphanageDetailByOrphanageId(String orpId);
 	String verifyOrphanageDetails(OrphanageDetails orph);
 	String verifyEventDetails(Events event);
 	Orphanage getOrphanageById(String id);

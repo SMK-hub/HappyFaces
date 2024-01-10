@@ -33,10 +33,13 @@ public class AdminController {
 	public List<Orphanage> getAllOrphanage() {
 		return adminService.getAllOrphanage();
 	}
-
 	@GetMapping("/orphanage/{id}")
 	public Orphanage getOrphanageById(@PathVariable String id){return adminService.getOrphanageById(id);}
-
+  	@GetMapping("/orphanageDetails/{id}")
+	public OrphanageDetails getOrphanageDetailByOrpId(@PathVariable String orpId)
+	{
+		return adminService.getOrphanageDetailByOrphanageId(orpId);
+	}
 	@GetMapping("/donorList")
 	public List<Donor> getAllDonor() {
 		return adminService.getAllDonor();
