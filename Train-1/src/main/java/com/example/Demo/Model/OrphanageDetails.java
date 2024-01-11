@@ -3,7 +3,8 @@ package com.example.Demo.Model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
+import com.example.Demo.Enum.EnumClass;
+
 
 @Document(collection = "orphanageDetails")
 public class OrphanageDetails {
@@ -17,7 +18,7 @@ public class OrphanageDetails {
 	private String contact;
 	private String description;
 	private Address address;
-	private VerificationStatus verificationStatus;
+	private EnumClass.VerificationStatus verificationStatus;
 	private String website;
 
 	@DBRef
@@ -28,7 +29,7 @@ public class OrphanageDetails {
 	}
 
 	public OrphanageDetails(String directorName, String contact, String description, Address address,
-			VerificationStatus verificationStatus, String website, Requirement requirements) {
+			EnumClass.VerificationStatus verificationStatus, String website, Requirement requirements) {
 		this.directorName = directorName;
 		this.contact = contact;
 		this.description = description;
@@ -86,11 +87,11 @@ public class OrphanageDetails {
 		this.address = address;
 	}
 
-	public VerificationStatus getVerificationStatus() {
+	public EnumClass.VerificationStatus getVerificationStatus() {
 		return verificationStatus;
 	}
 
-	public void setVerificationStatus(VerificationStatus verificationStatus) {
+	public void setVerificationStatus(EnumClass.VerificationStatus verificationStatus) {
 		this.verificationStatus = verificationStatus;
 	}
 
@@ -126,7 +127,5 @@ public class OrphanageDetails {
 		this.orphanageName = orphanageName;
 	}
 
-	public enum VerificationStatus {
-		NOT_VERIFIED, VALID, IN_VALID
-	}
+
 }

@@ -2,6 +2,7 @@ package com.example.Demo.OrphanageServices;
 
 import java.util.Optional;
 
+import com.example.Demo.Enum.EnumClass;
 import com.example.Demo.Model.Events;
 import com.example.Demo.Repository.EventsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.example.Demo.EmailServices.EmailService;
 import com.example.Demo.Model.Orphanage;
 import com.example.Demo.Model.OrphanageDetails;
-import com.example.Demo.Model.OrphanageDetails.VerificationStatus;
+import com.example.Demo.Enum.EnumClass.VerificationStatus;
 import com.example.Demo.Repository.OrphanageDetailsRepository;
 import com.example.Demo.Repository.OrphanageRepository;
 
@@ -60,8 +61,8 @@ public class OrphanageServiceImpl implements OrphanageService {
 
 	@Override
 	public String createEvents(Events event) {
-		event.setEventStatus(Events.EventStatus.PLANNED);
-		event.setVerificationStatus(Events.VerificationStatus.NOT_VERIFIED);
+		event.setEventStatus(EnumClass.EventStatus.PLANNED);
+		event.setVerificationStatus(EnumClass.VerificationStatus.NOT_VERIFIED);
 		eventsRepository.save(event);
 		return null;
 	}

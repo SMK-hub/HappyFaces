@@ -12,13 +12,15 @@ public class Orphanage {
     private String orpId;
     private String name;
     private String email;
+	private byte[] profilePhoto;
     private String password;
     private String role;
-    public String getId() {
+
+	public String getOrpId() {
 		return orpId;
 	}
-	public void setId(String id) {
-		this.orpId = id;
+	public void setOrpId(String orpId) {
+		this.orpId = orpId;
 	}
 	public String getName() {
 		return name;
@@ -44,7 +46,12 @@ public class Orphanage {
 	public void setRole(String role) {
 		this.role = role;
 	}
-	// Getters and setters
+	public byte[] getProfilePhoto() {
+		return profilePhoto;
+	}
+	public void setProfilePhoto(byte[] profilePhoto) {
+		this.profilePhoto = profilePhoto;
+	}
 	public Orphanage(String id, String name, String email, String password, String role) {
 		super();
 		this.orpId = id;

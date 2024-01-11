@@ -1,9 +1,9 @@
 package com.example.Demo.AdminServices;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-import jdk.jfr.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -21,8 +21,7 @@ import com.example.Demo.Repository.DonorRepository;
 import com.example.Demo.Repository.EventsRepository;
 import com.example.Demo.Repository.OrphanageDetailsRepository;
 import com.example.Demo.Repository.OrphanageRepository;
-
-import javax.swing.text.html.Option;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -99,6 +98,17 @@ public class AdminServiceImpl implements AdminService {
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	public void addProfilePhoto(String adminId, MultipartFile file) throws IOException {
+		byte[] photoBytes = file.getBytes();
+		System.out.println();
+
+		Admin admin=adminRepo.findById(adminId)
+				.orElseThrow(() -> new RuntimeException("User not found"));
+
+		admin.setProfilePhoto(photoBytes);
 	}
 
 	@Override

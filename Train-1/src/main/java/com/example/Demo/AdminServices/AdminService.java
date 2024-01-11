@@ -1,8 +1,8 @@
 package com.example.Demo.AdminServices;
 
 
+import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 import com.example.Demo.Model.Admin;
 import com.example.Demo.Model.Donations;
@@ -10,16 +10,18 @@ import com.example.Demo.Model.Donor;
 import com.example.Demo.Model.Events;
 import com.example.Demo.Model.Orphanage;
 import com.example.Demo.Model.OrphanageDetails;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface AdminService {
     
-	public List<Admin> getAllAdmin();
-	public List<Orphanage> getAllOrphanage();
-    public List<Donor> getAllDonor();
-	public List<Events> getAllEvents();
-	public List<Donations> getAllDonations();
+	List<Admin> getAllAdmin();
+	List<Orphanage> getAllOrphanage();
+    List<Donor> getAllDonor();
+	List<Events> getAllEvents();
+	List<Donations> getAllDonations();
 	String registerUser(Admin user);
     boolean loginUser(String email, String password);
+	void addProfilePhoto(String adminId, MultipartFile file) throws IOException;
     OrphanageDetails getOrphanageDetailByOrphanageId(String orpId);
 	String verifyOrphanageDetails(OrphanageDetails orph);
 	String verifyEventDetails(Events event);

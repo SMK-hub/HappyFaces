@@ -1,9 +1,11 @@
 package com.example.Demo.Controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.Demo.AdminServices.AdminService;
@@ -13,6 +15,7 @@ import com.example.Demo.Model.Donor;
 import com.example.Demo.Model.Events;
 import com.example.Demo.Model.Orphanage;
 import com.example.Demo.Model.OrphanageDetails;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/admin")
@@ -98,5 +101,13 @@ public class AdminController {
 			return "Invalid email or password";
 		}
 	}
+	@PostMapping("/{adminId}/photo")
+	public ResponseEntity<String> addProfilePhoto(
+			@PathVariable String adminId,
+			@RequestParam("file")MultipartFile file) throws IOException {
+		adminService.addProfilePhoto(adminId,file);
+		return ResponseEntity.ok("Profile photo added successfully");
+	}
+
 	
 }

@@ -11,6 +11,7 @@ public class Donor {
     private String donorId;
     private String name;
     private String email;
+	private byte[] profilePhoto;
     private String password;
     private String Role;
     
@@ -25,16 +26,19 @@ public class Donor {
 	public Donor() {
 		super();
 	}
+
+	public String getDonorId() {
+		return donorId;
+	}
+
+	public void setDonorId(String donorId) {
+		this.donorId = donorId;
+	}
+
 	@Override
 	public String toString() {
 		return "Donor [id=" + donorId + ", name=" + name + ", email=" + email + ", password=" + password + ", Role=" + Role
 				+ "]";
-	}
-	public String getId() {
-		return donorId;
-	}
-	public void setId(String id) {
-		this.donorId = id;
 	}
 	public String getEmail() {
 		return email;
@@ -59,6 +63,12 @@ public class Donor {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public byte[] getProfilePhoto() {
+		return profilePhoto;
+	}
+	public void setProfilePhoto(byte[] profilePhoto) {
+		this.profilePhoto = profilePhoto;
 	}
 	
 }

@@ -2,10 +2,10 @@ package com.example.Demo.Model;
 
 import java.util.List;
 
+import com.example.Demo.Enum.EnumClass;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document("event")
 public class Events {
@@ -16,12 +16,12 @@ public class Events {
     private String description;
     private String date;
     private String time;
-    private EventStatus eventStatus;
+    private EnumClass.EventStatus eventStatus;
     private List<InterestedPerson> interestedPersons;
-    private VerificationStatus verificationStatus;
+    private EnumClass.VerificationStatus verificationStatus;
 	
 	public Events(String id, ObjectId orpId, String title, String description, String date, String time,
-			VerificationStatus verificationStatus, List<InterestedPerson> interestedPersons) {
+			EnumClass.VerificationStatus verificationStatus, List<InterestedPerson> interestedPersons) {
 		super();
 		this.id = id;
 		this.orpId = orpId;
@@ -51,23 +51,19 @@ public class Events {
 
 
 
-    public EventStatus getEventStatus() {
+    public EnumClass.EventStatus getEventStatus() {
         return eventStatus;
     }
 
-    public void setEventStatus(EventStatus eventStatus) {
+    public EnumClass.EventStatus setEventStatus(EnumClass.EventStatus eventStatus) {
         this.eventStatus = eventStatus;
+        return eventStatus;
     }
-    public enum EventStatus{
-        PLANNED,ONGOING,COMPLETED,CANCELLED
-    }
-    public enum VerificationStatus {
-        NOT_VERIFIED, VALID, IN_VALID
-    }
+
 	public Events() {
     }
 
-    public void Event(String title, String description, String date, String time, VerificationStatus verificationStatus, List<InterestedPerson> interestedPersons) {
+    public void Event(String title, String description, String date, String time, EnumClass.VerificationStatus verificationStatus, List<InterestedPerson> interestedPersons) {
         this.title = title;
         this.description = description;
         this.date = date;
@@ -109,11 +105,11 @@ public class Events {
         this.time = time;
     }
 
-    public VerificationStatus getVerificationStatus() {
+    public EnumClass.VerificationStatus getVerificationStatus() {
         return verificationStatus;
     }
 
-    public void setVerificationStatus(VerificationStatus verificationStatus) {
+    public void setVerificationStatus(EnumClass.VerificationStatus verificationStatus) {
         this.verificationStatus = verificationStatus;
     }
 
@@ -137,8 +133,8 @@ public class Events {
                 ", interestedPersons=" + interestedPersons +
                 '}';
     }
-    
-    
+
+
 }
 class   InterestedPerson {
     private String name;
