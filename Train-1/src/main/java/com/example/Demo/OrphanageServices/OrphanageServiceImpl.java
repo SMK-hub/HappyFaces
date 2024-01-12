@@ -80,6 +80,7 @@ public class OrphanageServiceImpl implements OrphanageService {
             eventsRepository.save(event);
             return "Event Updated Successfully";
         }
+        return null;
     }
 
     @Override
