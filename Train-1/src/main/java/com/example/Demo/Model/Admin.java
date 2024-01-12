@@ -15,18 +15,18 @@ public class Admin {
 	private byte[] profilePhoto;
     private String password;
     private String role;
-    private String passcode;
+	private String passcode;
 
-	public String getId() {
+	public String getAdminId() {
 		return adminId;
 	}
-    
+
+	public void setAdminId(String adminId) {
+		this.adminId = adminId;
+	}
+
 	public Admin() {
 		super();
-	}
-	
-	public void setId(String id) {
-		this.adminId = id;
 	}
 	public String getName() {
 		return name;

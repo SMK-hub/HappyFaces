@@ -108,6 +108,19 @@ public class AdminController {
 		adminService.addProfilePhoto(adminId,file);
 		return ResponseEntity.ok("Profile photo added successfully");
 	}
+	@PostMapping("/sendOtp")
+	public String sendOtp(@RequestBody Admin admin) {
+		return adminService.sendOtp(admin);
 
-	
+	}
+
+	@PostMapping("/ForgetPassword/{email}/{otp}/{create}/{confirm}")
+	public String forgetPassword(@PathVariable("email") String email,@PathVariable("create") String create,@PathVariable("otp") String otp,@PathVariable("confirm") String confirm) {
+		System.out.println(create + "   " + confirm + "  " + otp);
+		return adminService.forgetPassword(email,otp,create,confirm);
+	}
+	@PutMapping("/{adminId}/editProfile")
+	public String editProfile(@PathVariable("adminId") String adminId,@RequestBody Admin admin){
+		return adminService.editProfile(adminId,admin);
+	}
 }

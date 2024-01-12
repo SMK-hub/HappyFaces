@@ -13,25 +13,49 @@ import com.example.Demo.Model.OrphanageDetails;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface AdminService {
-    
-	List<Admin> getAllAdmin();
-	List<Orphanage> getAllOrphanage();
+
+    List<Admin> getAllAdmin();
+
+    List<Orphanage> getAllOrphanage();
+
     List<Donor> getAllDonor();
-	List<Events> getAllEvents();
-	List<Donations> getAllDonations();
-	String registerUser(Admin user);
+
+    List<Events> getAllEvents();
+
+    List<Donations> getAllDonations();
+
+    String registerUser(Admin user);
+
     boolean loginUser(String email, String password);
-	void addProfilePhoto(String adminId, MultipartFile file) throws IOException;
+
+    void addProfilePhoto(String adminId, MultipartFile file) throws IOException;
+
     OrphanageDetails getOrphanageDetailByOrphanageId(String orpId);
-	String verifyOrphanageDetails(OrphanageDetails orph);
-	String verifyEventDetails(Events event);
-	Orphanage getOrphanageById(String id);
-	Donor getDonorById(String id);
-	Admin getAdminById(String id);
-	Events getEventById(String id);
-	List<Events> getEventsByOrphanageId(String id);
-	Donations getDonationById(String id);
-	List<Donations> getDonationsByOrphanageId(String id);
-	List<Donations> getDonationsByDonorId(String id);
+
+    String verifyOrphanageDetails(OrphanageDetails orph);
+
+    String editProfile(String adminId,Admin admin);
+
+    String verifyEventDetails(Events event);
+
+    Orphanage getOrphanageById(String id);
+
+    Donor getDonorById(String id);
+
+    Admin getAdminById(String id);
+
+    Events getEventById(String id);
+
+    List<Events> getEventsByOrphanageId(String id);
+
+    Donations getDonationById(String id);
+
+    List<Donations> getDonationsByOrphanageId(String id);
+
+    List<Donations> getDonationsByDonorId(String id);
+
+    String sendOtp(Admin admin);
+
+    public String forgetPassword(String email, String otp, String create, String confirm);
 
 }
