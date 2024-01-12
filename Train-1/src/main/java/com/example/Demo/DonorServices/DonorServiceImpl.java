@@ -55,7 +55,9 @@ public class DonorServiceImpl implements DonorService {
 
             Optional<Donor> optionalDonor=donorRepository.findById(donorId);
             if(optionalDonor.isPresent()){
+                donor.setDonorId(donorId);
                 donorRepository.save(donor);
+                return "Profile Updated Successfully";
             }
             return null;
 

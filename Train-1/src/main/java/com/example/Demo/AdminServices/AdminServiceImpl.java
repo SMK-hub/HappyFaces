@@ -28,7 +28,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class AdminServiceImpl implements AdminService {
 
-
     @Autowired
     private EmailService emailService;
     @Autowired
@@ -86,8 +85,9 @@ public class AdminServiceImpl implements AdminService {
     {
         Optional<Admin> optionalAdmin=adminRepo.findById(adminId);
         if(optionalAdmin.isPresent()){
+            admin.setAdminId(adminId);
             adminRepo.save(admin);
-            return "Profile changed Successfully";
+            return "Profile Updatded Successfully";
         }
         return null;
     }
@@ -175,6 +175,7 @@ public class AdminServiceImpl implements AdminService {
         Optional<Admin> admin = adminRepo.findById(id);
         return admin.orElse(null);
     }
+
 
     @Override
     public Events getEventById(String id) {

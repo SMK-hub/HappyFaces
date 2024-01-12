@@ -72,7 +72,17 @@ public class OrphanageServiceImpl implements OrphanageService {
         eventsRepository.save(event);
         return null;
     }
+    @Override
+    public String editEvent(String eventId,Events event){
+        Optional<Events> optionalEvents=eventsRepository.findById(eventId);
+        if(optionalEvents.isPresent()){
+            event.setId(eventId);
+            eventsRepository.save(event);
+            return "Event Updated Successfully";
+        }
+    }
 
+    @Override
     public String cancelEvent(String eventId) {
         Optional<Events> optionalEvent = eventsRepository.findById(eventId);
         optionalEvent.ifPresent(events -> events.setEventStatus(EnumClass.EventStatus.CANCELLED));
@@ -132,8 +142,9 @@ public class OrphanageServiceImpl implements OrphanageService {
     public String editProfile(String orphanageId, Orphanage orphanage) {
         Optional<Orphanage> optionalOrphanage = orphanageRepository.findById(orphanageId);
         if (optionalOrphanage.isPresent()) {
+            orphanage.setOrpId(orphanageId);
             orphanageRepository.save(orphanage);
-            return "Profile changed Successfully";
+            return "Profile Updated Successfully";
         }
         return null;
     }
@@ -142,8 +153,9 @@ public class OrphanageServiceImpl implements OrphanageService {
     public String editDetails(String orphanageId, OrphanageDetails orphanageDetails) {
         Optional<OrphanageDetails> optionalOrphanageDetails = detailRepository.findById(orphanageId);
         if (optionalOrphanageDetails.isPresent()) {
+            orphanageDetails.setId(orphanageId);
             detailRepository.save(orphanageDetails);
-            return "Profile changed Successfully";
+            return "Details Updated Successfully";
         }
         return null;
     }

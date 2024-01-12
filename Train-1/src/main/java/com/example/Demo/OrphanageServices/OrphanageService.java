@@ -17,6 +17,7 @@ public interface OrphanageService {
     String updateDetails(OrphanageDetails details);
 
     String createEvents(Events event);
+    String editEvent(String eventId,Events event);
 
     String cancelEvent(String eventId);
 

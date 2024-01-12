@@ -47,7 +47,6 @@ public class OrphanageController {
         return orphanageService.updateDetails(detail);
 
     }
-
     @PostMapping("/createEvent")
     public String createEvents(@RequestBody Events event){
         return orphanageService.createEvents(event);
