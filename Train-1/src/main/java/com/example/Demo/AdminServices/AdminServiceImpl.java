@@ -1,11 +1,9 @@
 package com.example.Demo.AdminServices;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
+import com.example.Demo.Enum.EnumClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -49,9 +47,6 @@ public class AdminServiceImpl implements AdminService {
 
     public void saveUser(Optional<Admin> optionalAdmin) {
         optionalAdmin.ifPresent(admin -> {
-            // You can perform any necessary validations or modifications to the admin object here
-            // ...
-
             adminRepo.save(admin);
         });
     }
@@ -81,21 +76,22 @@ public class AdminServiceImpl implements AdminService {
         return (List<Donations>) donationRepo.findAll();
     }
 
-    public String editProfile(String adminId,Admin admin)
-    {
-        Optional<Admin> optionalAdmin=adminRepo.findById(adminId);
-        if(optionalAdmin.isPresent()){
+    public String editProfile(String adminId, Admin admin) {
+        Optional<Admin> optionalAdmin = adminRepo.findById(adminId);
+        if (optionalAdmin.isPresent()) {
             admin.setAdminId(adminId);
             adminRepo.save(admin);
             return "Profile Updatded Successfully";
         }
         return null;
     }
+
     @Override
     public String registerUser(Admin newUser) {
         Optional<Admin> user = adminRepo.findByEmail(newUser.getEmail());
         if (user.isEmpty()) {
             if (newUser.getPasscode().equals(passcode)) {
+                newUser.setRole(String.valueOf(EnumClass.Roles.ADMIN));
                 adminRepo.save(newUser);
                 String subject = "Registration Successful";
                 String body = "Dear Admin, congratulations on taking the lead in maintaining the Happy Faces website! Your dedication will make a positive impact on our mission to support and uplift the lives of those in need.";
@@ -120,7 +116,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void addProfilePhoto(String adminId, MultipartFile file) throws IOException {
+    public String addProfilePhoto(String adminId, MultipartFile file) throws IOException {
         byte[] photoBytes = file.getBytes();
         System.out.println();
 
@@ -128,6 +124,28 @@ public class AdminServiceImpl implements AdminService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         admin.setProfilePhoto(photoBytes);
+        adminRepo.save(admin);
+        return "Profile Photo Added Successfully";
+    }
+
+    public String getProfilePhoto(String adminId) {
+        Admin admin = adminRepo.findById(adminId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        byte[] photoBytes = admin.getProfilePhoto();
+        if (photoBytes != null && photoBytes.length > 0) {
+            return Base64.getEncoder().encodeToString(photoBytes);
+        } else {
+            return null; // Or return a default image URL or handle it based on your requirements
+        }
+    }
+
+    public void updateProfilePhoto(String adminId, MultipartFile file) throws IOException {
+        byte[] newPhotoBytes = file.getBytes();
+        Admin admin = adminRepo.findById(adminId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        admin.setProfilePhoto(newPhotoBytes);
         adminRepo.save(admin);
     }
 
@@ -203,7 +221,9 @@ public class AdminServiceImpl implements AdminService {
     public List<Donations> getDonationsByDonorId(String id) {
         return donationRepo.getDonationsByDonorId(id);
     }
+
     private String Otp;
+
     public String sendOtp(Admin admin) {
 
         Optional<Admin> user = adminRepo.findByEmail(admin.getEmail());
@@ -217,7 +237,7 @@ public class AdminServiceImpl implements AdminService {
 
 //            user.get().setOtp(sixDigitCode);
 //            saveUser(user);
-            Otp=sixDigitCode;
+            Otp = sixDigitCode;
 
             emailService.sendSimpleMail(user.get().getEmail(), subject, body);
 
@@ -244,6 +264,4 @@ public class AdminServiceImpl implements AdminService {
         }
         return "user not existed";
     }
-
-
 }

@@ -11,7 +11,10 @@ import com.example.Demo.Repository.OrphanageDetailsRepository;
 import com.example.Demo.Repository.OrphanageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.Optional;
 import java.util.Random;
 
@@ -64,6 +67,38 @@ public class OrphanageServiceImpl implements OrphanageService {
         detailRepository.save(details);
         return "Updated Successfully";
     }
+    @Override
+    public void addProfilePhoto(String orphanageId, MultipartFile file) throws IOException {
+        byte[] photoBytes = file.getBytes();
+        System.out.println();
+
+        Orphanage orphanage= orphanageRepository.findById(orphanageId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        orphanage.setProfilePhoto(photoBytes);
+        orphanageRepository.save(orphanage);
+    }
+    @Override
+    public String getProfilePhoto(String orphanageId) {
+        Orphanage orphanage= orphanageRepository.findById(orphanageId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        byte[] photoBytes = orphanage.getProfilePhoto();
+        if (photoBytes != null && photoBytes.length > 0) {
+            return Base64.getEncoder().encodeToString(photoBytes);
+        } else {
+            return null; // Or return a default image URL or handle it based on your requirements
+        }
+    }
+
+    public void updateProfilePhoto(String orphanageId, MultipartFile file) throws IOException {
+        byte[] newPhotoBytes = file.getBytes();
+        Orphanage orphanage= orphanageRepository.findById(orphanageId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        orphanage.setProfilePhoto(newPhotoBytes);
+        orphanageRepository.save(orphanage);
+    }
 
     @Override
     public String createEvents(Events event) {
@@ -80,7 +115,7 @@ public class OrphanageServiceImpl implements OrphanageService {
             eventsRepository.save(event);
             return "Event Updated Successfully";
         }
-        return null;
+        return "Error occurred try again";
     }
 
     @Override

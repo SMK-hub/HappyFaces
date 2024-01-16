@@ -1,10 +1,15 @@
 package com.example.Demo.Controller;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -101,12 +106,60 @@ public class AdminController {
 			return "Invalid email or password";
 		}
 	}
-	@PostMapping("/{adminId}/photo")
+	private static final List<String> ALLOWED_IMAGE_CONTENT_TYPES = Arrays.asList(
+			"image/jpeg", "image/png", "image/gif", "image/bmp"
+			// Add more image types if needed
+	);
+	@PostMapping("addPhoto/{adminId}")
 	public ResponseEntity<String> addProfilePhoto(
 			@PathVariable String adminId,
 			@RequestParam("file")MultipartFile file) throws IOException {
-		adminService.addProfilePhoto(adminId,file);
-		return ResponseEntity.ok("Profile photo added successfully");
+		try {
+			// Check if the uploaded file is an image
+			if (!isImage(file)) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Only image files are allowed");
+			}
+			adminService.addProfilePhoto(adminId, file);
+			return ResponseEntity.status(HttpStatus.CREATED).body("Profile photo added successfully");
+		}
+		catch (IOException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding profile photo");
+		}
+	}
+	private boolean isImage(MultipartFile file) {
+		return file != null && ALLOWED_IMAGE_CONTENT_TYPES.contains(file.getContentType());
+	}
+	@GetMapping("getPhoto/{adminId}")
+	public ResponseEntity<byte[]> getProfilePhoto(@PathVariable String adminId) {
+		String photoBase64 = adminService.getProfilePhoto(adminId);
+
+		if (photoBase64 != null) {
+			// Decode Base64 to byte array
+			byte[] photoBytes = Base64.decodeBase64(photoBase64);
+
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.IMAGE_JPEG); // Set the appropriate content type
+
+			return ResponseEntity.ok()
+					.headers(headers)
+					.body(photoBytes);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+	@PutMapping("updatePhoto/{adminId}")
+	public ResponseEntity<String> updateProfilePhoto(
+			@PathVariable String adminId,
+			@RequestParam("file") MultipartFile file) {
+		try {
+			if (!isImage(file)) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Only image files are allowed");
+			}
+			adminService.updateProfilePhoto(adminId, file);
+			return ResponseEntity.status(HttpStatus.CREATED).body("Profile photo updated successfully");
+		} catch (IOException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating profile photo");
+		}
 	}
 	@PostMapping("/sendOtp")
 	public String sendOtp(@RequestBody Admin admin) {
@@ -123,4 +176,5 @@ public class AdminController {
 	public String editProfile(@PathVariable("adminId") String adminId,@RequestBody Admin admin){
 		return adminService.editProfile(adminId,admin);
 	}
+
 }

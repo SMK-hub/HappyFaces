@@ -9,4 +9,8 @@ public class EnumClass {
     public enum VerificationStatus {
         NOT_VERIFIED, VALID, IN_VALID
     }
+
+    public enum Roles{
+        ADMIN,DONOR,ORPHANAGE;
+    }
 }

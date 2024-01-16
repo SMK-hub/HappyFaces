@@ -1,15 +1,20 @@
 package com.example.Demo.DonorServices;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.Optional;
 import java.util.Random;
 
-import com.example.Demo.Model.Admin;
+import com.example.Demo.Model.Events;
+import com.example.Demo.Model.InterestedPerson;
+import com.example.Demo.Repository.EventsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.Demo.EmailServices.EmailService;
 import com.example.Demo.Model.Donor;
 import com.example.Demo.Repository.DonorRepository;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class DonorServiceImpl implements DonorService {
@@ -18,6 +23,7 @@ public class DonorServiceImpl implements DonorService {
     private DonorRepository donorRepository;
     @Autowired
     private EmailService emailService;
+    private EventsRepository eventsRepository;
 
     public void saveUser(Optional<Donor> optionalDonor) {
         optionalDonor.ifPresent(donor -> {
@@ -60,9 +66,41 @@ public class DonorServiceImpl implements DonorService {
                 return "Profile Updated Successfully";
             }
             return null;
-
     }
 
+    @Override
+    public void addProfilePhoto(String donorId, MultipartFile file) throws IOException {
+        byte[] photoBytes = file.getBytes();
+        System.out.println();
+
+        Donor donor= donorRepository.findById(donorId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        donor.setProfilePhoto(photoBytes);
+        donorRepository.save(donor);
+    }
+    @Override
+    public String getProfilePhoto(String donorId) {
+        Donor donor= donorRepository.findById(donorId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        byte[] photoBytes = donor.getProfilePhoto();
+        if (photoBytes != null && photoBytes.length > 0) {
+            return Base64.getEncoder().encodeToString(photoBytes);
+        } else {
+            return null; // Or return a default image URL or handle it based on your requirements
+        }
+    }
+    @Override
+    public void updateProfilePhoto(String donorId, MultipartFile file) throws IOException {
+        byte[] newPhotoBytes = file.getBytes();
+        Donor donor= donorRepository.findById(donorId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        donor.setProfilePhoto(newPhotoBytes);
+        donorRepository.save(donor);
+    }
+    @Override
     public String sendOtp(Donor donor) {
 
         Optional<Donor> user = donorRepository.findByEmail(donor.getEmail());
@@ -84,6 +122,7 @@ public class DonorServiceImpl implements DonorService {
         return null;
     }
     private String Otp;
+    @Override
     public String forgetPassword(String email, String otp, String create, String confirm) {
         Optional<Donor> user = donorRepository.findByEmail(email);
 //	if(saved.isPresent()) {
@@ -101,6 +140,28 @@ public class DonorServiceImpl implements DonorService {
             }
         }
         return "user not existed";
+    }
+
+    @Override
+    public void eventRegister(String eventId, String donorId) {
+        Optional<Events> event=eventsRepository.findById(eventId);
+        Optional<Donor> donor=donorRepository.findById(donorId);
+
+        if(event.isPresent() && donor.isPresent())
+        {
+            InterestedPerson interestedPerson = null;
+            interestedPerson.setDonorId(donor.get().getDonorId());
+            interestedPerson.setEmails(donor.get().getEmail());
+            interestedPerson.setName(donor.get().getName());
+            event.get().getInterestedPersons().add(interestedPerson);
+            eventsRepository.save(event.get());
+        }
+    }
+
+    @Override
+    public void cancelEventRegistration(String eventId, String donorId) {
+        Optional<Events> event=eventsRepository.findById(eventId);
+        event.ifPresent(events -> events.getInterestedPersons().removeIf(donor -> donor.getDonorId().equals(donorId)));
     }
 
 }

@@ -28,7 +28,11 @@ public interface AdminService {
 
     boolean loginUser(String email, String password);
 
-    void addProfilePhoto(String adminId, MultipartFile file) throws IOException;
+    String addProfilePhoto(String adminId, MultipartFile file) throws IOException;
+
+    String getProfilePhoto(String adminId);
+
+    void updateProfilePhoto(String adminId, MultipartFile file) throws IOException;
 
     OrphanageDetails getOrphanageDetailByOrphanageId(String orpId);
 

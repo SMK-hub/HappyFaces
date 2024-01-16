@@ -1,5 +1,6 @@
 package com.example.Demo.Model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.example.Demo.Enum.EnumClass;
@@ -17,7 +18,7 @@ public class Events {
     private String date;
     private String time;
     private EnumClass.EventStatus eventStatus;
-    private List<InterestedPerson> interestedPersons;
+    private List<InterestedPerson> interestedPersons=new ArrayList<>();
     private EnumClass.VerificationStatus verificationStatus;
 	
 	public Events(String id, ObjectId orpId, String title, String description, String date, String time,
@@ -135,46 +136,4 @@ public class Events {
     }
 
 
-}
-class   InterestedPerson {
-    private String name;
-    private String contact;
-
-    // Constructors, Getters, Setters, etc.
-
-    // Constructors
-    public InterestedPerson() {
-        // Default constructor
-    }
-
-    public InterestedPerson(String name, String contact) {
-        this.name = name;
-        this.contact = contact;
-    }
-
-    // Getters and setters
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getContact() {
-        return contact;
-    }
-
-    public void setContact(String contact) {
-        this.contact = contact;
-    }
-
-    // toString() method
-    @Override
-    public String toString() {
-        return "InterestedPerson{" +
-                "name='" + name + '\'' +
-                ", contact='" + contact + '\'' +
-                '}';
-    }
 }

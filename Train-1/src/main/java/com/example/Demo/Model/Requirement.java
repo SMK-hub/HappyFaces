@@ -17,6 +17,7 @@ public class Requirement {
 	}
 	
 	private String need;
+	private String description;
 	private String priority;
 	
 	public Requirement() {
@@ -42,6 +43,13 @@ public class Requirement {
 	}
 	public void setPriority(String priority) {
 		this.priority = priority;
+	}
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 }
