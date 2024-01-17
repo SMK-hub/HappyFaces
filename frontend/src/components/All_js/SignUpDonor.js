@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../All_css/SignUpDonor.css'; // Import the CSS file for styles
+import Header from "./Header";
 
 const SignUpDonor = () => {
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ const SignUpDonor = () => {
   };
 
   return (
+    <div><Header/>
     <div className="sign-up-donor-container">
       <h2 className="sign-up-donor-heading">Admin Sign Up</h2>
       <form onSubmit={handleSignUp} className="sign-up-donor-form">
@@ -64,6 +66,7 @@ const SignUpDonor = () => {
       <Link to="/signup" className="back-link">
         Back to Sign Up Selector
       </Link>
+    </div>
     </div>
   );
 };

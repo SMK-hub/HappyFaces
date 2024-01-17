@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../All_css/SignUpOrphanage.css'; // Import the CSS file for styles
+import Header from "./Header";
 
 const SignUpOrphanage = () => {
   const navigate = useNavigate();
@@ -22,6 +23,8 @@ const SignUpOrphanage = () => {
   };
 
   return (
+    <div><Header/>
+
     <div className="sign-up-admin-container">
       <h2 className="sign-up-admin-heading">Orphanage Sign Up</h2>
       <form onSubmit={handleSignUp} className="sign-up-admin-form">
@@ -64,6 +67,7 @@ const SignUpOrphanage = () => {
       <Link to="/signup" className="back-link">
         Back to Sign Up Selector
       </Link>
+    </div>
     </div>
   );
 };

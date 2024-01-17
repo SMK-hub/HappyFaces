@@ -38,7 +38,7 @@ const SignInSelector = () => {
               checked={selectedOption === 'admin'}
               onChange={() => handleOptionSelect('admin')}
             />
-            <span className="option-label">Admin</span>
+            <p className="option-label">Admin</p>
           </label>
           <label className={`sign-in-option ${selectedOption === 'orphanage' ? 'selected' : ''}`}>
             <input

@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../All_css/SignInAdmin.css'; // Import the CSS file for styles
+import Header from "./Header";
+
 
 const SignInAdmin = () => {
   const navigate = useNavigate();
@@ -20,6 +22,7 @@ const SignInAdmin = () => {
   };
 
   return (
+    <div><Header/>
     <div className="sign-in-admin-container">
       <h2 className="sign-in-admin-heading">Admin Sign In</h2>
       <form onSubmit={handleSignIn} className="sign-in-admin-form">
@@ -55,6 +58,7 @@ const SignInAdmin = () => {
       <Link to="/signin" className="back-link">
         Back to Sign In Selector
       </Link>
+    </div>
     </div>
   );
 };
