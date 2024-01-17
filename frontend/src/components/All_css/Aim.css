@@ -1,0 +1,32 @@
+/* .css */
+
+.aim-container {
+  background-color: #e6e6fa; 
+
+    padding: 40px;
+    text-align: center;
+  }
+
+  .aim-image {
+    width: 100%; /* Set the image width to cover the entire container */
+    max-height: 300px; /* Adjust the max-height as needed */
+    object-fit: cover; /* Maintain aspect ratio while covering the container */
+    margin-bottom: 10px;
+  }
+  
+  .aim-container h2 {
+    font-size: 5.0rem;
+    margin-bottom: 10px;
+  }
+  
+  .aim-container p {
+    font-size: 1.5rem;
+    font-family: 'Oswald', sans-serif;
+    line-height: 1.5;
+    text-align: justify;
+    color: #333;
+    max-width: 800px;
+    margin: 0 auto;
+    padding-bottom: 20px;
+  }
+  

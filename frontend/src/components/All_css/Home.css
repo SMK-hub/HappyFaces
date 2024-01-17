@@ -1,0 +1,42 @@
+/* Header.css */
+
+.home-background {
+    background-color: #e6e6fa; 
+}
+.home-container {
+    background-image: url("https://images.pexels.com/photos/764681/pexels-photo-764681.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+    background-size: cover;
+    font-weight: bold;
+    font-size: 5em;
+    background-position: center;
+    /* background-color: #751658;  */
+    height: calc(100vh - 64px); /* Adjust the height based on the header height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white; /* Set text color to be visible on the background */
+  }
+  
+  .home-container h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+  }
+  
+  .home-container p {
+    font-size: 2.5rem;
+    max-width: 600px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .give-now-button {
+    background-color: #4caf50;
+    color: white;
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
