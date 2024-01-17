@@ -4,8 +4,8 @@
   display: flex;
   justify-content: space-around;
   padding: 10px;
-  background-color: #e6e6fa;
-  margin-bottom: 10px;
+background-image: linear-gradient(to left, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);  
+margin-bottom: 10px;
 }
 
 .header-list li {
@@ -19,6 +19,7 @@
   font-weight: bold;
   display: block;
 }
+
 
 .header-list a:hover {
   color: #a91489;

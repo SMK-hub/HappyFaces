@@ -25,8 +25,7 @@
     grid-gap: 2em;
     grid-template-columns: repeat(auto-fit, minmax(100%, var(--w)));
     place-content: center;
-    background: #222;
-    font: 900 1.25em/1.25 sans-serif;
+    background-image: linear-gradient(to left, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);    font: 900 1.25em/1.25 sans-serif;
     text-align: center;
     text-transform: uppercase;
   }
