@@ -1,7 +1,6 @@
 // App.js
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Header from './components/All_js/Header';
 import Home from './components/All_js/Home';
 import AboutUs from './components/All_js/AboutUs';
 import Gallery from './components/All_js/Gallery';
@@ -18,7 +17,7 @@ import SignUpDonor from './components/All_js/SignUpDonor';
 const App = () => {
   return (
     <Router>
-      <Header />
+      {/* <Header /> */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/aboutus" element={<AboutUs />} />

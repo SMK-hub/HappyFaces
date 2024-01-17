@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../All_css/SignInDonor.css'; // Import the CSS file for styles
+import Header from './Header';
 
 const SignInDonor = () => {
   const navigate = useNavigate();
@@ -20,7 +21,10 @@ const SignInDonor = () => {
   };
 
   return (
+    <div className="donorSignIn">
+      <Header/>
     <div className="sign-in-donor-container">
+      
       <h2 className="sign-in-donor-heading">Donor Sign In</h2>
       <form onSubmit={handleSignIn} className="sign-in-donor-form">
         <label className="form-label">
@@ -55,6 +59,7 @@ const SignInDonor = () => {
       <Link to="/signin" className="back-link">
         Back to Sign In Selector
       </Link>
+    </div>
     </div>
   );
 };

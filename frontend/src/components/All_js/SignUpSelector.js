@@ -1,6 +1,7 @@
 // components/SignInSelector.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Header from './Header';
 import '../All_css/SignUpSelector.css'; // Import the CSS file for styles
 
 const SignUpSelector = () => {
@@ -23,6 +24,8 @@ const SignUpSelector = () => {
   };
 
   return (
+    <div>
+            <Header/>
     <div className="sign-up-selector-container">
       <div className="box-enclosure">
         <h2 className="sign-up-selector-heading">Choose Your Role</h2>
@@ -62,6 +65,7 @@ const SignUpSelector = () => {
           Continue
         </button>
       </div>
+    </div>
     </div>
   );
 };

@@ -5,8 +5,7 @@ import '../All_css/Header.css';
 
 const Header = () => {
   return (
-    <header>
-
+    <div>
        <nav> 
         <ul className="header-list">
         <li><Link to="/">Home</Link></li>
@@ -17,7 +16,7 @@ const Header = () => {
         <li><Link to="/signin/donor">Donate</Link></li>
       </ul>
     </nav>
-    </header>
+    </div>
   );
 };
 

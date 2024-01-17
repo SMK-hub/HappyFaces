@@ -25,7 +25,6 @@
     grid-gap: 2em;
     grid-template-columns: repeat(auto-fit, minmax(100%, var(--w)));
     place-content: center;
-    min-height: 100vh;
     background: #222;
     font: 900 1.25em/1.25 sans-serif;
     text-align: center;

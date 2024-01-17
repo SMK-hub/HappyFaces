@@ -9,10 +9,14 @@ import Testimony from './Testimony';
 import Registration from './Registration';
 import Contact from './Contact';
 import Footer from './Footer';
+import Header from './Header';
+
+// import { Header } from 'tar';
 
 const Home = () => {
   return (
     <div className="home-background">
+      <Header/>
       <div className="home-container">
         <h1>WELCOME TO HAPPY FACES</h1>
         <p>Providing care and support to every child</p>

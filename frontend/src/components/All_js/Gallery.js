@@ -1,6 +1,8 @@
 // components/Gallery.js
 import React from 'react';
-import '../All_css/Gallery.css'
+import '../All_css/Gallery.css';
+import Header from './Header';
+// import { Header } from 'tar';
  
 const Gallery = () => {
   // Example gallery images (replace with your own images and captions)
@@ -13,6 +15,7 @@ const Gallery = () => {
  
   return (
     <div className='page'>
+      <Header/>
       <p className='para'>Gallery</p>
     <div className='gallery_page'>
       <div className="gallery-container">

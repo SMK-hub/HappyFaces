@@ -3,11 +3,16 @@ import React from 'react';
 import { FaRegHeart, FaHandsHelping, FaUsers, FaMicrophoneAlt, FaWhatsapp } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import '../All_css/AboutUs.css';
+import Header from './Header';
+
 
 const AboutUs = () => {
   const emailLink = "mailto:demo@gmail.com"; // Gmail mailto link
 
   return (
+    <div>
+    <Header/>
+
     <div className="about-us-container">
       <div className="our-story-section">
         <div className="announcement-mic">
@@ -89,6 +94,7 @@ const AboutUs = () => {
       <div className="trademark-section">
         <p>&copy; 2024 Happy Faces</p>
       </div>
+    </div>
     </div>
   );
 };
