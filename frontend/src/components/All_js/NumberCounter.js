@@ -1,7 +1,7 @@
 // CounterSection.js
 import React from 'react';
 import CountUp from 'react-countup';
-import './NumberCounter.css';
+import '../All_css/NumberCounter.css';
 
 const CounterSection = () => {
   const counters = [

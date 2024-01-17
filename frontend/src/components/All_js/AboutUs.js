@@ -2,7 +2,7 @@
 import React from 'react';
 import { FaRegHeart, FaHandsHelping, FaUsers, FaMicrophoneAlt, FaWhatsapp } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import './AboutUs.css';
+import '../All_css/AboutUs.css';
 
 const AboutUs = () => {
   const emailLink = "mailto:demo@gmail.com"; // Gmail mailto link

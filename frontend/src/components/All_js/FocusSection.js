@@ -1,5 +1,5 @@
 import React from 'react';
-import './FocusSection.css'; 
+import '../All_css/FocusSection.css'; 
 
 const ProductSection = () => {
   return (

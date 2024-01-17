@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './Home.css';
+import '../All_css/Home.css';
 import Aim from './Aim';
 import FocusSection from './FocusSection';
 import NumberCounter from './NumberCounter';

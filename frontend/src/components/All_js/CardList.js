@@ -53,7 +53,7 @@
 
 // SlideUpCaptionHoverEffect.js
 import React from 'react';
-import './CardList.css';
+import '../All_css/CardList.css';
 
 const SlideUpCaptionHoverEffect = () => {
   return (

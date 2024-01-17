@@ -1,18 +1,18 @@
 // App.js
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Header from './components/Header';
-import Home from './components/Home';
-import AboutUs from './components/AboutUs';
-import Gallery from './components/Gallery';
-import SignInSelector from './components/SignInSelector';
-import SignUpSelector from './components/SignUpSelector';
-import SignInAdmin from './components/SignInAdmin';
-import SignInOrphanage from './components/SignInOrphanage';
-import SignInDonor from './components/SignInDonor';
-import SignUpAdmin from './components/SignUpAdmin';
-import SignUpOrphanage from './components/SignUpOrphanage';
-import SignUpDonor from './components/SignUpDonor';
+import Header from './components/All_js/Header';
+import Home from './components/All_js/Home';
+import AboutUs from './components/All_js/AboutUs';
+import Gallery from './components/All_js/Gallery';
+import SignInSelector from './components/All_js/SignInSelector';
+import SignUpSelector from './components/All_js/SignUpSelector';
+import SignInAdmin from './components/All_js/SignInAdmin';
+import SignInOrphanage from './components/All_js/SignInOrphanage';
+import SignInDonor from './components/All_js/SignInDonor';
+import SignUpAdmin from './components/All_js/SignUpAdmin';
+import SignUpOrphanage from './components/All_js/SignUpOrphanage';
+import SignUpDonor from './components/All_js/SignUpDonor';
 
 
 const App = () => {

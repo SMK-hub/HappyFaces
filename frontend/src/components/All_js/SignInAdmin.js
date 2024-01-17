@@ -1,7 +1,7 @@
 // components/SignInAdmin.js
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './SignInAdmin.css'; // Import the CSS file for styles
+import '../All_css/SignInAdmin.css'; // Import the CSS file for styles
 
 const SignInAdmin = () => {
   const navigate = useNavigate();

@@ -1,6 +1,6 @@
 // components/Gallery.js
 import React from 'react';
-import './Gallery.css'
+import '../All_css/Gallery.css'
  
 const Gallery = () => {
   // Example gallery images (replace with your own images and captions)

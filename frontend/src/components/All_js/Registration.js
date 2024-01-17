@@ -1,5 +1,5 @@
 import React from 'react';
-import './Registration.css';
+import '../All_css/Registration.css';
 
 const data = [
   { name: 'basic', cost: 9, grad: '#0fcf7b, #0c9f30' },

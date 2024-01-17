@@ -1,7 +1,7 @@
 // components/SignInSelector.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './SignUpSelector.css'; // Import the CSS file for styles
+import '../All_css/SignUpSelector.css'; // Import the CSS file for styles
 
 const SignUpSelector = () => {
   const navigate = useNavigate();

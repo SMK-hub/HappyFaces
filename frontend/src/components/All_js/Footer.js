@@ -1,5 +1,5 @@
 import React from 'react';
-import './Footer.css';
+import '../All_css/Footer.css';
 
 // Import icons (replace with actual paths or use font icons libraries)
 // import InstagramIcon from 'https://img.icons8.com/?size=48&id=Xy10Jcu1L2Su&format=png';

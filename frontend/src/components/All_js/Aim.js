@@ -1,6 +1,6 @@
 // components/Aim.js
 import React from 'react';
-import './Aim.css';
+import '../All_css/Aim.css';
 // import aimImage from 'https://images.pexels.com/photos/911738/pexels-photo-911738.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
 
 const Aim = () => {
