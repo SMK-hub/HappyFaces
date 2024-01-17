@@ -3,9 +3,11 @@ package com.example.Demo.OrphanageServices;
 import com.example.Demo.Model.Events;
 import com.example.Demo.Model.Orphanage;
 import com.example.Demo.Model.OrphanageDetails;
+import com.example.Demo.Model.OrphanageImage;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 public interface OrphanageService {
@@ -37,4 +39,10 @@ public interface OrphanageService {
     String editProfile(String orphanageId, Orphanage orphanage);
 
     String editDetails(String orphanageId, OrphanageDetails orphanageDetails);
+
+    void uploadImages(String orphanageId, List<MultipartFile> imageFiles) throws IOException;
+
+    List<OrphanageImage> getOrphanageImages(String orphanageId);
+
+    void removeImage(String orphanageId, String imageId);
 }

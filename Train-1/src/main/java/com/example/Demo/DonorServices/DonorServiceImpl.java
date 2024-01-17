@@ -2,12 +2,16 @@ package com.example.Demo.DonorServices;
 
 import java.io.IOException;
 import java.util.Base64;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
+import com.example.Demo.Enum.EnumClass;
 import com.example.Demo.Model.Events;
 import com.example.Demo.Model.InterestedPerson;
+import com.example.Demo.Model.OrphanageDetails;
 import com.example.Demo.Repository.EventsRepository;
+import com.example.Demo.Repository.OrphanageDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +28,10 @@ public class DonorServiceImpl implements DonorService {
     @Autowired
     private EmailService emailService;
     private EventsRepository eventsRepository;
+    private OrphanageDetailsRepository detailsRepository;
 
     public void saveUser(Optional<Donor> optionalDonor) {
         optionalDonor.ifPresent(donor -> {
-
             donorRepository.save(donor);
         });
     }
@@ -54,6 +58,11 @@ public class DonorServiceImpl implements DonorService {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public Optional<Donor> viewProfile(String donorId) {
+        return donorRepository.findById(donorId);
     }
 
     @Override
@@ -143,6 +152,27 @@ public class DonorServiceImpl implements DonorService {
     }
 
     @Override
+    public List<OrphanageDetails> getVerifiedOrphanageDetails() {
+        return detailsRepository.findByVerificationStatus(String.valueOf(EnumClass.VerificationStatus.VALID));
+    }
+
+    @Override
+    public Optional<OrphanageDetails> getVerifiedOrphanageDetailsById(String orpId) {
+        Optional<OrphanageDetails> optionalOrphanageDetails=detailsRepository.findByOrpId(orpId);
+        if(optionalOrphanageDetails.isPresent() && optionalOrphanageDetails.get().getVerificationStatus().equals(EnumClass.VerificationStatus.VALID)){
+            optionalOrphanageDetails.get().setViewCount(optionalOrphanageDetails.get().getViewCount()+1);
+            return optionalOrphanageDetails;
+        }else {
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public List<Events> getVerifiedEvents(String orpId) {
+        return eventsRepository.findByVerificationStatus(String.valueOf(EnumClass.VerificationStatus.VALID),orpId);
+    }
+
+    @Override
     public void eventRegister(String eventId, String donorId) {
         Optional<Events> event=eventsRepository.findById(eventId);
         Optional<Donor> donor=donorRepository.findById(donorId);
@@ -155,13 +185,21 @@ public class DonorServiceImpl implements DonorService {
             interestedPerson.setName(donor.get().getName());
             event.get().getInterestedPersons().add(interestedPerson);
             eventsRepository.save(event.get());
+            String subject="Event Registration is Done";
+            String body="Dear "+donor.get().getName()+", Your Registration on "+event.get().getTitle()+" is done.Thank You for registering for our upcoming event,Your generosity is a vital contribution to our cause.";
+            emailService.sendSimpleMail(donor.get().getEmail(),subject,body);
+
         }
     }
 
     @Override
     public void cancelEventRegistration(String eventId, String donorId) {
         Optional<Events> event=eventsRepository.findById(eventId);
-        event.ifPresent(events -> events.getInterestedPersons().removeIf(donor -> donor.getDonorId().equals(donorId)));
+        Optional<Donor> donor=donorRepository.findById(donorId);
+        event.ifPresent(events -> events.getInterestedPersons().removeIf(person -> person.getDonorId().equals(donorId)));
+        String subject="Event Registration Cancelled";
+        String body="We appreciate your initial commitment, and while we understand your circumstances, we hope to welcome you back as a valued donor in the future.";
+        emailService.sendSimpleMail(donor.get().getEmail(),subject,body);
     }
 
 }

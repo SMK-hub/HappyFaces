@@ -6,8 +6,10 @@ import com.example.Demo.Enum.EnumClass.VerificationStatus;
 import com.example.Demo.Model.Events;
 import com.example.Demo.Model.Orphanage;
 import com.example.Demo.Model.OrphanageDetails;
+import com.example.Demo.Model.OrphanageImage;
 import com.example.Demo.Repository.EventsRepository;
 import com.example.Demo.Repository.OrphanageDetailsRepository;
+import com.example.Demo.Repository.OrphanageImageRepository;
 import com.example.Demo.Repository.OrphanageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Base64;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -29,6 +32,7 @@ public class OrphanageServiceImpl implements OrphanageService {
     private OrphanageDetailsRepository detailRepository;
     @Autowired
     private EmailService emailService;
+    private OrphanageImageRepository orphanageImageRepository;
 
     public void saveUser(Optional<Orphanage> optionalOrphanage) {
         optionalOrphanage.ifPresent(orphanage -> {
@@ -195,5 +199,24 @@ public class OrphanageServiceImpl implements OrphanageService {
         }
         return null;
     }
+    @Override
+    public void uploadImages(String orphanageId, List<MultipartFile> imageFiles) throws IOException {
+        for (MultipartFile file : imageFiles) {
+            byte[] imageData = file.getBytes();
+            OrphanageImage orphanageImage = new OrphanageImage();
+            orphanageImage.setOrphanageId(orphanageId);
+            orphanageImage.setImage(imageData);
+            orphanageImageRepository.save(orphanageImage);
+        }
+    }
 
+    @Override
+    public List<OrphanageImage> getOrphanageImages(String orphanageId) {
+        return orphanageImageRepository.findByOrphanageId(orphanageId);
+    }
+
+    @Override
+    public void removeImage(String orphanageId, String imageId) {
+        orphanageImageRepository.deleteByOrphanageIdAndId(orphanageId, imageId);
+    }
 }

@@ -11,5 +11,5 @@ public interface OrphanageDetailsRepository extends MongoRepository<OrphanageDet
 
     List<OrphanageDetails> findAllById(String orpId);
     Optional<OrphanageDetails> findByOrpId(String orpId);
-
+    List<OrphanageDetails> findByVerificationStatus(String verificationStatus);
 }
