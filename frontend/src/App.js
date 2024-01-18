@@ -12,7 +12,7 @@ import SignInDonor from './components/All_js/SignInDonor';
 import SignUpAdmin from './components/All_js/SignUpAdmin';
 import SignUpOrphanage from './components/All_js/SignUpOrphanage';
 import SignUpDonor from './components/All_js/SignUpDonor';
-import AdminDashboard from './components/All_js/AdminDashboard';
+import DashboardAdmin from './components/All_js/DashboardAdmin';
 import DashboardOrphanage from './components/All_js/DashboardOrphanage';
 import DashboardDonor from './components/All_js/DashboardDonor';
 
@@ -34,7 +34,7 @@ const App = () => {
         <Route path="/signup/admin" element={<SignUpAdmin />} />
         <Route path="/signup/orphanage" element={<SignUpOrphanage />} />
         <Route path="/signup/donor" element={<SignUpDonor />} />
-        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/admin-dashboard" element={<DashboardAdmin />} />
         <Route path='/orphanage-dashboard' element={<DashboardOrphanage/>}/>
         <Route path="/donor-dashboard" element={<DashboardDonor/>}/>
         

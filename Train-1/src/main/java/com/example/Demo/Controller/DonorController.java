@@ -34,8 +34,12 @@ public class DonorController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@RequestBody Donor user) {
-        return donorService.registerUser(user);
+    public ResponseEntity<String> registerUser(@RequestBody Donor user) {
+        String alpha=donorService.registerUser(user);
+        if(alpha.equals("Success")){
+            return new ResponseEntity<>("Registration Successful",HttpStatus.OK);
+        }
+        return new ResponseEntity<>("You are an existing user. Please SignIn",HttpStatus.CONFLICT);
     }
 
     @PostMapping("/login")
