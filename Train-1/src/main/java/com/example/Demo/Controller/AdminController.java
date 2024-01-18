@@ -93,8 +93,17 @@ public class AdminController {
 	}
 
 	@PostMapping("/register")
-	public String registerUser(@RequestBody Admin user) {
-		return adminService.registerUser(user);
+	public ResponseEntity<String> registerUser(@RequestBody Admin user) {
+		String alpha=adminService.registerUser(user);
+		if(alpha.equals("Success")){
+			return new ResponseEntity<>("Registration Successful",HttpStatus.OK);
+		}
+		else if(alpha.equals("Enter Correct Passcode")){
+			return new ResponseEntity<>("Enter Correct Passcode",HttpStatus.CONFLICT);
+		}
+		else{
+			return new ResponseEntity<>("You are an existing user. Please SignIn",HttpStatus.CONFLICT);
+		}
 	}
 
 	@PostMapping("/login")

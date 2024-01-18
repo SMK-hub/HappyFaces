@@ -3,27 +3,49 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../All_css/SignUpAdmin.css'; // Import the CSS file for styles
 import Header from "./Header";
+import axios from 'axios';
 
 const SignUpAdmin = () => {
   const navigate = useNavigate();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [email, SetEmail] = useState('');
+  const [admindetails,setAdminDetails] = useState ({
+      name:"",
+      email:"",
+      password:"",
+      passcode:""
+  });
 
+  const[loading,setLoading]=useState(false);
+
+  const fetchData = async()=>{
+    try{
+      setLoading(true);
+      console.log(admindetails);
+    const response=await axios.post("http://localhost:8079/admin/register",admindetails);
+    const status=response.status;
+    console.log(status);
+      if(status == 200){
+        navigate("/signin/admin");
+      }
+      }catch(error){
+        if (error.response && error.response.status === 409) {
+          alert("You are an Existing User / Enter Correct Passcode");
+        } 
+      }
+      finally{
+        setLoading(false);
+      }
+      
+  }
   const handleSignUp = (e) => {
     e.preventDefault();
-    // Add logic for admin sign-in, such as calling an authentication API
-    console.log('Admin signing up  with:', { username, password, email});
-    // Reset the form after submission
-    setUsername('');
-    setPassword('');
-    SetEmail('');
-    // Redirect to a dashboard or home page after successful sign-in
-    navigate('/dashboard');
+    fetchData();
   };
 
   return (
     <div><Header/>
+    {loading ? (
+      <div className="loading-screen">Loading...</div>
+    ) : (
 <div className="sign-up-admin-container">
       <h2 className="sign-up-admin-heading">Admin Sign Up</h2>
       <form onSubmit={handleSignUp} className="sign-up-admin-form">
@@ -31,18 +53,8 @@ const SignUpAdmin = () => {
           Username:
           <input
             type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-            className="form-input"
-          />
-        </label>
-        <label className="form-label">
-          Password:
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={admindetails.name}
+            onChange={(e) => setAdminDetails({...admindetails,name:e.target.value})}
             required
             className="form-input"
           />
@@ -51,8 +63,29 @@ const SignUpAdmin = () => {
           Email:
           <input
             type="email"
-            value={email}
-            onChange={(e) => SetEmail(e.target.value)}
+            value={admindetails.email}
+            onChange={(e) => setAdminDetails({...admindetails,email:e.target.value})}
+            required
+            className="form-input"
+          />
+        </label>
+        <label className="form-label">
+          Password:
+          <input
+            type="password"
+            value={admindetails.password}
+            onChange={(e) => setAdminDetails({...admindetails,password:e.target.value})}
+            required
+            className="form-input"
+          />
+        </label>
+        
+        <label className="form-label">
+          Passcode:
+          <input
+            type="password"
+            value={admindetails.passcode}
+            onChange={(e) => setAdminDetails({...admindetails,passcode:e.target.value})}
             required
             className="form-input"
           />
@@ -64,9 +97,10 @@ const SignUpAdmin = () => {
         </div>
       </form>
       <Link to="/signup" className="back-link">
-        Back to Sign Up Selector
+        Back
       </Link>
     </div>
+    )}
     </div>
   );
 };

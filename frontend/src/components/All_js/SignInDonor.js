@@ -18,7 +18,7 @@ const SignInDonor = () => {
     const status=response.status;
     console.log(status);
     if(status == 200){
-      navigate('/dashboard');
+      navigate('/donor-dashboard');
     }
     }catch(error){
       alert("Invalid Email/Password");
