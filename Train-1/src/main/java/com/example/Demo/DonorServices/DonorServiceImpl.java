@@ -54,7 +54,7 @@ public class DonorServiceImpl implements DonorService {
     public boolean loginUser(String email, String password) {
         Optional<Donor> user = donorRepository.findByEmail(email);
         if (user.isPresent()) {
-            return user != null && user.get().getPassword().equals(password);
+            return user.get().getPassword().equals(password);
         } else {
             return false;
         }

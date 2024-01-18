@@ -41,17 +41,16 @@ public class OrphanageController {
     }
 
     @PostMapping("/login")
-    public String loginUser(@RequestBody Map<String, String> loginData) {
+    public ResponseEntity<String> loginUser(@RequestBody Map<String, String> loginData) {
 
         if (orphanageService.loginUser(loginData.get("email"), loginData.get("password"))) {
-            return "Login successful!";
+            return new ResponseEntity<>("Login successful!",HttpStatus.OK);
         } else {
-            return "Invalid email or password";
+            return new ResponseEntity<>("Invalid email or password",HttpStatus.CONFLICT);
         }
     }
     private static final List<String> ALLOWED_IMAGE_CONTENT_TYPES = Arrays.asList(
             "image/jpeg", "image/png", "image/gif", "image/bmp"
-            // Add more image types if needed
     );
     @PostMapping("addPhoto/{orphanageId}")
     public ResponseEntity<String> addProfilePhoto(

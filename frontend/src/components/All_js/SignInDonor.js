@@ -1,23 +1,36 @@
 // components/SignInAdmin.js
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../All_css/SignInDonor.css'; // Import the CSS file for styles
 import Header from './Header';
+import axios from 'axios';
 
 const SignInDonor = () => {
   const navigate = useNavigate();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [donorDetails,setDonorDetails]=useState({
+    email:"",
+    password:""
+  });
+  console.log(donorDetails);
+  const fetchData=async()=>{
+    try{
+    const response=await axios.post("http://localhost:8079/donor/login",donorDetails);
+    const status=response.status;
+    console.log(status);
+    if(status == 200){
+      navigate('/dashboard');
+    }
+    }catch(error){
+      alert("Invalid Email/Password");
+      console.log(error);
+    }
 
+  }
+  
   const handleSignIn = (e) => {
     e.preventDefault();
-    // Add logic for admin sign-in, such as calling an authentication API
-    console.log('Admin signing in with:', { username, password });
-    // Reset the form after submission
-    setUsername('');
-    setPassword('');
-    // Redirect to a dashboard or home page after successful sign-in
-    navigate('/dashboard');
+    console.log(donorDetails);
+    fetchData();
   };
 
   return (
@@ -28,11 +41,11 @@ const SignInDonor = () => {
       <h2 className="sign-in-donor-heading">Donor Sign In</h2>
       <form onSubmit={handleSignIn} className="sign-in-donor-form">
         <label className="form-label">
-          Username:
+          Email:
           <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            type="email"
+            value={donorDetails.email}
+            onChange={(e) => setDonorDetails({...donorDetails,email:e.target.value})}
             required
             className="form-input"
           />
@@ -41,8 +54,8 @@ const SignInDonor = () => {
           Password:
           <input
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={donorDetails.password}
+            onChange={(e) => setDonorDetails({...donorDetails,password:e.target.value})}
             required
             className="form-input"
           />
@@ -57,7 +70,7 @@ const SignInDonor = () => {
         </div>
       </form>
       <Link to="/signin" className="back-link">
-        Back to Sign In Selector
+        Back
       </Link>
     </div>
     </div>

@@ -98,12 +98,12 @@ public class AdminController {
 	}
 
 	@PostMapping("/login")
-	public String loginUser(@RequestBody Map<String, String> loginData) {
+	public ResponseEntity<String> loginUser(@RequestBody Map<String, String> loginData) {
 
 		if (adminService.loginUser(loginData.get("email"), loginData.get("password"))) {
-			return "Login successful!";
+			return new ResponseEntity<>("Login is Successful",HttpStatus.OK);
 		} else {
-			return "Invalid email or password";
+			return new ResponseEntity<>("Login Failed",HttpStatus.CONFLICT);
 		}
 	}
 	private static final List<String> ALLOWED_IMAGE_CONTENT_TYPES = Arrays.asList(

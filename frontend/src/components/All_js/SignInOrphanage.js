@@ -3,21 +3,34 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../All_css/SignInOrphanage.css'; // Import the CSS file for styles
 import Header from "./Header"
+import axios from 'axios';
+
 
 const SignInOrphanage = () => {
   const navigate = useNavigate();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [orphanageDetails,setOrphanageDetails]=useState({
+    email:"",
+    password:""
+  });
+  
+  const fetchData = async() =>{
+    try{
+      const response=await axios.post("http://localhost:8079/orphanage/login",orphanageDetails);
+      const status=response.status;
+      console.log(status);
+      if(status == 200){
+        navigate("/orphanage-dashboard");
+      }
+      }catch(error){
+        alert("Invalid Email/Password");
+        console.log(error);
+      }
+  }
 
   const handleSignIn = (e) => {
     e.preventDefault();
-    // Add logic for admin sign-in, such as calling an authentication API
-    console.log('Admin signing in with:', { username, password });
-    // Reset the form after submission
-    setUsername('');
-    setPassword('');
-    // Redirect to a dashboard or home page after successful sign-in
-    navigate('/dashboard');
+    console.log(orphanageDetails);
+    fetchData();
   };
 
   return (
@@ -27,11 +40,11 @@ const SignInOrphanage = () => {
       <h2 className="sign-in-orphanage-heading">Orphanage Sign In</h2>
       <form onSubmit={handleSignIn} className="sign-in-orphanage-form">
         <label className="form-label">
-          Username:
+          Email:
           <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            type="email"
+            value={orphanageDetails.email}
+            onChange={(e) => setOrphanageDetails({...orphanageDetails,email:e.target.value})}
             required
             className="form-input"
           />
@@ -40,8 +53,8 @@ const SignInOrphanage = () => {
           Password:
           <input
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={orphanageDetails.password}
+            onChange={(e) => setOrphanageDetails({...orphanageDetails,password:e.target.value})}
             required
             className="form-input"
           />
@@ -56,7 +69,7 @@ const SignInOrphanage = () => {
         </div>
       </form>
       <Link to="/signin" className="back-link">
-        Back to Sign In Selector
+        Back
       </Link>
     </div>
     </div>

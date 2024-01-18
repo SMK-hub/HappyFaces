@@ -4,8 +4,8 @@
   display: flex;
   justify-content: space-around;
   padding: 10px;
-background-image: linear-gradient(to left, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);  
-margin-bottom: 10px;
+  background-image:linear-gradient( 106.37deg, #ffe1bc 29.63%, #ffcfd1 51.55%, #f3c6f1 90.85% );
+  margin-bottom: 10px;
 }
 
 .header-list li {
