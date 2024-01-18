@@ -13,7 +13,9 @@ import SignUpAdmin from './components/All_js/SignUpAdmin';
 import SignUpOrphanage from './components/All_js/SignUpOrphanage';
 import SignUpDonor from './components/All_js/SignUpDonor';
 import AdminDashboard from './components/All_js/AdminDashboard';
-import OrphanageDashboard from './components/All_js/OrphanageDashboard';
+import DashboardOrphanage from './components/All_js/DashboardOrphanage';
+import DashboardDonor from './components/All_js/DashboardDonor';
+
 
 
 const App = () => {
@@ -33,6 +35,8 @@ const App = () => {
         <Route path="/signup/orphanage" element={<SignUpOrphanage />} />
         <Route path="/signup/donor" element={<SignUpDonor />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path='/orphanage-dashboard' element={<DashboardOrphanage/>}/>
+        <Route path="/donor-dashboard" element={<DashboardDonor/>}/>
         
       </Routes>
     </Router>
