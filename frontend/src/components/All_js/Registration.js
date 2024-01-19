@@ -9,7 +9,7 @@ const data = [
 
 const App = () => {
   return (
-    <div style={{ '--n': data.length }}>
+    <div className='registration' style={{ '--n': data.length }}>
       <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between', padding:'5% 20%'}}>{data.map((c, i) => (
         <article key={c.name} style={{ '--i': i, '--cost': c.cost, '--grad': c.grad ,width:'25%',height:'125%'}}>
           <headers>

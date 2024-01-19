@@ -15,13 +15,13 @@
     text-transform: inherit;
   }
   
-  body,
-  body :not(script):not(style),
+  .registration,
+  .registration :not(script):not(style),
   ::before {
     display: grid;
   }
   
-  body {
+  .registration {
     grid-gap: 2em;
     grid-template-columns: repeat(auto-fit, minmax(100%, var(--w)));
     place-content: center;
