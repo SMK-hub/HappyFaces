@@ -36,12 +36,8 @@ public class OrphanageController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody Orphanage user) {
-        String alpha = orphanageService.registerUser(user);
-        if(alpha.equals("Success")){
-            return new ResponseEntity<>("Registration Successful",HttpStatus.OK);
-        }
-        return new ResponseEntity<>("Existing User",HttpStatus.CONFLICT);
+    public String registerUser(@RequestBody Orphanage user) {
+        return orphanageService.registerUser(user);
     }
 
     @PostMapping("/login")
