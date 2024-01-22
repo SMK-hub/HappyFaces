@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.example.Demo.Model.Events;
+import com.example.Demo.Model.OrphanageImage;
+import com.example.Demo.Repository.OrphanageImageRepository;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -145,5 +147,20 @@ public class OrphanageController {
     @PutMapping("/{orphanageId}/editDetails")
     public String editDetails(@PathVariable("orphanageId") String orphanageId,@RequestBody OrphanageDetails orphanageDetails){
         return orphanageService.editDetails(orphanageId,orphanageDetails);
+    }
+    @PostMapping("/{orphanageId}/orphanageDetails/uploadImages")
+    public ResponseEntity<String> uploadImagesById(@PathVariable("orphanageId")String orphanageId,@RequestParam("images") List<MultipartFile> images) throws IOException {
+        orphanageService.uploadImages(orphanageId, images);
+        return ResponseEntity.ok("Images uploaded successfully for orphanageId: " + orphanageId);
+    }
+    @GetMapping("{orphanageId}/orphanageDetails/viewImages")
+    public ResponseEntity<List<OrphanageImage>> getImagesByOrphanageId(@PathVariable String orphanageId) {
+        List<OrphanageImage> images = orphanageService.getOrphanageImagesById(orphanageId);
+        return ResponseEntity.ok(images);
+    }
+    @PostMapping("{orphanageId}/orphanageDetails/removeImage/{imageId}")
+    public ResponseEntity<String> removeImageById(@PathVariable("orphanageId")String orphanageId,@PathVariable("imageId") String imageId){
+        orphanageService.removeImage(orphanageId,imageId);
+        return ResponseEntity.ok("Image Removed Successfully");
     }
 }

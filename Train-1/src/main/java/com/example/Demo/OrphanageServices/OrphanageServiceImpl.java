@@ -80,6 +80,7 @@ public class OrphanageServiceImpl implements OrphanageService {
         orphanage.setProfilePhoto(photoBytes);
         orphanageRepository.save(orphanage);
     }
+
     @Override
     public String getProfilePhoto(String orphanageId) {
         Orphanage orphanage= orphanageRepository.findById(orphanageId)

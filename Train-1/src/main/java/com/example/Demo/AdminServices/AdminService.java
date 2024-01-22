@@ -60,6 +60,6 @@ public interface AdminService {
 
     String sendOtp(Admin admin);
 
-    public String forgetPassword(String email, String otp, String create, String confirm);
+    String forgetPassword(String email, String otp, String create, String confirm);
 
 }

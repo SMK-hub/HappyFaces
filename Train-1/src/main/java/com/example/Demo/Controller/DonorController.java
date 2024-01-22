@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
-import com.example.Demo.Model.Orphanage;
+import com.example.Demo.Model.Events;
+import com.example.Demo.Model.OrphanageDetails;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -35,26 +37,27 @@ public class DonorController {
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody Donor user) {
-        String alpha= donorService.registerUser(user);
-        if(alpha.equals("Success")){
-            return new ResponseEntity<>("Registration Successful",HttpStatus.OK);
+        String alpha = donorService.registerUser(user);
+        if (alpha.equals("Success")) {
+            return new ResponseEntity<>("Registration Successful", HttpStatus.OK);
         }
-        return  new ResponseEntity<>("Existing User",HttpStatus.CONFLICT);
+        return new ResponseEntity<>("Existing User", HttpStatus.CONFLICT);
     }
 
     @PostMapping("/login")
     public ResponseEntity<String> loginUser(@RequestBody Map<String, String> loginData) {
 
         if (donorService.loginUser(loginData.get("email"), loginData.get("password"))) {
-            return new ResponseEntity<>("Login successful!",HttpStatus.OK) ;
+            return new ResponseEntity<>("Login successful!", HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Login Failed",HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Login Failed", HttpStatus.CONFLICT);
         }
     }
 
     private static final List<String> ALLOWED_IMAGE_CONTENT_TYPES = Arrays.asList(
             "image/jpeg", "image/png", "image/gif", "image/bmp"
     );
+
     @PostMapping("addPhoto/{donorId}")
     public ResponseEntity<String> addProfilePhoto(
             @PathVariable String donorId,
@@ -66,14 +69,15 @@ public class DonorController {
             }
             donorService.addProfilePhoto(donorId, file);
             return ResponseEntity.status(HttpStatus.CREATED).body("Profile photo added successfully");
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding profile photo");
         }
     }
+
     private boolean isImage(MultipartFile file) {
         return file != null && ALLOWED_IMAGE_CONTENT_TYPES.contains(file.getContentType());
     }
+
     @GetMapping("getPhoto/{donorId}")
     public ResponseEntity<byte[]> getProfilePhoto(@PathVariable String donorId) {
         String photoBase64 = donorService.getProfilePhoto(donorId);
@@ -92,6 +96,7 @@ public class DonorController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @PutMapping("updatePhoto/{donorId}")
     public ResponseEntity<String> updateProfilePhoto(
             @PathVariable String donorId,
@@ -112,14 +117,42 @@ public class DonorController {
         return donorService.sendOtp(donor);
 
     }
+
     @PostMapping("/ForgetPassword/{email}/{otp}/{create}/{confirm}")
     public String forgetPassword(@PathVariable("email") String email, @PathVariable("create") String create, @PathVariable("otp") String otp, @PathVariable("confirm") String confirm) {
         System.out.println(create + "   " + confirm + "  " + otp);
-        return donorService.forgetPassword(email,otp,create,confirm);
+        return donorService.forgetPassword(email, otp, create, confirm);
     }
+
     @PutMapping("/{donorId}/editProfile")
-    public String editProfile(@PathVariable("donorId") String donorId,@RequestBody Donor donor){
-        return donorService.editProfile(donorId,donor);
+    public String editProfile(@PathVariable("donorId") String donorId, @RequestBody Donor donor) {
+        return donorService.editProfile(donorId, donor);
+    }
+
+    @GetMapping("/OrphanageDetails")
+    public ResponseEntity<List<OrphanageDetails>> getVerifiedOrphanageDetails() {
+        return ResponseEntity.ok(donorService.getVerifiedOrphanageDetails());
+    }
+
+    @PostMapping("/{orphanageId}/OrphanageDetails")
+    public ResponseEntity<Optional<OrphanageDetails>> getVerifiedOrphanageDetailsById(@PathVariable("orphanageId") String orphanageId) {
+        return ResponseEntity.ok(donorService.getVerifiedOrphanageDetailsById(orphanageId));
+    }
+
+    @GetMapping("/{orphanageId}/VerifiedEvents")
+    public ResponseEntity<List<Events>> getVerifiedEvents(@PathVariable("orphanageId") String orphanageId) {
+        return ResponseEntity.ok(donorService.getVerifiedEvents(orphanageId));
+    }
+
+    @PostMapping("{donorId}/eventRegister/{eventId}")
+    public ResponseEntity<String> eventRegister(@PathVariable("donorId") String donorId, @PathVariable("eventId") String eventId) {
+        donorService.eventRegister(eventId, donorId);
+        return new ResponseEntity<>("Registration Successfully Done", HttpStatus.OK);
+    }
+
+    @PostMapping("{donorId}/cancelEventRegister/{eventId}")
+    public ResponseEntity<String> cancelEventRegister(@PathVariable("donorId") String donorId, @PathVariable("eventId") String eventId) {
+        donorService.cancelEventRegistration(eventId, donorId);
+        return new ResponseEntity<>("Registration Canceled Successfully", HttpStatus.OK);
     }
 }
-

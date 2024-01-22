@@ -16,6 +16,7 @@ public class OrphanageDetails {
     private String orphanageName;
     private String directorName;
     private String contact;
+    private String orphanageEmail;
     private String description;
     private Address address;
     private int viewCount;
@@ -118,6 +119,13 @@ public class OrphanageDetails {
 
     public void setViewCount(int viewCount) {
         this.viewCount = viewCount;
+    }
+    public String getOrphanageEmail() {
+        return orphanageEmail;
+    }
+
+    public void setOrphanageEmail(String orphanageEmail) {
+        this.orphanageEmail = orphanageEmail;
     }
 
     @Override

@@ -42,7 +42,7 @@ public interface OrphanageService {
 
     void uploadImages(String orphanageId, List<MultipartFile> imageFiles) throws IOException;
 
-    List<OrphanageImage> getOrphanageImages(String orphanageId);
+    List<OrphanageImage> getOrphanageImagesById(String orphanageId);
 
     void removeImage(String orphanageId, String imageId);
 }
