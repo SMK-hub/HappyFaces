@@ -3,14 +3,8 @@ package com.example.Demo.OrphanageServices;
 import com.example.Demo.EmailServices.EmailService;
 import com.example.Demo.Enum.EnumClass;
 import com.example.Demo.Enum.EnumClass.VerificationStatus;
-import com.example.Demo.Model.Events;
-import com.example.Demo.Model.Orphanage;
-import com.example.Demo.Model.OrphanageDetails;
-import com.example.Demo.Model.OrphanageImage;
-import com.example.Demo.Repository.EventsRepository;
-import com.example.Demo.Repository.OrphanageDetailsRepository;
-import com.example.Demo.Repository.OrphanageImageRepository;
-import com.example.Demo.Repository.OrphanageRepository;
+import com.example.Demo.Model.*;
+import com.example.Demo.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,6 +20,8 @@ public class OrphanageServiceImpl implements OrphanageService {
 
     @Autowired
     private OrphanageRepository orphanageRepository;
+    private DonorRepository donorRepository;
+    private AdminRepository adminRepository;
     @Autowired
     private EventsRepository eventsRepository;
     @Autowired
@@ -42,8 +38,10 @@ public class OrphanageServiceImpl implements OrphanageService {
 
     public String registerUser(Orphanage newUser) {
         Optional<Orphanage> user = orphanageRepository.findByEmail(newUser.getEmail());
+        Optional<Donor> donorUser=donorRepository.findByEmail(newUser.getEmail());
+        Optional<Admin> adminUser=adminRepository.findByEmail(newUser.getEmail());
 
-        if (user.isEmpty()) {
+        if (user.isEmpty() && donorUser.isEmpty() && adminUser.isEmpty()) {
             orphanageRepository.save(newUser);
             String subject = "Registration Successful";
             String body = "Dear " + newUser.getName()

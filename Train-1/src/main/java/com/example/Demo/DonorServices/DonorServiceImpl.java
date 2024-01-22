@@ -7,17 +7,12 @@ import java.util.Optional;
 import java.util.Random;
 
 import com.example.Demo.Enum.EnumClass;
-import com.example.Demo.Model.Events;
-import com.example.Demo.Model.InterestedPerson;
-import com.example.Demo.Model.OrphanageDetails;
-import com.example.Demo.Repository.EventsRepository;
-import com.example.Demo.Repository.OrphanageDetailsRepository;
+import com.example.Demo.Model.*;
+import com.example.Demo.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.Demo.EmailServices.EmailService;
-import com.example.Demo.Model.Donor;
-import com.example.Demo.Repository.DonorRepository;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -25,6 +20,8 @@ public class DonorServiceImpl implements DonorService {
 
     @Autowired
     private DonorRepository donorRepository;
+    private OrphanageRepository orphanageRepository;
+    private AdminRepository adminRepository;
     @Autowired
     private EmailService emailService;
     private EventsRepository eventsRepository;
@@ -38,8 +35,10 @@ public class DonorServiceImpl implements DonorService {
 
     public String registerUser(Donor newUser) {
         Optional<Donor> user = donorRepository.findByEmail(newUser.getEmail());
+        Optional<Orphanage> orpUser=orphanageRepository.findByEmail(newUser.getEmail());
+        Optional<Admin> adminUser=adminRepository.findByEmail(newUser.getEmail());
 
-        if (user.isEmpty()) {
+        if (user.isEmpty() && orpUser.isEmpty() && adminUser.isEmpty()) {
             donorRepository.save(newUser);
             String subject = "Registration Successful";
             String body = "Dear " + newUser.getName() + ", Welcome to Happy Faces! Your registration as a donor brings smiles to countless faces. Thank you for joining us in making a positive impact!";

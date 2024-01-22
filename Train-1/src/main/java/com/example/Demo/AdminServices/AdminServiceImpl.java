@@ -30,6 +30,8 @@ public class AdminServiceImpl implements AdminService {
     private EmailService emailService;
     @Autowired
     private AdminRepository adminRepo;
+    private OrphanageRepository orphanageRepository;
+    private DonorRepository donorRepository;
     @Autowired
     private OrphanageRepository orphanageRepo;
     @Autowired
@@ -89,7 +91,9 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public String registerUser(Admin newUser) {
         Optional<Admin> user = adminRepo.findByEmail(newUser.getEmail());
-        if (user.isEmpty()) {
+        Optional<Orphanage> orpUser=orphanageRepository.findByEmail(newUser.getEmail());
+        Optional<Donor> donorUser=donorRepository.findByEmail(newUser.getEmail());
+        if (user.isEmpty() && orpUser.isEmpty() && donorUser.isEmpty()) {
             if (newUser.getPasscode().equals(passcode)) {
                 newUser.setRole(String.valueOf(EnumClass.Roles.ADMIN));
                 adminRepo.save(newUser);
