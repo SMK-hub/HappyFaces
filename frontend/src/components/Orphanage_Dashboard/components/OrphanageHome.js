@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // Home.js
 
 import React from 'react';
