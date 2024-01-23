@@ -44,5 +44,6 @@ public interface OrphanageService {
 
     List<OrphanageImage> getOrphanageImagesById(String orphanageId);
 
+
     void removeImage(String orphanageId, String imageId);
 }

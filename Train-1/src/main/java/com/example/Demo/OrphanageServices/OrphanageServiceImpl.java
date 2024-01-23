@@ -210,9 +210,10 @@ public class OrphanageServiceImpl implements OrphanageService {
     }
 
     @Override
-    public List<OrphanageImage> getOrphanageImages(String orphanageId) {
+    public List<OrphanageImage> getOrphanageImagesById(String orphanageId) {
         return orphanageImageRepository.findByOrphanageId(orphanageId);
     }
+
 
     @Override
     public void removeImage(String orphanageId, String imageId) {
