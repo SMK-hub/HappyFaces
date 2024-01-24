@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import MainDash from './components/MainDash/MainDash';
 import RightSide from './components/RigtSide/RightSide';
 import Sidebar from './components/Sidebar';
-// import OrphDash from './components/OrphDash/OrphDash';
+import OrphDash from './components/OrphDash/OrphDash';
 import Home from './components/AdminHome';
 
 function DashboardAdmin() {
@@ -18,10 +18,10 @@ function DashboardAdmin() {
   // Function to render content based on the selected option
   const renderContent = () => {
     switch (selectedOption) {
-      case 'home':
+      case 'Dashboard':
         return <Home />;
-      // case 'container':
-      //   return <MyContainer />;
+      case 'Orphanages':
+        return <OrphDash />;
       // case 'profile':
       //   return <Profile />;
       // case 'events':
