@@ -46,6 +46,7 @@ const OrphDash = () => {
     : orphanagesData.filter((orphanage) => orphanage.location === selectedLocation);
 
   return (
+    <div>
     <div className="OrphDash">
       <h2>Verified Orphanages</h2>
 
@@ -107,6 +108,7 @@ const OrphDash = () => {
           onClose={closeImagePopup}
         />
       )}
+    </div>
     </div>
   );
 };

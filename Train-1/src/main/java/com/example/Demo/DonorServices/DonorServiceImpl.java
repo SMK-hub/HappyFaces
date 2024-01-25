@@ -20,11 +20,15 @@ public class DonorServiceImpl implements DonorService {
 
     @Autowired
     private DonorRepository donorRepository;
+    @Autowired
     private OrphanageRepository orphanageRepository;
+    @Autowired
     private AdminRepository adminRepository;
     @Autowired
     private EmailService emailService;
+    @Autowired
     private EventsRepository eventsRepository;
+    @Autowired
     private OrphanageDetailsRepository detailsRepository;
 
     public void saveUser(Optional<Donor> optionalDonor) {

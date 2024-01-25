@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import MainDash from './components/MainDash/MainDash';
 import RightSide from './components/RigtSide/RightSide';
 import Sidebar from './components/Sidebar';
-import OrphDash from './components/OrphDash/OrphDash';
+import OrphDash from './components/OrphDash/OrphDash.jsx';
 import Home from './components/AdminHome';
 
 function DashboardAdmin() {
@@ -18,9 +18,9 @@ function DashboardAdmin() {
   // Function to render content based on the selected option
   const renderContent = () => {
     switch (selectedOption) {
-      case 'Dashboard':
-        return <Home />;
-      case 'Orphanages':
+      case 'dashboard':
+        return <Home/>;
+      case ' Orphanages':
         return <OrphDash />;
       // case 'profile':
       //   return <Profile />;
@@ -31,7 +31,7 @@ function DashboardAdmin() {
       case 'mainDash':
         return <MainDash />;
       default:
-        return <MainDash/>; // Render nothing if no option is selected
+        return <MainDash />; // Render nothing if no option is selected
     }
   };
 
@@ -39,7 +39,7 @@ function DashboardAdmin() {
     <div className='Apps'>
       <div className='AppGlass'>
         <Sidebar onOptionSelect={handleOptionSelect} />
-        {renderContent()}
+        {renderContent()}        
         <RightSide />
       </div>
     </div>
