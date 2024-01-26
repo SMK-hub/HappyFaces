@@ -34,7 +34,7 @@ const SignInAdmin = () => {
   };
 
   return (
-    <div><Header/>
+    <div className='sign-in-admin'><Header/>
     <div className="sign-in-admin-container">
       <h2 className="sign-in-admin-heading">Admin Sign In</h2>
       <form onSubmit={handleSignIn} className="sign-in-admin-form">

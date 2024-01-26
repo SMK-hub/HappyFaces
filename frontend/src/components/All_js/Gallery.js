@@ -17,7 +17,7 @@ const Gallery = () => {
   ];
  
   return (
-    <div>
+    <div className='gallery'>
       <Header/>
     <div>
       

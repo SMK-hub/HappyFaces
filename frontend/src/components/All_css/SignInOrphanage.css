@@ -1,4 +1,8 @@
 /* SignInAdmin.css */
+.sign-in-orphanage{
+  background-image:linear-gradient( 106.37deg, #ffe1bc 29.63%, #ffcfd1 51.55%, #f3c6f1 90.85% );
+  height: 100vh;
+}
 .sign-in-orphanage-container {
   display: flex;
   flex-direction: column;
@@ -9,8 +13,6 @@
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   max-width: 400px;
   margin: 10vh auto;
-  background-image:linear-gradient( 106.37deg, #ffe1bc 29.63%, #ffcfd1 51.55%, #f3c6f1 90.85% );
-
 }
 .orphanageSignIn{
   display:flex;

@@ -39,7 +39,7 @@ const SignUpDonor = () => {
   };
 
   return (
-    <div><Header/>
+    <div className='sign-up-donor'><Header/>
     {loading ? (
       <div className="loading-screen">Loading...</div>
     ) : (
@@ -83,7 +83,7 @@ const SignUpDonor = () => {
         </div>
       </form>
       <Link to="/signup" className="back-link">
-        Back to Sign Up Selector
+        Back
       </Link>
     </div>
         )}

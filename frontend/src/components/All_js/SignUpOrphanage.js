@@ -37,7 +37,7 @@ const SignUpOrphanage = () => {
   };
 
   return (
-    <div><Header/>
+    <div className='sign-up-orphanage'><Header/>
     {loading ? (
       <div className="loading-screen">Loading...</div>
     ) : (

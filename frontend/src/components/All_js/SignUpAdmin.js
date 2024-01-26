@@ -42,7 +42,7 @@ const SignUpAdmin = () => {
   };
 
   return (
-    <div><Header/>
+    <div className='sign-up-admin'><Header/>
     {loading ? (
       <div className="loading-screen">Loading...</div>
     ) : (
