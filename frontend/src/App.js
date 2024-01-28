@@ -16,7 +16,7 @@ import SignUpDonor from './components/All_js/SignUpDonor';
 
 import DashboardAdmin from './components/Admin_Dashboard/DashboardAdmin';
 import DashboardOrphanage from './components/Orphanage_Dashboard/DashboardOrphanage';
-import DashboardDonor from './components/All_js/DashboardDonor';
+import DashboardDonor from './components/Donor_Dashboard/DashboardDonor';
 
 import OrphanageHome from './components/Orphanage_Dashboard/components/OrphanageHome';
 import { Container } from '@mui/material';
