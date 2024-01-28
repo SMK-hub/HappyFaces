@@ -27,12 +27,12 @@ export const SidebarData = [
   {
     icon: UilHome,
     heading: "Dashboard",
-    path: "/",
+    path: "dashboard",
   },
   {
     icon: UilHome,
     heading: "Orphanages",
-    path: "/orphanages",
+    path: "Orphanages",
   },
   {
     icon: UilUsersAlt,

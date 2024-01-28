@@ -55,7 +55,7 @@ const App = () => {
         <Route path="/OrphanageHome/events" element={<EventTable/>}/> 
         <Route path="/OrphanageHome/payments" element={<PaymentDashboard/>}/>
 
-        {/* <Route path="/orphanages" element={<OrphDash/>}/> */}
+        <Route path="/orphanages" element={<OrphDash/>}/> 
       </Routes>
     </Router>
   );

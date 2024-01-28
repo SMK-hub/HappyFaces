@@ -50,7 +50,6 @@ const OrphDash = () => {
     <div className="OrphDash">
       <h2>Verified Orphanages</h2>
 
-      {/* Dropdown Search Bar */}
       <label htmlFor="locationFilter">Search by Location</label>
       <select id="locationFilter" value={selectedLocation} onChange={handleLocationChange}>
         {uniqueLocations.map((location, index) => (

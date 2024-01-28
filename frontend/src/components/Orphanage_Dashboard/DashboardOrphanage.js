@@ -12,15 +12,13 @@ import PaymentDashboard from './components/Payments/Payment';
 import MainDash from './components/MainDash/MainDash';
 
 function DashboardOrphanage() {
-  // State to manage the selected option
   const [selectedOption, setSelectedOption] = useState(null);
 
-  // Function to handle option selection
   const handleOptionSelect = (option) => {
     console.log(option)
     setSelectedOption(option);
   };
-  // Function to render content based on the selected option
+
   const renderContent = () => {
     switch (selectedOption) {
       case 'home':
@@ -36,7 +34,7 @@ function DashboardOrphanage() {
       case 'mainDash':
         return <MainDash />;
       default:
-        return <MainDash/>; // Render nothing if no option is selected
+        return <MainDash/>;
     }
   };
 
