@@ -59,12 +59,52 @@
     border-radius: 8px;
   }
  
- 
- 
   .caption-container {
     flex: 1;
     margin: 10px;
     text-align: center;
     font-size: 25px;
   }
- 
+  .carousel_border
+  {
+    border: 2px solid #ddd; /* Set border color as needed */
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+    width: 70vh;
+
+  }
+  .carousel {
+    width: 60vh; /* Adjust the width as needed */
+    margin: auto;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .carousel img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .carousel_buttons {
+    /* position: absolute; */
+    top: 50%;
+    /* transform: translateY(-50%); */
+    font-size: 18px;
+    border: none;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 2vh;
+  }
+  .carousel_button{
+    background-color: #ddd; /* Set button background color as needed */
+    color: #333; /* Set button text color as needed */
+    cursor: pointer;
+    padding: 0px 4vh;
+    margin:auto
+  }
+  
+  .carousel_button:hover {
+    background-color: #555; /* Set hover background color as needed */
+    color: #fff; /* Set hover text color as needed */
+  }
