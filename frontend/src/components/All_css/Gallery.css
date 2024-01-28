@@ -97,14 +97,16 @@
     gap: 2vh;
   }
   .carousel_button{
-    background-color: #ddd; /* Set button background color as needed */
-    color: #333; /* Set button text color as needed */
+    background-color: #e3e0dd; /* Set button background color as needed */
+    color: #3c3a3a; /* Set button text color as needed */
     cursor: pointer;
-    padding: 0px 4vh;
-    margin:auto
+    padding: 3vh 4vh;
+    margin:auto;
+    border-radius : 100px;
+    border-color: #6d6161;
   }
   
   .carousel_button:hover {
-    background-color: #555; /* Set hover background color as needed */
+    background-image:linear-gradient( 106.37deg,#f3c6f1  29.63%, #ffcfd1 51.55%, #ffe1bc 90.85% );
     color: #fff; /* Set hover text color as needed */
   }

@@ -1,11 +1,14 @@
 // components/Gallery.js
 import React , { useRef }from 'react';
 import ReactSwipe from 'react-swipe';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import '../All_css/Gallery.css';
 import Header from './Header';
 import playImage from "../../Images/image1_0_Play.jpg";
 import prayImage from "../../Images/image0_0_Pray.jpg";
 import studyImage from "../../Images/image0_0_Study.jpg";
+import sleepImage from "../../Images/sleepChild.jpeg"
 // import { Header } from 'tar';
 
 
@@ -18,7 +21,15 @@ const Gallery = () => {
     // Add more images as needed
   ];
 
+   const slideImages = [
+    { id: 1, src: playImage},
+      { id: 2, src: prayImage},
+      { id: 3, src: studyImage},
+      { id: 4, src:sleepImage}
+   ];
+
   const reactSwipeEl = useRef(null);
+
   const handleNext = () => {
     if (reactSwipeEl.current) {
       reactSwipeEl.current.next();
@@ -30,7 +41,16 @@ const Gallery = () => {
       reactSwipeEl.current.prev();
     }
   };
+
+  const handleSwipeLeft = () => {
+    handleNext();
+  };
+
+  const handleSwipeRight = () => {
+    handlePrev();
+  };
  
+
   return (
     <div className='gallery'>
       <Header/>
@@ -51,14 +71,17 @@ const Gallery = () => {
       </div>
     </div>
     <div className="carousel_buttons">
-        <button  className="carousel_button"onClick={handlePrev}>Previous</button>
+    <FontAwesomeIcon icon={faArrowLeft} className="carousel_button" onClick={handlePrev} />
         <div className='carousel_border'>
         <ReactSwipe
           className="carousel"
-          swipeOptions={{ continuous: false }}
+          swipeOptions={{ continuous: true,callback: (index) => console.log(`Current slide index: ${index}`),
+          threshold: 100, // Adjust the swipe threshold as needed
+          onSwipeLeft: handleSwipeLeft,
+          onSwipeRight: handleSwipeRight, }}
           ref={reactSwipeEl}
         >
-          {galleryImages.map((image) => (
+          {slideImages.map((image) => (
             <div key={image.id}>
               <img src={image.src} alt={`_Image_:${image.caption}`} />
             </div>
@@ -66,7 +89,7 @@ const Gallery = () => {
         </ReactSwipe>
         </div>
         
-        <button  className="carousel_button" onClick={handleNext}>Next</button>
+        <FontAwesomeIcon icon={faArrowRight} className="carousel_button" onClick={handleNext} />
         </div>
     </div>
     </div>
