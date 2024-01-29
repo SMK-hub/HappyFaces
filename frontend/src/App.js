@@ -27,6 +27,7 @@ import Sidebar from './components/Orphanage_Dashboard/components/Sidebar';
 import RightSide from './components/Orphanage_Dashboard/components/RigtSide/RightSide';
 import PaymentDashboard from './components/Orphanage_Dashboard/components/Payments/Payment';
 import OrphDash from './components/Admin_Dashboard/components/OrphDash/OrphDash';
+import Settings from './components/Admin_Dashboard/components/Settings/Settings'
 
 
 const App = () => {
@@ -56,6 +57,7 @@ const App = () => {
         <Route path="/OrphanageHome/payments" element={<PaymentDashboard/>}/>
 
         <Route path="/orphanages" element={<OrphDash/>}/> 
+        <Route path="/settings" element={<Settings/>}/>
       </Routes>
     </Router>
   );
