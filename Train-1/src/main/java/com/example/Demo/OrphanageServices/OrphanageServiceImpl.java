@@ -20,7 +20,9 @@ public class OrphanageServiceImpl implements OrphanageService {
 
     @Autowired
     private OrphanageRepository orphanageRepository;
+    @Autowired
     private DonorRepository donorRepository;
+    @Autowired
     private AdminRepository adminRepository;
     @Autowired
     private EventsRepository eventsRepository;
@@ -28,6 +30,7 @@ public class OrphanageServiceImpl implements OrphanageService {
     private OrphanageDetailsRepository detailRepository;
     @Autowired
     private EmailService emailService;
+    @Autowired
     private OrphanageImageRepository orphanageImageRepository;
 
     public void saveUser(Optional<Orphanage> optionalOrphanage) {

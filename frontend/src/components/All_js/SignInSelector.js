@@ -24,7 +24,7 @@ const SignInSelector = () => {
   };
 
   return (
-    <div>
+    <div className='sign-in'>
             <Header/>
     <div className="sign-in-selector-container">
       <div className="box-enclosure">

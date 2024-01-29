@@ -130,7 +130,6 @@
     &::after {
       font-size: 0.6em;
       font-weight: 100;
-      content: 'subscription';
     }
   }
   

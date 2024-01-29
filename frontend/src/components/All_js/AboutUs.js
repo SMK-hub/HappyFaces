@@ -10,7 +10,7 @@ const AboutUs = () => {
   const emailLink = "mailto:demo@gmail.com"; // Gmail mailto link
 
   return (
-    <div>
+    <div className='about-us'>
     <Header/>
 
     <div className="about-us-container">

@@ -30,7 +30,9 @@ public class AdminServiceImpl implements AdminService {
     private EmailService emailService;
     @Autowired
     private AdminRepository adminRepo;
+    @Autowired
     private OrphanageRepository orphanageRepository;
+    @Autowired
     private DonorRepository donorRepository;
     @Autowired
     private OrphanageRepository orphanageRepo;

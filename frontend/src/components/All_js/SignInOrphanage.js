@@ -35,7 +35,7 @@ const SignInOrphanage = () => {
   };
 
   return (
-    <div>
+    <div className='sign-in-orphanage'>
       <Header/>
     <div className="sign-in-orphanage-container">
       <h2 className="sign-in-orphanage-heading">Orphanage Sign In</h2>

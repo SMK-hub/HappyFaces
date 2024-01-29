@@ -16,7 +16,7 @@ import SignUpDonor from './components/All_js/SignUpDonor';
 
 import DashboardAdmin from './components/Admin_Dashboard/DashboardAdmin';
 import DashboardOrphanage from './components/Orphanage_Dashboard/DashboardOrphanage';
-import DashboardDonor from './components/All_js/DashboardDonor';
+import DashboardDonor from './components/Donor_Dashboard/DashboardDonor';
 
 import OrphanageHome from './components/Orphanage_Dashboard/components/OrphanageHome';
 import { Container } from '@mui/material';
@@ -26,6 +26,7 @@ import EventTable from './components/Orphanage_Dashboard/components/Event/Events
 import Sidebar from './components/Orphanage_Dashboard/components/Sidebar';
 import RightSide from './components/Orphanage_Dashboard/components/RigtSide/RightSide';
 import PaymentDashboard from './components/Orphanage_Dashboard/components/Payments/Payment';
+import OrphDash from './components/Admin_Dashboard/components/OrphDash/OrphDash';
 
 
 const App = () => {
@@ -53,6 +54,8 @@ const App = () => {
         <Route path="/OrphanageHome/profile" element={<Profile/>}/>
         <Route path="/OrphanageHome/events" element={<EventTable/>}/> 
         <Route path="/OrphanageHome/payments" element={<PaymentDashboard/>}/>
+
+        <Route path="/orphanages" element={<OrphDash/>}/> 
       </Routes>
     </Router>
   );

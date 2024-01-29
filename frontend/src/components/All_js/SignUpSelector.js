@@ -24,7 +24,7 @@ const SignUpSelector = () => {
   };
 
   return (
-    <div>
+    <div className='sign-up'>
             <Header/>
     <div className="sign-up-selector-container">
       <div className="box-enclosure">

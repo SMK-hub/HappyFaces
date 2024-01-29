@@ -9,9 +9,13 @@ import { Link } from "react-router-dom";
 
 // ... (imports and other code)
 
-const Sidebar = () => {
+const Sidebar = ({onOptionSelect}) => {
   const [selected, setSelected] = useState(0);
   const [expanded, setExpanded] = useState(true);
+  const SelectOption=(value)=>{
+
+    onOptionSelect(value);
+  }
 
   const sidebarVariants = {
     true: {
@@ -38,25 +42,26 @@ const Sidebar = () => {
       >
         {/* logo */}
         <div className="logo">
-          <span>
-            Ha<span>ppy</span> Fa<span>ces</span>
-          </span>
+        <span style={{display:"flex",flexDirection:'row'}}>
+          AD<span>M</span>IN
+        </span>
         </div>
 
         <div className="menu">
-          {SidebarData.map((item, index) => (
-            <Link
-              to={item.path}
-              className={
-                selected === index ? "menuItem active" : "menuItem"
-              }
+        {SidebarData.map((item, index) => {
+          return (
+            
+            <div
+              className={selected === index ? "menuItem active" : "menuItem"}
               key={index}
               onClick={() => setSelected(index)}
-            >
+            ><div style={{display:'flex',flexDirection:'row',alignItems:'center',gap:'5px'}} onClick={()=>{SelectOption(item.path)}}>
               <item.icon />
               <span>{item.heading}</span>
-            </Link>
-          ))}
+              </div>
+            </div>
+          );
+        })}
           {/* signoutIcon */}
           <Link to="/logout" className="menuItem">
             <UilSignOutAlt />
