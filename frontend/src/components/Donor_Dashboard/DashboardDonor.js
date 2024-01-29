@@ -10,6 +10,8 @@ import Sidebar from './components/Sidebar';
 import RightSide from './components/RigtSide/RightSide';
 import PaymentDashboard from './components/Payments/Payment';
 import MainDash from './components/MainDash/MainDash';
+import OrphDash from './components/Details/OrphDash';
+
 
 function DashboardDonor() {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -23,8 +25,8 @@ function DashboardDonor() {
     switch (selectedOption) {
       case 'home':
         return <Home />;
-      case 'container':
-        return <MyContainer />;
+      case 'orph':
+        return <OrphDash />;
       case 'profile':
         return <Profile />;
       case 'events':
@@ -33,6 +35,8 @@ function DashboardDonor() {
         return <PaymentDashboard />;
       case 'mainDash':
         return <MainDash />;
+      case 'Donor':
+        return <OrphDash/>;
       default:
         return <MainDash/>;
     }

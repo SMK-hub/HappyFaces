@@ -8,8 +8,8 @@ import { Link } from "react-router-dom";
 const MyContainer = () => {
   // Dummy data for orphanage information
   const orphanageInfo = {
-    Name: 'ABC Orphanage',
-    DirectorName: 'Rajnikanth',
+    Orphanage_Name: 'ABC Orphanage',
+    DirectorName: 'Muthu',
     Contact: '123-456-7890',
     Description: 'A place for children in need.',
     Address: '123 Main Street, City, Country',
@@ -34,20 +34,6 @@ const MyContainer = () => {
           ))}
         </tbody>
       </table>
-      <div className="button-container">
-        <Link to="/update-details"><button className="button" onClick={() => handleButtonClick('Update Details')}>
-          Update Details
-        </button>
-        </Link>
-        <Link to="/certificates"><button className="button" onClick={() => handleButtonClick('Update Certificates')}>
-          Update Certificates
-        </button>
-        </Link>
-       
-        <button className="button" onClick={() => handleButtonClick('Upload Photos')}>
-          Upload Photos
-        </button>
-      </div>
     </div>
   );
 };
