@@ -34,7 +34,7 @@ public class Events {
 		this.interestedPersons = interestedPersons;
 	}
 
-	public ObjectId getOrpId() {
+	public String getOrpId() {
 		return orpId;
 	}
 

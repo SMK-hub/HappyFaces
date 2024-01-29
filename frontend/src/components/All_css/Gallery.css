@@ -53,11 +53,7 @@
     filter: grayscale(0);
 }
  
-  img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-  }
+ 
  
   .caption-container {
     flex: 1;
@@ -73,7 +69,7 @@
 
   }
   .carousel {
-    width: 60vh; /* Adjust the width as needed */
+    width: 60vh; 
     margin: auto;
     overflow: hidden;
     position: relative;

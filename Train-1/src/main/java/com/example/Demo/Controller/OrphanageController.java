@@ -33,13 +33,17 @@ public class OrphanageController {
     private OrphanageRepository orphanageRepo;
 
     @GetMapping
-    public List<Orphanage> getAll() {
-        return (List<Orphanage>) orphanageRepo.findAll();
+    public ResponseEntity<List<Orphanage>> getAll() {
+        return new ResponseEntity<>(orphanageRepo.findAll(),HttpStatus.OK);
     }
 
     @PostMapping("/register")
-    public String registerUser(@RequestBody Orphanage user) {
-        return orphanageService.registerUser(user);
+    public ResponseEntity<String> registerUser(@RequestBody Orphanage user) {
+        String alpha =  orphanageService.registerUser(user);
+        if(alpha.equals("Success")){
+            return new ResponseEntity<>(alpha,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(alpha,HttpStatus.CONFLICT);
     }
 
     @PostMapping("/login")
@@ -107,13 +111,17 @@ public class OrphanageController {
     }
 
     @PostMapping("/enterDetails")
-    public String updateDetails(@RequestBody OrphanageDetails detail) {
-        return orphanageService.updateDetails(detail);
+    public ResponseEntity<String> updateDetails(@RequestBody OrphanageDetails detail) {
+        return new ResponseEntity<>(orphanageService.updateDetails(detail),HttpStatus.OK);
 
     }
     @PostMapping("/createEvent")
-    public String createEvents(@RequestBody Events event){
-        return orphanageService.createEvents(event);
+    public ResponseEntity<String> createEvents(@RequestBody Events event){
+        String alpha = orphanageService.createEvents(event);
+        if(alpha.equals("Event Created")){
+            return new ResponseEntity<>(alpha,HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Internal Error",HttpStatus.CONFLICT);
     }
 
     @PostMapping("/cancelEvent/{eventId}")
@@ -156,7 +164,7 @@ public class OrphanageController {
     @GetMapping("{orphanageId}/orphanageDetails/viewImages")
     public ResponseEntity<List<OrphanageImage>> getImagesByOrphanageId(@PathVariable String orphanageId) {
         List<OrphanageImage> images = orphanageService.getOrphanageImagesById(orphanageId);
-        return ResponseEntity.ok(images);
+        return new ResponseEntity<>(images,HttpStatus.OK);
     }
     @PostMapping("{orphanageId}/orphanageDetails/removeImage/{imageId}")
     public ResponseEntity<String> removeImageById(@PathVariable("orphanageId")String orphanageId,@PathVariable("imageId") String imageId){

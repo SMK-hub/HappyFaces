@@ -8,7 +8,8 @@ import Header from './Header';
 import playImage from "../../Images/image1_0_Play.jpg";
 import prayImage from "../../Images/image0_0_Pray.jpg";
 import studyImage from "../../Images/image0_0_Study.jpg";
-import sleepImage from "../../Images/sleepChild.jpeg"
+import sleepImage from "../../Images/sleepChild.jpeg";
+import eatImage from "../../Images/eatChild.jpeg";
 // import { Header } from 'tar';
 
 
@@ -25,7 +26,8 @@ const Gallery = () => {
     { id: 1, src: playImage},
       { id: 2, src: prayImage},
       { id: 3, src: studyImage},
-      { id: 4, src:sleepImage}
+      { id: 4, src:sleepImage},
+      {id:5, src:eatImage},
    ];
 
   const reactSwipeEl = useRef(null);
@@ -61,7 +63,7 @@ const Gallery = () => {
         {galleryImages.map((image, index) => (
           <div key={image.id} className={index % 2 === 0? 'row-even':'row-odd'} >
             <div className='image-container hover'>
-            <figure><img src={image.src} alt= {`_Image_:${image.caption}`} /></figure>
+            <figure><img src={image.src} style={{objectPosition:'center'}} alt= {`_Image_:${image.caption}`}/></figure>
             </div>
             <div className='caption-container' >
             <p>{image.caption}</p>
@@ -82,7 +84,7 @@ const Gallery = () => {
           ref={reactSwipeEl}
         >
           {slideImages.map((image) => (
-            <div key={image.id}>
+            <div className='awd12' style={{display:'flex',alignItems:'center',height:'500px'}} key={image.id}>
               <img src={image.src} alt={`_Image_:${image.caption}`} />
             </div>
           ))}

@@ -166,9 +166,9 @@ public class AdminServiceImpl implements AdminService {
         if (orphanage.isPresent()) {
             orphanage.get().setVerificationStatus(orphanageDetails.getVerificationStatus());
             orphanageDetailsRepository.save(orphanage.get());
-            return "Orphanage Verification Done";
+            return "Done";
         }
-        return "Orphanage Verification not Done";
+        return "Not Done";
     }
 
     @Override
@@ -177,9 +177,9 @@ public class AdminServiceImpl implements AdminService {
         if (event.isPresent()) {
             event.get().setVerificationStatus(events.getVerificationStatus());
             eventRepo.save(event.get());
-            return "Event Verification Done";
+            return "Done";
         }
-        return "Event Verification not done";
+        return "Not Done";
     }
 
     @Override

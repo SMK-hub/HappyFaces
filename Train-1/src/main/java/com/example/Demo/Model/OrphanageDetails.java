@@ -120,6 +120,7 @@ public class OrphanageDetails {
     public void setViewCount(int viewCount) {
         this.viewCount = viewCount;
     }
+
     public String getOrphanageEmail() {
         return orphanageEmail;
     }
