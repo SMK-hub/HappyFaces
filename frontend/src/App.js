@@ -30,6 +30,8 @@ import OrphDash from './components/Admin_Dashboard/components/OrphDash/OrphDash'
 import UpdateDetails from './components/Orphanage_Dashboard/components/UpdateDetails/UpdateDetails'
 import Certificates from './components/Orphanage_Dashboard/components/Certificates/Certificates'
 import Photos from './components/Orphanage_Dashboard/components/Photos/Photos'
+import Settings from './components/Admin_Dashboard/components/Settings/Settings'
+
 
 const App = () => {
   return (
@@ -64,6 +66,7 @@ const App = () => {
         <Route path="/photos" element={<Photos/>}/>
         <Route path="/profile" element={<Profile/>}/>
         <Route path="/orphanages" element={<OrphDash/>}/> 
+        <Route path="/settings" element={<Settings/>}/>
 
         
 
