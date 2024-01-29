@@ -27,7 +27,7 @@ export const SidebarData = [
   {
     icon: UilHome,
     heading: "Dashboard",
-    path: "dashboard",
+    path: "Dashboard",
   },
   {
     icon: UilHome,
@@ -49,6 +49,7 @@ export const SidebarData = [
   {
     icon: UilSetting,
     heading: 'Settings',
+    path:'Settings',
   }
 ];
 
@@ -135,6 +136,7 @@ export const orphanagesData = [
     establishedDate: "12-01-2022",
     location: "Marathalli",
     contact: "123-456-7890",
+    status:  "Verified",
     images: [
       "https://th.bing.com/th/id/OIP.Gc2MgkiJTYmOBrv0HqpE1AHaFj?rs=1&pid=ImgDetMain",
     ],
@@ -146,6 +148,7 @@ export const orphanagesData = [
     establishedDate: "07-01-2023",
     location: "Tin Factory",
     contact: "123-456-4557",
+    status: "Verified",
     images: [
       "https://th.bing.com/th/id/OIP.Gc2MgkiJTYmOBrv0HqpE1AHaFj?rs=1&pid=ImgDetMain",
     ],
@@ -157,6 +160,7 @@ export const orphanagesData = [
     establishedDate: "05-05-2020",
     location: "RR Nagar",
     contact: "723-456-1560",
+    status: "Not Verified",
     images: [
       "https://th.bing.com/th/id/OIP.Gc2MgkiJTYmOBrv0HqpE1AHaFj?rs=1&pid=ImgDetMain",
     ],
@@ -168,6 +172,7 @@ export const orphanagesData = [
     establishedDate: "11-07-2019",
     location: "Church Street",
     contact: "123-456-7890",
+    status: "Not Verified",
     images: [
       "https://th.bing.com/th/id/OIP.Gc2MgkiJTYmOBrv0HqpE1AHaFj?rs=1&pid=ImgDetMain",
     ],
@@ -179,9 +184,16 @@ export const orphanagesData = [
     establishedDate: "06-08-2022",
     location: "Lalbagh",
     contact: "223-656-7690",
+    status: "Verified",
     images: [
       "https://th.bing.com/th/id/OIP.Gc2MgkiJTYmOBrv0HqpE1AHaFj?rs=1&pid=ImgDetMain",
     ],
   },
+];
 
+export const adminData = [
+  {
+    email: "srikantharamandla135@gmail.com",
+    password: "srikanth123",
+  },
 ];
