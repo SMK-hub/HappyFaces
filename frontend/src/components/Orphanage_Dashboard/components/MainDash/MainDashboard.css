@@ -1,8 +1,9 @@
-.MainDash{
-    /* padding-top: 1rem; */
+.MainDashboard{
+    margin-bottom:10%;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    font-size: large;
 }
 
 @media screen and (max-width: 1200px) {

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './Events.css';
-import RightSide from '../RigtSide/RightSide';
-import Sidebar from '../Sidebar';
+
 
 const EventTable = () => {
   // Use state to manage events

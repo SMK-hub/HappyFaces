@@ -21,7 +21,7 @@ const getTotalAmount = () => {
 
 const PaymentDashboard = () => {
   return (
-    <div className="payment-dashboard">
+    <div className="payment-dashboards">
       <div className="dashboard-container">
        
         <div className="main-content">
