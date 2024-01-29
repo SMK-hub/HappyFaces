@@ -10,7 +10,8 @@ import Sidebar from './components/Sidebar';
 import RightSide from './components/RigtSide/RightSide';
 import PaymentDashboard from './components/Payments/Payment';
 import MainDash from './components/MainDash/MainDash';
-
+import { Route, Router, Routes } from 'react-router-dom';
+import UpdateDetails from './components/UpdateDetails/UpdateDetails'
 function DashboardOrphanage() {
   const [selectedOption, setSelectedOption] = useState(null);
 
@@ -39,13 +40,16 @@ function DashboardOrphanage() {
   };
 
   return (
-    <div className='Apps'>
-      <div className='AppGlass'>
-        <Sidebar onOptionSelect={handleOptionSelect} />
+      <div className='Dashb'>
+      
+      <div className='DashbGlass'>
+      <Sidebar onOptionSelect={handleOptionSelect} />
         {renderContent()}
-        <RightSide />
+      <RightSide />
       </div>
+      
     </div>
+    
   );
 }
 

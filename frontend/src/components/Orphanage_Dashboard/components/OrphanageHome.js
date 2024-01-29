@@ -8,7 +8,10 @@ import RightSide from './RigtSide/RightSide';
 
 function OrphanageHome() {
   return (
-      <MainDash />
+    <div >
+    <MainDash />
+    </div>
+      
   );
 }
 

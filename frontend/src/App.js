@@ -27,7 +27,9 @@ import Sidebar from './components/Orphanage_Dashboard/components/Sidebar';
 import RightSide from './components/Orphanage_Dashboard/components/RigtSide/RightSide';
 import PaymentDashboard from './components/Orphanage_Dashboard/components/Payments/Payment';
 import OrphDash from './components/Admin_Dashboard/components/OrphDash/OrphDash';
-
+import UpdateDetails from './components/Orphanage_Dashboard/components/UpdateDetails/UpdateDetails'
+import Certificates from './components/Orphanage_Dashboard/components/Certificates/Certificates'
+import Photos from './components/Orphanage_Dashboard/components/Photos/Photos'
 
 const App = () => {
   return (
@@ -49,13 +51,23 @@ const App = () => {
         <Route path='/orphanage-dashboard' element={<DashboardOrphanage/>}/>
         <Route path="/donor-dashboard" element={<DashboardDonor/>}/>
 
+        
+
+
         <Route path="/OrphanageHome" element={<OrphanageHome />} />
         <Route path="/OrphanageHome/details" element={<MyContainer/>}/>
         <Route path="/OrphanageHome/profile" element={<Profile/>}/>
         <Route path="/OrphanageHome/events" element={<EventTable/>}/> 
         <Route path="/OrphanageHome/payments" element={<PaymentDashboard/>}/>
-
+        <Route path="/update-details" element={<UpdateDetails/>}/>
+        <Route path="/certificates" element={<Certificates/>}/>
+        <Route path="/photos" element={<Photos/>}/>
+        <Route path="/profile" element={<Profile/>}/>
         <Route path="/orphanages" element={<OrphDash/>}/> 
+
+        
+
+        
       </Routes>
     </Router>
   );
