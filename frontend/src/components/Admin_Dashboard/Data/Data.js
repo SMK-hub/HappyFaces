@@ -37,6 +37,7 @@ export const SidebarData = [
   {
     icon: UilUsersAlt,
     heading: "Donors",
+    path: "Donors",
   },
   {
     icon: UilCalendarAlt,
@@ -191,9 +192,49 @@ export const orphanagesData = [
   },
 ];
 
-export const adminData = [
+export const donorsData = [
   {
+    id: 1,
+    name: "Srikanth",
     email: "srikantharamandla135@gmail.com",
-    password: "srikanth123",
+    contact: "6301478132",
+    location: "Bangalore",
+    amount: "25000",
+  },
+
+  {
+    id: 2,
+    name: "Tarantino",
+    email: "pulpfiction@gmail.com",
+    contact: "9490052625",
+    location: "Newyork",
+    amount: 25000,
+  },
+
+  {
+    id: 3,
+    name: "Scorsese",
+    email: "goodfelllas@gmail.com",
+    contact: "6301478122",
+    location: "Texas",
+    amount: "25000",
+  },
+
+  {
+    id: 4,
+    name: "David Fincher",
+    email: "seven@gmail.com",
+    contact: "6301478144",
+    location: "California",
+    amount: "25000",
+  },
+
+  {
+    id: 5,
+    name: "Nolan",
+    email: "inception@gmail.com",
+    contact: "6301478155",
+    location: "Beverly Hills",
+    amount: "25000",
   },
 ];

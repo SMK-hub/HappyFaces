@@ -27,7 +27,8 @@ import Sidebar from './components/Orphanage_Dashboard/components/Sidebar';
 import RightSide from './components/Orphanage_Dashboard/components/RigtSide/RightSide';
 import PaymentDashboard from './components/Orphanage_Dashboard/components/Payments/Payment';
 import OrphDash from './components/Admin_Dashboard/components/OrphDash/OrphDash';
-import Settings from './components/Admin_Dashboard/components/Settings/Settings'
+import Settings from './components/Admin_Dashboard/components/Settings/Settings';
+import Donors from './components/Admin_Dashboard/components/Donors/Donors'
 
 
 const App = () => {
@@ -58,6 +59,7 @@ const App = () => {
 
         <Route path="/orphanages" element={<OrphDash/>}/> 
         <Route path="/settings" element={<Settings/>}/>
+        <Route path="/donors" element={<Donors/>}/>
       </Routes>
     </Router>
   );
