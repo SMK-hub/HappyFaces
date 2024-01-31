@@ -32,12 +32,13 @@ import Donors from './components/Admin_Dashboard/components/Donors/Donors'
 import UpdateDetails from './components/Orphanage_Dashboard/components/UpdateDetails/UpdateDetails'
 import Certificates from './components/Orphanage_Dashboard/components/Certificates/Certificates'
 import Photos from './components/Orphanage_Dashboard/components/Photos/Photos'
+import { UserProvider } from './UserContext';
 
 
 
 const App = () => {
   return (
-    <Router>
+    <UserProvider><Router>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/aboutus" element={<AboutUs />} />
@@ -71,7 +72,8 @@ const App = () => {
         <Route path="/settings" element={<Settings/>}/>
         <Route path="/donors" element={<Donors/>}/>
       </Routes>
-    </Router>
+    </Router></UserProvider>
+    
   );
 };
 

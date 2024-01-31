@@ -59,7 +59,7 @@ const SelectOption=(value)=>{
           );
         })}
         {/* signoutIcon */}
-        <Link to="/logout" className="menuItem">
+        <Link to="/" className="menuItem">
             <UilSignOutAlt />
             <h3>Logout</h3>
           </Link>

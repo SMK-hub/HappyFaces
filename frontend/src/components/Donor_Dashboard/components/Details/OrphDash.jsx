@@ -60,7 +60,8 @@ const OrphDash = () => {
       <div className="OrphDash">
         <h2>Orphanages</h2>
         <div className="OrphDash-inside">
-        <label htmlFor="locationFilter">Search by Location</label>
+          <div className="search-item">
+        <label htmlFor="locationFilter">Search by Location :</label>
         <select id="locationFilter" value={selectedLocation} onChange={handleLocationChange}>
           {uniqueLocations.map((location, index) => (
             <option key={index} value={location}>
@@ -68,7 +69,9 @@ const OrphDash = () => {
             </option>
           ))}
         </select>
-        <label htmlFor="requirementFilter">Search by Requirements</label>
+        </div>
+        <div className="search-item">
+        <label htmlFor="requirementFilter">Search by Requirements :</label>
         <select id="requirementFilter" value={selectedRequirement} onChange={handleRequirementChange}>
           {uniqueRequirements.map((requirements, index) => (
             <option key={index} value={requirements}>
@@ -76,6 +79,7 @@ const OrphDash = () => {
             </option>
           ))}
         </select>
+        </div>
         </div>
  
         {/* Table */}

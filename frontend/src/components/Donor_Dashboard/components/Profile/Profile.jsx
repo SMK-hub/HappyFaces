@@ -1,28 +1,52 @@
 // Profile.jsx
 import React, { useState } from 'react';
 import './Profile.css';
+import {useUser} from '../../../../UserContext'
+import axios from 'axios';
 
 const Profile = () => {
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [isChangePasswordMode, setIsChangePasswordMode] = useState(false);
+   const [isEditMode, setIsEditMode] = useState(false);
+   const [isChangePasswordMode, setIsChangePasswordMode] = useState(false);
 
-  const [editedName, setEditedName] = useState('Srikanth');
-  const [editedEmail, setEditedEmail] = useState('srikanth@gmail.com');
-  const [editedContact, setEditedContact] = useState('1234567894');
+  // const [editedName, setEditedName] = useState('Srikanth');
+  // const [editedEmail, setEditedEmail] = useState('srikanth@gmail.com');
+  // const [editedContact, setEditedContact] = useState('1234567894');
 
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordMismatchError, setPasswordMismatchError] = useState('');
 
+  const  {setUserData} = useUser();
+
+  const [donorDetail,setDonorDetail] = useState({
+    name:"",
+    email:"",
+    contact:""
+  });
+
+  const {userDetails} = useUser();
+
   const handleEditProfileClick = () => {
     setIsEditMode(true);
     setIsChangePasswordMode(false);
   };
 
-  const handleSaveChangesClick = () => {
-    // Save changes to the backend or update state as needed
-    setIsEditMode(false);
+  const handleSaveChangesClick = async() => {
+    try{
+      const response=await axios.post(`http://localhost:8079/donor/${userDetails?.donorId}/editProfile`,donorDetail);
+      const status=response.status;
+      console.log(status);
+      if(status == 200){
+        setUserData(null);
+        setUserData(response.data);
+        setIsEditMode(false);
+      }
+    }catch(error){
+      alert("Try Again Later");
+      console.log(error.message);
+    }
+    
   };
 
   const handleChangePasswordClick = () => {
@@ -65,18 +89,18 @@ const Profile = () => {
             <>
               <input
                 type="text"
-                value={editedName}
-                onChange={(e) => setEditedName(e.target.value)}
+                placeholder={userDetails?.name}
+                onChange={(e) => setDonorDetail({...donorDetail,name:e.target.value})}
               />
               <input
                 type="text"
-                value={editedEmail}
-                onChange={(e) => setEditedEmail(e.target.value)}
+                placeholder={userDetails?.email}
+                onChange={(e) => setDonorDetail({...donorDetail,email:e.target.value})}
               />
               <input
                 type="text"
-                value={editedContact}
-                onChange={(e) => setEditedContact(e.target.value)}
+                placeholder={userDetails?.contact}
+                onChange={(e) => setDonorDetail({...donorDetail,contact:e.target.value})}
               />
               <div className="button-group">
                 <button onClick={handleSaveChangesClick}>Save Changes</button>
@@ -127,9 +151,9 @@ const Profile = () => {
             </>
           ) : (
             <>
-              <h2>{editedName}</h2>
-              <p>Email: {editedEmail}</p>
-              <p>Contact no. : {editedContact}</p>
+              <h2>{userDetails?.name}</h2>
+              <p>Email: {userDetails?.email}</p>
+              <p>Contact no. : {userDetails?.contact}</p>
               <div className="profile-buttons">
                 <button className="edit-profile-button" onClick={handleEditProfileClick}>
                   Edit Profile

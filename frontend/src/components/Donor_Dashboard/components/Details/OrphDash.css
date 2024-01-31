@@ -138,3 +138,8 @@
 .modal-content h3 {
   text-align: center;
 }
+.search-item{
+  display: flex;
+  flex-direction: row;
+  padding: 20px;
+}

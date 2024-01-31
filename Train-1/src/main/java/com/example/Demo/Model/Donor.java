@@ -14,15 +14,22 @@ public class Donor {
     private byte[] profilePhoto;
     private String password;
     private String Role;
+    private String contact;
+    public String getContact() {
+        return contact;
+    }
 
-
-    public Donor(String id, String name, String email, String password, String role) {
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+    public Donor(String id, String name, String email, String password, String role,String contact) {
         super();
         this.donorId = id;
         this.name = name;
         this.email = email;
         this.password = password;
         Role = role;
+        this.contact = contact;
     }
 
     public Donor() {

@@ -43,6 +43,7 @@ public class DonorServiceImpl implements DonorService {
         Optional<Admin> adminUser=adminRepository.findByEmail(newUser.getEmail());
 
         if (user.isEmpty() && orpUser.isEmpty() && adminUser.isEmpty()) {
+            newUser.setRole(String.valueOf(EnumClass.Roles.DONOR));
             donorRepository.save(newUser);
             String subject = "Registration Successful";
             String body = "Dear " + newUser.getName() + ", Welcome to Happy Faces! Your registration as a donor brings smiles to countless faces. Thank you for joining us in making a positive impact!";
@@ -203,6 +204,11 @@ public class DonorServiceImpl implements DonorService {
         String subject="Event Registration Cancelled";
         String body="We appreciate your initial commitment, and while we understand your circumstances, we hope to welcome you back as a valued donor in the future.";
         emailService.sendSimpleMail(donor.get().getEmail(),subject,body);
+    }
+
+    @Override
+    public Optional<Donor> getDonorByEmail(String email) {
+        return donorRepository.findByEmail(email);
     }
 
 }

@@ -39,4 +39,6 @@ public interface DonorService {
 
     void cancelEventRegistration(String eventId, String donorId);
 
+    Optional<Donor> getDonorByEmail(String email);
+
 }

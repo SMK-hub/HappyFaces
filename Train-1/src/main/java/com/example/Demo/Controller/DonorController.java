@@ -58,7 +58,7 @@ public class DonorController {
             "image/jpeg", "image/png", "image/gif", "image/bmp"
     );
 
-    @PostMapping("addPhoto/{donorId}")
+    @PostMapping("/addPhoto/{donorId}")
     public ResponseEntity<String> addProfilePhoto(
             @PathVariable String donorId,
             @RequestParam("file") MultipartFile file) throws IOException {
@@ -78,7 +78,7 @@ public class DonorController {
         return file != null && ALLOWED_IMAGE_CONTENT_TYPES.contains(file.getContentType());
     }
 
-    @GetMapping("getPhoto/{donorId}")
+    @GetMapping("/getPhoto/{donorId}")
     public ResponseEntity<byte[]> getProfilePhoto(@PathVariable String donorId) {
         String photoBase64 = donorService.getProfilePhoto(donorId);
 
@@ -97,7 +97,7 @@ public class DonorController {
         }
     }
 
-    @PutMapping("updatePhoto/{donorId}")
+    @PutMapping("/updatePhoto/{donorId}")
     public ResponseEntity<String> updateProfilePhoto(
             @PathVariable String donorId,
             @RequestParam("file") MultipartFile file) {
@@ -152,15 +152,21 @@ public class DonorController {
         return ResponseEntity.ok(donorService.getVerifiedEvents(orphanageId));
     }
 
-    @PostMapping("{donorId}/eventRegister/{eventId}")
+    @PostMapping("/{donorId}/eventRegister/{eventId}")
     public ResponseEntity<String> eventRegister(@PathVariable("donorId") String donorId, @PathVariable("eventId") String eventId) {
         donorService.eventRegister(eventId, donorId);
         return new ResponseEntity<>("Registration Successfully Done", HttpStatus.OK);
     }
 
-    @PostMapping("{donorId}/cancelEventRegister/{eventId}")
+    @PostMapping("/{donorId}/cancelEventRegister/{eventId}")
     public ResponseEntity<String> cancelEventRegister(@PathVariable("donorId") String donorId, @PathVariable("eventId") String eventId) {
         donorService.cancelEventRegistration(eventId, donorId);
         return new ResponseEntity<>("Registration Canceled Successfully", HttpStatus.OK);
+    }
+
+    @GetMapping("/donor/{donorEmail}")
+    public ResponseEntity<Donor> getDonorByEmail(@PathVariable String donorEmail){
+        Optional<Donor> donor=donorService.getDonorByEmail(donorEmail);
+        return donor.map(ResponseEntity::ok).orElseGet(()->ResponseEntity.notFound().build());
     }
 }
