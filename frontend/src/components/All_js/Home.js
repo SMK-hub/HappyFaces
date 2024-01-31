@@ -29,7 +29,6 @@ const Home = () => {
       <NumberCounter/>
       <CardList/>
       <Testimony/>
-      <Registration/>
       <Contact/>
       <Footer/>
     </div>

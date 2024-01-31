@@ -10,6 +10,7 @@ import prayImage from "../../Images/image0_0_Pray.jpg";
 import studyImage from "../../Images/image0_0_Study.jpg";
 import sleepImage from "../../Images/sleepChild.jpeg";
 import eatImage from "../../Images/eatChild.jpeg";
+import Footer from './Footer';
 // import { Header } from 'tar';
 
 
@@ -94,6 +95,7 @@ const Gallery = () => {
         <FontAwesomeIcon icon={faArrowRight} className="carousel_button" onClick={handleNext} />
         </div>
     </div>
+    <Footer/>
     </div>
   );
 };

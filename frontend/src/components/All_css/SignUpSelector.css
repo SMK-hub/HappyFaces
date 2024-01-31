@@ -64,23 +64,19 @@
   }
   
   .sign-up-option input {
-    margin-right: 10px;
-    cursor: pointer;
+    margin: 4px -194px 4px -31px;
+        cursor: pointer;
   }
   
   .sign-up-button {
-    margin-top: 20px;
+    margin: 22px 140px;
     padding: 15px 30px;
     cursor: pointer;
-    background-color: #ffe1bc;
+    background-image:linear-gradient( 106.37deg, #f3c6f1 29.63%, #ffcfd1 51.55%,  #ffe1bc 90.85% );
     color: #fff;
     border: none;
     border-radius: 10px;
     font-size: 18px;
     transition: background-color 0.3s ease;
-  }
-  
-  .sign-up-button:hover {
-    background-color: #f3c6f1;
   }
   
