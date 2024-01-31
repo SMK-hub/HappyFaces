@@ -29,6 +29,7 @@ import PaymentDashboard from './components/Orphanage_Dashboard/components/Paymen
 import OrphDash from './components/Admin_Dashboard/components/OrphDash/OrphDash';
 import Settings from './components/Admin_Dashboard/components/Settings/Settings';
 import Donors from './components/Admin_Dashboard/components/Donors/Donors'
+import PayDash from './components/Admin_Dashboard/components/PayDash/PayDash';
 
 
 const App = () => {
@@ -60,6 +61,8 @@ const App = () => {
         <Route path="/orphanages" element={<OrphDash/>}/> 
         <Route path="/settings" element={<Settings/>}/>
         <Route path="/donors" element={<Donors/>}/>
+
+        <Route path="/payments" element={<PayDash/>}/>
       </Routes>
     </Router>
   );

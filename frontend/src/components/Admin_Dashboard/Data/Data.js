@@ -46,6 +46,7 @@ export const SidebarData = [
   {
     icon: UilCreditCard,
     heading: 'Payments',
+    path:'Payments',
   },
   {
     icon: UilSetting,
@@ -238,3 +239,53 @@ export const donorsData = [
     amount: "25000",
   },
 ];
+
+export const payData = [
+  {
+    id: 1,
+    name: "Manonmai",
+    contact: "6301478132",
+    location: "RR Nagar",
+    orphanage: "Leo",
+    amount: "500",
+    status: "Success",
+  },
+  {
+    id: 2,
+    name: "Srikanth",
+    contact: "6301478133",
+    location: "Marathalli",
+    orphanage: "Kaithi",
+    amount: "500",
+    status: "Declined",
+  },
+  {
+    id: 3,
+    name: "Siddik",
+    contact: "6301478134",
+    location: "Tin Factory",
+    orphanage: "Vikram",
+    amount: "500",
+    status: "Success",
+  },
+  {
+    id: 4,
+    name: "Venu",
+    contact: "6301478135",
+    location: "Indira Nagar",
+    orphanage: "Master",
+    amount: "500",
+    status: "Pending",
+  },
+  {
+    id: 5,
+    name: "Bhargavi",
+    contact: "6301478136",
+    location: "Church Street",
+    orphanage: "Rolex",
+    amount: "500",
+    status: "Declined",
+  },
+];
+
+

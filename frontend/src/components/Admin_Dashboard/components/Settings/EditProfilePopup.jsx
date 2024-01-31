@@ -1,9 +1,11 @@
 // EditProfilePopup.js
 
 import React, { useState } from 'react';
+import './EditProfilePopup.css';
 
 const EditProfilePopup = ({ onClose }) => {
   const [username, setUsername] = useState("");
+  const[email, setEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -30,6 +32,9 @@ const EditProfilePopup = ({ onClose }) => {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
+        
+        <label>Email:</label>
+        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
 
         <label>New Password:</label>
         <input
@@ -45,7 +50,7 @@ const EditProfilePopup = ({ onClose }) => {
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
 
-        <button onClick={handleSaveChanges}>Save Changes</button>
+        <button className="save-changes-button" onClick={handleSaveChanges}>Save Changes</button>
       </div>
     </div>
   );
