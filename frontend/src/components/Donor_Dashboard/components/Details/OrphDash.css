@@ -29,6 +29,11 @@
     border-collapse: collapse;
     margin-top: 1rem;
   }
+
+  .OrphDash-inside{
+    display: flex;
+    padding: 20px;
+  }
   
   .OrphDash table, .OrphDash th, .OrphDash td {
     border: 1px solid #ddd;

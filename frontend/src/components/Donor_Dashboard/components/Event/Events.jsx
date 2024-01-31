@@ -50,7 +50,7 @@ const EventTable = () => {
                 <td>{event.Date}</td>
                 <td>
                   <button className="cancel-event-button" onClick={() => handleCancelEvent(index)}>
-                    Cancel Event
+                    Cancel Registration
                   </button>
                 </td>
               </tr>

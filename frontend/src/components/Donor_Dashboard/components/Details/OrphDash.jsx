@@ -59,6 +59,7 @@ const OrphDash = () => {
     <div>
       <div className="OrphDash">
         <h2>Orphanages</h2>
+        <div className="OrphDash-inside">
         <label htmlFor="locationFilter">Search by Location</label>
         <select id="locationFilter" value={selectedLocation} onChange={handleLocationChange}>
           {uniqueLocations.map((location, index) => (
@@ -75,6 +76,7 @@ const OrphDash = () => {
             </option>
           ))}
         </select>
+        </div>
  
         {/* Table */}
         <table>
