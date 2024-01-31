@@ -94,7 +94,7 @@ const OrphDash = () => {
                 <td>{orphanage.location}</td>
                 <td>{orphanage.contact}</td>
                 <td>
-                  <button onClick={() => openModal(orphanage)}>Details</button>
+                  <button onClick={() => openModal(orphanage)} className="smallButton">Details</button>
                 </td>
                 <td>{orphanage.status}</td>
               </tr>
@@ -111,7 +111,7 @@ const OrphDash = () => {
               </span>
               <h3>{selectedOrphanage.name}</h3>
               <p className="field-name">Director:<span> {selectedOrphanage.director}</span></p>
-              <p className="field-name">Certificates:{" "} <button onClick={() => downloadCertificates(selectedOrphanage)}>Download</button></p>
+              <p className="field-name">Certificates:{" "} <button onClick={() => downloadCertificates(selectedOrphanage)} className="smallButton">Download</button></p>
             </div>
           </div>
         )}
