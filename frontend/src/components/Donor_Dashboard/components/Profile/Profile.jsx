@@ -31,20 +31,19 @@ const Profile = () => {
     setIsEditMode(true);
     setIsChangePasswordMode(false);
   };
-
+console.log(userDetails);
   const handleSaveChangesClick = async() => {
     try{
-      const response=await axios.post(`http://localhost:8079/donor/${userDetails?.donorId}/editProfile`,donorDetail);
+      const response=await axios.put(`http://localhost:8079/donor/${userDetails?.donorId}/editProfile`,donorDetail);
       const status=response.status;
       console.log(status);
       if(status == 200){
-        setUserData(null);
         setUserData(response.data);
         setIsEditMode(false);
       }
     }catch(error){
       alert("Try Again Later");
-      console.log(error.message);
+      console.log(error);
     }
     
   };
@@ -81,7 +80,6 @@ const Profile = () => {
       <h1>Manager's Profile</h1>
       <div className="profile-container">
         <div className="profile-picture">
-          {/* Replace the image source with your profile picture URL */}
           <img src="https://images.pexels.com/photos/775358/pexels-photo-775358.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Profile" />
         </div>
         <div className="profile-details">

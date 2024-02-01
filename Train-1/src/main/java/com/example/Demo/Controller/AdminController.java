@@ -222,8 +222,8 @@ public class AdminController {
 			return new ResponseEntity<>("Password Changed Successfully",HttpStatus.OK);
 		}
 		return new ResponseEntity<>(alpha,HttpStatus.CONFLICT);
-
 	}
+
 	@PutMapping("/{adminId}/editProfile")
 	public ResponseEntity<String> editProfile(@PathVariable("adminId") String adminId,@RequestBody Admin admin){
 		String alpha=adminService.editProfile(adminId,admin);

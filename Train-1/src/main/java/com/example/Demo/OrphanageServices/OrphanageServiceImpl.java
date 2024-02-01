@@ -243,4 +243,17 @@ public class OrphanageServiceImpl implements OrphanageService {
     public void removeImage(String orphanageId, String imageId) {
         orphanageImageRepository.deleteByOrphanageIdAndId(orphanageId, imageId);
     }
+    @Override
+    public String changeDonorPassword(String email,String oldPassword, String newPassword, String conformNewPassword) {
+        Optional<Orphanage> orphanage=orphanageRepository.findByEmail(email);
+        if(orphanage.isPresent()){
+            if(newPassword.equals(conformNewPassword)){
+                orphanage.get().setPassword(newPassword);
+                orphanageRepository.save(orphanage.get());
+                return "Password Changed Successfully";
+            }
+            return "Password Mismatch";
+        }
+        return "Unable to fetch data";
+    }
 }

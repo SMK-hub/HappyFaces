@@ -137,12 +137,12 @@ public class DonorController {
     }
 
     @PutMapping("/{donorId}/editProfile")
-    public ResponseEntity<String> editProfile(@PathVariable("donorId") String donorId, @RequestBody Donor donor) {
-        String alpha = donorService.editProfile(donorId, donor);
-        if(alpha.equals("Profile Updated Successfully")){
-            return new ResponseEntity<>(alpha,HttpStatus.OK);
+    public ResponseEntity<Donor> editProfile(@PathVariable("donorId") String donorId, @RequestBody Donor donor) {
+        Donor donorValue = donorService.editProfile(donorId, donor);
+        if(donorValue!=null){
+            return new ResponseEntity<>(donorValue,HttpStatus.OK);
         }
-        return new ResponseEntity<>(alpha,HttpStatus.CONFLICT);
+        return new ResponseEntity<>(null,HttpStatus.CONFLICT);
     }
 
     @GetMapping("/OrphanageDetails")

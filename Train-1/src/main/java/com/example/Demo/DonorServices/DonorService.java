@@ -17,7 +17,7 @@ public interface DonorService {
 
     Optional<Donor> viewProfile(String donorId);
 
-    String editProfile(String donorId, Donor donor);
+    Donor editProfile(String donorId, Donor donor);
 
     void addProfilePhoto(String donorId, MultipartFile file) throws IOException;
 

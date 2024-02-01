@@ -70,13 +70,15 @@ public class DonorServiceImpl implements DonorService {
     }
 
     @Override
-    public String editProfile(String donorId, Donor donor) {
+    public Donor editProfile(String donorId, Donor donor) {
 
             Optional<Donor> optionalDonor=donorRepository.findById(donorId);
             if(optionalDonor.isPresent()){
-                donor.setDonorId(donorId);
-                donorRepository.save(donor);
-                return "Profile Updated Successfully";
+                optionalDonor.get().setName(donor.getName());
+                optionalDonor.get().setEmail(donor.getEmail());
+                optionalDonor.get().setContact(donor.getContact());
+                donorRepository.save(optionalDonor.get());
+                return optionalDonor.get();
             }
             return null;
     }

@@ -155,6 +155,14 @@ public class OrphanageController {
        }
        return new ResponseEntity<>(alpha,HttpStatus.CONFLICT);
     }
+    @PostMapping("/ChangePassword/{email}/{oldPassword}/{newPassword}/{conformNewPassword}")
+    public ResponseEntity<String> changeDonorPassword(@PathVariable("email") String email,@PathVariable("oldPassword") String oldPassword,@PathVariable("newPassword") String newPassword,@PathVariable("conformNewPassword") String conformNewPassword){
+        String alpha=orphanageService.changeDonorPassword(email,oldPassword,newPassword,conformNewPassword);
+        if(alpha.equals("Password Changed Successfully")){
+            return new ResponseEntity<>(alpha,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(alpha,HttpStatus.CONFLICT);
+    }
     @PutMapping("/{orphanageId}/editProfile")
     public ResponseEntity<String> editProfile(@PathVariable("orphanageId") String orphanageId,@RequestBody Orphanage orphanage){
         String alpha = orphanageService.editProfile(orphanageId,orphanage);
