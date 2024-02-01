@@ -211,4 +211,18 @@ public class DonorServiceImpl implements DonorService {
         return donorRepository.findByEmail(email);
     }
 
+    @Override
+    public String changeDonorPassword(String email,String oldPassword, String newPassword, String conformNewPassword) {
+        Optional<Donor> donor=donorRepository.findByEmail(email);
+        if(donor.isPresent()){
+            if(newPassword.equals(conformNewPassword)){
+                donor.get().setPassword(newPassword);
+                donorRepository.save(donor.get());
+                return "Password Changed Successfully";
+            }
+            return "Password Mismatch";
+        }
+        return "Unable to fetch data";
+    }
+
 }

@@ -127,6 +127,14 @@ public class DonorController {
         }
         return new ResponseEntity<>(alpha,HttpStatus.CONFLICT);
     }
+    @PostMapping("/ChangePassword/{email}/{oldPassword}/{newPassword}/{conformNewPassword}")
+    public ResponseEntity<String> changeDonorPassword(@PathVariable("email") String email,@PathVariable("oldPassword") String oldPassword,@PathVariable("newPassword") String newPassword,@PathVariable("conformNewPassword") String conformNewPassword){
+        String alpha=donorService.changeDonorPassword(email,oldPassword,newPassword,conformNewPassword);
+        if(alpha.equals("Password Changed Successfully")){
+            return new ResponseEntity<>(alpha,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(alpha,HttpStatus.CONFLICT);
+    }
 
     @PutMapping("/{donorId}/editProfile")
     public ResponseEntity<String> editProfile(@PathVariable("donorId") String donorId, @RequestBody Donor donor) {
