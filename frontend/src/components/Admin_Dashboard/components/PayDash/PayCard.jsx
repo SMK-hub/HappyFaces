@@ -10,7 +10,7 @@ const PayCard = ({ donor, onClose }) => {
       <p className="field-name">Location:<span> {donor.location}</span></p>
       <p className="field-name">Contact:<span> {donor.contact}</span></p>
       <p className="field-name">Orphanage:<span> {donor.orphanage}</span></p>
-      <p className="field-name">Amount Donated:<span> {donor.amount}</span></p>
+      <p className="field-name">Donated:<span> {donor.donated}</span></p>
     </div>
   );
 };

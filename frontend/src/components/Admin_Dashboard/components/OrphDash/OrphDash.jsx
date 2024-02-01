@@ -13,6 +13,8 @@ const OrphDash = () => {
   const [selectedOrphanage, setSelectedOrphanage] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [orphanagesData, setOrphanagesData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const entriesPerPage = 5;
 
   const uniqueLocations = ["All", ...new Set(orphanagesData.map((orphanage) => orphanage.location))];
   const uniqueStatus = ["All", ...new Set(orphanagesData.map((orphanage) => orphanage.status))];
@@ -33,10 +35,12 @@ const OrphDash = () => {
 
   const handleLocationChange = (e) => {
     setSelectedLocation(e.target.value);
+    setCurrentPage(1);
   };
 
   const handleStatusChange = (e) => {
     setSelectedStatus(e.target.value);
+    setCurrentPage(1);
   };
 
   const openModal = (orphanage) => {
@@ -68,6 +72,17 @@ const OrphDash = () => {
       (selectedStatus === "All" || orphanage.status === selectedStatus)
     );
   });
+
+  const totalEntries = filteredOrphanages.length;
+  const totalPages = Math.ceil(totalEntries / entriesPerPage);
+
+  const indexOfLastEntry = currentPage * entriesPerPage;
+  const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
+  const currentEntries = filteredOrphanages.slice(indexOfFirstEntry, indexOfLastEntry);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   return (
     <div>
@@ -103,7 +118,7 @@ const OrphDash = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredOrphanages.map((orphanage, index) => (
+            {currentEntries.map((orphanage, index) => (
               <tr key={index}>
                 <td>{orphanage.name}</td>
                 <td>{orphanage.location}</td>
@@ -123,6 +138,15 @@ const OrphDash = () => {
             ))}
           </tbody>
         </table>
+
+        <div className="pagination">
+          {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
+            <button key={page} onClick={() => handlePageChange(page)} className={`pagination-button ${currentPage === page ? 'active' : ''}`}>
+              {page}
+            </button>
+          ))}
+          <p>Page {currentPage} of {totalPages}</p>
+        </div>
 
         {/* Modal */}
         {selectedOrphanage && (

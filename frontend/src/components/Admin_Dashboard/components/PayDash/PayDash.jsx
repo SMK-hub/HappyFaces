@@ -7,7 +7,7 @@ import PayCard from './PayCard';
 
 const PayDash = () => {
   const [selectedDonor, setSelectedDonor] = useState(null);
-  const [selectedLocation, setSelectedLocation] = useState('All');
+  const [selectedName, setSelectedName] = useState('All');
 
   const openDonorCard = (donor) => {
     setSelectedDonor(donor);
@@ -17,13 +17,13 @@ const PayDash = () => {
     setSelectedDonor(null);
   };
 
-  const handleLocationChange = (e) => {
-    setSelectedLocation(e.target.value);
+  const handleNameChange = (e) => {
+    setSelectedName(e.target.value);
   };
 
-  const filteredDonors = selectedLocation === 'All'
+  const filteredDonors = selectedName === 'All'
     ? payData
-    :payData.filter((donor) => donor.location === selectedLocation);
+    :payData.filter((donor) => donor.name === selectedName);
 
   return (
     <div className="donors">
@@ -31,12 +31,12 @@ const PayDash = () => {
 
       {/* Dropdown search bar */}
       <div className="search-bar">
-        <label htmlFor="location">Search through Location </label>
-        <select id="location" value={selectedLocation} onChange={handleLocationChange}>
+        <label htmlFor="name">Search through Name </label>
+        <select id="name" value={selectedName} onChange={handleNameChange}>
           <option value="All">All</option>
           {/* Add options for each unique location in your data */}
-          {Array.from(new Set(payData.map(donor => donor.location))).map((location, index) => (
-            <option key={index} value={location}>{location}</option>
+          {Array.from(new Set(payData.map(donor => donor.name))).map((name, index) => (
+            <option key={index} value={name}>{name}</option>
           ))}
         </select>
       </div>
@@ -49,7 +49,8 @@ const PayDash = () => {
             <th>Location</th>
             <th>Contact</th>
             <th>Orphanage</th>
-            <th>Status</th>
+            <th>Date</th>
+            <th>Donated</th>
           </tr>
         </thead>
         <tbody>
@@ -59,7 +60,8 @@ const PayDash = () => {
               <td>{donor.location}</td>
               <td>{donor.contact}</td>
               <td>{donor.orphanage}</td>
-              <td>{donor.status}</td>
+              <td>{donor.date}</td>
+              <td>{donor.donated}</td>
             </tr>
           ))}
         </tbody>

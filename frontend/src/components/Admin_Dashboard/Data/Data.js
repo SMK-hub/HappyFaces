@@ -247,8 +247,8 @@ export const payData = [
     contact: "6301478132",
     location: "RR Nagar",
     orphanage: "Leo",
-    amount: "500",
-    status: "Success",
+    date: "11-01-2024",
+    donated: "Money",
   },
   {
     id: 2,
@@ -256,8 +256,8 @@ export const payData = [
     contact: "6301478133",
     location: "Marathalli",
     orphanage: "Kaithi",
-    amount: "500",
-    status: "Declined",
+    date: "07-05-2023",
+    donated: "Food",
   },
   {
     id: 3,
@@ -265,8 +265,8 @@ export const payData = [
     contact: "6301478134",
     location: "Tin Factory",
     orphanage: "Vikram",
-    amount: "500",
-    status: "Success",
+    date: "20-08-2021",
+    donated: "Books",
   },
   {
     id: 4,
@@ -274,8 +274,8 @@ export const payData = [
     contact: "6301478135",
     location: "Indira Nagar",
     orphanage: "Master",
-    amount: "500",
-    status: "Pending",
+    date: "11-06-2023",
+    donated: "Clothes",
   },
   {
     id: 5,
@@ -283,8 +283,8 @@ export const payData = [
     contact: "6301478136",
     location: "Church Street",
     orphanage: "Rolex",
-    amount: "500",
-    status: "Declined",
+    date: "12-01-2022",
+    donated: "Money",
   },
 ];
 
