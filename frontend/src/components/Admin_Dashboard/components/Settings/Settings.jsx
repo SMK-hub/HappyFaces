@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import './Settings.css'; // Import the CSS file
 import EditProfilePopup from './EditProfilePopup'; // Import the EditProfilePopup component
-
+import img2 from './img2.png';
 const Settings = () => {
   const [isEditPopupOpen, setEditPopupOpen] = useState(false);
   const name = "John Doe";
@@ -23,8 +23,12 @@ const Settings = () => {
       <div className="card-box">
         <div className="profile-section">
           <div className="profile-circle">
-            {/* Using an external icon for a female user from Font Awesome */}
-            <i className="fas fa-user-circle fa-5x"></i>
+            {/* Replace the icon with a circular image */}
+            <img
+              src={img2} 
+              alt="Profile"
+              className="profile-image"
+            />
           </div>
           <div className="profile-details">
             <label>Name:</label>
@@ -44,11 +48,8 @@ const Settings = () => {
           </div>
         </div>
       </div>
-      
 
-      {isEditPopupOpen && (
-        <EditProfilePopup onClose={closeEditPopup} />
-      )}
+      {isEditPopupOpen && <EditProfilePopup onClose={closeEditPopup} />}
     </div>
   );
 };

@@ -30,6 +30,7 @@ import OrphDash from './components/Admin_Dashboard/components/OrphDash/OrphDash'
 import Settings from './components/Admin_Dashboard/components/Settings/Settings';
 import Donors from './components/Admin_Dashboard/components/Donors/Donors'
 import PayDash from './components/Admin_Dashboard/components/PayDash/PayDash';
+import EvenDash from './components/Admin_Dashboard/components/Events/EvenDash'
 
 
 const App = () => {
@@ -63,6 +64,7 @@ const App = () => {
         <Route path="/donors" element={<Donors/>}/>
 
         <Route path="/payments" element={<PayDash/>}/>
+        <Route path="/events" element={<EvenDash/>}/>
       </Routes>
     </Router>
   );

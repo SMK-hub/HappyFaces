@@ -8,6 +8,7 @@ import Home from './components/AdminHome';
 import Settings from './components/Settings/Settings.jsx';
 import Donors from './components/Donors/Donors.jsx';
 import PayDash from './components/PayDash/PayDash.jsx';
+import EvenDash from './components/Events/EvenDash.jsx';
 
 function DashboardAdmin() {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -31,7 +32,8 @@ function DashboardAdmin() {
       //   return <PaymentDashboard />;
       case 'mainDash':
         return <MainDash />;
-      
+      case 'Events':
+        return <EvenDash />;  
       case 'Donors':
         return <Donors />;   
       case 'Settings':
