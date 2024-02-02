@@ -28,9 +28,9 @@ const EventTable = () => {
   };
 
   return (
-    <div className='main-event'>
-      <h2>EVENTS</h2>
-      <div className="event-container">
+    <div className='main-events'>
+      <h1 style={{ fontFamily: 'Anton, sans-serif', fontSize: '2em' , justifyContent: 'center'}}>EVENTS</h1>
+      <div className="eventContainer">
         <table className="event-table">
           <thead>
             <tr>

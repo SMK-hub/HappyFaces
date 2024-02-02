@@ -4,14 +4,12 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { motion } from "framer-motion";
 import { UilTimes } from "@iconscout/react-unicons";
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
+import Chart from "react-apexcharts";
 
 // parent Card
 
 const Card = (props) => {
   const [expanded, setExpanded] = useState(false);
-
   return (
     <>
       {expanded ? (
@@ -24,9 +22,8 @@ const Card = (props) => {
 };
 
 // Compact Card
-function CompactCard({ param, setExpanded, onClick }) {
+function CompactCard({ param, setExpanded, onClick}) {
   const Png = param.png;
-
   return (
     <motion.div
       className="CompactCard"
@@ -58,57 +55,76 @@ function CompactCard({ param, setExpanded, onClick }) {
   );
 }
 
-
-
 // Expanded Card
 function ExpandedCard({ param, setExpanded }) {
+  const data = {
+    options: {
+      chart: {
+        type: "area",
+        height: "auto",
+      },
+
+      dropShadow: {
+        enabled: false,
+        enabledOnSeries: undefined,
+        top: 0,
+        left: 0,
+        blur: 3,
+        color: "#000",
+        opacity: 0.35,
+      },
+
+      fill: {
+        colors: ["#fff"],
+        type: "gradient",
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        curve: "smooth",
+        colors: ["white"],
+      },
+      tooltip: {
+        x: {
+          format: "dd/MM/yy HH:mm",
+        },
+      },
+      grid: {
+        show: true,
+      },
+      xaxis: {
+        type: "datetime",
+        categories: [
+          "2018-09-19T00:00:00.000Z",
+          "2018-09-19T01:30:00.000Z",
+          "2018-09-19T02:30:00.000Z",
+          "2018-09-19T03:30:00.000Z",
+          "2018-09-19T04:30:00.000Z",
+          "2018-09-19T05:30:00.000Z",
+          "2018-09-19T06:30:00.000Z",
+        ],
+      },
+    },
+  };
+
   return (
     <motion.div
-      className="ExpandedCard"
+      className="ExpandedCard1"
       style={{
         background: param.color.backGround,
         boxShadow: param.color.boxShadow,
       }}
       layoutId="expandableCard"
     >
-      <div
-        style={{
-          alignSelf: "flex-end",
-          cursor: "pointer",
-          color: "white",
-        }}
-      >
+      <div style={{ alignSelf: "flex-end", cursor: "pointer", color: "white" }}>
         <UilTimes onClick={setExpanded} />
       </div>
-      <div className="basicDetails">
-        <div>
-          <img
-            src="https://images.pexels.com/photos/1987301/pexels-photo-1987301.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            alt="Profile"
-            style={{
-              width: "100px",
-              height: "100px",
-              borderRadius: "50%",
-            }}
-          />
-        </div>
-        <div className="details">
-          <div>Name: Amisha Raj {param.name}</div>
-          <div>Age: 23 {param.age}</div>
-          <div>Email: amisha_raj@thbs.com{param.email}</div>
-          <div>Phone: 1234566799 {param.phone}</div>
-        </div>
+        <span>{param.title}</span>
+      <div className="chartContainer">
+        <Chart options={data.options} series={param.series} type="area" />
       </div>
-      <div className="buttons">
-        <ButtonGroup variant="contained" aria-label="outlined primary button group">
-          <Button onClick={() => console.log("Update Password")}>
-            Update Password
-          </Button>
-          <Button onClick={() => console.log("Update Profile")}>
-            Update Profile
-          </Button>
-        </ButtonGroup>
-      </div>
+      <span>Last 24 hours</span>
     </motion.div>
   );
 }

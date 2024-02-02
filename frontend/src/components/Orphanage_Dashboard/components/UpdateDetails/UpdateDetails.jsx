@@ -74,6 +74,7 @@ const FormComponent = () => {
             <option value="food">Food</option>
             <option value="clothing">Clothing</option>
             <option value="books">Books</option>
+            <option value="books">Others</option>
           </select>
         </label>
         <label>
