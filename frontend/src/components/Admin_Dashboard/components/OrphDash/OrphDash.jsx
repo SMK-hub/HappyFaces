@@ -1,8 +1,7 @@
 /* eslint-disable no-unused-vars */
 // OrphDash.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./OrphDash.css";
-import { orphanagesData } from "../../Data/Data";
 // index.js or App.js
 import '@fortawesome/fontawesome-free/css/all.css';
 import ImagePopup from "./ImagePopup";
@@ -13,16 +12,35 @@ const OrphDash = () => {
   const [selectedLocation, setSelectedLocation] = useState("All");
   const [selectedOrphanage, setSelectedOrphanage] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState("All");
+  const [orphanagesData, setOrphanagesData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const entriesPerPage = 5;
 
   const uniqueLocations = ["All", ...new Set(orphanagesData.map((orphanage) => orphanage.location))];
   const uniqueStatus = ["All", ...new Set(orphanagesData.map((orphanage) => orphanage.status))];
 
+  useEffect(() => {
+    fetchOrphanages();
+  }, []);
+
+  const fetchOrphanages = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/api/orphanages");
+      const data = await response.json();
+      setOrphanagesData(data);
+    } catch (error) {
+      console.error("Error fetching orphanages", error);
+    }
+  };
+
   const handleLocationChange = (e) => {
     setSelectedLocation(e.target.value);
+    setCurrentPage(1);
   };
 
   const handleStatusChange = (e) => {
     setSelectedStatus(e.target.value);
+    setCurrentPage(1);
   };
 
   const openModal = (orphanage) => {
@@ -55,6 +73,17 @@ const OrphDash = () => {
     );
   });
 
+  const totalEntries = filteredOrphanages.length;
+  const totalPages = Math.ceil(totalEntries / entriesPerPage);
+
+  const indexOfLastEntry = currentPage * entriesPerPage;
+  const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
+  const currentEntries = filteredOrphanages.slice(indexOfFirstEntry, indexOfLastEntry);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
     <div>
       <div className="OrphDash">
@@ -85,10 +114,11 @@ const OrphDash = () => {
               <th>Contact</th>
               <th>Details</th>
               <th>Status</th>
+              <th>Requests</th>
             </tr>
           </thead>
           <tbody>
-            {filteredOrphanages.map((orphanage, index) => (
+            {currentEntries.map((orphanage, index) => (
               <tr key={index}>
                 <td>{orphanage.name}</td>
                 <td>{orphanage.location}</td>
@@ -97,10 +127,26 @@ const OrphDash = () => {
                   <button onClick={() => openModal(orphanage)} className="smallButton">Details</button>
                 </td>
                 <td>{orphanage.status}</td>
+                <td className="requests">
+                  {orphanage.status === "Verified" ? (
+                    <button onClick={() => console.log("Decline")} style={{ fontSize: "10px", padding: "5px" }}>Decline</button>
+                  ) : (
+                    <button onClick={() => console.log("Accept")} style={{ fontSize: "10px", padding: "5px" }}>Accept</button>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
+
+        <div className="pagination">
+          {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
+            <button key={page} onClick={() => handlePageChange(page)} className={`pagination-button ${currentPage === page ? 'active' : ''}`}>
+              {page}
+            </button>
+          ))}
+          <p>Page {currentPage} of {totalPages}</p>
+        </div>
 
         {/* Modal */}
         {selectedOrphanage && (
@@ -111,6 +157,10 @@ const OrphDash = () => {
               </span>
               <h3>{selectedOrphanage.name}</h3>
               <p className="field-name">Director:<span> {selectedOrphanage.director}</span></p>
+              <p className="field-name">Established Date:<span> {selectedOrphanage.establishedDate}</span></p>
+              <p className="field-name">Location<span> {selectedOrphanage.location}</span></p>
+              <p className="field-name">Contact<span> {selectedOrphanage.contact}</span></p>
+              <p className="field-name">Image:{" "} <button onClick={openImagePopup}>View</button></p>
               <p className="field-name">Certificates:{" "} <button onClick={() => downloadCertificates(selectedOrphanage)} className="smallButton">Download</button></p>
             </div>
           </div>

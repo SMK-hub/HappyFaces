@@ -32,6 +32,7 @@ import Donors from './components/Admin_Dashboard/components/Donors/Donors'
 import UpdateDetails from './components/Orphanage_Dashboard/components/UpdateDetails/UpdateDetails'
 import Certificates from './components/Orphanage_Dashboard/components/Certificates/Certificates'
 import Photos from './components/Orphanage_Dashboard/components/Photos/Photos'
+import PayDash from './components/Admin_Dashboard/components/PayDash/PayDash';
 import { UserProvider } from './UserContext';
 
 
@@ -71,6 +72,8 @@ const App = () => {
         <Route path="/orphanages" element={<OrphDash/>}/> 
         <Route path="/settings" element={<Settings/>}/>
         <Route path="/donors" element={<Donors/>}/>
+
+        <Route path="/payments" element={<PayDash/>}/>
       </Routes>
     </Router></UserProvider>
     

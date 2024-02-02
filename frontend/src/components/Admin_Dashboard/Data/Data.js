@@ -46,6 +46,7 @@ export const SidebarData = [
   {
     icon: UilCreditCard,
     heading: 'Payments',
+    path:'Payments',
   },
   {
     icon: UilSetting,
@@ -238,3 +239,53 @@ export const donorsData = [
     amount: "25000",
   },
 ];
+
+export const payData = [
+  {
+    id: 1,
+    name: "Manonmai",
+    contact: "6301478132",
+    location: "RR Nagar",
+    orphanage: "Leo",
+    date: "11-01-2024",
+    donated: "Money",
+  },
+  {
+    id: 2,
+    name: "Srikanth",
+    contact: "6301478133",
+    location: "Marathalli",
+    orphanage: "Kaithi",
+    date: "07-05-2023",
+    donated: "Food",
+  },
+  {
+    id: 3,
+    name: "Siddik",
+    contact: "6301478134",
+    location: "Tin Factory",
+    orphanage: "Vikram",
+    date: "20-08-2021",
+    donated: "Books",
+  },
+  {
+    id: 4,
+    name: "Venu",
+    contact: "6301478135",
+    location: "Indira Nagar",
+    orphanage: "Master",
+    date: "11-06-2023",
+    donated: "Clothes",
+  },
+  {
+    id: 5,
+    name: "Bhargavi",
+    contact: "6301478136",
+    location: "Church Street",
+    orphanage: "Rolex",
+    date: "12-01-2022",
+    donated: "Money",
+  },
+];
+
+

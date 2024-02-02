@@ -7,6 +7,7 @@ import OrphDash from './components/OrphDash/OrphDash.jsx';
 import Home from './components/AdminHome';
 import Settings from './components/Settings/Settings.jsx';
 import Donors from './components/Donors/Donors.jsx';
+import PayDash from './components/PayDash/PayDash.jsx';
 
 function DashboardAdmin() {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -35,6 +36,8 @@ function DashboardAdmin() {
         return <Donors />;   
       case 'Settings':
         return <Settings />;  
+      case 'Payments':
+        return <PayDash />;  
       default:
         return <MainDash />;     
       }

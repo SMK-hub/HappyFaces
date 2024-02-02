@@ -5,15 +5,10 @@ import './Settings.css'; // Import the CSS file
 import EditProfilePopup from './EditProfilePopup'; // Import the EditProfilePopup component
 
 const Settings = () => {
-  const [showPassword, setShowPassword] = useState(false);
   const [isEditPopupOpen, setEditPopupOpen] = useState(false);
   const name = "John Doe";
   const email = "example@email.com";
-  const password = "yourpassword";
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
+  const role = "Admin";
 
   const openEditPopup = () => {
     setEditPopupOpen(true);
@@ -38,18 +33,8 @@ const Settings = () => {
             <label>Email:</label>
             <div className="profile-value">{email}</div>
 
-            <label>Password:</label>
-            <div className="password-container">
-              <input
-                type={showPassword ? 'text' : 'password'}
-                value={password}
-                readOnly
-                className="profile-value"
-              />
-              <span onClick={togglePasswordVisibility} className="eye-icon">
-                {showPassword ? '👁️' : '🔒'}
-              </span>
-            </div>
+            <label>Role:</label>
+            <div className="profile-value">{role}</div>
 
             <div className="profile-buttons">
               <button className="edit-profile-button" onClick={openEditPopup}>
@@ -59,6 +44,7 @@ const Settings = () => {
           </div>
         </div>
       </div>
+      
 
       {isEditPopupOpen && (
         <EditProfilePopup onClose={closeEditPopup} />

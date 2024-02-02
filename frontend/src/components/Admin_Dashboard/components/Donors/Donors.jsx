@@ -8,6 +8,8 @@ import DonorCard from './DonorCard'; // Import the DonorCard component
 const Donors = () => {
   const [selectedDonor, setSelectedDonor] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState('All');
+  const [currentPage, setCurrentPage] = useState(1);
+  const entriesPerPage = 5;
 
   const openDonorCard = (donor) => {
     setSelectedDonor(donor);
@@ -19,11 +21,22 @@ const Donors = () => {
 
   const handleLocationChange = (e) => {
     setSelectedLocation(e.target.value);
+    setCurrentPage(1);
   };
 
   const filteredDonors = selectedLocation === 'All'
     ? donorsData
     : donorsData.filter((donor) => donor.location === selectedLocation);
+
+  const totalEntries = filteredDonors.length;
+  const totalPages = Math.ceil(totalEntries / entriesPerPage);
+  const indexOfLastEntry = currentPage * entriesPerPage;
+  const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
+  const currentEntries = filteredDonors.slice(indexOfFirstEntry, indexOfLastEntry);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   return (
     <div className="donors">
@@ -52,7 +65,7 @@ const Donors = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredDonors.map((donor) => (
+          {currentEntries.map((donor) => (
             <tr key={donor.id} onClick={() => openDonorCard(donor)} style={{ cursor: 'pointer' }}>
               <td>{donor.name}</td>
               <td>{donor.email}</td>
@@ -62,6 +75,15 @@ const Donors = () => {
           ))}
         </tbody>
       </table>
+
+      <div className="pagination">
+          {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
+            <button key={page} onClick={() => handlePageChange(page)} className={`pagination-button ${currentPage === page ? 'active' : ''}`}>
+              {page}
+            </button>
+          ))}
+          <p>Page {currentPage} of {totalPages}</p>
+        </div>
 
       {/* Donor Card Popup */}
       {selectedDonor && (
