@@ -19,6 +19,8 @@ const Profile = () => {
 
   const  {setUserData} = useUser();
 
+  
+
   const [donorDetail,setDonorDetail] = useState({
     name:"",
     email:"",
@@ -54,13 +56,27 @@ console.log(userDetails);
     setPasswordMismatchError('');
   };
 
-  const handleSavePasswordChangesClick = () => {
-    if (newPassword !== confirmPassword) {
+  const handleSavePasswordChangesClick = async () => {
+    if(oldPassword !== userDetails?.password){
+      setPasswordMismatchError('Enter Correct Password');
+    }
+    else if (newPassword !== confirmPassword ) {
       setPasswordMismatchError('New password and confirm password do not match');
     } else {
-      // Implement logic to save password changes
-      setIsChangePasswordMode(false);
-      setPasswordMismatchError('');
+      try{
+        const response = await axios.post(`http://localhost:8079/donor/ChangePassword/${userDetails?.email}/${oldPassword}/${newPassword}/${confirmPassword}`); 
+        const status = response.status;
+        console.log(status);
+        if(status == 200){
+          setUserData(response.data);
+          setIsChangePasswordMode(false);
+          setPasswordMismatchError('');
+        }
+      }
+      catch(error){
+        alert("Try Again Later");
+        console.log(error);
+      }
     }
   };
 
@@ -87,16 +103,19 @@ console.log(userDetails);
             <>
               <input
                 type="text"
+                value={userDetails?.name}
                 placeholder={userDetails?.name}
                 onChange={(e) => setDonorDetail({...donorDetail,name:e.target.value})}
               />
               <input
                 type="text"
+                value={userDetails?.name}
                 placeholder={userDetails?.email}
                 onChange={(e) => setDonorDetail({...donorDetail,email:e.target.value})}
               />
               <input
                 type="text"
+                value={userDetails?.name}
                 placeholder={userDetails?.contact}
                 onChange={(e) => setDonorDetail({...donorDetail,contact:e.target.value})}
               />
