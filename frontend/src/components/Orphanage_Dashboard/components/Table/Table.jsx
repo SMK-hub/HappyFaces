@@ -8,8 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import "./Table.css";
-import Sidebar from "../Sidebar";
-import RightSide from "../RigtSide/RightSide";
+
 
 function createData(name, trackingId, date, status) {
   return { name, trackingId, date, status };
@@ -47,7 +46,7 @@ export default function BasicTable() {
     //   <div className="AppGlass">
     //     <Sidebar />
         <div className="Table">
-          <h3>Donation Details</h3>
+          <h3 style={{ fontFamily: 'Anton, sans-serif', fontSize: '1em' , justifyContent: 'left' , padding : '1em'}}>Donation Details</h3>
           <TableContainer
             component={Paper}
             style={{ boxShadow: "0px 13px 20px 0px #80808029" }}

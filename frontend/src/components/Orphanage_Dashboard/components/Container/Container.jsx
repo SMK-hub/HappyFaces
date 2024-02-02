@@ -96,8 +96,8 @@ const MyContainer = () => {
     Website: 'https://miraclefoundationindia.in/',
     Requirements: 'Food, clothing, education materials',
     PriorityStatus: 'High',
-    GalleryLink: '/gallery', // Add this property for Gallery link
-    GalleryName: 'Miracle Foundation',
+    GalleryLink: '/Galleries', // Add this property for Gallery link
+    OrphanageName: 'Miracle Foundation',
   };
   const [open, setOpen] = React.useState(false);
 const [openCer,setOpenCer]=useState(false);
@@ -144,12 +144,12 @@ const openPhotos=()=>{
                 </td>
               )}
               {title === 'GalleryLink' && (
-  <td className="info-detail">
-    <Link to={orphanageInfo.GalleryLink}>
-      <button className="gallery-button">{orphanageInfo.GalleryName}</button>
-    </Link>
-  </td>
-)}
+                <td className="info-detail">
+                 <Link to={orphanageInfo.GalleryLink}>
+                  <button className="gallery-button">{orphanageInfo.OrphanageName}</button>
+                 </Link>
+                </td>
+              )}
               {title !== 'VerificationStatus' && title !== 'Website' && title !== 'GalleryLink' && (
                 <td className="info-detail">{detail}</td>
               )}
@@ -188,10 +188,10 @@ const openPhotos=()=>{
           },
         }}
       >
-        <DialogTitle>Subscribe</DialogTitle>
+        <DialogTitle>Orphanage Details</DialogTitle>
         <DialogContent>
         <form onSubmit={handleSubmit}>
-        <h1>Orphanage Details</h1>
+        
         <label>
           Name:
           <input type="text" name="name" value={formData.name} onChange={handleChange} />
@@ -224,6 +224,7 @@ const openPhotos=()=>{
             <option value="food">Food</option>
             <option value="clothing">Clothing</option>
             <option value="books">Books</option>
+            <option value="books">Others</option>
           </select>
         </label>
         <label>
@@ -231,19 +232,18 @@ const openPhotos=()=>{
           <select name="priorityStatus" value={formData.priorityStatus} onChange={handleChange}>
             <option value="">Select Priority Status</option>
             <option value="high">High</option>
-            <option value="medium">Medium</option>
+            <option value="medium">Moderate</option>
           </select>
         </label>
 
-        <div className="button-container">
-          <button type="submit">Update</button>
-          <button type="button" onClick={handlePasswordChange}>Change Password</button>
-        </div>
+        
       </form>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit">Subscribe</Button>
+        <button type="submit" onClick={handleClose}>Save Changes</button>
+        {/* <button type="button" onClick={handlePasswordChange}>Change Password</button>   */}
+         
+          
         </DialogActions>
       </Dialog>
 
@@ -265,10 +265,10 @@ const openPhotos=()=>{
           },
         }}
       >
-        <DialogTitle>Subscribe</DialogTitle>
+        <DialogTitle>Certificates</DialogTitle>
         <DialogContent>
         <div className="file-upload-container">
-           <h1>Certificates</h1>
+           
             <h3>To ensure transparency and compliance, please upload your orphanage's authentication certificate here. </h3>
             <>
               <p>Kindly follow these guidelines for document submission:</p>
@@ -281,7 +281,7 @@ const openPhotos=()=>{
               </>
 
 
-      <label className="file-upload-label">
+      <label className="file-upload-label"  >
         Upload PDF :
         <input type="file" accept=".pdf" onChange={handleFileUpload} />
       </label>
@@ -298,11 +298,11 @@ const openPhotos=()=>{
       <button className="ok-button" onClick={handleOkButtonClick}>
         OK
       </button>
-    </div>
+     </div>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit">Subscribe</Button>
+          <Button onClick={handleClose}>Save Changes</Button>
+          <Button type="submit">Cancel</Button>
         </DialogActions>
       </Dialog>
 
@@ -323,7 +323,7 @@ const openPhotos=()=>{
           },
         }}
       >
-        <DialogTitle>Subscribe</DialogTitle>
+        <DialogTitle>Gallery</DialogTitle>
         <DialogContent>
         <div className="photos-container">
       <h1>Photos</h1>
@@ -354,14 +354,12 @@ const openPhotos=()=>{
         </div>
       )}
 
-      <button className="ok-button" onClick={handleOk}>
-        OK
-      </button>
+      
     </div>
         </DialogContent>
         <DialogActions>
+          <Button className="ok-button" onClick={handleOk}>OK</Button>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit">Subscribe</Button>
         </DialogActions>
       </Dialog>
     </div>

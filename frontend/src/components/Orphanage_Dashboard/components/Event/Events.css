@@ -1,11 +1,12 @@
 /* Events.css */
 
-.main-event{
+.main-events{
   flex: 1;
     padding: 20px;
+    justify-content: center;
 }
 
-.event-container {
+.eventContainer {
   margin: 20px;
   padding: 20px;
   border: 4px solid #831898;
@@ -13,7 +14,7 @@
 }
 
 .event-table { 
-  width: 100%;
+  width: 10%;
   border-collapse: collapse;
   margin-bottom: 20px;
 }

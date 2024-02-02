@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/All_js/Home';
 import AboutUs from './components/All_js/AboutUs';
 import Gallery from './components/All_js/Gallery';
+import Galleries from "../src/components/Orphanage_Dashboard/components/Galleries/Galleries"
 import SignInSelector from './components/All_js/SignInSelector';
 import SignUpSelector from './components/All_js/SignUpSelector';
 import SignInAdmin from './components/All_js/SignInAdmin';
@@ -38,6 +39,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/aboutus" element={<AboutUs />} />
         <Route path="/gallery" element={<Gallery />} />
+        <Route path="/Galleries" element={<Galleries/>} />
         <Route path="/signin" element={<SignInSelector />} />
         <Route path="/signup" element={<SignUpSelector />} />
         <Route path="/signin/admin" element={<SignInAdmin />} />
