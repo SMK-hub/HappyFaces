@@ -186,7 +186,7 @@ export const orphanagesData = [
     location: "Lalbagh",
     contact: "223-656-7690",
     status: "Verified",
-    requirements: "Money",
+    requirements: "Others",
     images: [
       "https://th.bing.com/th/id/OIP.Gc2MgkiJTYmOBrv0HqpE1AHaFj?rs=1&pid=ImgDetMain",
     ],
