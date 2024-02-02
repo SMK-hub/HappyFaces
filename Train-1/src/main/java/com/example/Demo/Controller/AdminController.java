@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,67 +31,101 @@ public class AdminController {
 	private AdminService adminService;
 
 	@GetMapping("/adminList")
-	public List<Admin> getAllAdmin() {
-		return adminService.getAllAdmin();
+	public ResponseEntity<List<Admin>> getAllAdmin() {
+		return new ResponseEntity<>(adminService.getAllAdmin(),HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
-	public Admin getAdminById(@PathVariable String id){return adminService.getAdminById(id);}
+	public ResponseEntity<Admin> getAdminById(@PathVariable String id){
+		Optional<Admin> admin = Optional.ofNullable(adminService.getAdminById(id));
+		return admin.map(value -> new ResponseEntity<>(value,HttpStatus.OK)).orElseGet(()->new ResponseEntity<>(null, HttpStatus.CONFLICT));
+	}
 
 	@GetMapping("/orphanageList")
-	public List<Orphanage> getAllOrphanage() {
-		return adminService.getAllOrphanage();
+	public ResponseEntity<List<Orphanage>> getAllOrphanage() {
+		return new ResponseEntity<>(adminService.getAllOrphanage(),HttpStatus.OK);
 	}
 	@GetMapping("/orphanage/{id}")
-	public Orphanage getOrphanageById(@PathVariable String id){return adminService.getOrphanageById(id);}
+	public ResponseEntity<Orphanage> getOrphanageById(@PathVariable String id) {
+		Optional<Orphanage> orphanage = Optional.ofNullable(adminService.getOrphanageById(id));
+		return orphanage.map(value -> new ResponseEntity<>(value,HttpStatus.OK)).orElseGet(()->new ResponseEntity<>(null, HttpStatus.CONFLICT));
+	}
   	@GetMapping("/orphanageDetails/{id}")
-	public OrphanageDetails getOrphanageDetailByOrpId(@PathVariable String orpId)
+	public ResponseEntity<OrphanageDetails> getOrphanageDetailByOrpId(@PathVariable String orpId)
 	{
-		return adminService.getOrphanageDetailByOrphanageId(orpId);
+		Optional<OrphanageDetails> orphanageDetails = Optional.ofNullable(adminService.getOrphanageDetailByOrphanageId(orpId));
+		return orphanageDetails.map(value -> new ResponseEntity<>(value,HttpStatus.OK)).orElseGet(()->new ResponseEntity<>(null, HttpStatus.CONFLICT));
 	}
 	@GetMapping("/donorList")
-	public List<Donor> getAllDonor() {
-		return adminService.getAllDonor();
+	public ResponseEntity<List<Donor>> getAllDonor() {
+		return new ResponseEntity<>(adminService.getAllDonor(),HttpStatus.OK);
 	}
 
 	@GetMapping("/donor/{id}")
-	public Donor getDonorById(@PathVariable String id){return adminService.getDonorById(id);}
+	public ResponseEntity<Donor> getDonorById(@PathVariable String id){
+		Optional<Donor> donor=Optional.ofNullable(adminService.getDonorById(id));
+        return donor.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(null, HttpStatus.CONFLICT));
+    }
 
 	@GetMapping("/eventList")
-	public List<Events> getAllEvents() {
-		return adminService.getAllEvents();
+	public ResponseEntity<List<Events>> getAllEvents() {
+		return new ResponseEntity<>(adminService.getAllEvents(),HttpStatus.OK);
 	}
 
 	@GetMapping("/event/{id}")
-	public Events getEventById(@PathVariable String id){return adminService.getEventById(id);}
+	public ResponseEntity<Events> getEventById(@PathVariable String id){
+		Optional<Events> events = Optional.ofNullable(adminService.getEventById(id));
+        return events.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(null, HttpStatus.CONFLICT));
+    }
 
 	@GetMapping("/event/orphanageId/{id}")
-	public List<Events> getEventsByOrphanageId(@PathVariable String id){return adminService.getEventsByOrphanageId(id);}
+	public ResponseEntity<List<Events>> getEventsByOrphanageId(@PathVariable String id){
+		return new ResponseEntity<>(adminService.getEventsByOrphanageId(id),HttpStatus.OK);
+	}
 
 	@PostMapping("/event/verifyEvents")
-	public String verifyEvents(@RequestBody Events event)
+	public ResponseEntity<String> verifyEvents(@RequestBody Events event)
 	{
-		return adminService.verifyEventDetails(event);
+		String alpha=adminService.verifyEventDetails(event);
+		if(alpha.equals("Done")){
+			return new ResponseEntity<>(alpha,HttpStatus.OK);
+		}
+		return new ResponseEntity<>(alpha,HttpStatus.CONFLICT);
+	}
+	@PostMapping("/verifyOrphanageDetails")
+	public ResponseEntity<String> verifyOrphanageDetails(@RequestBody OrphanageDetails orph)
+	{
+		String alpha=adminService.verifyOrphanageDetails(orph);
+		if(alpha.equals("Done")){
+			return new ResponseEntity<>("Verification Done",HttpStatus.OK);
+		}
+		return new ResponseEntity<>("Verification Not Done, Try again",HttpStatus.CONFLICT);
 	}
 	@GetMapping("/donationList")
-	public List<Donations> getAllDonations() {
-		return adminService.getAllDonations();
+	public ResponseEntity<List<Donations>> getAllDonations() {
+		return new ResponseEntity<>(adminService.getAllDonations(),HttpStatus.OK);
 	}
 
 	@GetMapping("/donation/orphanageId/{id}")
-	public List<Donations> getDonationsByOrphanageId(@PathVariable String id){return adminService.getDonationsByOrphanageId(id);}
+	public ResponseEntity<List<Donations>> getDonationsByOrphanageId(@PathVariable String id){
+		return new ResponseEntity<>(adminService.getDonationsByOrphanageId(id),HttpStatus.OK);
+	}
 
 	@GetMapping("/donation/donorId/{id}")
-	public List<Donations> getDonationsByDonorId(@PathVariable String id){return adminService.getDonationsByDonorId(id);}
+	public ResponseEntity<List<Donations>> getDonationsByDonorId(@PathVariable String id){
+		return new ResponseEntity<>(adminService.getDonationsByDonorId(id),HttpStatus.OK);
+	}
 
 	@GetMapping("/donation/{id}")
-	public Donations getDonationId(@PathVariable String id){return adminService.getDonationById(id);}
-
-	@PostMapping("/verifyOrphanageDetails")
-	public String verifyOrphanageDetails(@RequestBody OrphanageDetails orph)
-	{
-		return adminService.verifyOrphanageDetails(orph);
+	public ResponseEntity<Donations> getDonationById(@PathVariable String id){
+		Optional<Donations> donations= Optional.ofNullable(adminService.getDonationById(id));
+		if(donations.isPresent()){
+			return new ResponseEntity<>(donations.get(),HttpStatus.OK);
+		}
+		return new ResponseEntity<>(null,HttpStatus.CONFLICT);
 	}
+
+
 
 	@PostMapping("/register")
 	public ResponseEntity<String> registerUser(@RequestBody Admin user) {
@@ -171,19 +206,32 @@ public class AdminController {
 		}
 	}
 	@PostMapping("/sendOtp")
-	public String sendOtp(@RequestBody Admin admin) {
-		return adminService.sendOtp(admin);
-
+	public ResponseEntity<String> sendOtp(@RequestBody Admin admin) {
+		String alpha=adminService.sendOtp(admin);
+		if(alpha!=null){
+			return new ResponseEntity<>(alpha,HttpStatus.OK);
+		}
+		return new ResponseEntity<>("Try Again",HttpStatus.CONFLICT);
 	}
 
 	@PostMapping("/ForgetPassword/{email}/{otp}/{create}/{confirm}")
-	public String forgetPassword(@PathVariable("email") String email,@PathVariable("create") String create,@PathVariable("otp") String otp,@PathVariable("confirm") String confirm) {
+	public ResponseEntity<String> forgetPassword(@PathVariable("email") String email,@PathVariable("create") String create,@PathVariable("otp") String otp,@PathVariable("confirm") String confirm) {
 		System.out.println(create + "   " + confirm + "  " + otp);
-		return adminService.forgetPassword(email,otp,create,confirm);
+		String alpha=adminService.forgetPassword(email,otp,create,confirm);
+		if(alpha.equals("Password Changed Successfully")){
+			return new ResponseEntity<>("Password Changed Successfully",HttpStatus.OK);
+		}
+		return new ResponseEntity<>(alpha,HttpStatus.CONFLICT);
 	}
+
 	@PutMapping("/{adminId}/editProfile")
-	public String editProfile(@PathVariable("adminId") String adminId,@RequestBody Admin admin){
-		return adminService.editProfile(adminId,admin);
+	public ResponseEntity<String> editProfile(@PathVariable("adminId") String adminId,@RequestBody Admin admin){
+		String alpha=adminService.editProfile(adminId,admin);
+		if(alpha!=null)
+		{
+			return new ResponseEntity<>(alpha,HttpStatus.OK);
+		}
+		return new ResponseEntity<>("Problem in Update the Profile",HttpStatus.CONFLICT);
 	}
 
 }

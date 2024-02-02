@@ -1,25 +1,32 @@
-// components/SignInAdmin.js
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../All_css/SignInDonor.css'; // Import the CSS file for styles
 import Header from './Header';
 import axios from 'axios';
+import {useUser} from '../../UserContext';
 
 const SignInDonor = () => {
+
   const navigate = useNavigate();
   const [donorDetails,setDonorDetails]=useState({
     email:"",
     password:""
   });
+  const  {setUserData} = useUser();
   console.log(donorDetails);
   const fetchData=async()=>{
     try{
     const response=await axios.post("http://localhost:8079/donor/login",donorDetails);
+    console.log(response);
     const status=response.status;
     console.log(status);
     if(status == 200){
+      const userDetailResponse = await axios.get(`http://localhost:8079/donor/donor/${donorDetails.email}`)
+      setUserData(userDetailResponse.data);
       navigate('/donor-dashboard');
     }
+
+    
     }catch(error){
       alert("Invalid Email/Password");
       console.log(error);

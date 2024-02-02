@@ -33,13 +33,17 @@ public class OrphanageController {
     private OrphanageRepository orphanageRepo;
 
     @GetMapping
-    public List<Orphanage> getAll() {
-        return (List<Orphanage>) orphanageRepo.findAll();
+    public ResponseEntity<List<Orphanage>> getAll() {
+        return new ResponseEntity<>(orphanageRepo.findAll(),HttpStatus.OK);
     }
 
     @PostMapping("/register")
-    public String registerUser(@RequestBody Orphanage user) {
-        return orphanageService.registerUser(user);
+    public ResponseEntity<String> registerUser(@RequestBody Orphanage user) {
+        String alpha =  orphanageService.registerUser(user);
+        if(alpha.equals("Success")){
+            return new ResponseEntity<>(alpha,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(alpha,HttpStatus.CONFLICT);
     }
 
     @PostMapping("/login")
@@ -107,46 +111,82 @@ public class OrphanageController {
     }
 
     @PostMapping("/enterDetails")
-    public String updateDetails(@RequestBody OrphanageDetails detail) {
-        return orphanageService.updateDetails(detail);
+    public ResponseEntity<String> updateDetails(@RequestBody OrphanageDetails detail) {
+        return new ResponseEntity<>(orphanageService.updateDetails(detail),HttpStatus.OK);
 
     }
     @PostMapping("/createEvent")
-    public String createEvents(@RequestBody Events event){
-        return orphanageService.createEvents(event);
+    public ResponseEntity<String> createEvents(@RequestBody Events event){
+        String alpha = orphanageService.createEvents(event);
+        if(alpha.equals("Event Created")){
+            return new ResponseEntity<>(alpha,HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Internal Error",HttpStatus.CONFLICT);
     }
 
     @PostMapping("/cancelEvent/{eventId}")
-    public String cancelEvents(@PathVariable String eventId){
-        return orphanageService.cancelEvent(eventId);
+    public ResponseEntity<String> cancelEvents(@PathVariable String eventId){
+        String alpha = orphanageService.cancelEvent(eventId);
+        return new ResponseEntity<>(alpha,HttpStatus.OK);
     }
 
     @PutMapping("/editEvents/{eventId}")
-    public String editEvents(@PathVariable String eventId,@RequestBody Events event){
-        return orphanageService.editEvent(eventId,event);
+    public ResponseEntity<String> editEvents(@PathVariable String eventId,@RequestBody Events event){
+        String alpha = orphanageService.editEvent(eventId,event);
+        if(alpha.equals("Event Updated Successfully")){
+            return new ResponseEntity<>(alpha,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(alpha,HttpStatus.CONFLICT);
     }
     @PostMapping("/sendOtp")
-    public String sendOtp(@RequestBody Orphanage orphanage) {
-        return orphanageService.sendOtp(orphanage);
-
+    public ResponseEntity<String> sendOtp(@RequestBody Orphanage orphanage) {
+        String alpha = orphanageService.sendOtp(orphanage);
+        if(alpha!=null){
+            return new ResponseEntity<>(alpha,HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Internal Error",HttpStatus.CONFLICT);
     }
     @PostMapping("/ForgetPassword/{email}/{otp}/{create}/{confirm}")
-    public String forgetPassword(@PathVariable("email") String email,@PathVariable("create") String create,@PathVariable("otp") String otp,@PathVariable("confirm") String confirm) {
+    public ResponseEntity<String> forgetPassword(@PathVariable("email") String email,@PathVariable("create") String create,@PathVariable("otp") String otp,@PathVariable("confirm") String confirm) {
         System.out.println(create + "   " + confirm + "  " + otp);
-        return orphanageService.forgetPassword(email,otp,create,confirm);
+        String alpha=orphanageService.forgetPassword(email,otp,create,confirm);
+       if(alpha.equals("Password Changed Successfully")){
+           return new ResponseEntity<>(alpha,HttpStatus.OK);
+       }
+       return new ResponseEntity<>(alpha,HttpStatus.CONFLICT);
+    }
+    @PostMapping("/ChangePassword/{email}/{oldPassword}/{newPassword}/{conformNewPassword}")
+    public ResponseEntity<String> changeDonorPassword(@PathVariable("email") String email,@PathVariable("oldPassword") String oldPassword,@PathVariable("newPassword") String newPassword,@PathVariable("conformNewPassword") String conformNewPassword){
+        String alpha=orphanageService.changeDonorPassword(email,oldPassword,newPassword,conformNewPassword);
+        if(alpha.equals("Password Changed Successfully")){
+            return new ResponseEntity<>(alpha,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(alpha,HttpStatus.CONFLICT);
     }
     @PutMapping("/{orphanageId}/editProfile")
-    public String editProfile(@PathVariable("orphanageId") String orphanageId,@RequestBody Orphanage orphanage){
-        return orphanageService.editProfile(orphanageId,orphanage);
+    public ResponseEntity<String> editProfile(@PathVariable("orphanageId") String orphanageId,@RequestBody Orphanage orphanage){
+        String alpha = orphanageService.editProfile(orphanageId,orphanage);
+        if(alpha.equals("Profile Updated Successfully")){
+            return new ResponseEntity<>(alpha,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(alpha,HttpStatus.CONFLICT);
     }
 
     @GetMapping("/{orphanageId}/details")
-    public Optional<OrphanageDetails> detailsById(@PathVariable("orphanageId") String orphanageId){
-        return orphanageService.getDetailById(orphanageId);
+    public ResponseEntity<Optional<OrphanageDetails>> detailsById(@PathVariable("orphanageId") String orphanageId){
+        Optional<OrphanageDetails> orphanageDetails = orphanageService.getDetailById(orphanageId);
+        if(orphanageDetails.isPresent()){
+            return new ResponseEntity<>(orphanageDetails,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null,HttpStatus.CONFLICT);
     }
     @PutMapping("/{orphanageId}/editDetails")
-    public String editDetails(@PathVariable("orphanageId") String orphanageId,@RequestBody OrphanageDetails orphanageDetails){
-        return orphanageService.editDetails(orphanageId,orphanageDetails);
+    public ResponseEntity<String> editDetails(@PathVariable("orphanageId") String orphanageId,@RequestBody OrphanageDetails orphanageDetails){
+        String alpha = orphanageService.editDetails(orphanageId,orphanageDetails);
+        if(alpha.equals("Details Updated Successfully")){
+            return new ResponseEntity<>(alpha,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(alpha,HttpStatus.CONFLICT);
     }
     @PostMapping("/{orphanageId}/orphanageDetails/uploadImages")
     public ResponseEntity<String> uploadImagesById(@PathVariable("orphanageId")String orphanageId,@RequestParam("images") List<MultipartFile> images) throws IOException {
@@ -156,7 +196,7 @@ public class OrphanageController {
     @GetMapping("{orphanageId}/orphanageDetails/viewImages")
     public ResponseEntity<List<OrphanageImage>> getImagesByOrphanageId(@PathVariable String orphanageId) {
         List<OrphanageImage> images = orphanageService.getOrphanageImagesById(orphanageId);
-        return ResponseEntity.ok(images);
+        return new ResponseEntity<>(images,HttpStatus.OK);
     }
     @PostMapping("{orphanageId}/orphanageDetails/removeImage/{imageId}")
     public ResponseEntity<String> removeImageById(@PathVariable("orphanageId")String orphanageId,@PathVariable("imageId") String imageId){

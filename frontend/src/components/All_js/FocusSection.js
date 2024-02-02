@@ -3,7 +3,7 @@ import '../All_css/FocusSection.css';
 
 const ProductSection = () => {
   return (
-    <section>
+    <div className='card-section'>
         <div><h1 className="focus-title">Our Focus</h1></div>
       <div className="row">
         <div className="col-md-12">
@@ -45,7 +45,7 @@ const ProductSection = () => {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

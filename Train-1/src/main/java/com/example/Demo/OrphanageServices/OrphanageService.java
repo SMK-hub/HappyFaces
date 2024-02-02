@@ -43,7 +43,7 @@ public interface OrphanageService {
     void uploadImages(String orphanageId, List<MultipartFile> imageFiles) throws IOException;
 
     List<OrphanageImage> getOrphanageImagesById(String orphanageId);
-
+    String changeDonorPassword(String email,String oldPassword,String newPassword,String conformNewPassword);
 
     void removeImage(String orphanageId, String imageId);
 }

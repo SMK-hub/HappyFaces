@@ -5,6 +5,9 @@ import RightSide from './components/RigtSide/RightSide';
 import Sidebar from './components/Sidebar';
 import OrphDash from './components/OrphDash/OrphDash.jsx';
 import Home from './components/AdminHome';
+import Settings from './components/Settings/Settings.jsx';
+import Donors from './components/Donors/Donors.jsx';
+import PayDash from './components/PayDash/PayDash.jsx';
 
 function DashboardAdmin() {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -16,7 +19,7 @@ function DashboardAdmin() {
 
   const renderContent = () => {
     switch (selectedOption) {
-      case 'dashboard':
+      case 'Dashboard':
         return <Home/>;
       case 'Orphanages':
         return <OrphDash />;
@@ -28,6 +31,13 @@ function DashboardAdmin() {
       //   return <PaymentDashboard />;
       case 'mainDash':
         return <MainDash />;
+      
+      case 'Donors':
+        return <Donors />;   
+      case 'Settings':
+        return <Settings />;  
+      case 'Payments':
+        return <PayDash />;  
       default:
         return <MainDash />;     
       }

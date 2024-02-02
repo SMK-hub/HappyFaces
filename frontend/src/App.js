@@ -28,13 +28,19 @@ import Sidebar from './components/Orphanage_Dashboard/components/Sidebar';
 import RightSide from './components/Orphanage_Dashboard/components/RigtSide/RightSide';
 import PaymentDashboard from './components/Orphanage_Dashboard/components/Payments/Payment';
 import OrphDash from './components/Admin_Dashboard/components/OrphDash/OrphDash';
+import Settings from './components/Admin_Dashboard/components/Settings/Settings';
+import Donors from './components/Admin_Dashboard/components/Donors/Donors'
 import UpdateDetails from './components/Orphanage_Dashboard/components/UpdateDetails/UpdateDetails'
 import Certificates from './components/Orphanage_Dashboard/components/Certificates/Certificates'
 import Photos from './components/Orphanage_Dashboard/components/Photos/Photos'
+import PayDash from './components/Admin_Dashboard/components/PayDash/PayDash';
+import { UserProvider } from './UserContext';
+
+
 
 const App = () => {
   return (
-    <Router>
+    <UserProvider><Router>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/aboutus" element={<AboutUs />} />
@@ -48,7 +54,7 @@ const App = () => {
         <Route path="/signup/admin" element={<SignUpAdmin />} />
         <Route path="/signup/orphanage" element={<SignUpOrphanage />} />
         <Route path="/signup/donor" element={<SignUpDonor />} />
-
+        
         <Route path="/admin-dashboard" element={<DashboardAdmin/>}/>
         <Route path='/orphanage-dashboard' element={<DashboardOrphanage/>}/>
         <Route path="/donor-dashboard" element={<DashboardDonor/>}/>
@@ -66,12 +72,13 @@ const App = () => {
         <Route path="/photos" element={<Photos/>}/>
         <Route path="/profile" element={<Profile/>}/>
         <Route path="/orphanages" element={<OrphDash/>}/> 
+        <Route path="/settings" element={<Settings/>}/>
+        <Route path="/donors" element={<Donors/>}/>
 
-        
-
-        
+        <Route path="/payments" element={<PayDash/>}/>
       </Routes>
-    </Router>
+    </Router></UserProvider>
+    
   );
 };
 

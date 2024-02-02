@@ -5,7 +5,7 @@ import './Events.css';
 const EventTable = () => {
   // Use state to manage events
   const [events, setEvents] = useState([
-    { name: 'Food Drive', description: 'Description of Event 1', participants: 50 },
+    { Orphanage_Name: 'Food Drive', description: 'Description of Event 1', participants: 50 },
     { name: 'Book Donation', description: 'Description of Event 2', participants: 30 },
     // Add more events as needed
   ]);
@@ -18,14 +18,14 @@ const EventTable = () => {
   };
 
   // Function to handle create new event
-  const handleCreateNewEvent = () => {
-    const newEvent = {
-      name: `Event ${events.length + 1}`,
-      description: `Description of Event ${events.length + 1}`,
-      participants: 0,
-    };
-    setEvents([...events, newEvent]);
-  };
+  // const handleCreateNewEvent = () => {
+  //   const newEvent = {
+  //     Orphanage_Name: `Event ${events.length + 1}`,
+  //     Event_Name: `Description of Event ${events.length + 1}`,
+  //     Description: 0,
+  //   };
+  //   setEvents([...events, newEvent]);
+  // };
 
   return (
     <div className='main-event'>
@@ -34,32 +34,30 @@ const EventTable = () => {
         <table className="event-table">
           <thead>
             <tr>
-              <th>Name</th>
+              <th>Orphanage_Name</th>
+              <th>Event_Name</th>
               <th>Description</th>
-              <th>Participants</th>
+              <th>Date/Time</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
             {events.map((event, index) => (
               <tr key={index}>
-                <td>{event.name}</td>
-                <td>{event.description}</td>
-                <td>{event.participants}</td>
+                <td>{event.Orphanage_Name}</td>
+                <td>{event.Event_Name}</td>
+                <td>{event.Description}</td>
+                <td>{event.Date}</td>
                 <td>
                   <button className="cancel-event-button" onClick={() => handleCancelEvent(index)}>
-                    Cancel Event
+                    Cancel Registration
                   </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-        <div className="button-container">
-          <button className="new-event-button" onClick={handleCreateNewEvent}>
-            Create New Event
-          </button>
-        </div>
+        
       </div>
     </div>
   );

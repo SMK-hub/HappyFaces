@@ -6,6 +6,8 @@ import com.example.Demo.Enum.EnumClass.VerificationStatus;
 import com.example.Demo.Model.*;
 import com.example.Demo.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurityAutoConfiguration;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,6 +34,8 @@ public class OrphanageServiceImpl implements OrphanageService {
     private EmailService emailService;
     @Autowired
     private OrphanageImageRepository orphanageImageRepository;
+    @Autowired
+    private OrphanageDetailsRepository orphanageDetailsRepository;
 
     public void saveUser(Optional<Orphanage> optionalOrphanage) {
         optionalOrphanage.ifPresent(orphanage -> {
@@ -45,6 +49,7 @@ public class OrphanageServiceImpl implements OrphanageService {
         Optional<Admin> adminUser=adminRepository.findByEmail(newUser.getEmail());
 
         if (user.isEmpty() && donorUser.isEmpty() && adminUser.isEmpty()) {
+            newUser.setRole(String.valueOf(EnumClass.Roles.ORPHANAGE));
             orphanageRepository.save(newUser);
             String subject = "Registration Successful";
             String body = "Dear " + newUser.getName()
@@ -68,9 +73,17 @@ public class OrphanageServiceImpl implements OrphanageService {
 
     @Override
     public String updateDetails(OrphanageDetails details) {
-        details.setVerificationStatus(VerificationStatus.NOT_VERIFIED);
-        detailRepository.save(details);
-        return "Updated Successfully";
+        Optional<OrphanageDetails> orphanageDetails = orphanageDetailsRepository.findByOrpId(details.getOrpId());
+        if(orphanageDetails.isPresent()) {
+            orphanageDetails.get().setVerificationStatus(VerificationStatus.NOT_VERIFIED);
+            detailRepository.save(orphanageDetails.get());
+            return "Updated Successfully";
+        }
+        else{
+            details.setVerificationStatus(VerificationStatus.NOT_VERIFIED);
+            detailRepository.save(details);
+            return "Details Added successfully";
+        }
     }
     @Override
     public void addProfilePhoto(String orphanageId, MultipartFile file) throws IOException {
@@ -108,9 +121,17 @@ public class OrphanageServiceImpl implements OrphanageService {
 
     @Override
     public String createEvents(Events event) {
-        event.setEventStatus(EnumClass.EventStatus.PLANNED);
-        event.setVerificationStatus(EnumClass.VerificationStatus.NOT_VERIFIED);
-        eventsRepository.save(event);
+        Optional<Events> oldEvent = eventsRepository.getEventsByOrpId(event.getOrpId())
+                .stream()
+                .filter(xEvent-> xEvent.getEventStatus().equals(EnumClass.EventStatus.PLANNED) || xEvent.getEventStatus().equals(EnumClass.EventStatus.ONGOING))
+                .filter(xEvent-> xEvent.getTitle().equals(event.getTitle()))
+                .findAny();
+        if(oldEvent.isEmpty()) {
+            event.setEventStatus(EnumClass.EventStatus.PLANNED);
+            event.setVerificationStatus(EnumClass.VerificationStatus.NOT_VERIFIED);
+            eventsRepository.save(event);
+            return "Event Created";
+        }
         return null;
     }
     @Override
@@ -221,5 +242,18 @@ public class OrphanageServiceImpl implements OrphanageService {
     @Override
     public void removeImage(String orphanageId, String imageId) {
         orphanageImageRepository.deleteByOrphanageIdAndId(orphanageId, imageId);
+    }
+    @Override
+    public String changeDonorPassword(String email,String oldPassword, String newPassword, String conformNewPassword) {
+        Optional<Orphanage> orphanage=orphanageRepository.findByEmail(email);
+        if(orphanage.isPresent()){
+            if(newPassword.equals(conformNewPassword)){
+                orphanage.get().setPassword(newPassword);
+                orphanageRepository.save(orphanage.get());
+                return "Password Changed Successfully";
+            }
+            return "Password Mismatch";
+        }
+        return "Unable to fetch data";
     }
 }

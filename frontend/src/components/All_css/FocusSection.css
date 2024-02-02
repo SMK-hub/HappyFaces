@@ -12,30 +12,25 @@
     padding-bottom: 20px;
 }
 
-body {
-  font-family: 'Oswald', sans-serif;
-  background-color: #ffffff;
-}
-
-section {
-  width: 90%;
+.card-section {
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
 }
 
 .row {
   align-items: center;
-  height: 100%;
   display: flex;
+  width: 100%;
 }
 
 .cards {
   position: relative;
-  height: 800px;
-  width: 400px;
+  height: 600px;
+  width: 350px;
   margin: 30px;
-  transition: ease all var(--transition-time);
-  perspective: 1200px;
+  transition: ease all var(1.3s);
+  /* perspective: 1200px; */
 
   &:hover {
     .cover {

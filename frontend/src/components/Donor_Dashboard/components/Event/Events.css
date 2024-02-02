@@ -25,7 +25,7 @@
 }
 
 .new-event-button, .cancel-event-button {
-  background-color: #007bff;
+  background-color: #bb76af;
   color: #fff;
   border: none;
   padding: 10px 15px;
@@ -35,7 +35,7 @@
 }
 
 .new-event-button:hover, .cancel-event-button:hover {
-  background-color: #0056b3;
+  background-color: #ce43c2;
 }
 
 .button-container {

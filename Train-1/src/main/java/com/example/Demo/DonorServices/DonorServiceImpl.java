@@ -43,6 +43,7 @@ public class DonorServiceImpl implements DonorService {
         Optional<Admin> adminUser=adminRepository.findByEmail(newUser.getEmail());
 
         if (user.isEmpty() && orpUser.isEmpty() && adminUser.isEmpty()) {
+            newUser.setRole(String.valueOf(EnumClass.Roles.DONOR));
             donorRepository.save(newUser);
             String subject = "Registration Successful";
             String body = "Dear " + newUser.getName() + ", Welcome to Happy Faces! Your registration as a donor brings smiles to countless faces. Thank you for joining us in making a positive impact!";
@@ -69,13 +70,15 @@ public class DonorServiceImpl implements DonorService {
     }
 
     @Override
-    public String editProfile(String donorId, Donor donor) {
+    public Donor editProfile(String donorId, Donor donor) {
 
             Optional<Donor> optionalDonor=donorRepository.findById(donorId);
             if(optionalDonor.isPresent()){
-                donor.setDonorId(donorId);
-                donorRepository.save(donor);
-                return "Profile Updated Successfully";
+                optionalDonor.get().setName(donor.getName());
+                optionalDonor.get().setEmail(donor.getEmail());
+                optionalDonor.get().setContact(donor.getContact());
+                donorRepository.save(optionalDonor.get());
+                return optionalDonor.get();
             }
             return null;
     }
@@ -203,6 +206,25 @@ public class DonorServiceImpl implements DonorService {
         String subject="Event Registration Cancelled";
         String body="We appreciate your initial commitment, and while we understand your circumstances, we hope to welcome you back as a valued donor in the future.";
         emailService.sendSimpleMail(donor.get().getEmail(),subject,body);
+    }
+
+    @Override
+    public Optional<Donor> getDonorByEmail(String email) {
+        return donorRepository.findByEmail(email);
+    }
+
+    @Override
+    public Donor changeDonorPassword(String email,String oldPassword, String newPassword, String conformNewPassword) {
+        Optional<Donor> donor=donorRepository.findByEmail(email);
+        if(donor.isPresent()){
+            if(newPassword.equals(conformNewPassword)){
+                donor.get().setPassword(newPassword);
+                donorRepository.save(donor.get());
+                return donor.get();
+            }
+            return null;
+        }
+        return null;
     }
 
 }

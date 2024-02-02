@@ -17,7 +17,7 @@ public interface DonorService {
 
     Optional<Donor> viewProfile(String donorId);
 
-    String editProfile(String donorId, Donor donor);
+    Donor editProfile(String donorId, Donor donor);
 
     void addProfilePhoto(String donorId, MultipartFile file) throws IOException;
 
@@ -38,5 +38,8 @@ public interface DonorService {
     void eventRegister(String eventId, String donorId);
 
     void cancelEventRegistration(String eventId, String donorId);
+
+    Optional<Donor> getDonorByEmail(String email);
+    Donor changeDonorPassword(String email,String oldPassword,String newPassword,String conformNewPassword);
 
 }

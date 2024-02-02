@@ -27,7 +27,7 @@ export const SidebarData = [
   {
     icon: UilHome,
     heading: "Dashboard",
-    path: "dashboard",
+    path: "Dashboard",
   },
   {
     icon: UilHome,
@@ -37,6 +37,7 @@ export const SidebarData = [
   {
     icon: UilUsersAlt,
     heading: "Donors",
+    path: "Donors",
   },
   {
     icon: UilCalendarAlt,
@@ -45,10 +46,12 @@ export const SidebarData = [
   {
     icon: UilCreditCard,
     heading: 'Payments',
+    path:'Payments',
   },
   {
     icon: UilSetting,
     heading: 'Settings',
+    path:'Settings',
   }
 ];
 
@@ -135,6 +138,7 @@ export const orphanagesData = [
     establishedDate: "12-01-2022",
     location: "Marathalli",
     contact: "123-456-7890",
+    status:  "Verified",
     images: [
       "https://th.bing.com/th/id/OIP.Gc2MgkiJTYmOBrv0HqpE1AHaFj?rs=1&pid=ImgDetMain",
     ],
@@ -146,6 +150,7 @@ export const orphanagesData = [
     establishedDate: "07-01-2023",
     location: "Tin Factory",
     contact: "123-456-4557",
+    status: "Verified",
     images: [
       "https://th.bing.com/th/id/OIP.Gc2MgkiJTYmOBrv0HqpE1AHaFj?rs=1&pid=ImgDetMain",
     ],
@@ -157,6 +162,7 @@ export const orphanagesData = [
     establishedDate: "05-05-2020",
     location: "RR Nagar",
     contact: "723-456-1560",
+    status: "Not Verified",
     images: [
       "https://th.bing.com/th/id/OIP.Gc2MgkiJTYmOBrv0HqpE1AHaFj?rs=1&pid=ImgDetMain",
     ],
@@ -168,6 +174,7 @@ export const orphanagesData = [
     establishedDate: "11-07-2019",
     location: "Church Street",
     contact: "123-456-7890",
+    status: "Not Verified",
     images: [
       "https://th.bing.com/th/id/OIP.Gc2MgkiJTYmOBrv0HqpE1AHaFj?rs=1&pid=ImgDetMain",
     ],
@@ -179,9 +186,106 @@ export const orphanagesData = [
     establishedDate: "06-08-2022",
     location: "Lalbagh",
     contact: "223-656-7690",
+    status: "Verified",
     images: [
       "https://th.bing.com/th/id/OIP.Gc2MgkiJTYmOBrv0HqpE1AHaFj?rs=1&pid=ImgDetMain",
     ],
   },
-
 ];
+
+export const donorsData = [
+  {
+    id: 1,
+    name: "Srikanth",
+    email: "srikantharamandla135@gmail.com",
+    contact: "6301478132",
+    location: "Bangalore",
+    amount: "25000",
+  },
+
+  {
+    id: 2,
+    name: "Tarantino",
+    email: "pulpfiction@gmail.com",
+    contact: "9490052625",
+    location: "Newyork",
+    amount: 25000,
+  },
+
+  {
+    id: 3,
+    name: "Scorsese",
+    email: "goodfelllas@gmail.com",
+    contact: "6301478122",
+    location: "Texas",
+    amount: "25000",
+  },
+
+  {
+    id: 4,
+    name: "David Fincher",
+    email: "seven@gmail.com",
+    contact: "6301478144",
+    location: "California",
+    amount: "25000",
+  },
+
+  {
+    id: 5,
+    name: "Nolan",
+    email: "inception@gmail.com",
+    contact: "6301478155",
+    location: "Beverly Hills",
+    amount: "25000",
+  },
+];
+
+export const payData = [
+  {
+    id: 1,
+    name: "Manonmai",
+    contact: "6301478132",
+    location: "RR Nagar",
+    orphanage: "Leo",
+    date: "11-01-2024",
+    donated: "Money",
+  },
+  {
+    id: 2,
+    name: "Srikanth",
+    contact: "6301478133",
+    location: "Marathalli",
+    orphanage: "Kaithi",
+    date: "07-05-2023",
+    donated: "Food",
+  },
+  {
+    id: 3,
+    name: "Siddik",
+    contact: "6301478134",
+    location: "Tin Factory",
+    orphanage: "Vikram",
+    date: "20-08-2021",
+    donated: "Books",
+  },
+  {
+    id: 4,
+    name: "Venu",
+    contact: "6301478135",
+    location: "Indira Nagar",
+    orphanage: "Master",
+    date: "11-06-2023",
+    donated: "Clothes",
+  },
+  {
+    id: 5,
+    name: "Bhargavi",
+    contact: "6301478136",
+    location: "Church Street",
+    orphanage: "Rolex",
+    date: "12-01-2022",
+    donated: "Money",
+  },
+];
+
+

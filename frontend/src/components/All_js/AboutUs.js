@@ -4,6 +4,7 @@ import { FaRegHeart, FaHandsHelping, FaUsers, FaMicrophoneAlt, FaWhatsapp } from
 import { Link } from 'react-router-dom';
 import '../All_css/AboutUs.css';
 import Header from './Header';
+import Footer from './Footer';
 
 
 const AboutUs = () => {
@@ -77,24 +78,25 @@ const AboutUs = () => {
 
       <div className="visually-striking-section">
         <div className="animated-circles"></div>
-        <h3 className="striking-heading">Experience the Magic</h3>
+        <h3 className="striking-heading">Building bright Futures</h3>
         <p className="striking-description">
-          Immerse yourself in a world of possibilities and wonder.
+        "Nurturing hope and creating smiles for every child at our orphanage."
         </p>
       </div>
 
-      <div className="contact-us-section">
-        <h3>Contact Us</h3>
-        <p>
-          <FaWhatsapp style={{ marginRight: '10px' }} /> WhatsApp: 123456789
-        </p>
-        <p>Email: <a href={emailLink}>{emailLink}</a></p>
-      </div>
+        {/* <div className="contact-us-section">
+          <h3>Contact Us</h3>
+          <p>
+            <FaWhatsapp style={{ marginRight: '10px' }} /> WhatsApp: 123456789
+          </p>
+          <p>Email: <a href={emailLink}>{emailLink}</a></p>
+        </div>
 
-      <div className="trademark-section">
-        <p>&copy; 2024 Happy Faces</p>
+        <div className="trademark-section">
+          <p>&copy; 2024 Happy Faces</p>
+        </div> */}
       </div>
-    </div>
+      <Footer/>
     </div>
   );
 };

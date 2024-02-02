@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Events {
 	@Id
 	private String id;
-	private ObjectId orpId;
+	private String orpId;
     private String title;
     private String description;
     private String date;
@@ -21,7 +21,7 @@ public class Events {
     private List<InterestedPerson> interestedPersons=new ArrayList<>();
     private EnumClass.VerificationStatus verificationStatus;
 	
-	public Events(String id, ObjectId orpId, String title, String description, String date, String time,
+	public Events(String id, String orpId, String title, String description, String date, String time,
 			EnumClass.VerificationStatus verificationStatus, List<InterestedPerson> interestedPersons) {
 		super();
 		this.id = id;
@@ -34,11 +34,11 @@ public class Events {
 		this.interestedPersons = interestedPersons;
 	}
 
-	public ObjectId getOrpId() {
+	public String getOrpId() {
 		return orpId;
 	}
 
-	public void setOrpId(ObjectId orpId) {
+	public void setOrpId(String orpId) {
 		this.orpId = orpId;
 	}
 
