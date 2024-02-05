@@ -5,6 +5,13 @@
   margin-top: 55px;
   
 }
+.text-field{
+  display: flex;
+  align-items: baseline;
+}
+.text-field p{
+  width: 270px;
+}
 
 .profile-containers {
   display: flex;

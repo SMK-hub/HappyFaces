@@ -1,6 +1,7 @@
 package com.example.Demo.DonorServices;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -71,16 +72,32 @@ public class DonorServiceImpl implements DonorService {
 
     @Override
     public Donor editProfile(String donorId, Donor donor) {
+        Optional<Donor> optionalDonor = donorRepository.findById(donorId);
 
-            Optional<Donor> optionalDonor=donorRepository.findById(donorId);
-            if(optionalDonor.isPresent()){
-                optionalDonor.get().setName(donor.getName());
-                optionalDonor.get().setEmail(donor.getEmail());
-                optionalDonor.get().setContact(donor.getContact());
-                donorRepository.save(optionalDonor.get());
-                return optionalDonor.get();
+        if (optionalDonor.isPresent()) {
+            Donor existingDonor = optionalDonor.get();
+
+            Class<?> donorClass = Donor.class;
+            Field[] fields = donorClass.getDeclaredFields();
+
+            for (Field field : fields) {
+                field.setAccessible(true);
+
+                try {
+                    Object newValue = field.get(donor);
+                    if (newValue != null && !newValue.toString().isEmpty()) {
+                        field.set(existingDonor, newValue);
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace(); // Handle the exception according to your needs
+                }
             }
-            return null;
+
+            donorRepository.save(existingDonor);
+            return existingDonor;
+        }
+
+        return null;
     }
 
     @Override

@@ -6,8 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import com.example.Demo.Model.Events;
-import com.example.Demo.Model.OrphanageImage;
+import com.example.Demo.Model.*;
 import com.example.Demo.Repository.OrphanageImageRepository;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +16,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.Demo.Model.Orphanage;
-import com.example.Demo.Model.OrphanageDetails;
 import com.example.Demo.OrphanageServices.OrphanageService;
 import com.example.Demo.Repository.OrphanageRepository;
 import org.springframework.web.multipart.MultipartFile;
@@ -156,20 +153,20 @@ public class OrphanageController {
        return new ResponseEntity<>(alpha,HttpStatus.CONFLICT);
     }
     @PostMapping("/ChangePassword/{email}/{oldPassword}/{newPassword}/{conformNewPassword}")
-    public ResponseEntity<String> changeDonorPassword(@PathVariable("email") String email,@PathVariable("oldPassword") String oldPassword,@PathVariable("newPassword") String newPassword,@PathVariable("conformNewPassword") String conformNewPassword){
-        String alpha=orphanageService.changeDonorPassword(email,oldPassword,newPassword,conformNewPassword);
-        if(alpha.equals("Password Changed Successfully")){
+    public ResponseEntity<Optional<Orphanage>> changeDonorPassword(@PathVariable("email") String email,@PathVariable("oldPassword") String oldPassword,@PathVariable("newPassword") String newPassword,@PathVariable("conformNewPassword") String conformNewPassword){
+        Optional<Orphanage> alpha=orphanageService.changeOrphanagePassword(email,oldPassword,newPassword,conformNewPassword);
+        if(alpha.isPresent()){
             return new ResponseEntity<>(alpha,HttpStatus.OK);
         }
         return new ResponseEntity<>(alpha,HttpStatus.CONFLICT);
     }
     @PutMapping("/{orphanageId}/editProfile")
-    public ResponseEntity<String> editProfile(@PathVariable("orphanageId") String orphanageId,@RequestBody Orphanage orphanage){
-        String alpha = orphanageService.editProfile(orphanageId,orphanage);
-        if(alpha.equals("Profile Updated Successfully")){
-            return new ResponseEntity<>(alpha,HttpStatus.OK);
+    public ResponseEntity<Orphanage> editProfile(@PathVariable("orphanageId") String orphanageId,@RequestBody Orphanage orphanage){
+        Orphanage orphanageValue= orphanageService.editProfile(orphanageId,orphanage);
+        if(orphanageValue!=null){
+            return new ResponseEntity<>(orphanageValue,HttpStatus.OK);
         }
-        return new ResponseEntity<>(alpha,HttpStatus.CONFLICT);
+        return new ResponseEntity<>(orphanageValue,HttpStatus.CONFLICT);
     }
 
     @GetMapping("/{orphanageId}/details")
@@ -202,5 +199,10 @@ public class OrphanageController {
     public ResponseEntity<String> removeImageById(@PathVariable("orphanageId")String orphanageId,@PathVariable("imageId") String imageId){
         orphanageService.removeImage(orphanageId,imageId);
         return ResponseEntity.ok("Image Removed Successfully");
+    }
+    @GetMapping("/orphanage/{orphanageEmail}")
+    public ResponseEntity<Orphanage> getDonorByEmail(@PathVariable String orphanageEmail){
+        Optional<Orphanage> orphanage=orphanageService.getOrphanageByEmail(orphanageEmail);
+        return orphanage.map(ResponseEntity::ok).orElseGet(()->ResponseEntity.notFound().build());
     }
 }

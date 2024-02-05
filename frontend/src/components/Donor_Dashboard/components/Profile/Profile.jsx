@@ -93,32 +93,34 @@ console.log(userDetails);
 
   return (
     <div className='heading'>
-      <h1>Manager's Profile</h1>
+      <h1>Profile</h1>
       <div className="profile-container">
         <div className="profile-picture">
           <img src="https://images.pexels.com/photos/775358/pexels-photo-775358.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Profile" />
         </div>
         <div className="profile-details">
           {isEditMode ? (
-            <>
+            <><p>Name:</p>
               <input
                 type="text"
-                value={userDetails?.name}
+                // value={userDetails?.name}
                 placeholder={userDetails?.name}
                 onChange={(e) => setDonorDetail({...donorDetail,name:e.target.value})}
               />
+              <p>Email:
               <input
                 type="text"
-                value={userDetails?.name}
+                // value={userDetails?.email}
                 placeholder={userDetails?.email}
                 onChange={(e) => setDonorDetail({...donorDetail,email:e.target.value})}
-              />
+              /></p>
+              <p>Contact:
               <input
                 type="text"
-                value={userDetails?.name}
+                // value={userDetails?.contact}
                 placeholder={userDetails?.contact}
                 onChange={(e) => setDonorDetail({...donorDetail,contact:e.target.value})}
-              />
+              /></p>
               <div className="button-group">
                 <button onClick={handleSaveChangesClick}>Save Changes</button>
                 <button onClick={() => setIsEditMode(false)}>Back</button>

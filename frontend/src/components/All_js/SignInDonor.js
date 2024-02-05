@@ -12,16 +12,15 @@ const SignInDonor = () => {
     email:"",
     password:""
   });
+
   const  {setUserData} = useUser();
-  console.log(donorDetails);
   const fetchData=async()=>{
     try{
     const response=await axios.post("http://localhost:8079/donor/login",donorDetails);
-    console.log(response);
     const status=response.status;
     console.log(status);
     if(status == 200){
-      const userDetailResponse = await axios.get(`http://localhost:8079/donor/donor/${donorDetails.email}`)
+      const userDetailResponse = await axios.get(`http://localhost:8079/donor/donor/${donorDetails.email}`);
       setUserData(userDetailResponse.data);
       navigate('/donor-dashboard');
     }

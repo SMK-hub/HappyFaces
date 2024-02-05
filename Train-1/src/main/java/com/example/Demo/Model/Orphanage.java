@@ -13,7 +13,16 @@ public class Orphanage {
     private String email;
     private byte[] profilePhoto;
     private String password;
+    private String contact;
     private String role;
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
 
     public String getOrpId() {
         return orpId;
@@ -63,16 +72,21 @@ public class Orphanage {
         this.profilePhoto = profilePhoto;
     }
 
-    public Orphanage(String id, String name, String email, String password, String role) {
+    public Orphanage(String id, String name, String email, String password, String contact, String role) {
         super();
         this.orpId = id;
         this.name = name;
         this.email = email;
         this.password = password;
+        this.contact = contact;
         this.role = role;
     }
 
-    public Orphanage() {
+    public Orphanage(String contact) {
+        super();
+        this.contact = contact;
+    }
+    public Orphanage(){
         super();
     }
 }

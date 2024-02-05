@@ -1,25 +1,27 @@
-/* eslint-disable eqeqeq */
-// components/SignInAdmin.js
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../All_css/SignInOrphanage.css'; // Import the CSS file for styles
 import Header from "./Header"
 import axios from 'axios';
-
+import {useUser} from '../../UserContext';
 
 const SignInOrphanage = () => {
+
   const navigate = useNavigate();
   const [orphanageDetails,setOrphanageDetails]=useState({
     email:"",
     password:""
   });
   
+  const  {setUserData} = useUser();
   const fetchData = async() =>{
     try{
       const response=await axios.post("http://localhost:8079/orphanage/login",orphanageDetails);
       const status=response.status;
       console.log(status);
       if(status == 200){
+        const userDetailResponse=await axios.get(`http://localhost:8079/orphanage/orphanage/${orphanageDetails.email}`);
+        setUserData(userDetailResponse.data)
         navigate("/orphanage-dashboard");
       }
       }catch(error){

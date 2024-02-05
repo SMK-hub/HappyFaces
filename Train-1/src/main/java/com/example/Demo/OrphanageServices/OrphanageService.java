@@ -1,9 +1,6 @@
 package com.example.Demo.OrphanageServices;
 
-import com.example.Demo.Model.Events;
-import com.example.Demo.Model.Orphanage;
-import com.example.Demo.Model.OrphanageDetails;
-import com.example.Demo.Model.OrphanageImage;
+import com.example.Demo.Model.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -36,14 +33,16 @@ public interface OrphanageService {
 
     public String forgetPassword(String email, String otp, String create, String confirm);
 
-    String editProfile(String orphanageId, Orphanage orphanage);
+    Orphanage editProfile(String orphanageId, Orphanage orphanage);
 
     String editDetails(String orphanageId, OrphanageDetails orphanageDetails);
 
     void uploadImages(String orphanageId, List<MultipartFile> imageFiles) throws IOException;
 
     List<OrphanageImage> getOrphanageImagesById(String orphanageId);
-    String changeDonorPassword(String email,String oldPassword,String newPassword,String conformNewPassword);
+    Optional<Orphanage> changeOrphanagePassword(String email, String oldPassword, String newPassword, String conformNewPassword);
 
     void removeImage(String orphanageId, String imageId);
+    Optional<Orphanage> getOrphanageByEmail(String email);
+
 }

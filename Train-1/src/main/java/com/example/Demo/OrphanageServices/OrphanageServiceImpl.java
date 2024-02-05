@@ -6,12 +6,11 @@ import com.example.Demo.Enum.EnumClass.VerificationStatus;
 import com.example.Demo.Model.*;
 import com.example.Demo.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurityAutoConfiguration;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -202,12 +201,29 @@ public class OrphanageServiceImpl implements OrphanageService {
         return "user not existed";
     }
 
-    public String editProfile(String orphanageId, Orphanage orphanage) {
+    public Orphanage editProfile(String orphanageId, Orphanage orphanage) {
         Optional<Orphanage> optionalOrphanage = orphanageRepository.findById(orphanageId);
         if (optionalOrphanage.isPresent()) {
-            orphanage.setOrpId(orphanageId);
-            orphanageRepository.save(orphanage);
-            return "Profile Updated Successfully";
+            Orphanage existingOrphanage = optionalOrphanage.get();
+
+            Class<?> orphanageClass = Orphanage.class;
+            Field[] fields = orphanageClass.getDeclaredFields();
+
+            for(Field field:fields){
+                field.setAccessible(true);
+
+                try{
+                    Object newValue = field.get(orphanage);
+                    if(newValue != null && !newValue.toString().isEmpty()){
+                        field.set(existingOrphanage,newValue);
+                    }
+                }catch (IllegalAccessException e) {
+                    e.printStackTrace(); // Handle the exception according to your needs
+                }
+            }
+
+            orphanageRepository.save(existingOrphanage);
+            return existingOrphanage;
         }
         return null;
     }
@@ -243,17 +259,23 @@ public class OrphanageServiceImpl implements OrphanageService {
     public void removeImage(String orphanageId, String imageId) {
         orphanageImageRepository.deleteByOrphanageIdAndId(orphanageId, imageId);
     }
+
     @Override
-    public String changeDonorPassword(String email,String oldPassword, String newPassword, String conformNewPassword) {
+    public Optional<Orphanage> getOrphanageByEmail(String email) {
+        return orphanageRepository.findByEmail(email);
+    }
+
+    @Override
+    public Optional<Orphanage> changeOrphanagePassword(String email, String oldPassword, String newPassword, String conformNewPassword) {
         Optional<Orphanage> orphanage=orphanageRepository.findByEmail(email);
         if(orphanage.isPresent()){
             if(newPassword.equals(conformNewPassword)){
                 orphanage.get().setPassword(newPassword);
                 orphanageRepository.save(orphanage.get());
-                return "Password Changed Successfully";
+                return orphanage;
             }
-            return "Password Mismatch";
+            return Optional.empty();
         }
-        return "Unable to fetch data";
+        return Optional.empty();
     }
 }
