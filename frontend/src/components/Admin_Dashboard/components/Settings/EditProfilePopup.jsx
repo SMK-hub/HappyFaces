@@ -4,7 +4,7 @@ import React, { useState, useRef } from 'react';
 import AvatarEditor from 'react-avatar-editor';
 import './EditProfilePopup.css';
 
-const EditProfilePopup = ({ onClose }) => {
+const EditProfilePopup = ({ onClose, onUpdateProfileImage, onUpdateProfileDetails }) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -25,6 +25,12 @@ const EditProfilePopup = ({ onClose }) => {
 
     // Close the popup after saving changes
     onClose();
+
+    // Pass the updated image to the callback function
+    onUpdateProfileImage(croppedImage || originalImage);
+
+    // Pass the updated details to the callback function
+    onUpdateProfileDetails(username, email);
   };
 
   const handleProfilePictureChange = (e) => {

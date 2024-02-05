@@ -1,14 +1,25 @@
 // Settings.js
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Settings.css'; // Import the CSS file
 import EditProfilePopup from './EditProfilePopup'; // Import the EditProfilePopup component
 import img2 from './img2.png';
+
 const Settings = () => {
   const [isEditPopupOpen, setEditPopupOpen] = useState(false);
-  const name = "John Doe";
-  const email = "example@email.com";
+  const [profileImage, setProfileImage] = useState(() => {
+    // Retrieve the image from localStorage on component mount
+    const storedImage = localStorage.getItem('profileImage');
+    return storedImage || img2;
+  });
+  const [name, setName] = useState("John Doe");
+  const [email, setEmail] = useState("example@email.com");
   const role = "Admin";
+
+  useEffect(() => {
+    // Save the profile image to localStorage whenever it's updated
+    localStorage.setItem('profileImage', profileImage);
+  }, [profileImage]);
 
   const openEditPopup = () => {
     setEditPopupOpen(true);
@@ -18,6 +29,18 @@ const Settings = () => {
     setEditPopupOpen(false);
   };
 
+  // Callback functions to update profile details
+  const updateProfileImage = (newImage) => {
+    setProfileImage(newImage);
+  };
+
+  const updateProfileDetails = (newName, newEmail) => {
+    setName(newName);
+    setEmail(newEmail);
+  };
+
+  const altText = profileImage ? "Profile" : "Default Profile";
+
   return (
     <div className="settings">
       <div className="card-box">
@@ -25,8 +48,8 @@ const Settings = () => {
           <div className="profile-circle">
             {/* Replace the icon with a circular image */}
             <img
-              src={img2} 
-              alt="Profile"
+              src={profileImage}
+              alt={altText}
               className="profile-image"
             />
           </div>
@@ -49,7 +72,13 @@ const Settings = () => {
         </div>
       </div>
 
-      {isEditPopupOpen && <EditProfilePopup onClose={closeEditPopup} />}
+      {isEditPopupOpen && (
+        <EditProfilePopup
+          onClose={closeEditPopup}
+          onUpdateProfileImage={updateProfileImage}
+          onUpdateProfileDetails={updateProfileDetails}
+        />
+      )}
     </div>
   );
 };
