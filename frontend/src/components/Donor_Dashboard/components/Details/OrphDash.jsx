@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./OrphDash.css";
 import { orphanagesData } from "../../Data/Data";
 import '@fortawesome/fontawesome-free/css/all.css';
@@ -8,7 +8,10 @@ import { jsPDF } from "jspdf";
 const OrphDash = () => {
   const [imagePopupVisible, setImagePopupVisible] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState("All");
-  const [selectedOrphanage, setSelectedOrphanage] = useState(null);
+  const [selectedOrphanage, setSelectedOrphanage] = useState({
+    orphanage: null,
+    events: [],
+  });
   const [selectedRequirement, setSelectedRequirement] = useState("All");
   const [eventDetailsVisible, setEventDetailsVisible] = useState(false);
   const [registrationSuccessVisible, setRegistrationSuccessVisible] = useState(false);
@@ -26,12 +29,19 @@ const OrphDash = () => {
     setSelectedRequirement(e.target.value);
   };
  
-  const openModal = (orphanage) => {
-    setSelectedOrphanage(orphanage);
+  const openModal = async (orphanage) => {
+    const events = await fetchEvents(orphanage.id);
+    setSelectedOrphanage({
+      orphanage,
+      events,
+    });
   };
  
   const closeModal = () => {
-    setSelectedOrphanage(null);
+    setSelectedOrphanage({
+      orphanage: null,
+      events: [],
+    });
     setEventDetailsVisible(false);
   };
  
@@ -50,7 +60,6 @@ const OrphDash = () => {
   };
  
   const handleEventsButtonClick = () => {
-    console.log("Events button clicked");
     setEventDetailsVisible(true);
   };
  
@@ -71,7 +80,7 @@ const OrphDash = () => {
     console.log(`Donation option selected: ${option}`);
     if (option === 'Requirements') {
       setDonationDescriptionVisible(true);
-    } else if (option === 'Money') {
+    } else if (option === 'Others') {
       // Handle the case for donating money
     }
   };
@@ -81,7 +90,10 @@ const OrphDash = () => {
   };
  
   const handleBackButtonClick = () => {
-    setSelectedOrphanage(null);
+    setSelectedOrphanage({
+      orphanage: null,
+      events: [],
+    });
   };
  
   const handleDonationDescriptionClose = () => {
@@ -89,7 +101,6 @@ const OrphDash = () => {
   };
  
   const handleDonationDescriptionSave = () => {
-    // Add logic to save the donation description
     console.log("Donation description saved");
     setDonationDescriptionVisible(false);
   };
@@ -100,6 +111,13 @@ const OrphDash = () => {
       (selectedRequirement === "All" || orphanage.requirements === selectedRequirement)
     );
   });
+ 
+  const fetchEvents = (orphanageId) => {
+    return [
+      { id: 1, dateTime: "2024-02-10 15:00:00" },
+      { id: 2, dateTime: "2024-02-15 18:30:00" },
+    ];
+  };
  
   return (
     <div>
@@ -155,13 +173,15 @@ const OrphDash = () => {
         </table>
  
         {/* Modal */}
-        {selectedOrphanage && (
+        {selectedOrphanage.orphanage && (
           <div className="modal">
             <div className="modal-content">
               <span className="close" onClick={closeModal}>&times;</span>
-              <h3>{selectedOrphanage.name}</h3>
-              <p className="field-name">Director:<span> {selectedOrphanage.director}</span></p>
-              <p className="field-name">Certificates:{" "} <button onClick={() => downloadCertificates(selectedOrphanage)}>Download</button></p>
+              <h3>{selectedOrphanage.orphanage.name}</h3>
+              <p className="field-name">Orphanage Name:<span> {selectedOrphanage.orphanage.name}</span></p>
+              <p className="field-name">Location:<span> {selectedOrphanage.orphanage.location}</span></p>
+              <p className="field-name">Director:<span> {selectedOrphanage.orphanage.director}</span></p>
+              <p className="field-name">Certificates:{" "} <button onClick={() => downloadCertificates(selectedOrphanage.orphanage)}>Download</button></p>
  
               {/* Add "Events" and "Donate" buttons */}
               <div className="button-container">
@@ -174,20 +194,42 @@ const OrphDash = () => {
  
         {imagePopupVisible && (
           <ImagePopup
-            images={selectedOrphanage ? selectedOrphanage.images : []}
+            images={selectedOrphanage.orphanage ? selectedOrphanage.orphanage.images : []}
             onClose={closeImagePopup}
             onBack={handleBackButtonClick}
           />
         )}
  
         {/* Event Details Card Box */}
-        {eventDetailsVisible && selectedOrphanage && (
+        {eventDetailsVisible && selectedOrphanage.orphanage && (
           <div className="modal">
             <div className="event-details-content">
               <span className="close" onClick={handleEventDetailsClose}>&times;</span>
-              <h3>{selectedOrphanage.name} Event Details</h3>
+              <h3>{selectedOrphanage.orphanage.name} Event Details</h3>
+ 
+              {/* Display Events in a Table */}
+              <table>
+                <thead>
+                  <tr>
+                    <th>Orphanage Name</th>
+                    <th>Date/Time</th>
+                    <th>Register Event</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {selectedOrphanage.events.map((event, index) => (
+                    <tr key={index}>
+                      <td>{selectedOrphanage.orphanage.name}</td>
+                      <td>{event.dateTime}</td>
+                      <td>
+                        <button onClick={handleRegisterEvent}>Register Event</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+ 
               <p>"Unlock a world of inspiration at our upcoming event. Join us for an enriching experience. Register now to secure your spot, connect with like-minded individuals, and contribute to a meaningful cause. Don't miss out on this transformative event!"</p>
-              <button onClick={handleRegisterEvent}>Register Event</button>
               <button className="back-button" onClick={handleEventDetailsClose}>Back</button>
             </div>
           </div>
@@ -205,15 +247,15 @@ const OrphDash = () => {
         )}
  
         {/* Donation Pop-up */}
-        {donationPopupVisible && selectedOrphanage && (
+        {donationPopupVisible && selectedOrphanage.orphanage && (
           <div className="modal">
             <div className="donation-popup-content">
               <span className="close" onClick={() => setDonationPopupVisible(false)}>&times;</span>
-              <h3>Donate to {selectedOrphanage.name}</h3>
+              <h3>Donate to {selectedOrphanage.orphanage.name}</h3>
               <p>Choose a donation option:</p>
               <div className="button-container">
                 <button onClick={() => handleDonationOption('Requirements')}>Donate Requirements</button>
-                <button onClick={() => handleDonationOption('Money')}>Donate Money</button>
+                <button onClick={() => handleDonationOption('Others')}>Donate Money</button>
               </div>
               {/* Additional close button inside the pop-up content */}
               <button className="close-button-inside" onClick={() => setDonationPopupVisible(false)}>Close</button>
@@ -226,7 +268,7 @@ const OrphDash = () => {
           <div className="modal donation-description-modal">
             <div className="donation-description-popup-content">
               <span className="close" onClick={handleDonationDescriptionClose}>&times;</span>
-              <h3>Donate Requirements - {selectedOrphanage.name}</h3>
+              <h3>Donate Requirements - {selectedOrphanage.orphanage.name}</h3>
               <p>Enter a description of the requirements you wish to donate:</p>
               <textarea placeholder="Description" rows="4" cols="50"></textarea>
               <div className="button-container">
