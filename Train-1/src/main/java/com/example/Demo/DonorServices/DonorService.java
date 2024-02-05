@@ -40,6 +40,7 @@ public interface DonorService {
     void cancelEventRegistration(String eventId, String donorId);
 
     Optional<Donor> getDonorByEmail(String email);
-    Donor changeDonorPassword(String email,String oldPassword,String newPassword,String conformNewPassword);
+
+    Donor changeDonorPassword(String email, String oldPassword, String newPassword, String conformNewPassword);
 
 }

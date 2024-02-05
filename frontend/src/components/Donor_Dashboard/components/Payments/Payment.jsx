@@ -9,8 +9,7 @@ function createData(name, amount, transactionId, time, status) {
  
 const rows = [
   createData('John Doe', 100, 'TX123', '2024-01-20 08:30'),
-  createData('Jane Smith', 50, 'TX124', '2024-01-21 12:45'),
-  // Add more rows as needed
+  createData('Jane Smith', 50, 'TX124', '2024-01-21 12:45')
 ];
  
 const getTotalAmount = () => {
@@ -42,7 +41,6 @@ const PaymentDashboard = () => {
                   <td>${row.amount}</td>
                   <td>{row.transactionId}</td>
                   <td>{row.time}</td>
-                  <td>{row.status}</td>
                 </tr>
               ))}
             </tbody>

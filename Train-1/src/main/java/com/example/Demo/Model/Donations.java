@@ -7,20 +7,16 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "donationDetails")
 public class Donations {
-	
-	@Id
-	private String donid;
-	
-	@Field("donorId")
-	private ObjectId donorId;
-	
-	@Field("orpId")
-	private ObjectId orpId;
-	private String amount;
-	private String status;
-	private String date; 
-	
-	public Donations() {
+
+    @Id
+    private String donid;
+    private ObjectId donorId;
+    private ObjectId orpId;
+    private String amount;
+    private String status;
+    private String date;
+
+    public Donations() {
         // Default constructor
     }
 
@@ -93,5 +89,5 @@ public class Donations {
                 ", date='" + date + '\'' +
                 '}';
     }
-	
+
 }

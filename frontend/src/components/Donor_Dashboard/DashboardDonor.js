@@ -47,7 +47,6 @@ function DashboardDonor() {
       <div className='AppGlass'>
         <Sidebar onOptionSelect={handleOptionSelect} />
         {renderContent()}
-        <RightSide />
       </div>
     </div>
   );
