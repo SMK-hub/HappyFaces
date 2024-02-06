@@ -6,8 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import com.example.Demo.Model.Events;
-import com.example.Demo.Model.OrphanageDetails;
+import com.example.Demo.AdminServices.AdminService;
+import com.example.Demo.Model.*;
+import com.example.Demo.OrphanageServices.OrphanageService;
+import org.apache.coyote.Response;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -17,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.Demo.DonorServices.DonorService;
-import com.example.Demo.Model.Donor;
 import com.example.Demo.Repository.DonorRepository;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,6 +28,8 @@ public class DonorController {
 
     @Autowired
     private DonorService donorService;
+    private OrphanageService orphanageService;
+    private AdminService adminService;
     @Autowired
     private DonorRepository userRepo;
 
@@ -96,7 +99,6 @@ public class DonorController {
             return ResponseEntity.notFound().build();
         }
     }
-
     @PutMapping("/updatePhoto/{donorId}")
     public ResponseEntity<String> updateProfilePhoto(
             @PathVariable String donorId,
@@ -177,4 +179,21 @@ public class DonorController {
         Optional<Donor> donor=donorService.getDonorByEmail(donorEmail);
         return donor.map(ResponseEntity::ok).orElseGet(()->ResponseEntity.notFound().build());
     }
+    @GetMapping("/orphanageImages/{orphanageId}")
+    public ResponseEntity<List<OrphanageImage>> getOrphanageImageById(@PathVariable String orphanageId){
+        List<OrphanageImage> images=orphanageService.getOrphanageImagesById(orphanageId);
+        if((long) images.size() > 0){
+            return new ResponseEntity<>(images,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null,HttpStatus.CONFLICT);
+    }
+    @GetMapping("/DonationList/{donorId}")
+    public ResponseEntity<List<Donations>> getDonationById(@PathVariable String donorId){
+        List<Donations> donations=adminService.getDonationsByDonorId(donorId);
+        if((long) donations.size() > 0){
+            return new ResponseEntity<>(donations,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null,HttpStatus.CONFLICT);
+    }
+
 }

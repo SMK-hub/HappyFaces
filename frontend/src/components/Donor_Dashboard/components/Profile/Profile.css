@@ -3,6 +3,10 @@
 .heading {
   text-align: center;
 }
+.editContainer{
+  display:flex;
+  flex-direction: row;
+}
 
 .profile-container {
   display: flex;

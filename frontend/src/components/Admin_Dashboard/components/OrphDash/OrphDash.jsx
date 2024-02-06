@@ -5,6 +5,7 @@ import "./OrphDash.css";
 import '@fortawesome/fontawesome-free/css/all.css';
 import ImagePopup from "./ImagePopup";
 import { jsPDF } from "jspdf";
+import axios from "axios";
 
 const OrphDash = () => {
   const [imagePopupVisible, setImagePopupVisible] = useState(false);
@@ -24,8 +25,9 @@ const OrphDash = () => {
 
   const fetchOrphanages = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/orphanages");
-      const data = await response.json();
+      const response = await axios.get("http://localhost:8079/admin/orphanageDetailsList");
+      const data = response.data;
+      console.log(data);
       setOrphanagesData(data);
     } catch (error) {
       console.error("Error fetching orphanages", error);
@@ -81,7 +83,7 @@ const OrphDash = () => {
 
   const filteredOrphanages = orphanagesData.filter((orphanage) => {
     return (
-      (selectedLocation === "All" || orphanage.location === selectedLocation) &&
+      (selectedLocation === "All" || orphanage.address === selectedLocation) &&
       (selectedStatus === "All" || orphanage.status === selectedStatus)
     );
   });
@@ -101,7 +103,10 @@ const OrphDash = () => {
     <div>
       <div className="OrphDash">
         <h2>Orphanages</h2>
-        <label htmlFor="locationFilter">Search by Location</label>
+        
+        <div className="selection">
+          <label htmlFor="locationFilter">Search by Location</label>
+        
         <select id="locationFilter" value={selectedLocation} onChange={handleLocationChange}>
           {uniqueLocations.map((location, index) => (
             <option key={index} value={location}>
@@ -117,7 +122,7 @@ const OrphDash = () => {
             </option>
           ))}
         </select>
-
+        </div>
         {/* Table */}
         <table>
           <thead>

@@ -4,7 +4,17 @@ import { orphanagesData } from "../../Data/Data";
 import '@fortawesome/fontawesome-free/css/all.css';
 import ImagePopup from "./ImagePopup";
 import { jsPDF } from "jspdf";
-
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
+ 
+function srcset(image, size, rows = 1, cols = 1) {
+  return {
+    src: `${image}?w=${15 * cols}&h=${15 * rows}&fit=crop&auto=format`,
+    srcSet: `${image}?w=${15 * cols}&h=${15 * rows}&fit=crop&auto=format&dpr=2 2x`,
+  };
+}
+ 
+ 
 const OrphDash = () => {
   const [imagePopupVisible, setImagePopupVisible] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState("All");
@@ -17,18 +27,19 @@ const OrphDash = () => {
   const [registrationSuccessVisible, setRegistrationSuccessVisible] = useState(false);
   const [donationPopupVisible, setDonationPopupVisible] = useState(false);
   const [donationDescriptionVisible, setDonationDescriptionVisible] = useState(false);
-
+  const [viewImagesPopupVisible, setViewImagesPopupVisible] = useState(false); // New state for view images pop-up
+ 
   const uniqueLocations = ["All", ...new Set(orphanagesData.map((orphanage) => orphanage.location))];
   const uniqueRequirements = ["All", ...new Set(orphanagesData.map((orphanage) => orphanage.requirements))];
-
+ 
   const handleLocationChange = (e) => {
     setSelectedLocation(e.target.value);
   };
-
+ 
   const handleRequirementChange = (e) => {
     setSelectedRequirement(e.target.value);
   };
-
+ 
   const openModal = async (orphanage) => {
     const events = await fetchEvents(orphanage.id);
     setSelectedOrphanage({
@@ -36,7 +47,7 @@ const OrphDash = () => {
       events,
     });
   };
-
+ 
   const closeModal = () => {
     setSelectedOrphanage({
       orphanage: null,
@@ -44,38 +55,46 @@ const OrphDash = () => {
     });
     setEventDetailsVisible(false);
   };
-
+ 
   const openImagePopup = () => {
     setImagePopupVisible(true);
   };
-
+ 
   const closeImagePopup = () => {
     setImagePopupVisible(false);
   };
-
+ 
+  const openViewImagesPopup = () => {
+    setViewImagesPopupVisible(true);
+  };
+ 
+  const closeViewImagesPopup = () => {
+    setViewImagesPopupVisible(false);
+  };
+ 
   const downloadCertificates = (orphanage) => {
     const pdf = new jsPDF();
     pdf.text(`Certificates for ${orphanage.name}`, 20, 20);
     pdf.save(`${orphanage.name}_certificates.pdf`);
   };
-
+ 
   const handleEventsButtonClick = () => {
     setEventDetailsVisible(true);
   };
-
+ 
   const handleEventDetailsClose = () => {
     setEventDetailsVisible(false);
   };
-
+ 
   const handleRegisterEvent = () => {
     console.log("Event registered");
     setRegistrationSuccessVisible(true);
   };
-
+ 
   const handleDonateButtonClick = () => {
     setDonationPopupVisible(true);
   };
-
+ 
   const handleDonationOption = (option) => {
     console.log(`Donation option selected: ${option}`);
     if (option === 'Requirements') {
@@ -84,41 +103,45 @@ const OrphDash = () => {
       // Handle the case for donating money
     }
   };
-
+ 
   const handleRegistrationSuccessClose = () => {
     setRegistrationSuccessVisible(false);
   };
-
+ 
   const handleBackButtonClick = () => {
     setSelectedOrphanage({
       orphanage: null,
       events: [],
     });
   };
-
+ 
   const handleDonationDescriptionClose = () => {
     setDonationDescriptionVisible(false);
   };
-
+ 
   const handleDonationDescriptionSave = () => {
     console.log("Donation description saved");
     setDonationDescriptionVisible(false);
   };
-
+ 
+  const handleThumbnailClick = (index) => {
+    // Handle thumbnail click, update main image with selected index
+  };
+ 
   const filteredOrphanages = orphanagesData.filter((orphanage) => {
     return (
       (selectedLocation === "All" || orphanage.location === selectedLocation) &&
       (selectedRequirement === "All" || orphanage.requirements === selectedRequirement)
     );
   });
-
+ 
   const fetchEvents = (orphanageId) => {
     return [
       { id: 1, dateTime: "2024-02-10 15:00:00" },
       { id: 2, dateTime: "2024-02-15 18:30:00" },
     ];
   };
-
+ 
   return (
     <div>
       <div className="OrphDash">
@@ -145,7 +168,7 @@ const OrphDash = () => {
             </select>
           </div>
         </div>
-
+ 
         {/* Table */}
         <table>
           <thead>
@@ -171,7 +194,7 @@ const OrphDash = () => {
             ))}
           </tbody>
         </table>
-
+ 
         {/* Modal */}
         {selectedOrphanage.orphanage && (
           <div className="modal">
@@ -182,7 +205,7 @@ const OrphDash = () => {
               <p className="field-name">Location:<span> {selectedOrphanage.orphanage.location}</span></p>
               <p className="field-name">Director:<span> {selectedOrphanage.orphanage.director}</span></p>
               <p className="field-name">Certificates:{" "} <button onClick={() => downloadCertificates(selectedOrphanage.orphanage)}>Download</button></p>
-
+              <p className="field-name">View Images:{" "} <button onClick={openViewImagesPopup}>View Images</button><span></span></p>
               {/* Add "Events" and "Donate" buttons */}
               <div className="button-container">
                 <button onClick={handleEventsButtonClick}>Events</button>
@@ -191,7 +214,7 @@ const OrphDash = () => {
             </div>
           </div>
         )}
-
+ 
         {imagePopupVisible && (
           <ImagePopup
             images={selectedOrphanage.orphanage ? selectedOrphanage.orphanage.images : []}
@@ -199,14 +222,14 @@ const OrphDash = () => {
             onBack={handleBackButtonClick}
           />
         )}
-
+ 
         {/* Event Details Card Box */}
         {eventDetailsVisible && selectedOrphanage.orphanage && (
           <div className="modal">
             <div className="event-details-content">
               <span className="close" onClick={handleEventDetailsClose}>&times;</span>
               <h3>{selectedOrphanage.orphanage.name} Event Details</h3>
-
+ 
               {/* Display Events in a Table */}
               <table>
                 <thead>
@@ -228,13 +251,13 @@ const OrphDash = () => {
                   ))}
                 </tbody>
               </table>
-
+ 
               <p>"Unlock a world of inspiration at our upcoming event. Join us for an enriching experience. Register now to secure your spot, connect with like-minded individuals, and contribute to a meaningful cause. Don't miss out on this transformative event!"</p>
               <button className="back-button" onClick={handleEventDetailsClose}>Back</button>
             </div>
           </div>
         )}
-
+ 
         {/* Registration Success Pop-up */}
         {registrationSuccessVisible && (
           <div className="modal">
@@ -245,7 +268,7 @@ const OrphDash = () => {
             </div>
           </div>
         )}
-
+ 
         {/* Donation Pop-up */}
         {donationPopupVisible && selectedOrphanage.orphanage && (
           <div className="modal">
@@ -262,7 +285,7 @@ const OrphDash = () => {
             </div>
           </div>
         )}
-
+ 
         {/* Donation Description Pop-up */}
         {donationDescriptionVisible && (
           <div className="modal donation-description-modal">
@@ -278,9 +301,82 @@ const OrphDash = () => {
             </div>
           </div>
         )}
+ 
+        {/* View Images Pop-up */}
+        {viewImagesPopupVisible && selectedOrphanage.orphanage && (
+          <div className="modal">
+            <div className="view-images-content">
+              <span className="close" onClick={closeViewImagesPopup}>&times;</span>
+              <h3>{selectedOrphanage.orphanage.name} Images</h3>
+              <div className="image-container">
+                {/* <div className="main-image">
+                  <img src={selectedOrphanage.orphanage.images[0]} alt="Main Image" />
+                </div> */}
+                <div className="thumbnail-sidebar" style={{height:'500px',width:'530px'}}>
+                  <div className="thumbnails" style={{height:'500px',width:'530px'}}>
+                    {selectedOrphanage.orphanage.images.map((image, index) => (
+                      <img
+                        key={index}
+                        src={image}
+                       
+                        alt={`Thumbnail ${index}`}
+                        onClick={() => handleThumbnailClick(index)}
+                      />
+                    ))}
+                  </div>
+                  <div className="thumbnails" style={{height:'500px',width:'530px'}}>
+                    {selectedOrphanage.orphanage.images.map((image, index) => (
+                      <img
+                        key={index}
+                        src={image}
+                       
+                        alt={`Thumbnail ${index}`}
+                        onClick={() => handleThumbnailClick(index)}
+                      />
+                    ))}
+                  </div>
+                  <div className="thumbnails" style={{height:'500px',width:'530px'}}>
+                    {selectedOrphanage.orphanage.images.map((image, index) => (
+                      <img
+                        key={index}
+                        style={{height:'300px',width:'300px'}}
+                        src={image}
+                        alt={`Thumbnail ${index}`}
+                        onClick={() => handleThumbnailClick(index)}
+                      />
+                    ))}
+                  </div>
+                  <div className="thumbnails" style={{height:'500px',width:'530px'}}>
+                    {selectedOrphanage.orphanage.images.map((image, index) => (
+                      <img
+                        key={index}
+                       
+                        src={image}
+                        alt={`Thumbnail ${index}`}
+                        onClick={() => handleThumbnailClick(index)}
+                      />
+                    ))}
+                  </div>
+                  <div className="thumbnails" style={{height:'500px',width:'530px'}}>
+                    {selectedOrphanage.orphanage.images.map((image, index) => (
+                      <img
+                        key={index}
+                        src={image}
+                       
+                        alt={`Thumbnail ${index}`}
+                        onClick={() => handleThumbnailClick(index)}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <button className="back-button" onClick={closeViewImagesPopup}>Back</button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
 };
-
+ 
 export default OrphDash;

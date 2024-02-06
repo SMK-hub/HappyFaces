@@ -1,8 +1,8 @@
 // Donors.jsx
 
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import './Donors.css'; // Import the CSS file
-import { donorsData } from '../../Data/Data';
+import { fetchDonorsData } from '../../Data/Data';
 import DonorCard from './DonorCard'; // Import the DonorCard component
 
 const Donors = () => {
@@ -10,6 +10,20 @@ const Donors = () => {
   const [selectedLocation, setSelectedLocation] = useState('All');
   const [currentPage, setCurrentPage] = useState(1);
   const entriesPerPage = 5;
+
+  const [donorsData,setDonorsData] = useState([]);
+  useEffect(()=>{
+    const fetchData=async()=>{
+      try{
+        const res=await fetchDonorsData();
+        console.log(res);
+        setDonorsData(res);
+      }catch(error){
+        console.log(error);
+      }
+    }
+    fetchData();
+  },[])
 
   const openDonorCard = (donor) => {
     setSelectedDonor(donor);
@@ -23,34 +37,43 @@ const Donors = () => {
     setSelectedLocation(e.target.value);
     setCurrentPage(1);
   };
-
+  // let filteredDonors;
+  // let currentEntries;
+  // let totalPages;
+  // let totalEntries;
+  // let indexOfFirstEntry;
+  // let indexOfLastEntry;
+// useEffect(()=>{
   const filteredDonors = selectedLocation === 'All'
     ? donorsData
     : donorsData.filter((donor) => donor.location === selectedLocation);
-
-  const totalEntries = filteredDonors.length;
+  const totalEntries = filteredDonors?.length;
   const totalPages = Math.ceil(totalEntries / entriesPerPage);
   const indexOfLastEntry = currentPage * entriesPerPage;
   const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
   const currentEntries = filteredDonors.slice(indexOfFirstEntry, indexOfLastEntry);
+// },[donorsData]);
+  
+  console.log(currentEntries);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
-  return (
+  return (donorsData && donorsData.length > 0) && (
     <div className="donors">
       <h2 className="donors-title">Donors</h2>
-
       {/* Dropdown search bar */}
       <div className="search-bar">
         <label htmlFor="location">Search through Location </label>
         <select id="location" value={selectedLocation} onChange={handleLocationChange}>
           <option value="All">All</option>
-          {/* Add options for each unique location in your data */}
-          {Array.from(new Set(donorsData.map(donor => donor.location))).map((location, index) => (
+          {
+            donorsData && Array.from(new Set(donorsData.map(donor => donor.location))).map((location, index) => (
             <option key={index} value={location}>{location}</option>
           ))}
+          
+          
         </select>
       </div>
 
@@ -65,7 +88,8 @@ const Donors = () => {
           </tr>
         </thead>
         <tbody>
-          {currentEntries.map((donor) => (
+          
+          {currentEntries && currentEntries.map((donor) => (
             <tr key={donor.id} onClick={() => openDonorCard(donor)} style={{ cursor: 'pointer' }}>
               <td>{donor.name}</td>
               <td>{donor.email}</td>
