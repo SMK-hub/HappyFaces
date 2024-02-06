@@ -62,9 +62,11 @@ const Profile = () => {
   const handleSavePasswordChangesClick =async () => {
     if(oldPassword !== userDetails?.password){
       setPasswordMismatchError('Enter Correct Password');
+      alert(passwordMismatchError);
     }
     else if (newPassword !== confirmPassword) {
       setPasswordMismatchError('New password and confirm password do not match');
+      alert(passwordMismatchError);
     } else {
       try{
         const response = await axios.post(`http://localhost:8079/orphanage/ChangePassword/${userDetails?.email}/${oldPassword}/${newPassword}/${confirmPassword}`);

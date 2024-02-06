@@ -37,7 +37,7 @@ const SelectOption=(value)=>{
       <div className="logo">
         <img src={Logo} alt="logo" />
         <span style={{display:"flex",flexDirection:'row'}}>
-          DO<span>N</span>OR
+          DO<span>NO</span>R
         </span>
       </div>
 

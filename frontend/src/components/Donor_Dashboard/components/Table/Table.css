@@ -37,6 +37,25 @@ th {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 23rem;
+    width: 20rem;
   }
+}
+/* Table.css */
+
+.DetailsButton {
+  background-color: #d69dca; /* Light red color for the Details button */
+  color: white; /* Text color */
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.DetailsButton:hover {
+  background-color: #a14094; /* Darker red color on hover */
+}
+
+.DetailsButton.Active {
+  background-color: #c591b1; /* Green color for the active state */
+  /* Adjust text color if needed for better contrast */
 }

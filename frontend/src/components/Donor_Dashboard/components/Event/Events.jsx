@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Events.css';
- 
+
 const EventTable = () => {
   // Use state to manage events
   const [events, setEvents] = useState([
@@ -8,45 +8,45 @@ const EventTable = () => {
     { Orphanage_Name: 'Book Donation', Event_Name: 'Description of Event 2', Description: 'Event 2 Description', Date: '2024-02-15 18:30:00' },
     // Add more events as needed
   ]);
- 
+
   // State for cancel registration pop-up
   const [cancelRegistrationVisible, setCancelRegistrationVisible] = useState(false);
- 
+
   // State for cancellation success pop-up
   const [cancellationSuccessVisible, setCancellationSuccessVisible] = useState(false);
- 
+
   // Index of the event to cancel registration
   const [cancelIndex, setCancelIndex] = useState(null);
- 
+
   // Function to handle cancel event for a specific index
   const handleCancelEvent = (index) => {
     setCancelIndex(index);
     setCancelRegistrationVisible(true);
   };
- 
+
   // Function to confirm cancel registration
   const handleConfirmCancel = () => {
     // Cancel registration logic
     const updatedEvents = [...events];
     updatedEvents.splice(cancelIndex, 1);
     setEvents(updatedEvents);
- 
+
     // Close cancel registration pop-up
     setCancelRegistrationVisible(false);
- 
+
     // Show cancellation success pop-up
     setCancellationSuccessVisible(true);
   };
- 
+
   // Function to handle cancel registration cancellation
   const handleCancelCancel = () => {
     // Close cancel registration pop-up
     setCancelRegistrationVisible(false);
- 
+
     // Clear cancelIndex
     setCancelIndex(null);
   };
- 
+
   return (
     <div className='main-event'>
       <h2>EVENTS</h2>
@@ -78,7 +78,7 @@ const EventTable = () => {
           </tbody>
         </table>
       </div>
- 
+
       {/* Cancel Registration Pop-up */}
       {cancelRegistrationVisible && (
         <div className="modal">
@@ -92,7 +92,7 @@ const EventTable = () => {
           </div>
         </div>
       )}
- 
+
       {/* Cancellation Success Pop-up */}
       {cancellationSuccessVisible && (
         <div className="modal">
@@ -105,5 +105,5 @@ const EventTable = () => {
     </div>
   );
 };
- 
+
 export default EventTable;
