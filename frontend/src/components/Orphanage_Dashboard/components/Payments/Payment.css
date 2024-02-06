@@ -1,8 +1,15 @@
 /* PaymentDashboard.css */
 .payment-dashboards {
+    padding-top: 5%;
+  }
+  
+  .dashboard-container {
+    /* display: flex;
+    flex: 1;
+    align-items: center; */
     display: flex;
     flex-direction: column;
-    height: 68vh;
+    height: 48vh;
     border: 4px solid #831898;
     padding: 20px;
     border-radius: 10px;
@@ -10,12 +17,6 @@
     margin: auto;
     width: 97%;
     justify-content:center ;
-  }
-  
-  .dashboard-container {
-    display: flex;
-    flex: 1;
-    align-items: center;
     
   }
 

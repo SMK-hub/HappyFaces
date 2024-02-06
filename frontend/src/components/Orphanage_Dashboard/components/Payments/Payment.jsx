@@ -22,10 +22,11 @@ const getTotalAmount = () => {
 const PaymentDashboard = () => {
   return (
     <div className="payment-dashboards">
+      <h1 style={{ fontFamily: 'Anton, sans-serif', fontSize: '2em', justifyContent: 'center',marginTop : '0.5rem' }}>Payment Dashboard</h1>
       <div className="dashboard-container">
-       
+      
         <div className="main-content">
-          <h1>Payment Dashboard</h1>
+          
           <table className="payment-table">
             <thead>
               <tr>
