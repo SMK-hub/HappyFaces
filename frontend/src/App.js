@@ -36,6 +36,7 @@ import Photos from './components/Orphanage_Dashboard/components/Photos/Photos'
 import PayDash from './components/Admin_Dashboard/components/PayDash/PayDash';
 import { UserProvider } from './UserContext';
 
+import EvenDash from './components/Admin_Dashboard/components/Events/EvenDash'
 
 
 const App = () => {
@@ -76,6 +77,7 @@ const App = () => {
         <Route path="/donors" element={<Donors/>}/>
 
         <Route path="/payments" element={<PayDash/>}/>
+        <Route path="/events" element={<EvenDash/>}/>
       </Routes>
     </Router></UserProvider>
     

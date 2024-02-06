@@ -19,7 +19,7 @@ import { keyboard } from "@testing-library/user-event/dist/keyboard";
 
 // Recent Card Imports
 import img1 from "../imgs/img1.png";
-import img2 from "../imgs/img2.png";
+// import img2 from "../imgs/img2.png";
 import img3 from "../imgs/img3.png";
 
 // Sidebar Data
@@ -42,6 +42,7 @@ export const SidebarData = [
   {
     icon: UilCalendarAlt,
     heading: 'Events',
+    path: 'Events',
   },
   {
     icon: UilCreditCard,
@@ -116,12 +117,12 @@ export const UpdatesData = [
     noti: "has ordered Apple smart watch 2500mh battery.",
     time: "25 seconds ago",
   },
-  {
-    img: img2,
-    name: "James Bond",
-    noti: "has received Samsung gadget for charging battery.",
-    time: "30 minutes ago",
-  },
+  // {
+  //   img: img2,
+  //   name: "James Bond",
+  //   noti: "has received Samsung gadget for charging battery.",
+  //   time: "30 minutes ago",
+  // },
   {
     img: img3,
     name: "Iron Man",

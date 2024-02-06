@@ -4,7 +4,7 @@ import React, { useState, useRef } from 'react';
 import AvatarEditor from 'react-avatar-editor';
 import './EditProfilePopup.css';
 
-const EditProfilePopup = ({ onClose }) => {
+const EditProfilePopup = ({ onClose, onUpdateProfileImage, onUpdateProfileDetails }) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -12,6 +12,7 @@ const EditProfilePopup = ({ onClose }) => {
   const [originalImage, setOriginalImage] = useState(null);
   const [croppedImage, setCroppedImage] = useState(null);
   const [isCropping, setIsCropping] = useState(false);
+  const [imageName, setImageName] = useState(""); // Added state to store image name
   const editorRef = useRef(null);
 
   const handleSaveChanges = () => {
@@ -20,16 +21,24 @@ const EditProfilePopup = ({ onClose }) => {
     console.log("Username:", username);
     console.log("New Password:", newPassword);
     console.log("Confirm Password:", confirmPassword);
-    console.log("Cropped Image:", croppedImage);
+    console.log("Profile Picture:", croppedImage || originalImage);
 
     // Close the popup after saving changes
     onClose();
+
+    // Pass the updated image to the callback function
+    onUpdateProfileImage(croppedImage || originalImage);
+
+    // Pass the updated details to the callback function
+    onUpdateProfileDetails(username, email);
   };
 
   const handleProfilePictureChange = (e) => {
     const file = e.target.files[0];
     setOriginalImage(file);
+    setCroppedImage(null); // Reset croppedImage when a new image is selected
     setIsCropping(true);
+    setImageName(file.name); // Set image name
   };
 
   const handleAcceptCrop = () => {
@@ -38,11 +47,15 @@ const EditProfilePopup = ({ onClose }) => {
       setCroppedImage(canvas);
     }
     setIsCropping(false);
+    // Keep the original image name if it exists
+    setImageName(originalImage ? originalImage.name : "");
   };
 
   const handleRejectCrop = () => {
     setCroppedImage(null);
     setIsCropping(false);
+    // Reset the image name
+    setImageName(originalImage ? originalImage.name : "");
   };
 
   return (
@@ -100,8 +113,8 @@ const EditProfilePopup = ({ onClose }) => {
           </>
         )}
 
-        {croppedImage && (
-          <p className="uploaded-image-name">Cropped Image</p>
+        {imageName && (
+          <p className="uploaded-image-name">File Chosen: {imageName}</p>
         )}
 
         <button className="save-changes-button" onClick={handleSaveChanges}>Save Changes</button>

@@ -1,22 +1,23 @@
 /* eslint-disable no-unused-vars */
 // OrphDash.js
 import React, { useState, useEffect } from "react";
-import "./OrphDash.css";
+import "./EvenDash.css";
+// index.js or App.js
 import '@fortawesome/fontawesome-free/css/all.css';
 import ImagePopup from "./ImagePopup";
 import { jsPDF } from "jspdf";
 
-const OrphDash = () => {
+const EvenDash = () => {
   const [imagePopupVisible, setImagePopupVisible] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState("All");
-  const [selectedOrphanage, setSelectedOrphanage] = useState(null);
+  const [selectedEvent, setSelectedEvent] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState("All");
-  const [orphanagesData, setOrphanagesData] = useState([]);
+  const [eventsData, setEventsData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const entriesPerPage = 5;
 
-  const uniqueLocations = ["All", ...new Set(orphanagesData.map((orphanage) => orphanage.location))];
-  const uniqueStatus = ["All", ...new Set(orphanagesData.map((orphanage) => orphanage.status))];
+  const uniqueLocations = ["All", ...new Set(eventsData.map((event) => event.location))];
+  const uniqueStatus = ["All", ...new Set(eventsData.map((event) => event.status))];
 
   useEffect(() => {
     fetchOrphanages();
@@ -26,7 +27,7 @@ const OrphDash = () => {
     try {
       const response = await fetch("http://localhost:8080/api/orphanages");
       const data = await response.json();
-      setOrphanagesData(data);
+      setEventsData(data);
     } catch (error) {
       console.error("Error fetching orphanages", error);
     }
@@ -42,12 +43,12 @@ const OrphDash = () => {
     setCurrentPage(1);
   };
 
-  const openModal = (orphanage) => {
-    setSelectedOrphanage(orphanage);
+  const openModal = (event) => {
+    setSelectedEvent(event);
   };
 
   const closeModal = () => {
-    setSelectedOrphanage(null);
+    setSelectedEvent(null);
   };
 
   const openImagePopup = () => {
@@ -58,40 +59,26 @@ const OrphDash = () => {
     setImagePopupVisible(false);
   };
 
-  const downloadCertificates = (orphanage) => {
+  const downloadCertificates = (event) => {
+    // Generate a unique PDF content based on orphanage information
     const pdf = new jsPDF();
-    pdf.text(`Certificates for ${orphanage.name}`, 20, 20);
-    pdf.save(`${orphanage.name}_certificates.pdf`);
+    pdf.text(`Certificates for ${event.name}`, 20, 20);
+    pdf.save(`${event.name}_certificates.pdf`);
   };
 
-  const showConfirmation = (action) => {
-    const confirmationMessage = `Are you sure to ${action === 'Decline' ? 'Decline' : 'Accept'} this?`;
-    if (window.confirm(confirmationMessage)) {
-      if (action === 'Decline') {
-        console.log("Decline");
-        // Add logic for Decline action here
-      } else {
-        console.log("Accept");
-        // Add logic for Accept action here
-      }
-    } else {
-      // User clicked Cancel, do nothing or add additional logic as needed
-    }
-  };
-
-  const filteredOrphanages = orphanagesData.filter((orphanage) => {
+  const filteredEvents = eventsData.filter((event) => {
     return (
-      (selectedLocation === "All" || orphanage.location === selectedLocation) &&
-      (selectedStatus === "All" || orphanage.status === selectedStatus)
+      (selectedLocation === "All" || event.location === selectedLocation) &&
+      (selectedStatus === "All" || event.status === selectedStatus)
     );
   });
 
-  const totalEntries = filteredOrphanages.length;
+  const totalEntries = filteredEvents.length;
   const totalPages = Math.ceil(totalEntries / entriesPerPage);
 
   const indexOfLastEntry = currentPage * entriesPerPage;
   const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
-  const currentEntries = filteredOrphanages.slice(indexOfFirstEntry, indexOfLastEntry);
+  const currentEntries = filteredEvents.slice(indexOfFirstEntry, indexOfLastEntry);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -100,7 +87,7 @@ const OrphDash = () => {
   return (
     <div>
       <div className="OrphDash">
-        <h2>Orphanages</h2>
+        <h2>Events</h2>
         <label htmlFor="locationFilter">Search by Location</label>
         <select id="locationFilter" value={selectedLocation} onChange={handleLocationChange}>
           {uniqueLocations.map((location, index) => (
@@ -131,20 +118,20 @@ const OrphDash = () => {
             </tr>
           </thead>
           <tbody>
-            {currentEntries.map((orphanage, index) => (
+            {currentEntries.map((event, index) => (
               <tr key={index}>
-                <td>{orphanage.name}</td>
-                <td>{orphanage.location}</td>
-                <td>{orphanage.contact}</td>
+                <td>{event.name}</td>
+                <td>{event.location}</td>
+                <td>{event.contact}</td>
                 <td>
-                  <button onClick={() => openModal(orphanage)} className="smallButton">Details</button>
+                  <button onClick={() => openModal(event)} className="smallButton">Details</button>
                 </td>
-                <td>{orphanage.status}</td>
+                <td>{event.status}</td>
                 <td className="requests">
-                  {orphanage.status === "Verified" ? (
-                    <button onClick={() => showConfirmation("Decline")} style={{ fontSize: "10px", padding: "5px" }}>Decline</button>
+                  {event.status === "Verified" ? (
+                    <button onClick={() => console.log("Decline")} style={{ fontSize: "10px", padding: "5px" }}>Decline</button>
                   ) : (
-                    <button onClick={() => showConfirmation("Accept")} style={{ fontSize: "10px", padding: "5px" }}>Accept</button>
+                    <button onClick={() => console.log("Accept")} style={{ fontSize: "10px", padding: "5px" }}>Accept</button>
                   )}
                 </td>
               </tr>
@@ -162,26 +149,26 @@ const OrphDash = () => {
         </div>
 
         {/* Modal */}
-        {selectedOrphanage && (
+        {selectedEvent && (
           <div className="modal">
             <div className="modal-content">
               <span className="close" onClick={closeModal}>
                 &times;
               </span>
-              <h3>{selectedOrphanage.name}</h3>
-              <p className="field-name">Director:<span> {selectedOrphanage.director}</span></p>
-              <p className="field-name">Established Date:<span> {selectedOrphanage.establishedDate}</span></p>
-              <p className="field-name">Location<span> {selectedOrphanage.location}</span></p>
-              <p className="field-name">Contact<span> {selectedOrphanage.contact}</span></p>
+              <h3>{selectedEvent.name}</h3>
+              <p className="field-name">Director:<span> {selectedEvent.director}</span></p>
+              <p className="field-name">Established Date:<span> {selectedEvent.establishedDate}</span></p>
+              <p className="field-name">Location<span> {selectedEvent.location}</span></p>
+              <p className="field-name">Contact<span> {selectedEvent.contact}</span></p>
               <p className="field-name">Image:{" "} <button onClick={openImagePopup}>View</button></p>
-              <p className="field-name">Certificates:{" "} <button onClick={() => downloadCertificates(selectedOrphanage)} className="smallButton">Download</button></p>
+              <p className="field-name">Certificates:{" "} <button onClick={() => downloadCertificates(selectedEvent)} className="smallButton">Download</button></p>
             </div>
           </div>
         )}
 
         {imagePopupVisible && (
           <ImagePopup
-            images={selectedOrphanage ? selectedOrphanage.images : []}
+            images={selectedEvent ? selectedEvent.images : []}
             onClose={closeImagePopup}
           />
         )}
@@ -190,4 +177,4 @@ const OrphDash = () => {
   );
 };
 
-export default OrphDash;
+export default EvenDash;
