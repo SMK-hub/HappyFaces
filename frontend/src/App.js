@@ -35,7 +35,6 @@ import Certificates from './components/Orphanage_Dashboard/components/Certificat
 import Photos from './components/Orphanage_Dashboard/components/Photos/Photos'
 import PayDash from './components/Admin_Dashboard/components/PayDash/PayDash';
 import { UserProvider } from './UserContext';
-
 import EvenDash from './components/Admin_Dashboard/components/Events/EvenDash'
 
 

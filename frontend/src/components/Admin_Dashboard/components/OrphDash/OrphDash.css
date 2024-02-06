@@ -168,3 +168,7 @@
   background-color: black;
   color: white;
 }
+.selection{
+  display:flex;
+  gap:1rem
+}

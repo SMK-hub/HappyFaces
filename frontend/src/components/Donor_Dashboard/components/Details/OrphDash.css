@@ -170,7 +170,7 @@ box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 .close-button-inside {
 margin-top: 10px; /* Add spacing */
 padding: 10px; /* Add padding for better appearance */
-background-color: #f44336; /* Red background color */
+background-color: #cc8dc1; /* Red background color */
 color: #fff; /* White text color */
 border: none;
 border-radius: 5px;
@@ -191,4 +191,11 @@ cursor: pointer;
   width: 100%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
- 
+.thumbnail-sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 25%; /* Adjust width as needed */
+  overflow-x: auto; /* Enable scrollbar for the sidebar */
+  max-height: 400px; /* Set a fixed height for the sidebar */
+  writing-mode: horizontal-tb; /* Set writing mode to vertical right-to-left */
+}

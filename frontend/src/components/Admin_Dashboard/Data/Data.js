@@ -21,6 +21,7 @@ import { keyboard } from "@testing-library/user-event/dist/keyboard";
 import img1 from "../imgs/img1.png";
 // import img2 from "../imgs/img2.png";
 import img3 from "../imgs/img3.png";
+import axios from "axios";
 
 // Sidebar Data
 export const SidebarData = [
@@ -131,115 +132,60 @@ export const UpdatesData = [
   },
 ];
 
-export const orphanagesData = [
+export const fetchOrphanagesData= async() =>{
+  try{
+    const response=await axios.get("http://localhost:8079/admin/orphanageList")
+    return response.data;
+  }catch(error){
+    console.log(error);
+  }
+} 
 
-  {
-    name: "Orphanage 1",
-    director: "Leo",
-    establishedDate: "12-01-2022",
-    location: "Marathalli",
-    contact: "123-456-7890",
-    status:  "Verified",
-    images: [
-      "https://th.bing.com/th/id/OIP.Gc2MgkiJTYmOBrv0HqpE1AHaFj?rs=1&pid=ImgDetMain",
-    ],
-  },
+export const fetchorphanageDetailById = async(orphanageId) =>{
+  try{
+    const response=await axios.get(`http://localhost:8079/admin/orphanageDetails/${orphanageId}`);
+    return response.data;
+  }catch(error){
+    console.log(error);
+  }
+}
 
-  {
-    name: "Orphanage 2",
-    director: "Vikram",
-    establishedDate: "07-01-2023",
-    location: "Tin Factory",
-    contact: "123-456-4557",
-    status: "Verified",
-    images: [
-      "https://th.bing.com/th/id/OIP.Gc2MgkiJTYmOBrv0HqpE1AHaFj?rs=1&pid=ImgDetMain",
-    ],
-  },
+export const fetchOrphanageDetailsData = async() =>{
+  try{
+    const response=await axios.get("http://localhost:8079/admin/orphanageDetailsList")
+    return response.data;
+  }catch(error){
+    console.log(error);
+  }
+}
 
-  {
-    name: "Orphanage 3",
-    director: "Kaithi",
-    establishedDate: "05-05-2020",
-    location: "RR Nagar",
-    contact: "723-456-1560",
-    status: "Not Verified",
-    images: [
-      "https://th.bing.com/th/id/OIP.Gc2MgkiJTYmOBrv0HqpE1AHaFj?rs=1&pid=ImgDetMain",
-    ],
-  },
+export const fetchDonorsData = async() =>{
+  try{
+    const response=await axios.get("http://localhost:8079/admin/donorList");
+    return response.data;
+  }catch(error){
+    console.log(error);
+    return [];
+  }
+}
 
-  {
-    name: "Orphanage 4",
-    director: "Master",
-    establishedDate: "11-07-2019",
-    location: "Church Street",
-    contact: "123-456-7890",
-    status: "Not Verified",
-    images: [
-      "https://th.bing.com/th/id/OIP.Gc2MgkiJTYmOBrv0HqpE1AHaFj?rs=1&pid=ImgDetMain",
-    ],
-  },
+export const fetchEventsData = async() =>{
+  try{
+    const response=await axios.get("http://localhost:8079/admin/eventList");
+    return response.data;
+  }catch(error){
+    console.log(error);
+  }
+}
 
-  {
-    name: "Orphanage 5",
-    director: "JD",
-    establishedDate: "06-08-2022",
-    location: "Lalbagh",
-    contact: "223-656-7690",
-    status: "Verified",
-    images: [
-      "https://th.bing.com/th/id/OIP.Gc2MgkiJTYmOBrv0HqpE1AHaFj?rs=1&pid=ImgDetMain",
-    ],
-  },
-];
-
-export const donorsData = [
-  {
-    id: 1,
-    name: "Srikanth",
-    email: "srikantharamandla135@gmail.com",
-    contact: "6301478132",
-    location: "Bangalore",
-    amount: "25000",
-  },
-
-  {
-    id: 2,
-    name: "Tarantino",
-    email: "pulpfiction@gmail.com",
-    contact: "9490052625",
-    location: "Newyork",
-    amount: 25000,
-  },
-
-  {
-    id: 3,
-    name: "Scorsese",
-    email: "goodfelllas@gmail.com",
-    contact: "6301478122",
-    location: "Texas",
-    amount: "25000",
-  },
-
-  {
-    id: 4,
-    name: "David Fincher",
-    email: "seven@gmail.com",
-    contact: "6301478144",
-    location: "California",
-    amount: "25000",
-  },
-
-  {
-    id: 5,
-    name: "Nolan",
-    email: "inception@gmail.com",
-    contact: "6301478155",
-    location: "Beverly Hills",
-    amount: "25000",
-  },
-];
+export const fetchDonationsData = async() =>{
+  try{
+    const response=await axios.get("http://localhost:8079/admin/donationList");
+    return response.data;
+  }catch(error){
+    console.log(error);
+  }
+}
 
 export const payData = [
   {

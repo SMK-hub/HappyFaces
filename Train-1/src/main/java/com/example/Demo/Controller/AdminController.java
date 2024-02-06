@@ -50,6 +50,10 @@ public class AdminController {
 		Optional<Orphanage> orphanage = Optional.ofNullable(adminService.getOrphanageById(id));
 		return orphanage.map(value -> new ResponseEntity<>(value,HttpStatus.OK)).orElseGet(()->new ResponseEntity<>(null, HttpStatus.CONFLICT));
 	}
+	@GetMapping("/orphanageDetailsList")
+	public ResponseEntity<List<OrphanageDetails>> getAllOrphanageDetails(){
+		return new ResponseEntity<>(adminService.getAllOrphanageDetails(),HttpStatus.OK);
+	}
   	@GetMapping("/orphanageDetails/{id}")
 	public ResponseEntity<OrphanageDetails> getOrphanageDetailByOrpId(@PathVariable String orpId)
 	{
@@ -124,9 +128,6 @@ public class AdminController {
 		}
 		return new ResponseEntity<>(null,HttpStatus.CONFLICT);
 	}
-
-
-
 	@PostMapping("/register")
 	public ResponseEntity<String> registerUser(@RequestBody Admin user) {
 		String alpha=adminService.registerUser(user);

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.example.Demo.AdminServices.AdminService;
 import com.example.Demo.Model.*;
 import com.example.Demo.Repository.OrphanageImageRepository;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -26,6 +27,7 @@ public class OrphanageController {
 
     @Autowired
     private OrphanageService orphanageService;
+    private AdminService adminService;
     @Autowired
     private OrphanageRepository orphanageRepo;
 
@@ -204,5 +206,13 @@ public class OrphanageController {
     public ResponseEntity<Orphanage> getDonorByEmail(@PathVariable String orphanageEmail){
         Optional<Orphanage> orphanage=orphanageService.getOrphanageByEmail(orphanageEmail);
         return orphanage.map(ResponseEntity::ok).orElseGet(()->ResponseEntity.notFound().build());
+    }
+    @GetMapping("/DonationList/{orphanageId}")
+    public ResponseEntity<List<Donations>> getDonationById(@PathVariable String orphanageId){
+        List<Donations> donations=adminService.getDonationsByOrphanageId(orphanageId);
+        if((long) donations.size() > 0){
+            return new ResponseEntity<>(donations,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null,HttpStatus.CONFLICT);
     }
 }

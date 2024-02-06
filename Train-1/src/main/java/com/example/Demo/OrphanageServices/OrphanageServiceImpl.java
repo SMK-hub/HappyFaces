@@ -251,7 +251,7 @@ public class OrphanageServiceImpl implements OrphanageService {
 
     @Override
     public List<OrphanageImage> getOrphanageImagesById(String orphanageId) {
-        return orphanageImageRepository.findByOrphanageId(orphanageId);
+        return orphanageImageRepository.findOrphanageImageByOrphanageId(orphanageId);
     }
 
 

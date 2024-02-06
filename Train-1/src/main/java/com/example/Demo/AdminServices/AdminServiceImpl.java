@@ -66,6 +66,11 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public List<OrphanageDetails> getAllOrphanageDetails() {
+        return (List<OrphanageDetails>) orphanageDetailsRepository.findAll(sort);
+    }
+
+    @Override
     public List<Donor> getAllDonor() {
         return (List<Donor>) donorRepo.findAll(sort);
     }

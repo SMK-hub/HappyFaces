@@ -18,6 +18,8 @@ public interface AdminService {
 
     List<Orphanage> getAllOrphanage();
 
+    List<OrphanageDetails> getAllOrphanageDetails();
+
     List<Donor> getAllDonor();
 
     List<Events> getAllEvents();

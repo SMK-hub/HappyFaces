@@ -49,8 +49,7 @@ function DashboardAdmin() {
     <div className='Apps'>
       <div className='AppGlass'>
         <Sidebar onOptionSelect={handleOptionSelect} />
-        {renderContent()}        
-        <RightSide />
+        {renderContent()}   
       </div>
     </div>
   );

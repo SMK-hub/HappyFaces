@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface OrphanageImageRepository extends MongoRepository<OrphanageImage, String> {
 
-    List<OrphanageImage> findByOrphanageId(String orphanageId);
+    List<OrphanageImage> findOrphanageImageByOrphanageId(String orphanageId);
 
     void deleteByOrphanageIdAndId(String orphanageId, String id);
 }

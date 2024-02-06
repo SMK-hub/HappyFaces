@@ -11,7 +11,6 @@ public class OrphanageDetails {
 
     @Id
     private String id;
-
     private String orpId;
     private String orphanageName;
     private String directorName;
@@ -22,10 +21,19 @@ public class OrphanageDetails {
     private int viewCount;
     private EnumClass.VerificationStatus verificationStatus;
     private String website;
-
-
+    private byte[] certificate;
     @DBRef
     private Requirement requirements;
+
+    public byte[] getCertificate() {
+        return certificate;
+    }
+
+    public void setCertificate(byte[] certificate) {
+        this.certificate = certificate;
+    }
+
+
 
     public OrphanageDetails() {
         super();
@@ -134,7 +142,7 @@ public class OrphanageDetails {
         return "OrphanageDetails{" + "id='" + id + '\'' + ", orpId='" + orpId + '\'' + ", orphanageName='" + orphanageName + '\'' + ", directorName='" + directorName + '\'' + ", contact='" + contact + '\'' + ", description='" + description + '\'' + ", address=" + address + ", viewCount=" + viewCount + ", verificationStatus=" + verificationStatus + ", website='" + website + '\'' + ", requirements=" + requirements + '}';
     }
 
-    public OrphanageDetails(String id, String orpId, String orphanageName, String directorName, String contact, String description, Address address, int viewCount, EnumClass.VerificationStatus verificationStatus, String website, Requirement requirements) {
+    public OrphanageDetails(String id, String orpId, String orphanageName, String directorName, String contact, String description, Address address, int viewCount, EnumClass.VerificationStatus verificationStatus, String website, Requirement requirements,byte[] certificate) {
         this.id = id;
         this.orpId = orpId;
         this.orphanageName = orphanageName;
@@ -146,5 +154,6 @@ public class OrphanageDetails {
         this.verificationStatus = verificationStatus;
         this.website = website;
         this.requirements = requirements;
+        this.certificate=certificate;
     }
 }
