@@ -13,4 +13,7 @@ public class EnumClass {
     public enum Roles{
         ADMIN,DONOR,ORPHANAGE;
     }
+    public enum Status{
+        SUCCESS,FAIL;
+    }
 }

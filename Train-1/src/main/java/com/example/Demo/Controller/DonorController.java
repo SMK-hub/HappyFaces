@@ -28,7 +28,9 @@ public class DonorController {
 
     @Autowired
     private DonorService donorService;
+    @Autowired
     private OrphanageService orphanageService;
+    @Autowired
     private AdminService adminService;
     @Autowired
     private DonorRepository userRepo;
@@ -62,18 +64,17 @@ public class DonorController {
     );
 
     @PostMapping("/addPhoto/{donorId}")
-    public ResponseEntity<String> addProfilePhoto(
+    public ResponseEntity<Donor> addProfilePhoto(
             @PathVariable String donorId,
             @RequestParam("file") MultipartFile file) throws IOException {
         try {
-            // Check if the uploaded file is an image
             if (!isImage(file)) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Only image files are allowed");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
             }
-            donorService.addProfilePhoto(donorId, file);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Profile photo added successfully");
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(donorService.addProfilePhoto(donorId, file));
         } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding profile photo");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
@@ -97,20 +98,6 @@ public class DonorController {
                     .body(photoBytes);
         } else {
             return ResponseEntity.notFound().build();
-        }
-    }
-    @PutMapping("/updatePhoto/{donorId}")
-    public ResponseEntity<String> updateProfilePhoto(
-            @PathVariable String donorId,
-            @RequestParam("file") MultipartFile file) {
-        try {
-            if (!isImage(file)) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Only image files are allowed");
-            }
-            donorService.updateProfilePhoto(donorId, file);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Profile photo updated successfully");
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating profile photo");
         }
     }
 

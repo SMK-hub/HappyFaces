@@ -27,6 +27,7 @@ public class OrphanageController {
 
     @Autowired
     private OrphanageService orphanageService;
+    @Autowired
     private AdminService adminService;
     @Autowired
     private OrphanageRepository orphanageRepo;
