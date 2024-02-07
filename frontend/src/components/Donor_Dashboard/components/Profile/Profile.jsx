@@ -131,11 +131,7 @@ const Profile = () => {
  
     fetchPhoto();
   }, [userDetails]);
-  const handleImage=()=>{
-    setShowInput(true);
-  }
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
+  const handleImageChange = async (file) => {
     const formData=new FormData();
     formData.append("file",file);
    
@@ -146,8 +142,18 @@ const Profile = () => {
         setSelectedImage(file);
         setImageUrl(reader.result);
       };
- 
       reader.readAsDataURL(file);
+      try{
+        const response=await axios.post(`http://localhost:8079/donor/addPhoto/${userDetails?.donorId}`,formData);
+        const status=response.status;
+        console.log(status);
+        if(status ===200){
+          setUserData(response.data);
+        }
+      }catch(error){
+        alert("Error in Profile-Photo Update");
+        console.log(error);
+      }
     }
   };
   const handleChange = (info) => {
@@ -160,6 +166,8 @@ const Profile = () => {
       getBase64(info.file.originFileObj, (url) => {
         setLoading(false);
         setImageUrl(url);
+        console.log(info.file);
+        handleImageChange(info.file.originFileObj);
       });
     }
   };
@@ -168,6 +176,7 @@ const Profile = () => {
       style={{
         border: 0,
         background: 'none',
+        color: 'grey',
       }}
       type="button"
     >
@@ -175,6 +184,7 @@ const Profile = () => {
       <div
         style={{
           marginTop: 8,
+          marginLeft:18,
         }}
       >
         Upload
@@ -189,8 +199,9 @@ const Profile = () => {
         <div className="profile-details">
           {isEditMode ? (
             <div style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
-              <div>
+              <div style={{marginRight:'45px'}}>
              <Upload
+             
         name="avatar"
         listType="picture-circle"
         className="avatar-uploader"
@@ -200,13 +211,18 @@ const Profile = () => {
         onChange={handleChange}
       >
         {imageUrl ? (
+          
           <img
             src={imageUrl}
             alt="avatar"
             style={{
-              width: '100%',
+              minWidth: '125%',
+              height: '125%',
+              borderRadius: '50%',
+              objectFit:'cover'
             }}
           />
+          
         ) : (
           uploadButton
         )}

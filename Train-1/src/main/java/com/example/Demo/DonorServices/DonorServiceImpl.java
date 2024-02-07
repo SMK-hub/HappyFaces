@@ -101,7 +101,7 @@ public class DonorServiceImpl implements DonorService {
     }
 
     @Override
-    public void addProfilePhoto(String donorId, MultipartFile file) throws IOException {
+    public Donor addProfilePhoto(String donorId, MultipartFile file) throws IOException {
         byte[] photoBytes = file.getBytes();
         System.out.println();
 
@@ -110,6 +110,7 @@ public class DonorServiceImpl implements DonorService {
 
         donor.setProfilePhoto(photoBytes);
         donorRepository.save(donor);
+        return donor;
     }
     @Override
     public String getProfilePhoto(String donorId) {
@@ -123,15 +124,7 @@ public class DonorServiceImpl implements DonorService {
             return null; // Or return a default image URL or handle it based on your requirements
         }
     }
-    @Override
-    public void updateProfilePhoto(String donorId, MultipartFile file) throws IOException {
-        byte[] newPhotoBytes = file.getBytes();
-        Donor donor= donorRepository.findById(donorId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        donor.setProfilePhoto(newPhotoBytes);
-        donorRepository.save(donor);
-    }
     @Override
     public String sendOtp(Donor donor) {
 
