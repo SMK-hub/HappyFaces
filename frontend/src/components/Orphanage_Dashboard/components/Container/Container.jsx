@@ -3,8 +3,11 @@ import './Container.css';
 import { Link } from 'react-router-dom';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { useState } from 'react';
+import Galleries from '../Galleries/Galleries'
 
 const MyContainer = () => {
+
+  
 
   const [uploadedFiles, setUploadedFiles] = useState([]);
 
@@ -96,20 +99,31 @@ const MyContainer = () => {
     Website: 'https://miraclefoundationindia.in/',
     Requirements: 'Food, clothing, education materials',
     PriorityStatus: 'High',
-    GalleryLink: '/Galleries', // Add this property for Gallery link
+    GalleryLink: '/Galleries',
     OrphanageName: 'Miracle Foundation',
   };
   const [open, setOpen] = React.useState(false);
+ const [gopen, setgOpen] = useState(false);
 const [openCer,setOpenCer]=useState(false);
 const [openPh,setOpenPh]=useState(false);
+const [openG,setgalleryOpen]=useState(false);
+
+const handleGalleriesOpen = () => {
+  setgOpen(true)
+}
   const handleClickOpen = () => {
     setOpen(true);
+  };
+
+  const handleGalleryClickOpen = () => {
+    setgalleryOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
     setOpenCer(false);
-    setOpenPh(false)
+    setOpenPh(false);
+    setgOpen(false)
   };
   const tableData = Object.entries(orphanageInfo);
 const openCertificates=()=>{
@@ -145,9 +159,9 @@ const openPhotos=()=>{
               )}
               {title === 'GalleryLink' && (
                 <td className="info-detail">
-                 <Link to={orphanageInfo.GalleryLink}>
-                  <button className="gallery-button">{orphanageInfo.OrphanageName}</button>
-                 </Link>
+
+                  <button className="gallery-button" onClick={() => handleGalleriesOpen()} >{orphanageInfo.OrphanageName}</button>
+
                 </td>
               )}
               {title !== 'VerificationStatus' && title !== 'Website' && title !== 'GalleryLink' && (
@@ -172,6 +186,27 @@ const openPhotos=()=>{
           </button>
         
       </div>
+
+      <Dialog
+        open={gopen}
+        onClose={handleClose}
+        
+      
+     
+      >
+        <DialogTitle>GALLERY</DialogTitle>
+        <DialogContent>
+          <Galleries />
+        </DialogContent>
+        <DialogActions>
+        
+        {/* <button type="submit" onClick={handleGalleryClickOpen}>Add Images</button> */}
+        <button type="submit" onClick={handleClose}>Save Changes</button>
+        {/* <button type="button" onClick={handlePasswordChange}>Change Password</button>   */}
+         
+          
+        </DialogActions>
+      </Dialog>
       <Dialog
         open={open}
         onClose={handleClose}
@@ -352,9 +387,7 @@ const openPhotos=()=>{
             ))}
           </ul>
         </div>
-      )}
-
-      
+      )}  
     </div>
         </DialogContent>
         <DialogActions>
@@ -362,6 +395,9 @@ const openPhotos=()=>{
           <Button onClick={handleClose}>Cancel</Button>
         </DialogActions>
       </Dialog>
+
+
+      
     </div>
   );
 };
