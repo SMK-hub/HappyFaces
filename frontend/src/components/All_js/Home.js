@@ -11,17 +11,19 @@ import Contact from './Contact';
 import Footer from './Footer';
 import Header from './Header';
 
-// import { Header } from 'tar';
-
 const Home = () => {
   return (
     <div className="home-background">
       <Header/>
       <div className="home-container">
-        <h1>WELCOME TO HAPPY FACES</h1>
-        <p>Providing care and support to every child</p>
+        <video autoPlay muted loop id="background-video">
+          <source src="https://player.vimeo.com/external/555730946.sd.mp4?s=6882418f3ab902044ca28a586c1f3c24ae939ea4&profile_id=164&oauth2_token_id=57447761" type="video/mp4"/>
+          Your browser does not support the video tag.
+        </video>
+        <h1>HAPPY FACES</h1>
+        <p>Home for every child</p>
         <Link to="/signin/donor">
-          <button className="give-now-button">GIVE NOW</button>
+          <button className="donate">DONATE NOW</button>
         </Link>
       </div>
       <Aim />
