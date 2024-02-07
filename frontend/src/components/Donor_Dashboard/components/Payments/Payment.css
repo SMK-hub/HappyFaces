@@ -2,7 +2,9 @@
 .payment-dashboard {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: fit-content;
+    align-items: center;
+    margin: auto;
   }
   
   .dashboard-container {

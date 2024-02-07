@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-// App.js
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/All_js/Home';
@@ -58,10 +56,7 @@ const App = () => {
         <Route path="/admin-dashboard" element={<DashboardAdmin/>}/>
         <Route path='/orphanage-dashboard' element={<DashboardOrphanage/>}/>
         <Route path="/donor-dashboard" element={<DashboardDonor/>}/>
-
         
-
-
         <Route path="/OrphanageHome" element={<OrphanageHome />} />
         <Route path="/OrphanageHome/details" element={<MyContainer/>}/>
         <Route path="/OrphanageHome/profile" element={<Profile/>}/>

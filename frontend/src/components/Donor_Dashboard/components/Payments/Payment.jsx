@@ -32,7 +32,7 @@ const PaymentDashboard = () => {
                 <th>Amount</th>
                 <th>Transaction ID</th>
                 <th>Time</th>
-                {/* <th>Status</th> */}
+                <th>Status</th>
               </tr>
             </thead>
             <tbody>
