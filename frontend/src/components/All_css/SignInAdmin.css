@@ -1,4 +1,3 @@
-/* SignInAdmin.css */
 .sign-in-admin{
   background-image:linear-gradient( 106.37deg, #ffe1bc 29.63%, #ffcfd1 51.55%, #f3c6f1 90.85% );
   height: 100vh;
@@ -15,31 +14,31 @@
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   max-width: 400px;
   margin: 5vh auto;
-
+ 
 }
 .adminSignIn{
   display:flex;
   flex-direction: column;
 }
-
+ 
 .sign-in-admin-heading {
   font-size: 28px;
   margin-bottom: 20px;
   color: #333;
 }
-
+ 
 .sign-in-admin-form {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
 }
-
+ 
 .form-label {
   font-size: 18px;
   margin-bottom: 10px;
 }
-
+ 
 .form-input {
   width: 100%;
   padding: 10px;
@@ -48,7 +47,7 @@
   border-radius: 5px;
   font-size: 16px;
 }
-
+ 
 .form-button {
   width: 100%;
   padding: 15px;
@@ -61,11 +60,11 @@
   font-size: 18px;
   transition: background-color 0.3s ease;
 }
-
+ 
 .form-button:hover {
   background-image:linear-gradient( 106.37deg, #f3c6f1 29.63%, #ffcfd1 51.55%, #ffe1bc 90.85% );
 }
-
+ 
 .back-link {
   margin-top: 20px;
   color: #f3c6f1;
@@ -73,25 +72,25 @@
   font-size: 16px;
   transition: color 0.3s ease;
 }
-
+ 
 .back-link:hover {
   color: #ffe1bc;
 }
-
+ 
 .form-buttons {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
 }
-
+ 
 .forgot-password-link {
   color: #f3c6f1;
   text-decoration: none;
   font-size: 16px;
   transition: color 0.3s ease;
 }
-
+ 
 .forgot-password-link:hover {
   color: #ffe1bc;
 }
