@@ -32,6 +32,7 @@
     "react-scripts": "^5.0.1",
     "react-swipe": "^6.0.4",
     "react-swipeable": "^7.0.1",
+    "styled-components": "^6.1.8",
     "swipe-js-iso": "^2.1.5",
     "twilio": "^4.20.1",
     "web-vitals": "^2.1.4"

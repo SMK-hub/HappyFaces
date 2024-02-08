@@ -1,14 +1,24 @@
-/* Gallery.css */
+/* Styles for the Upload button */
+.upload-button {
+  border: 0;
+  background: none;
+}
 
-.image-gallery {
-    height:auto;
-    width:auto;
-  }
-  
-  .image-gallery img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    cursor: pointer;
-  }
-  
+.upload-button > div {
+  margin-top: 8px;
+}
+
+/* Styles for the modal */
+.modal-image {
+  width: 10%;
+}
+
+
+/* .ant-modal-wrap {
+  z-index: 0; 
+} */
+/* 
+.modal {
+  position: absolute ;
+  z-index: 1 ;
+} */

@@ -10,7 +10,9 @@
   flex-direction: column;
   align-items: center;
   padding: 40px;
-  background-color: #fff;
+  background-image:linear-gradient( 106.37deg, #ffe1bc 29.63%,  #FF0076 51.55%, #590FB7 90.85% );
+  
+
   border-radius: 10px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   max-width: 400px;
@@ -52,9 +54,9 @@
   width: 100%;
   padding: 15px;
   cursor: pointer;
-  background-image:linear-gradient( 106.37deg, #f3c6f1 29.63%, #ffcfd1 51.55%, #ffe1bc 90.85% );
+  /* background-image:linear-gradient( 106.37deg, #f3c6f1 29.63%, #ffcfd1 51.55%, #ffe1bc 90.85% ); */
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  color: #fff;
+  /* color: #fff; */
   border: none;
   border-radius: 8px;
   font-size: 18px;
