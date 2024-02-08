@@ -26,7 +26,7 @@ import axios from "axios";
 // Sidebar Data
 export const SidebarData = [
   {
-    icon: UilHome,
+    icon: UilChart,
     heading: "Dashboard",
     path: "Dashboard",
   },
@@ -113,23 +113,22 @@ export const cardsData = [
 // Recent Update Card Data
 export const UpdatesData = [
   {
-    img: img1,
-    name: "Andrew Thomas",
-    noti: "has ordered Apple smart watch 2500mh battery.",
-    time: "25 seconds ago",
+    // img: img1,
+    name: "Mother Theresa",
+    noti: "says Small things done with great love will change the world.",
+    // time: "25 seconds ago",
   },
-  // {
-  //   img: img2,
-  //   name: "James Bond",
-  //   noti: "has received Samsung gadget for charging battery.",
-  //   time: "30 minutes ago",
-  // },
   {
-    img: img3,
-    name: "Iron Man",
-    noti: "has ordered Apple smart watch, samsung Gear 2500mh battery.",
-    time: "2 hours ago",
+    // img: img3,
+    name: "Rosa Parks",
+    noti: "says that I believe there is only one race - the human race.",
+    // time: "2 hours ago",
   },
+
+  {
+    name : "Mahatma Gandhi",
+    noti: "says You must be the change you wish to see in the world."
+  }
 ];
 
 export const fetchOrphanagesData= async() =>{

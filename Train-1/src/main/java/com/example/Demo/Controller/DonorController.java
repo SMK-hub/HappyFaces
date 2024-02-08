@@ -9,7 +9,7 @@ import java.util.Optional;
 import com.example.Demo.AdminServices.AdminService;
 import com.example.Demo.Model.*;
 import com.example.Demo.OrphanageServices.OrphanageService;
-import org.apache.coyote.Response;
+import com.example.Demo.RazorPayServices.RazorPayService;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -34,6 +34,10 @@ public class DonorController {
     private AdminService adminService;
     @Autowired
     private DonorRepository userRepo;
+
+    public DonorController(RazorPayService razorPayService) {
+        this.razorPayService = razorPayService;
+    }
 
     @GetMapping
     public ResponseEntity<List<Donor>> getAll() {
@@ -182,5 +186,24 @@ public class DonorController {
         }
         return new ResponseEntity<>(null,HttpStatus.CONFLICT);
     }
+    @PostMapping("/donationData")
+    public ResponseEntity<Donations> saveDonationData(@RequestBody Donations donations){
+        Donations donations1 = donorService.saveDonationDetail(donations);
+        return new ResponseEntity<>(donations1,HttpStatus.OK);
+    }
+    private RazorPayService razorPayService;
 
+    public void RazorPayController(RazorPayService razorPayService) {
+        this.razorPayService = razorPayService;
+    }
+
+    @PostMapping("/generateOrder")
+    public ResponseEntity<String> generateOrder(@RequestBody Donations donations) {
+        try {
+            String orderId = razorPayService.createOrder(donations);
+            return new ResponseEntity<>(orderId, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

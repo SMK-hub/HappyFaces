@@ -1,5 +1,6 @@
 package com.example.Demo.DonorServices;
 
+import com.example.Demo.Model.Donations;
 import com.example.Demo.Model.Donor;
 import com.example.Demo.Model.Events;
 import com.example.Demo.Model.OrphanageDetails;
@@ -40,5 +41,6 @@ public interface DonorService {
     Optional<Donor> getDonorByEmail(String email);
 
     Donor changeDonorPassword(String email, String oldPassword, String newPassword, String conformNewPassword);
+    Donations saveDonationDetail(Donations donations);
 
 }
