@@ -1,9 +1,7 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './Container.css';
-import Sidebar from '../Sidebar';
-import RightSide from '../RigtSide/RightSide';
-import { Link } from "react-router-dom";
+import axios from 'axios';
  
 const MyContainer = () => {
   // Dummy data for orphanage information
@@ -18,7 +16,21 @@ const MyContainer = () => {
     Requirements: 'Food, clothing, education materials',
     PriorityStatus: 'High',
   };
+  const [orphanageData, setOrphanageData] = useState([]);
  
+  useEffect(() => {
+    const fetchOrphanageData = async () => {
+      try {
+        const response = await axios.get('http://localhost:8079/orphanageDetails');
+        setOrphanageData(response.data);
+      } catch (error) {
+        console.error('Error fetching orphanage data:', error);
+      }
+    };
+
+    fetchOrphanageData();
+  }, []);
+
   const tableData = Object.entries(orphanageInfo);
  
   return (

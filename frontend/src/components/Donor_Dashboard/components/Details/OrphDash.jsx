@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./OrphDash.css";
-import { orphanagesData } from "../../Data/Data";
+import { fetchOrphanageDetailsData } from "../../Data/Data";
 import '@fortawesome/fontawesome-free/css/all.css';
 import ImagePopup from "./ImagePopup";
 import { jsPDF } from "jspdf";
@@ -13,7 +13,6 @@ function srcset(image, size, rows = 1, cols = 1) {
     srcSet: `${image}?w=${15 * cols}&h=${15 * rows}&fit=crop&auto=format&dpr=2 2x`,
   };
 }
- 
  
 const OrphDash = () => {
   const [imagePopupVisible, setImagePopupVisible] = useState(false);
@@ -29,8 +28,22 @@ const OrphDash = () => {
   const [donationDescriptionVisible, setDonationDescriptionVisible] = useState(false);
   const [viewImagesPopupVisible, setViewImagesPopupVisible] = useState(false); // New state for view images pop-up
  
-  const uniqueLocations = ["All", ...new Set(orphanagesData.map((orphanage) => orphanage.location))];
-  const uniqueRequirements = ["All", ...new Set(orphanagesData.map((orphanage) => orphanage.requirements))];
+  const[orphanagesData,setOrphanagesData] = useState([])
+  useEffect(()=>{
+    const fetch=async()=>{
+        try{
+      const res=await fetchOrphanageDetailsData();
+      console.log(res);
+      setOrphanagesData(res);
+    }catch(error){
+      console.log(error);    
+    }
+    }
+    fetch();
+    
+  },[])
+
+
  
   const handleLocationChange = (e) => {
     setSelectedLocation(e.target.value);
@@ -41,7 +54,7 @@ const OrphDash = () => {
   };
  
   const openModal = async (orphanage) => {
-    const events = await fetchEvents(orphanage.id);
+    const events = fetchEvents();
     setSelectedOrphanage({
       orphanage,
       events,
@@ -142,31 +155,82 @@ const OrphDash = () => {
     ];
   };
  
+  const itemData = [
+    {
+      img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
+      title: 'Breakfast',
+    },
+    {
+      img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
+      title: 'Burger',
+    },
+    {
+      img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
+      title: 'Camera',
+    },
+    {
+      img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
+      title: 'Coffee',
+    },
+    {
+      img: 'https://images.unsplash.com/photo-1533827432537-70133748f5c8',
+      title: 'Hats',
+    },
+    {
+      img: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62',
+      title: 'Honey',
+    },
+    {
+      img: 'https://images.unsplash.com/photo-1516802273409-68526ee1bdd6',
+      title: 'Basketball',
+    },
+    {
+      img: 'https://images.unsplash.com/photo-1518756131217-31eb79b20e8f',
+      title: 'Fern',
+    },
+    {
+      img: 'https://images.unsplash.com/photo-1597645587822-e99fa5d45d25',
+      title: 'Mushrooms',
+    },
+    {
+      img: 'https://images.unsplash.com/photo-1567306301408-9b74779a11af',
+      title: 'Tomato basil',
+    },
+    {
+      img: 'https://images.unsplash.com/photo-1471357674240-e1a485acb3e1',
+      title: 'Sea star',
+    },
+    {
+      img: 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6',
+      title: 'Bike',
+    },
+  ];
+ 
   return (
     <div>
       <div className="OrphDash">
         <h2>Orphanages</h2>
         <div className="OrphDash-inside">
-          <div className="search-item">
+          {/* <div className="search-item">
             <label htmlFor="locationFilter">Search by Location :</label>
             <select id="locationFilter" value={selectedLocation} onChange={handleLocationChange}>
-              {uniqueLocations.map((location, index) => (
+              {uniqueLocations?.map((location, index) => (
                 <option key={index} value={location}>
                   {location}
                 </option>
               ))}
             </select>
-          </div>
-          <div className="search-item">
+          </div> */}
+          {/* <div className="search-item">
             <label htmlFor="requirementFilter">Search by Requirements :</label>
             <select id="requirementFilter" value={selectedRequirement} onChange={handleRequirementChange}>
-              {uniqueRequirements.map((requirements, index) => (
+              {uniqueRequirements?.map((requirements, index) => (
                 <option key={index} value={requirements}>
                   {requirements}
                 </option>
               ))}
             </select>
-          </div>
+          </div> */}
         </div>
  
         {/* Table */}
@@ -181,7 +245,7 @@ const OrphDash = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredOrphanages.map((orphanage, index) => (
+            {filteredOrphanages?.map((orphanage, index) => (
               <tr key={index}>
                 <td>{orphanage.name}</td>
                 <td>{orphanage.location}</td>
@@ -309,68 +373,19 @@ const OrphDash = () => {
               <span className="close" onClick={closeViewImagesPopup}>&times;</span>
               <h3>{selectedOrphanage.orphanage.name} Images</h3>
               <div className="image-container">
-                {/* <div className="main-image">
-                  <img src={selectedOrphanage.orphanage.images[0]} alt="Main Image" />
-                </div> */}
-                <div className="thumbnail-sidebar" style={{height:'500px',width:'530px'}}>
-                  <div className="thumbnails" style={{height:'500px',width:'530px'}}>
-                    {selectedOrphanage.orphanage.images.map((image, index) => (
+                <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164}>
+                  {itemData.map((item) => (
+                    <ImageListItem key={item.img}>
                       <img
-                        key={index}
-                        src={image}
-                       
-                        alt={`Thumbnail ${index}`}
-                        onClick={() => handleThumbnailClick(index)}
+                        src={`${item.img}?w=248&fit=crop&auto=format`}
+                        srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                        alt={item.title}
+                        loading="lazy"
                       />
-                    ))}
-                  </div>
-                  <div className="thumbnails" style={{height:'500px',width:'530px'}}>
-                    {selectedOrphanage.orphanage.images.map((image, index) => (
-                      <img
-                        key={index}
-                        src={image}
-                       
-                        alt={`Thumbnail ${index}`}
-                        onClick={() => handleThumbnailClick(index)}
-                      />
-                    ))}
-                  </div>
-                  <div className="thumbnails" style={{height:'500px',width:'530px'}}>
-                    {selectedOrphanage.orphanage.images.map((image, index) => (
-                      <img
-                        key={index}
-                        style={{height:'300px',width:'300px'}}
-                        src={image}
-                        alt={`Thumbnail ${index}`}
-                        onClick={() => handleThumbnailClick(index)}
-                      />
-                    ))}
-                  </div>
-                  <div className="thumbnails" style={{height:'500px',width:'530px'}}>
-                    {selectedOrphanage.orphanage.images.map((image, index) => (
-                      <img
-                        key={index}
-                       
-                        src={image}
-                        alt={`Thumbnail ${index}`}
-                        onClick={() => handleThumbnailClick(index)}
-                      />
-                    ))}
-                  </div>
-                  <div className="thumbnails" style={{height:'500px',width:'530px'}}>
-                    {selectedOrphanage.orphanage.images.map((image, index) => (
-                      <img
-                        key={index}
-                        src={image}
-                       
-                        alt={`Thumbnail ${index}`}
-                        onClick={() => handleThumbnailClick(index)}
-                      />
-                    ))}
-                  </div>
-                </div>
+                    </ImageListItem>
+                  ))}
+                </ImageList>
               </div>
-              <button className="back-button" onClick={closeViewImagesPopup}>Back</button>
             </div>
           </div>
         )}

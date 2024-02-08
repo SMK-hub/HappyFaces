@@ -5,7 +5,6 @@ import "./EvenDash.css";
 // index.js or App.js
 import '@fortawesome/fontawesome-free/css/all.css';
 import ImagePopup from "./ImagePopup";
-import { jsPDF } from "jspdf";
 
 const EvenDash = () => {
   const [imagePopupVisible, setImagePopupVisible] = useState(false);
@@ -25,7 +24,7 @@ const EvenDash = () => {
 
   const fetchOrphanages = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/orphanages");
+      const response = await fetch("http://localhost:8060/api/events");
       const data = await response.json();
       setEventsData(data);
     } catch (error) {
@@ -57,13 +56,6 @@ const EvenDash = () => {
 
   const closeImagePopup = () => {
     setImagePopupVisible(false);
-  };
-
-  const downloadCertificates = (event) => {
-    // Generate a unique PDF content based on orphanage information
-    const pdf = new jsPDF();
-    pdf.text(`Certificates for ${event.name}`, 20, 20);
-    pdf.save(`${event.name}_certificates.pdf`);
   };
 
   const filteredEvents = eventsData.filter((event) => {
@@ -111,9 +103,10 @@ const EvenDash = () => {
             <tr>
               <th>Name</th>
               <th>Location</th>
-              <th>Contact</th>
+              <th>Date</th>
               <th>Details</th>
               <th>Status</th>
+              <th>Time</th>
               <th>Requests</th>
             </tr>
           </thead>
@@ -122,11 +115,12 @@ const EvenDash = () => {
               <tr key={index}>
                 <td>{event.name}</td>
                 <td>{event.location}</td>
-                <td>{event.contact}</td>
+                <td>{event.date}</td>
                 <td>
                   <button onClick={() => openModal(event)} className="smallButton">Details</button>
                 </td>
                 <td>{event.status}</td>
+                <td>{event.time}</td>
                 <td className="requests">
                   {event.status === "Verified" ? (
                     <button onClick={() => console.log("Decline")} style={{ fontSize: "10px", padding: "5px" }}>Decline</button>
@@ -156,12 +150,10 @@ const EvenDash = () => {
                 &times;
               </span>
               <h3>{selectedEvent.name}</h3>
-              <p className="field-name">Director:<span> {selectedEvent.director}</span></p>
-              <p className="field-name">Established Date:<span> {selectedEvent.establishedDate}</span></p>
+              <p className="field-name">Event Name<span> {selectedEvent.name}</span></p>
               <p className="field-name">Location<span> {selectedEvent.location}</span></p>
-              <p className="field-name">Contact<span> {selectedEvent.contact}</span></p>
-              <p className="field-name">Image:{" "} <button onClick={openImagePopup}>View</button></p>
-              <p className="field-name">Certificates:{" "} <button onClick={() => downloadCertificates(selectedEvent)} className="smallButton">Download</button></p>
+              <p className="field-name">Date<span> {selectedEvent.date}</span></p>
+              <p className="field-name">Time<span> {selectedEvent.time}</span></p>
             </div>
           </div>
         )}

@@ -15,10 +15,32 @@ public class Donations {
     private String donid;
     private String donorId;
     private String orpId;
+    private String orphanageName;
     private String amount;
     private EnumClass.Status status;
-    private String date;
+    private String dateTime;
     private String transactionId;
+
+    public String getDonorId() {
+        return donorId;
+    }
+
+    public String getOrpId() {
+        return orpId;
+    }
+
+    public String getOrphanageName() {
+        return orphanageName;
+    }
+
+    public void setOrphanageName(String orphanageName) {
+        this.orphanageName = orphanageName;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
+    }
+
 
 
     public String getDonid() {
@@ -49,13 +71,14 @@ public class Donations {
         super();
     }
 
-    public Donations(String donorId, String orpId, String amount, EnumClass.Status status, String date, String transactionId) {
+    public Donations(String donorId, String orpId, String amount, EnumClass.Status status, String dateTime, String transactionId,String orphanageName) {
         this.donorId = donorId;
         this.orpId = orpId;
         this.amount = amount;
         this.status = status;
-        this.date = date;
+        this.dateTime = dateTime;
         this.transactionId = transactionId;
+        this.orphanageName=orphanageName;
     }
 
     // Getters and setters
@@ -83,12 +106,8 @@ public class Donations {
         this.status = status;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
+    public String getDateTime() {
+        return dateTime;
     }
 
     @Override
@@ -99,7 +118,7 @@ public class Donations {
                 ", orpId=" + orpId +
                 ", amount='" + amount + '\'' +
                 ", status='" + status + '\'' +
-                ", date='" + date + '\'' +
+                ", date='" + dateTime + '\'' +
                 '}';
     }
 
