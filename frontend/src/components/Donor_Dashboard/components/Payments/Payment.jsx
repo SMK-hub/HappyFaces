@@ -1,8 +1,9 @@
-import React from 'react';
-import './Payment.css'; // Import the corresponding CSS file
- 
- 
-// Function to create data rows
+import React, { useState, useEffect, useContext } from 'react';
+import './Payment.css'; 
+import axios from 'axios';
+import {useUser} from '../../../../UserContext';
+
+
 function createData(name, amount, transactionId, time, status) {
   return { name, amount, transactionId, time, status };
 }
@@ -13,12 +14,56 @@ const rows = [
   // Add more rows as needed
 ];
  
-const getTotalAmount = () => {
-  // Calculate the total amount from the rows
-  return rows.reduce((total, row) => total + row.amount, 0);
-};
+
  
 const PaymentDashboard = () => {
+  
+  const  {setUserData} = useUser();
+  const {userDetails} = useUser();
+
+  const [paymentData, setPaymentData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchPaymentData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8079/donor/DonationList/${userDetails?.donorId}`);
+        const status=response.status
+        if (status !== 200) {
+          throw new Error('Failed to fetch data');
+        }
+        const data = await response.data;
+        console.log(data);
+        setPaymentData(data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPaymentData();
+  }, [userDetails?.donorId]);
+
+  const getTotalAmount = () => {
+    let totalAmount=0;
+    paymentData.map(payment=>
+      {
+        if(payment.status==="SUCCESS"){
+            totalAmount+=parseFloat(payment.amount);
+        }
+      })
+    return totalAmount;
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <div className="payment-dashboard">
       <div className="dashboard-container">
@@ -36,20 +81,20 @@ const PaymentDashboard = () => {
               </tr>
             </thead>
             <tbody>
-              {rows.map((row, index) => (
+              {paymentData.map((data, index) => (
                 <tr key={index}>
-                  <td>{row.name}</td>
-                  <td>${row.amount}</td>
-                  <td>{row.transactionId}</td>
-                  <td>{row.time}</td>
-                  <td>{row.status}</td>
+                  <td>{data?.orphanageName}</td>
+                  <td>Rs.{data?.amount}</td>
+                  <td>{data?.transactionId}</td>
+                  <td>{data?.dateTime}</td>
+                  <td>{data?.status}</td>
                 </tr>
               ))}
             </tbody>
           </table>
           <div className="total-amount">
             <p>Total Amount Collected:</p>
-            <span>${getTotalAmount()}</span>
+            <span>Rs.{getTotalAmount()}</span>
           </div>
         </div>
        
