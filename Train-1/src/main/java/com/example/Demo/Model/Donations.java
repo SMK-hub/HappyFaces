@@ -1,35 +1,61 @@
 package com.example.Demo.Model;
 
+import com.example.Demo.Enum.EnumClass;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.Stack;
+
 @Document(collection = "donationDetails")
 public class Donations {
-	
-	@Id
-	private String donid;
-	
-	@Field("donorId")
-	private ObjectId donorId;
-	
-	@Field("orpId")
-	private ObjectId orpId;
-	private String amount;
-	private String status;
-	private String date; 
-	
-	public Donations() {
-        // Default constructor
+
+    @Id
+    private String donid;
+    private String donorId;
+    private String orpId;
+    private String amount;
+    private EnumClass.Status status;
+    private String date;
+    private String transactionId;
+
+
+    public String getDonid() {
+        return donid;
     }
 
-    public Donations(ObjectId donorId, ObjectId orpId, String amount, String status, String date) {
+    public void setDonid(String donid) {
+        this.donid = donid;
+    }
+
+    public void setDonorId(String donorId) {
+        this.donorId = donorId;
+    }
+
+    public void setOrpId(String orpId) {
+        this.orpId = orpId;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+    }
+    public Donations() {
+        // Default constructor
+        super();
+    }
+
+    public Donations(String donorId, String orpId, String amount, EnumClass.Status status, String date, String transactionId) {
         this.donorId = donorId;
         this.orpId = orpId;
         this.amount = amount;
         this.status = status;
         this.date = date;
+        this.transactionId = transactionId;
     }
 
     // Getters and setters
@@ -41,23 +67,6 @@ public class Donations {
     public void setId(String donid) {
         this.donid = donid;
     }
-
-    public ObjectId getDonorId() {
-        return donorId;
-    }
-
-    public void setDonorId(ObjectId donorId) {
-        this.donorId = donorId;
-    }
-
-    public ObjectId getOrpId() {
-        return orpId;
-    }
-
-    public void setOrpId(ObjectId orpId) {
-        this.orpId = orpId;
-    }
-
     public String getAmount() {
         return amount;
     }
@@ -66,11 +75,11 @@ public class Donations {
         this.amount = amount;
     }
 
-    public String getStatus() {
+    public EnumClass.Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(EnumClass.Status status) {
         this.status = status;
     }
 
@@ -93,5 +102,5 @@ public class Donations {
                 ", date='" + date + '\'' +
                 '}';
     }
-	
+
 }

@@ -3,6 +3,8 @@ package com.example.Demo.Model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Arrays;
+
 @Document(collection = "admin")
 public class Admin {
     
@@ -10,21 +12,21 @@ public class Admin {
     private String adminId;
     private String name;
     private String email;
+	private byte[] profilePhoto;
     private String password;
     private String role;
-    private String passcode;
-	
-    
-    public String getId() {
+	private String passcode;
+
+	public String getAdminId() {
 		return adminId;
 	}
-    
+
+	public void setAdminId(String adminId) {
+		this.adminId = adminId;
+	}
+
 	public Admin() {
 		super();
-	}
-	
-	public void setId(String id) {
-		this.adminId = id;
 	}
 	public String getName() {
 		return name;
@@ -59,5 +61,23 @@ public class Admin {
 
 	public void setPasscode(String passcode) {
 		this.passcode = passcode;
+	}
+	public byte[] getProfilePhoto() {
+		return profilePhoto;
+	}
+	public void setProfilePhoto(byte[] profilePhoto) {
+		this.profilePhoto = profilePhoto;
+	}
+	@Override
+	public String toString() {
+		return "Admin{" +
+				"adminId='" + adminId + '\'' +
+				", name='" + name + '\'' +
+				", email='" + email + '\'' +
+				", profilePhoto=" + Arrays.toString(profilePhoto) +
+				", password='" + password + '\'' +
+				", role='" + role + '\'' +
+				", passcode='" + passcode + '\'' +
+				'}';
 	}
 }

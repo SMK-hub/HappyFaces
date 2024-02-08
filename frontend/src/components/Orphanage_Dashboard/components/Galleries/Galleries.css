@@ -1,0 +1,14 @@
+/* Gallery.css */
+
+.image-gallery {
+    height:auto;
+    width:auto;
+  }
+  
+  .image-gallery img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
