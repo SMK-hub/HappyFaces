@@ -4,7 +4,7 @@ import '../All_css/SignInDonor.css'; // Import the CSS file for styles
 import Header from './Header';
 import axios from 'axios';
 import { useUser } from '../../UserContext';
-
+ 
 const SignInDonor = () => {
   const navigate = useNavigate();
   const [donorDetails, setDonorDetails] = useState({
@@ -24,7 +24,7 @@ const SignInDonor = () => {
   });
   const [passwordsMatchError, setPasswordsMatchError] = useState(false);
   const { setUserData } = useUser();
-
+ 
   const fetchData = async () => {
     try {
       const response = await axios.post('http://localhost:8079/donor/login', donorDetails);
@@ -40,24 +40,24 @@ const SignInDonor = () => {
       console.log(error);
     }
   };
-
+ 
   const handleSignIn = (e) => {
     e.preventDefault();
     console.log(donorDetails);
     fetchData();
   };
-
+ 
   const handleForgotPassword = (e) => {
     e.preventDefault();
     setShowForgotPasswordPopup(true);
   };
-
+ 
   const handleOtpSubmit = (e) => {
     e.preventDefault();
     // Add logic to submit email and OTP
     setShowNewPasswordPopup(true);
   };
-
+ 
   const handleNewPasswordSubmit = (e) => {
     e.preventDefault();
     if (newPasswordData.password === newPasswordData.confirmPassword) {
@@ -69,13 +69,13 @@ const SignInDonor = () => {
       setPasswordsMatchError(true);
     }
   };
-
+ 
   const handleBack = () => {
     setShowForgotPasswordPopup(false);
     setShowNewPasswordPopup(false);
     setPasswordsMatchError(false);
   };
-
+ 
   return (
     <div className="donorSignIn">
       <Header />
@@ -117,7 +117,7 @@ const SignInDonor = () => {
           Back
         </Link>
       </div>
-
+ 
       {/* Forgot Password Popup */}
       {showForgotPasswordPopup && (
         <div className="forgot-password-popup">
@@ -138,7 +138,7 @@ const SignInDonor = () => {
           </form>
         </div>
       )}
-
+ 
       {/* New Password Popup */}
       {showNewPasswordPopup && (
         <div className="new-password-popup">
@@ -179,5 +179,5 @@ const SignInDonor = () => {
     </div>
   );
 };
-
+ 
 export default SignInDonor;

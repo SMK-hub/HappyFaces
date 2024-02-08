@@ -1,5 +1,6 @@
 package com.example.Demo.Model;
 
+import com.example.Demo.Enum.EnumClass;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -16,14 +17,14 @@ public class Requirement {
 		this.id = id;
 	}
 	
-	private String need;
+	private EnumClass.Need need;
 	private String description;
 	private String priority;
 	
 	public Requirement() {
 		super();
 	}
-	public Requirement(String need, String priority) {
+	public Requirement(EnumClass.Need need, String priority) {
 		super();
 		this.need = need;
 		this.priority = priority;
@@ -32,10 +33,10 @@ public class Requirement {
 	public String toString() {
 		return "Requirement [need=" + need + ", priority=" + priority + "]";
 	}
-	public String getNeed() {
+	public EnumClass.Need getNeed() {
 		return need;
 	}
-	public void setNeed(String need) {
+	public void setNeed(EnumClass.Need need) {
 		this.need = need;
 	}
 	public String getPriority() {
