@@ -4,26 +4,30 @@ import React, { useState , useEffect } from 'react';
 import './Donors.css'; // Import the CSS file
 import { fetchDonorsData } from '../../Data/Data';
 import DonorCard from './DonorCard'; // Import the DonorCard component
+import axios from "axios";
 
 const Donors = () => {
   const [selectedDonor, setSelectedDonor] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState('All');
   const [currentPage, setCurrentPage] = useState(1);
   const entriesPerPage = 5;
-
   const [donorsData,setDonorsData] = useState([]);
-  useEffect(()=>{
-    const fetchData=async()=>{
-      try{
-        const res=await fetchDonorsData();
-        console.log(res);
-        setDonorsData(res);
-      }catch(error){
-        console.log(error);
-      }
+
+  useEffect(() => {
+    fetchDonors();
+  }, []);
+
+  const fetchDonors = async () => {
+    try {
+      const response = await axios.get("http://localhost:8079/admin/donationList");
+      const data = response.data.map(donate => ({
+        name: donate.orphanageName,
+        amount: donate.amount,
+        tid: donate.transactionId,
+        entry: donate.dateTime,
+      }))
     }
-    fetchData();
-  },[])
+  }
 
   const openDonorCard = (donor) => {
     setSelectedDonor(donor);
