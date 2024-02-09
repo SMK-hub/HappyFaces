@@ -17,10 +17,7 @@ function srcset(image, size, rows = 1, cols = 1) {
 const OrphDash = () => {
   const [imagePopupVisible, setImagePopupVisible] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState("All");
-  const [selectedOrphanage, setSelectedOrphanage] = useState({
-    orphanage: null,
-    events: [],
-  });
+  const [selectedOrphanage, setSelectedOrphanage] = useState();
   const [selectedRequirement, setSelectedRequirement] = useState("All");
   const [eventDetailsVisible, setEventDetailsVisible] = useState(false);
   const [registrationSuccessVisible, setRegistrationSuccessVisible] = useState(false);
@@ -43,7 +40,6 @@ const OrphDash = () => {
     
   },[])
 
-
  
   const handleLocationChange = (e) => {
     setSelectedLocation(e.target.value);
@@ -54,18 +50,12 @@ const OrphDash = () => {
   };
  
   const openModal = async (orphanage) => {
-    const events = fetchEvents();
-    setSelectedOrphanage({
-      orphanage,
-      events,
-    });
+    const events = await fetchEvents(orphanage.orpId);
+    setSelectedOrphanage(orphanage);
   };
  
   const closeModal = () => {
-    setSelectedOrphanage({
-      orphanage: null,
-      events: [],
-    });
+    setSelectedOrphanage();
     setEventDetailsVisible(false);
   };
  
@@ -237,37 +227,48 @@ const OrphDash = () => {
         <table>
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Location</th>
+              <th>Orphanage Name</th>
+              <th>Address</th>
               <th>Contact</th>
               <th>Details</th>
-              <th>Requirements</th>
+              <th>Requirement</th>
             </tr>
           </thead>
           <tbody>
             {filteredOrphanages?.map((orphanage, index) => (
               <tr key={index}>
-                <td>{orphanage.name}</td>
-                <td>{orphanage.location}</td>
+                <td>{orphanage.orphanageName}</td>
+                <td>{orphanage.address.house_no},{orphanage.address.street},{orphanage.address.city}-{orphanage.address.postalCode},{orphanage.address.state},{orphanage.address.country}</td>
                 <td>{orphanage.contact}</td>
                 <td>
                   <button onClick={() => openModal(orphanage)}>Details</button>
                 </td>
-                <td>{orphanage.requirements}</td>
+                <td>{orphanage.requirements?.need}</td>
               </tr>
             ))}
           </tbody>
         </table>
  
         {/* Modal */}
-        {selectedOrphanage.orphanage && (
+        {selectedOrphanage && (
           <div className="modal">
             <div className="modal-content">
               <span className="close" onClick={closeModal}>&times;</span>
-              <h3>{selectedOrphanage.orphanage.name}</h3>
-              <p className="field-name">Orphanage Name:<span> {selectedOrphanage.orphanage.name}</span></p>
-              <p className="field-name">Location:<span> {selectedOrphanage.orphanage.location}</span></p>
-              <p className="field-name">Director:<span> {selectedOrphanage.orphanage.director}</span></p>
+              <h3>{selectedOrphanage.orphanageName}</h3>
+              <p className="field-name">Orphanage Name:<span> {selectedOrphanage.orphanageName}</span></p>
+              <p className="field-name">Director:<span> {selectedOrphanage.directorName}</span></p>
+              <p className="field-name">Location:
+              <span>
+                {selectedOrphanage.address.house_no},
+                {selectedOrphanage.address.street},
+                {selectedOrphanage.address.city}-{selectedOrphanage.address.postalCode},
+                {selectedOrphanage.address.state},
+                {selectedOrphanage.address.country}
+                </span>
+              </p>
+              <p className="field-name">Email:<span>{selectedOrphanage.orphanageEmail}</span></p>
+              <p className="field-name">Description:<span>{selectedOrphanage.description}</span></p>
+              <p className="field-name">Website:<span>{selectedOrphanage.website}</span></p>
               <p className="field-name">Certificates:{" "} <button onClick={() => downloadCertificates(selectedOrphanage.orphanage)}>Download</button></p>
               <p className="field-name">View Images:{" "} <button onClick={openViewImagesPopup}>View Images</button><span></span></p>
               {/* Add "Events" and "Donate" buttons */}

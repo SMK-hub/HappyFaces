@@ -19,7 +19,7 @@
 }
  
 .payment-table-container {
-  max-height: 200px; /* Set maximum height for the table container */
+  max-height: 400px; /* Set maximum height for the table container */
   overflow-y: auto; /* Enable vertical scrollbar */
 }
  

@@ -129,7 +129,7 @@ export const UpdatesData = [
 
 export const fetchOrphanageDetailsData = async() =>{
   try{
-    const response=await axios.get("http://localhost:8079/admin/orphanageDetailsList")
+    const response=await axios.get("http://localhost:8079/donor/OrphanageDetails")
     return response.data;
   }catch(error){
     console.log(error);

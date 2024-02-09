@@ -18,12 +18,11 @@ public class OrphanageDetails {
     private String orphanageEmail;
     private String description;
     private Address address;
-    private int viewCount;
     private EnumClass.VerificationStatus verificationStatus;
     private String website;
     private byte[] certificate;
     @DBRef
-    private Requirement requirements;
+    private Requirements requirements;
 
     public byte[] getCertificate() {
         return certificate;
@@ -104,11 +103,11 @@ public class OrphanageDetails {
         this.website = website;
     }
 
-    public Requirement getRequirements() {
+    public Requirements getRequirements() {
         return requirements;
     }
 
-    public void setRequirements(Requirement requirements) {
+    public void setRequirements(Requirements requirements) {
         this.requirements = requirements;
     }
 
@@ -121,14 +120,6 @@ public class OrphanageDetails {
         this.orphanageName = orphanageName;
     }
 
-    public int getViewCount() {
-        return viewCount;
-    }
-
-    public void setViewCount(int viewCount) {
-        this.viewCount = viewCount;
-    }
-
     public String getOrphanageEmail() {
         return orphanageEmail;
     }
@@ -139,10 +130,10 @@ public class OrphanageDetails {
 
     @Override
     public String toString() {
-        return "OrphanageDetails{" + "id='" + id + '\'' + ", orpId='" + orpId + '\'' + ", orphanageName='" + orphanageName + '\'' + ", directorName='" + directorName + '\'' + ", contact='" + contact + '\'' + ", description='" + description + '\'' + ", address=" + address + ", viewCount=" + viewCount + ", verificationStatus=" + verificationStatus + ", website='" + website + '\'' + ", requirements=" + requirements + '}';
+        return "OrphanageDetails{" + "id='" + id + '\'' + ", orpId='" + orpId + '\'' + ", orphanageName='" + orphanageName + '\'' + ", directorName='" + directorName + '\'' + ", contact='" + contact + '\'' + ", description='" + description + '\'' + ", address=" + address + ", verificationStatus=" + verificationStatus + ", website='" + website + '\'' + ", requirements=" + requirements + '}';
     }
 
-    public OrphanageDetails(String id, String orpId, String orphanageName, String directorName, String contact, String description, Address address, int viewCount, EnumClass.VerificationStatus verificationStatus, String website, Requirement requirements,byte[] certificate) {
+    public OrphanageDetails(String id, String orpId, String orphanageName, String directorName, String contact, String description, Address address, EnumClass.VerificationStatus verificationStatus, String website, Requirements requirements,byte[] certificate) {
         this.id = id;
         this.orpId = orpId;
         this.orphanageName = orphanageName;
@@ -150,7 +141,6 @@ public class OrphanageDetails {
         this.contact = contact;
         this.description = description;
         this.address = address;
-        this.viewCount = viewCount;
         this.verificationStatus = verificationStatus;
         this.website = website;
         this.requirements = requirements;
