@@ -10,10 +10,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 const Gallery = () => {
   const [images, setImages] = useState([]);
-  const [uploadedFile, setUploadedFile] = useState(null);
-  
-
- 
+  const [uploadedFiles, setUploadedFile] = useState([]);
 
   const handleImageUpload = (event) => {
     const files = event.target.files;
@@ -31,17 +28,45 @@ const Gallery = () => {
       }
     }
     setImages([...images, ...newImages]);
-    // Display the first uploaded file
     if (newImages.length > 0) {
-      setUploadedFile(newImages[0]);
+      setUploadedFile([...uploadedFiles, ...newImages]);
     }
   };
 
-  const handleRemoveFile = () => {
-    setUploadedFile(null);
-  };
+  
 
- 
+  const handleDeleteButton = (index, isItemData) => {
+    if (isItemData) {
+      const updatedItemData = [...itemData];
+      updatedItemData[index].showDeleteButton = true; // Show delete button for this item
+      setItemData(updatedItemData);
+    } else {
+      const updatedFiles = [...uploadedFiles];
+      updatedFiles.splice(index, 1);
+      setUploadedFile(updatedFiles);
+    
+      // Remove the deleted image from the images state as well
+      const updatedImages = images.filter((_, i) => i !== index);
+      setImages(updatedImages);
+  
+      // Create a new DataTransfer object and add the files to it
+      const dataTransfer = new DataTransfer();
+      updatedFiles.forEach(file => {
+        dataTransfer.items.add(file);
+      });
+  
+      // Find the input element by its ID
+      const inputElement = document.getElementById('fileInput');
+      if (inputElement) {
+        // Set the files property of the input element with the new DataTransfer object
+        inputElement.files = dataTransfer.files;
+      }
+    }
+  };
+  
+  
+  
+  
 
   const [itemData, setItemData] = useState([
     {
@@ -51,7 +76,7 @@ const Gallery = () => {
       rows: 2,
       cols: 2,
       featured: true,
-      showDeleteButton: true, // Add showDeleteButton property and set it to false
+      showDeleteButton: true, 
     },
     {
       img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
@@ -139,12 +164,7 @@ const Gallery = () => {
     },
   ]);
 
-  const handleDeleteButton = (index) => {
-    const updatedItemData = [...itemData];
-    updatedItemData[index].showDeleteButton = true; // Show delete button for this item
-    setItemData(updatedItemData);
-  };
-
+  
 
   return (
     <div>
@@ -154,6 +174,7 @@ const Gallery = () => {
             <ImageListItem key="Subheader" cols={2}>
               <ListSubheader component="div">Miracle Foundation</ListSubheader>
             </ImageListItem>
+
             {itemData.map((item, index) => (
               <ImageListItem key={index}>
                 <img src={item.img} alt={item.title} loading="lazy" />
@@ -174,20 +195,31 @@ const Gallery = () => {
                 />
               </ImageListItem>
             ))}
+
+            {uploadedFiles.map((file, index) => (
+              <ImageListItem key={index}>
+                <img src={URL.createObjectURL(file)} alt={file.name} loading="lazy" />
+                <ImageListItemBar
+                  title={file.name}
+                  actionIcon={
+                    <IconButton
+                      sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                      aria-label="delete image"
+                      onClick={() => handleDeleteButton(index)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  }
+                />
+              </ImageListItem>
+              
+            ))}
           </ImageList>
           <input type="file" accept=".jpg, .jpeg" multiple onChange={handleImageUpload} />
-          {/* <Button variant="contained" onClick={handleOK}>OK</Button> */}
         </div>
-        {uploadedFile && (
-          <div className="uploaded-file">
-            <p>File Uploaded: {uploadedFile.name}</p>
-            <button className="remove-button" onClick={handleRemoveFile}>
-              Remove
-            </button>
-          </div>
-        )}
       </center>
     </div>
   );
 };
+
 export default Gallery;

@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import './UpdateDetails.css';
-import Sidebar from '../Sidebar';
-import RightSide from '../RigtSide/RightSide';
 
 
 const FormComponent = () => {
@@ -36,9 +34,6 @@ const FormComponent = () => {
   };
 
   return (
-    <div className='Dashb'>
-      <div className='DashbGlass'>
-        <Sidebar/>
         <div className="form-container" style={{ border: '1px solid #ccc', padding: '20px', borderRadius: '10px' }}>
       <form onSubmit={handleSubmit}>
         <h1>Orphanage Details</h1>
@@ -92,10 +87,10 @@ const FormComponent = () => {
         </div>
       </form>
     </div>
-    <RightSide/>
-      </div>
+    
+     
       
-    </div>
+  
            
     
     

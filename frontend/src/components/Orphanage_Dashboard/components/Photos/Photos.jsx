@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './Photos.css';
-import RightSide from '../RigtSide/RightSide';
-import Sidebar from '../Sidebar';
+
 
 const PhotosComponent = () => {
   const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -31,9 +30,6 @@ const PhotosComponent = () => {
   };
 
   return (
-    <div className='Dashb'>
-      <div className='DashbGlass'  >
-        <Sidebar/>
            <div className="photos-container">
       <h1>Photos</h1>
       <h3>Upload pictures of your orphanage's activities and events.</h3>
@@ -66,10 +62,8 @@ const PhotosComponent = () => {
       <button className="ok-button" onClick={handleOkButtonClick}>
         OK
       </button>
-    </div> <RightSide/>
-        </div>
-        
-    </div>
+    </div> 
+    
     
   );
 };
