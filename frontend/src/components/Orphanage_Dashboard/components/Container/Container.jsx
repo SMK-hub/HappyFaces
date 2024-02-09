@@ -1,94 +1,17 @@
 import React from 'react';
 import './Container.css';
-import { Link } from 'react-router-dom';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { useState } from 'react';
 import Galleries from '../Galleries/Galleries'
-
+import UpdateDetails from '../UpdateDetails/UpdateDetails'
+import Certificates from '../Certificates/Certificates'
+import Photos from '../Photos/Photos'
 const MyContainer = () => {
-
-  
-
-  const [uploadedFiles, setUploadedFiles] = useState([]);
-
-  const handleUpload = (e) => {
-    const files = Array.from(e.target.files);
-
-    const filteredFiles = files.filter((file) => {
-      const isImage = file.type.startsWith('image/');
-      const isSizeValid = file.size <= 5 * 1024 * 1024; // 5 MB
-
-      return isImage && isSizeValid;
-    });
-
-    setUploadedFiles((prevFiles) => [...prevFiles, ...filteredFiles]);
-  };
-
-  const handleRemove = (index) => {
-    const updatedFiles = [...uploadedFiles];
-    updatedFiles.splice(index, 1);
-    setUploadedFiles(updatedFiles);
-  };
 
   const handleOk = () => {
     // Implement your logic for handling OK button click
     console.log('OK button clicked');
   };
-
-
-  // Dummy data for orphanage information
-  const [formData, setFormData] = useState({
-    Name: '',
-    DirectorName: '',
-    Contact: '',
-    Description: '',
-    Address: '',
-    Website: '',
-    Requirements: '',
-    PriorityStatus: '',
-  });
-  const [uploadedFile, setUploadedFile] = useState(null);
-
-  const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-
-    if (file && file.size <= 5 * 1024 * 1024) {
-      setUploadedFile(file);
-    } else {
-      alert('Please upload a file less than 5 MB.');
-    }
-  };
-
-  const handleRemoveFile = () => {
-    setUploadedFile(null);
-  };
-
-  const handleOkButtonClick = () => {
-    // Implement your logic for handling OK button click
-    console.log('OK button clicked');
-  };
-
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Add your logic to handle form submission
-    console.log('Form submitted:', formData);
-  };
-
-  const handlePasswordChange = () => {
-    // Add your logic to handle password change
-    console.log('Password change requested');
-  };
-
-
   const orphanageInfo = {
     Name: 'ABC Orphanage',
     DirectorName: 'Rajnikanth',
@@ -189,24 +112,17 @@ const openPhotos=()=>{
 
       <Dialog
         open={gopen}
-        onClose={handleClose}
-        
-      
-     
+        onClose={handleClose} 
       >
-        <DialogTitle>GALLERY</DialogTitle>
+        
         <DialogContent>
           <Galleries />
         </DialogContent>
         <DialogActions>
-        
-        {/* <button type="submit" onClick={handleGalleryClickOpen}>Add Images</button> */}
         <button type="submit" onClick={handleClose}>Save Changes</button>
-        {/* <button type="button" onClick={handlePasswordChange}>Change Password</button>   */}
-         
-          
         </DialogActions>
       </Dialog>
+
       <Dialog
         open={open}
         onClose={handleClose}
@@ -223,66 +139,14 @@ const openPhotos=()=>{
           },
         }}
       >
-        <DialogTitle>Orphanage Details</DialogTitle>
+        
         <DialogContent>
-        <form onSubmit={handleSubmit}>
-        
-        <label>
-          Name:
-          <input type="text" name="name" value={formData.name} onChange={handleChange} />
-        </label>
-        <label>
-          Director Name:
-          <input type="text" name="directorName" value={formData.directorName} onChange={handleChange} />
-        </label>
-        <label>
-          Contact:
-          <input type="text" name="contact" value={formData.contact} onChange={handleChange} />
-        </label>
-        <label>
-          Description:
-          <textarea name="description" value={formData.description} onChange={handleChange}></textarea>
-        </label>
-        <label>
-          Address:
-          <input type="text" name="address" value={formData.address} onChange={handleChange} />
-        </label>
-        
-        <label>
-          Website:
-          <input type="text" name="website" value={formData.website} onChange={handleChange} />
-        </label>
-        <label>
-          Requirements:
-          <select name="requirements" value={formData.requirements} onChange={handleChange}>
-            <option value="">Select Requirement</option>
-            <option value="food">Food</option>
-            <option value="clothing">Clothing</option>
-            <option value="books">Books</option>
-            <option value="books">Others</option>
-          </select>
-        </label>
-        <label>
-          Priority Status:
-          <select name="priorityStatus" value={formData.priorityStatus} onChange={handleChange}>
-            <option value="">Select Priority Status</option>
-            <option value="high">High</option>
-            <option value="medium">Moderate</option>
-          </select>
-        </label>
-
-        
-      </form>
+        <UpdateDetails />
         </DialogContent>
         <DialogActions>
-        <button type="submit" onClick={handleClose}>Save Changes</button>
-        {/* <button type="button" onClick={handlePasswordChange}>Change Password</button>   */}
-         
-          
+        <button type="submit" onClick={handleClose}>Save Changes</button> 
         </DialogActions>
       </Dialog>
-
-
 
       <Dialog
         open={openCer}
@@ -300,47 +164,14 @@ const openPhotos=()=>{
           },
         }}
       >
-        <DialogTitle>Certificates</DialogTitle>
         <DialogContent>
-        <div className="file-upload-container">
-           
-            <h3>To ensure transparency and compliance, please upload your orphanage's authentication certificate here. </h3>
-            <>
-              <p>Kindly follow these guidelines for document submission:</p>
-              <ul>
-              <li>Combine all relevant documents, including licenses, registrations, and accreditations, into a single PDF file.</li>
-              <li>Ensure that the PDF file size does not exceed 5 MB.</li>
-              <li>If your documents exceed this limit, consider compressing the file or contacting us for assistance.</li>
-              </ul>
-              <p>We appreciate your cooperation in adhering to these guidelines!</p>
-              </>
-
-
-      <label className="file-upload-label"  >
-        Upload PDF :
-        <input type="file" accept=".pdf" onChange={handleFileUpload} />
-      </label>
-
-      {uploadedFile && (
-        <div className="uploaded-file">
-          <p>File Uploaded: {uploadedFile.name}</p>
-          <button className="remove-button" onClick={handleRemoveFile}>
-            Remove
-          </button>
-        </div>
-      )}
-
-      <button className="ok-button" onClick={handleOkButtonClick}>
-        OK
-      </button>
-     </div>
+        <Certificates />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Save Changes</Button>
           <Button type="submit">Cancel</Button>
         </DialogActions>
       </Dialog>
-
 
       <Dialog
         open={openPh}
@@ -358,46 +189,14 @@ const openPhotos=()=>{
           },
         }}
       >
-        <DialogTitle>Gallery</DialogTitle>
         <DialogContent>
-        <div className="photos-container">
-      <h1>Photos</h1>
-      <h3>Upload pictures of your orphanage's activities and events.</h3>
-      <p>
-         Accepted formats: png, jpg, jpeg.
-      </p>
-      <p> Maximum file size: 5 MB</p>
-
-      <label className="file-upload-label">
-        Upload Pictures:
-        <input type="file" accept="image/png, image/jpeg, image/jpg" onChange={handleUpload} multiple />
-      </label>
-
-      {uploadedFiles.length > 0 && (
-        <div className="uploaded-files">
-          <p>Uploaded Files:</p>
-          <ul>
-            {uploadedFiles.map((file, index) => (
-              <li key={index}>
-                {file.name}
-                <button className="remove-button" onClick={() => handleRemove(index)}>
-                  Remove
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}  
-    </div>
+       <Photos />
         </DialogContent>
         <DialogActions>
           <Button className="ok-button" onClick={handleOk}>OK</Button>
           <Button onClick={handleClose}>Cancel</Button>
         </DialogActions>
       </Dialog>
-
-
-      
     </div>
   );
 };

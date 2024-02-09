@@ -31,6 +31,8 @@ public class DonorServiceImpl implements DonorService {
     private EventsRepository eventsRepository;
     @Autowired
     private OrphanageDetailsRepository detailsRepository;
+    @Autowired
+    private DonationsRepository donationsRepository;
 
     public void saveUser(Optional<Donor> optionalDonor) {
         optionalDonor.ifPresent(donor -> {
@@ -236,4 +238,9 @@ public class DonorServiceImpl implements DonorService {
         return null;
     }
 
+    @Override
+    public Donations saveDonationDetail(Donations donations) {
+        donationsRepository.save(donations);
+        return donationsRepository.findById(donations.getId()).orElse(null);
+    }
 }

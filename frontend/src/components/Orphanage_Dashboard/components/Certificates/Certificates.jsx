@@ -20,13 +20,12 @@ const FileUploadComponent = () => {
   };
 
   const handleOkButtonClick = () => {
-    // Implement your logic for handling OK button click
+    // Implement your lgic for handling OK button click
     console.log('OK button clicked');
   };
 
   return (
-    <div className='Dashb'>
-      <div className='DashbGlass' >
+    
           <div className="file-upload-container">
            <h1>Certificates</h1>
             <h3>To ensure transparency and compliance, please upload your orphanage's authentication certificate here. </h3>
@@ -58,9 +57,6 @@ const FileUploadComponent = () => {
       <button className="ok-button" onClick={handleOkButtonClick}>
         OK
       </button>
-    </div><RightSide/>
-    </div>
-    
     </div>
     
   );

@@ -22,7 +22,7 @@ const AboutUs = () => {
         <div className="our-story-box">
           <h2 className="about-us-heading">Our Story</h2>
           <p className="about-us-description">
-            Step into the heartwarming world of Happy Faces, an online haven where every smile tells a story of hope and resilience. We are not just an orphanage; we are a vibrant community, weaving a tapestry of love and support. Explore our website to meet the incredible souls behind the smiles, read inspiring tales of triumph, and discover how you can make a difference. Whether through donations, volunteering, or spreading the word, you become a catalyst for positive change. Join us in creating a world where abandoned dreams find new life, and every face radiates the pure joy of belonging. Together, we illuminate the path to a brighter future. 😊🌟 #HappyFaces #SpreadLove #TransformLives
+            Step into the heartwarming world of Happy Faces, an online heaven where every smile tells a story of hope and resilience. We are not just an orphanage; we are a vibrant community, weaving a tapestry of love and support. Explore our website to meet the incredible souls behind the smiles, read inspiring tales of triumph, and discover how you can make a difference. Whether through donations, volunteering, or spreading the word, you become a catalyst for positive change. Join us in creating a world where abandoned dreams find new life, and every face radiates the pure joy of belonging. Together, we illuminate the path to a brighter future. 😊🌟 #HappyFaces #SpreadLove #TransformLives
           </p>
         </div>
       </div>

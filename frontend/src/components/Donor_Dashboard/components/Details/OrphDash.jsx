@@ -6,6 +6,7 @@ import ImagePopup from "./ImagePopup";
 import { jsPDF } from "jspdf";
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
+import RazorPay from '../Details/RazorPay'; // Corrected import statement
  
 function srcset(image, size, rows = 1, cols = 1) {
   return {
@@ -16,6 +17,7 @@ function srcset(image, size, rows = 1, cols = 1) {
  
 const OrphDash = () => {
   const [imagePopupVisible, setImagePopupVisible] = useState(false);
+  const [donationRazorPayVisible, SetdonationRazorPayVisible] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState("All");
   const [selectedOrphanage, setSelectedOrphanage] = useState();
   const [selectedRequirement, setSelectedRequirement] = useState("All");
@@ -110,6 +112,10 @@ const OrphDash = () => {
   const handleRegistrationSuccessClose = () => {
     setRegistrationSuccessVisible(false);
   };
+
+  const handledonationRazorPayVisible  = () => {
+    SetdonationRazorPayVisible(!donationRazorPayVisible);
+  }
  
   const handleBackButtonClick = () => {
     setSelectedOrphanage({
@@ -343,7 +349,7 @@ const OrphDash = () => {
               <p>Choose a donation option:</p>
               <div className="button-container">
                 <button onClick={() => handleDonationOption('Requirements')}>Donate Requirements</button>
-                <button onClick={() => handleDonationOption('Others')}>Donate Money</button>
+                <button onClick={() => handledonationRazorPayVisible()}>Donate Money</button>
               </div>
               {/* Additional close button inside the pop-up content */}
               <button className="close-button-inside" onClick={() => setDonationPopupVisible(false)}>Close</button>
@@ -363,6 +369,15 @@ const OrphDash = () => {
                 <button onClick={handleDonationDescriptionSave}>Save</button>
                 <button onClick={handleDonationDescriptionClose}>Close</button>
               </div>
+            </div>
+          </div>
+        )}
+
+{donationRazorPayVisible && (
+          <div className="modal donation-description-modal">
+            <div className="donation-description-popup-content">
+              <RazorPay onClose={handledonationRazorPayVisible}/>
+              
             </div>
           </div>
         )}
