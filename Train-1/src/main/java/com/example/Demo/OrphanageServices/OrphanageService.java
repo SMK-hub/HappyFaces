@@ -25,7 +25,7 @@ public interface OrphanageService {
 
     String createEvents(Events event);
 
-    String editEvent(String eventId,Events event);
+    String editEvent(String eventId, Events event);
 
     String cancelEvent(String eventId);
 
@@ -40,9 +40,15 @@ public interface OrphanageService {
     void uploadImages(String orphanageId, List<MultipartFile> imageFiles) throws IOException;
 
     List<OrphanageImage> getOrphanageImagesById(String orphanageId);
+
     Optional<Orphanage> changeOrphanagePassword(String email, String oldPassword, String newPassword, String conformNewPassword);
 
     void removeImage(String orphanageId, String imageId);
+
     Optional<Orphanage> getOrphanageByEmail(String email);
+
+    public String storeCertificate(String orpId,MultipartFile file) throws IOException;
+
+    public byte[] getCertificate(String orpId);
 
 }

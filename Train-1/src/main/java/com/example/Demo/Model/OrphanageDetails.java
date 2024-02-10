@@ -21,7 +21,6 @@ public class OrphanageDetails {
     private EnumClass.VerificationStatus verificationStatus;
     private String website;
     private byte[] certificate;
-    @DBRef
     private Requirements requirements;
 
     public byte[] getCertificate() {

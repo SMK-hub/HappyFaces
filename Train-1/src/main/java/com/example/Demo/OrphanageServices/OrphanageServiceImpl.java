@@ -11,10 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.Base64;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class OrphanageServiceImpl implements OrphanageService {
@@ -263,6 +260,34 @@ public class OrphanageServiceImpl implements OrphanageService {
     @Override
     public Optional<Orphanage> getOrphanageByEmail(String email) {
         return orphanageRepository.findByEmail(email);
+    }
+
+    @Override
+    public String storeCertificate(String orpId, MultipartFile file) throws IOException {
+        Optional<OrphanageDetails> optionalOrphanageDetails = orphanageDetailsRepository.findByOrpId(orpId);
+        if (optionalOrphanageDetails.isPresent()) {
+            OrphanageDetails orphanageDetails = optionalOrphanageDetails.get();
+            orphanageDetails.setCertificate(Base64.getEncoder().encodeToString(file.getBytes()).getBytes());
+            // Ensure the OrphanageDetails object has an ID before saving
+            if (orphanageDetails.getId() == null) {
+                orphanageDetails.setId(UUID.randomUUID().toString()); // Generate a new ID if it's null
+            }
+            orphanageDetailsRepository.save(orphanageDetails);
+            return "Certificate Uploaded Successfully";
+        }
+        return null; // OrphanageDetails not found
+    }
+    @Override
+    public byte[] getCertificate(String orpId) {
+        Optional<OrphanageDetails> optionalOrphanageDetails = orphanageDetailsRepository.findByOrpId(orpId);
+        if (optionalOrphanageDetails.isPresent()) {
+            OrphanageDetails orphanageDetails = optionalOrphanageDetails.get();
+            byte[] certificateBytes = orphanageDetails.getCertificate();
+            if (certificateBytes != null) {
+                return Base64.getDecoder().decode(certificateBytes);
+            }
+        }
+        return null;
     }
 
     @Override

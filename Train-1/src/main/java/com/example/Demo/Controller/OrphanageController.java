@@ -216,4 +216,29 @@ public class OrphanageController {
         }
         return new ResponseEntity<>(null,HttpStatus.CONFLICT);
     }
+    @PostMapping("/uploadCertificate/{orphanageId}")
+    public ResponseEntity<String> uploadCertificate(@PathVariable String orphanageId,@RequestParam("file") MultipartFile file) {
+        try {
+            String response = orphanageService.storeCertificate(orphanageId,file);
+            if(response.equals("Certificate Uploaded Successfully")) {
+                return new ResponseEntity<>(response,HttpStatus.OK);
+            }
+            return new ResponseEntity<>(null,HttpStatus.CONFLICT);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload certificate: " + e.getMessage());
+        }
+    }
+    @GetMapping("/getCertificate/{orpId}")
+    public ResponseEntity<byte[]> getCertificate(@PathVariable String orpId) {
+        byte[] certificateBytes = orphanageService.getCertificate(orpId);
+        if (certificateBytes != null) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDispositionFormData("filename", "certificate.pdf");
+            headers.setContentLength(certificateBytes.length);
+            return new ResponseEntity<>(certificateBytes, headers, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }

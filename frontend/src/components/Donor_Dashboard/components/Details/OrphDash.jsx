@@ -7,6 +7,7 @@ import { jsPDF } from "jspdf";
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import RazorPay from '../Details/RazorPay'; // Corrected import statement
+import axios from "axios";
  
 function srcset(image, size, rows = 1, cols = 1) {
   return {
@@ -77,10 +78,31 @@ const OrphDash = () => {
     setViewImagesPopupVisible(false);
   };
  
-  const downloadCertificates = (orphanage) => {
-    const pdf = new jsPDF();
-    pdf.text(`Certificates for ${orphanage.name}`, 20, 20);
-    pdf.save(`${orphanage.name}_certificates.pdf`);
+  const downloadCertificates = async(orpId,orpName) => {
+    try{
+      const response = await axios.get(`http://localhost:8079/orphanage/getCertificate/${orpId}`, { responseType: 'blob' });
+        const status = response.status;
+        if (status === 200) {
+            const blob = new Blob([response.data], { type: 'application/pdf' });
+            if (blob.size === 0) {
+              alert('The file is empty.');
+              return;
+          }
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `${orpName}_certificates.pdf`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link); // Cleanup
+            window.URL.revokeObjectURL(url); // Cleanup
+        } else {
+            alert(response.status);
+        }
+
+    }catch(error){
+      console.log(error);
+    }
   };
  
   const handleEventsButtonClick = () => {
@@ -151,56 +173,17 @@ const OrphDash = () => {
     ];
   };
  
-  const itemData = [
+const [itemData,setItemData]=useState("");
+
+  const fetchImageData = async ()=> {
+    try{
+      const response=await axios.get(`http://localhost:8079/orphanage/`);
+
+    }catch(error)
     {
-      img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
-      title: 'Breakfast',
-    },
-    {
-      img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
-      title: 'Burger',
-    },
-    {
-      img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
-      title: 'Camera',
-    },
-    {
-      img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
-      title: 'Coffee',
-    },
-    {
-      img: 'https://images.unsplash.com/photo-1533827432537-70133748f5c8',
-      title: 'Hats',
-    },
-    {
-      img: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62',
-      title: 'Honey',
-    },
-    {
-      img: 'https://images.unsplash.com/photo-1516802273409-68526ee1bdd6',
-      title: 'Basketball',
-    },
-    {
-      img: 'https://images.unsplash.com/photo-1518756131217-31eb79b20e8f',
-      title: 'Fern',
-    },
-    {
-      img: 'https://images.unsplash.com/photo-1597645587822-e99fa5d45d25',
-      title: 'Mushrooms',
-    },
-    {
-      img: 'https://images.unsplash.com/photo-1567306301408-9b74779a11af',
-      title: 'Tomato basil',
-    },
-    {
-      img: 'https://images.unsplash.com/photo-1471357674240-e1a485acb3e1',
-      title: 'Sea star',
-    },
-    {
-      img: 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6',
-      title: 'Bike',
-    },
-  ];
+      console.log(error);
+    }
+  }
  
   return (
     <div>
@@ -275,7 +258,7 @@ const OrphDash = () => {
               <p className="field-name">Email:<span>{selectedOrphanage.orphanageEmail}</span></p>
               <p className="field-name">Description:<span>{selectedOrphanage.description}</span></p>
               <p className="field-name">Website:<span>{selectedOrphanage.website}</span></p>
-              <p className="field-name">Certificates:{" "} <button onClick={() => downloadCertificates(selectedOrphanage.orphanage)}>Download</button></p>
+              <p className="field-name">Certificates:{" "} <button onClick={() => downloadCertificates(selectedOrphanage.orpId,selectedOrphanage.orphanageName)}>Download</button></p>
               <p className="field-name">View Images:{" "} <button onClick={openViewImagesPopup}>View Images</button><span></span></p>
               {/* Add "Events" and "Donate" buttons */}
               <div className="button-container">
@@ -295,7 +278,7 @@ const OrphDash = () => {
         )}
  
         {/* Event Details Card Box */}
-        {eventDetailsVisible && selectedOrphanage.orphanage && (
+        {eventDetailsVisible && selectedOrphanage && (
           <div className="modal">
             <div className="event-details-content">
               <span className="close" onClick={handleEventDetailsClose}>&times;</span>
@@ -383,11 +366,11 @@ const OrphDash = () => {
         )}
  
         {/* View Images Pop-up */}
-        {viewImagesPopupVisible && selectedOrphanage.orphanage && (
+        {viewImagesPopupVisible && selectedOrphanage && (
           <div className="modal">
             <div className="view-images-content">
-              <span className="close" onClick={closeViewImagesPopup}>&times;</span>
-              <h3>{selectedOrphanage.orphanage.name} Images</h3>
+              <span className="close" onClick={closeViewImagesPop}>&times;</span>
+              <h3>{selectedOrphanage.orphanageName} Images</h3>
               <div className="image-container">
                 <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164}>
                   {itemData.map((item) => (
