@@ -369,7 +369,7 @@ const [itemData,setItemData]=useState("");
         {viewImagesPopupVisible && selectedOrphanage && (
           <div className="modal">
             <div className="view-images-content">
-              <span className="close" onClick={closeViewImagesPop}>&times;</span>
+              <span className="close" onClick={closeViewImagesPopup}>&times;</span>
               <h3>{selectedOrphanage.orphanageName} Images</h3>
               <div className="image-container">
                 <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164}>
