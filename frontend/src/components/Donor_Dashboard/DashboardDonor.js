@@ -26,7 +26,8 @@ function DashboardDonor() {
       case 'home':
         return <Home />;
       case 'orph':
-        return <OrphDash />;
+        return "Under development";
+        // return <OrphDash />;
       case 'profile':
         return <Profile />;
       case 'events':
@@ -46,7 +47,7 @@ function DashboardDonor() {
     <div className='Apps'>
       <div className='AppGlass'>
         <Sidebar onOptionSelect={handleOptionSelect} />
-        {renderContent()}
+        <div className='AppGlassChild'>{renderContent()}</div>
       </div>
     </div>
   );

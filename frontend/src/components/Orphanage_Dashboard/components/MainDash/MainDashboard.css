@@ -1,21 +1,49 @@
-.MainDashboard{
-    margin-bottom:10%;
+.MainDashboard {
+    /* padding-top: 1rem; */
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    font-size: large;
+    height:95vh;
+    margin: 1rem 0rem;
+    padding: 2rem 0rem;
+
+    h1 {
+        text-align: center;
+        width: 100%;
+    }
 }
 
 @media screen and (max-width: 1200px) {
-    .MainDash{
-        justify-content:flex-start;
-        margin-top: 2rem;
+    .MainDashboard {
+        justify-content: flex-start;
     }
 }
 
-@media screen and (max-width: 768px)
-{
-    .MainDash{
+@media screen and (max-width: 768px) {
+    .MainDashboard {
         align-items: center;
     }
+}
+
+.card-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.card {
+    flex: 1; /* Equal flex basis for both cards */
+    background-color: #f595ad;
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.card h2 {
+    font-size: 1.2rem;
+}
+
+.card p {
+    font-size: 1.5rem;
+    font-weight: bold;
 }

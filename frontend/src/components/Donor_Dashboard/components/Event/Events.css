@@ -10,6 +10,7 @@
   padding: 20px;
   border: 6px solid #ae57b5; /* Make the border more bold */
   border-radius: 30px; /* Add curvature to the border */
+  overflow: scroll;
 }
 
 .event-table {

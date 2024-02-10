@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Sidebar.css";
 import Logo from "../imgs/logo.png";
 import { UilSignOutAlt } from "@iconscout/react-unicons";
@@ -10,11 +10,11 @@ import { Link } from "react-router-dom";
 
 const Sidebar = ({onOptionSelect}) => {
   const [selected, setSelected] = useState(0);
-  const [expanded, setExpaned] = useState(true)
-const SelectOption=(value)=>{
+  const [expanded, setExpaned] = useState(true);
 
-  onOptionSelect(value);
-}
+  const SelectOption=(value)=>{
+    onOptionSelect(value);
+  }
   const sidebarVariants = {
     true: {
       left : '0'
@@ -23,7 +23,7 @@ const SelectOption=(value)=>{
       left : '-60%'
     }
   }
-  console.log(window.innerWidth)
+
   return (
     <>
       <div className="bars" style={expanded?{left: '60%'}:{left: '5%'}} onClick={()=>setExpaned(!expanded)}>

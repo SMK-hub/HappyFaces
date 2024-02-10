@@ -44,8 +44,7 @@ function DashboardOrphanage() {
       
       <div className='DashbGlass'>
       <Sidebar onOptionSelect={handleOptionSelect} />
-        {renderContent()}
-      <RightSide />
+      <div className='DashbGlassChild'>{renderContent()}</div>
       </div>
       
     </div>

@@ -80,22 +80,24 @@ const EvenDash = () => {
     <div>
       <div className="OrphDash">
         <h2>Events</h2>
-        <label htmlFor="locationFilter">Search by Location</label>
-        <select id="locationFilter" value={selectedLocation} onChange={handleLocationChange}>
-          {uniqueLocations.map((location, index) => (
-            <option key={index} value={location}>
-              {location}
-            </option>
-          ))}
-        </select>
-        <label htmlFor="statusFilter">Search by Status</label>
-        <select id="statusFilter" value={selectedStatus} onChange={handleStatusChange}>
-          {uniqueStatus.map((status, index) => (
-            <option key={index} value={status}>
-              {status}
-            </option>
-          ))}
-        </select>
+        <div className="OrphDashSelector">
+          <label htmlFor="locationFilter">Search by Location</label>
+          <select id="locationFilter" value={selectedLocation} onChange={handleLocationChange}>
+            {uniqueLocations.map((location, index) => (
+              <option key={index} value={location}>
+                {location}
+              </option>
+            ))}
+          </select>
+          <label htmlFor="statusFilter">Search by Status</label>
+          <select id="statusFilter" value={selectedStatus} onChange={handleStatusChange}>
+            {uniqueStatus.map((status, index) => (
+              <option key={index} value={status}>
+                {status}
+              </option>
+            ))}
+          </select>
+        </div>
 
         {/* Table */}
         <table>

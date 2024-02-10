@@ -10,12 +10,13 @@
     flex-direction: column;
     justify-content: space-evenly;
     height:95vh;
+    margin: 1rem 0rem;
+    padding: 2rem 0rem;
 }
 
 @media screen and (max-width: 1200px) {
     .MainDash {
         justify-content: flex-start;
-        margin-top: 3rem;
     }
 }
 
@@ -52,4 +53,4 @@
     font-size: 1.5rem;
     font-weight: bold;
 }
-  
+

@@ -6,21 +6,8 @@
     align-items: center; /* Center items vertically by default */
   
     /* Additional styling for spacing and margins */
-    margin-top: 2rem;
-  }
-  
-  @media screen and (max-width: 1200px) {
-    .OrphDash {
-      justify-content: flex-start;
-      margin-top: 2rem;
-    }
-  }
-  
-  @media screen and (max-width: 768px) {
-    .OrphDash {
-      align-items: center;
-      /* Additional styling for smaller screens if needed */
-    }
+    margin: 1rem 0rem;
+    padding: 2rem;
   }
   
   /* Additional styling for the table if needed */

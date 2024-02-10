@@ -34,19 +34,17 @@
   background: var(--glass);
   border-radius: 2rem;
   gap: 16px;
-  grid-template-columns: 11rem auto 20rem;
+  grid-template-columns: 11rem auto;
   overflow: hidden;
 }
 
-@media screen and (max-width: 1200px) {
-  .DashbGlass{
-    grid-template-columns: 10% 50% auto;
-    overflow-y: scroll;
-  } 
+@media screen and (max-width: 768px) {
+  .DashbGlass {
+    grid-template-columns: auto;
+  }
 }
 
-@media screen and (max-width: 768px) {
-  .DashbGlass{
-    grid-template-columns: 1fr;
-  } 
+.DashbGlassChild {
+  padding: 0rem 2rem;
+  overflow: scroll;
 }
