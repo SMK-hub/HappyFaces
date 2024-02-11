@@ -10,6 +10,7 @@ import com.example.Demo.AdminServices.AdminService;
 import com.example.Demo.Model.*;
 import com.example.Demo.OrphanageServices.OrphanageService;
 import com.example.Demo.RazorPayServices.RazorPayService;
+import jdk.jfr.Event;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -164,8 +165,11 @@ public class DonorController {
 
     @PostMapping("/{donorId}/cancelEventRegister/{eventId}")
     public ResponseEntity<String> cancelEventRegister(@PathVariable("donorId") String donorId, @PathVariable("eventId") String eventId) {
-        donorService.cancelEventRegistration(eventId, donorId);
-        return new ResponseEntity<>("Registration Canceled Successfully", HttpStatus.OK);
+        String alpha=donorService.cancelEventRegistration(eventId, donorId);
+        if(alpha.equals("Event Registration Cancelled")) {
+            return new ResponseEntity<>(alpha, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(alpha,HttpStatus.CONFLICT);
     }
 
     @GetMapping("/donor/{donorEmail}")
@@ -217,5 +221,13 @@ public class DonorController {
     @PostMapping("/save/DonationRequirement")
     public ResponseEntity<String> saveDonationRequirement(@RequestBody DonationRequirements donationRequirements){
         return new ResponseEntity<>(donorService.saveDonationRequirements(donationRequirements),HttpStatus.OK);
+    }
+    @GetMapping("/RegisteredEvents/{donorId}")
+    public ResponseEntity<List<InterestedPerson>> getAllInterestedPersonByDonorId(@PathVariable String donorId){
+        return new ResponseEntity<>(donorService.findAllInterestedPersonByDonorId(donorId),HttpStatus.OK);
+    }
+    @GetMapping("/Event/{eventId}")
+    public ResponseEntity<Events> getEventByEventId(@PathVariable String eventId){
+        return new ResponseEntity<>(donorService.findEventByEventId(eventId),HttpStatus.OK);
     }
 }

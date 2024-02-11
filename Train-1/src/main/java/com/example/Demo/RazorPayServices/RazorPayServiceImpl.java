@@ -46,7 +46,6 @@ public class RazorPayServiceImpl implements RazorPayService {
 
         // Extract order ID from response
         if (response.getStatusCode() == HttpStatus.OK) { // Check for HTTP status 201 Created
-            System.out.println(response.getBody());
             return response.getBody(); // Assuming Razorpay API returns order ID directly
         } else {
             throw new RuntimeException("Failed to generate order ID: " + response.getBody());

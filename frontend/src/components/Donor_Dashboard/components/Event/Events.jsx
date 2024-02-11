@@ -1,13 +1,72 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Events.css';
+import axios from 'axios';
+import {useUser} from '../../../../UserContext'
 
 const EventTable = () => {
   // Use state to manage events
-  const [events, setEvents] = useState([
-    { Orphanage_Name: 'Food Drive', Event_Name: 'Description of Event 1', Description: 'Event 1 Description', Date: '2024-02-10 15:00:00' },
-    { Orphanage_Name: 'Book Donation', Event_Name: 'Description of Event 2', Description: 'Event 2 Description', Date: '2024-02-15 18:30:00' },
-    // Add more events as needed
-  ]);
+  const [events, setEvents] = useState();
+  const [interestedPerson,setInterestedPerson] = useState();
+  const [cancelEventId,setCancelEventId] = useState();
+  const [render,setRender] = useState(false);
+  const  {setUserData} = useUser();
+  const {userDetails} = useUser();
+useEffect(()=>{
+  const participatedEvents = async()=>{
+    try{
+      const response=await axios.get(`http://localhost:8079/donor/RegisteredEvents/${userDetails.donorId}`);
+      const status=response.status;
+      const responseWithEventData = await Promise.all(response.data.map(async(interestedPerson)=>{
+        const eventData=await fetchEventData(interestedPerson.eventId);
+        
+        return {
+          ...interestedPerson,
+          eventData:eventData,
+        }
+      }))
+      console.log(responseWithEventData);
+
+      setInterestedPerson(responseWithEventData);
+    }catch(error){
+      console.log(error);
+    }
+  } 
+  participatedEvents();
+},[render])
+  
+const fetchEventData = async (eventId) => {
+  try {
+      const response = await axios.get(`http://localhost:8079/donor/Event/${eventId}`);
+      const status = response.status;
+      
+      if (status === 200) {
+        const data=response.data;
+        const orphanageDetails =await fetchOrphanageDetails(data.orpId);
+        
+        return{
+          ...response.data,
+          OrphanageData: orphanageDetails,
+        }        
+      }
+  } catch (error) {
+      console.log(error);
+      return null;
+  }
+}
+
+const fetchOrphanageDetails = async (orpId)=>{
+  try{
+    const response=await axios.post(`http://localhost:8079/donor/${orpId}/OrphanageDetails`)
+    console.log(response+"*");
+    const status = response.status;
+      if (status === 200) {
+          return response.data;
+      }
+  }catch (error) {
+    console.log(error);
+    return null;
+}
+}
 
   // State for cancel registration pop-up
   const [cancelRegistrationVisible, setCancelRegistrationVisible] = useState(false);
@@ -19,23 +78,32 @@ const EventTable = () => {
   const [cancelIndex, setCancelIndex] = useState(null);
 
   // Function to handle cancel event for a specific index
-  const handleCancelEvent = (index) => {
-    setCancelIndex(index);
+  const handleCancelEvent = (eventId) => {
+    setCancelIndex(eventId);
+    setCancelEventId(eventId);
     setCancelRegistrationVisible(true);
   };
 
   // Function to confirm cancel registration
-  const handleConfirmCancel = () => {
-    // Cancel registration logic
-    const updatedEvents = [...events];
-    updatedEvents.splice(cancelIndex, 1);
-    setEvents(updatedEvents);
+  const handleConfirmCancel = async() => {
+    try{
+      console.log(interestedPerson)
+      const response = await axios.post(`http://localhost:8079/donor/${userDetails.donorId}/cancelEventRegister/${cancelEventId}`);
+      
+      const status=response.status;
+      console.log(status);
+      if(status === 200){
+        setCancelRegistrationVisible(false);
+        setCancellationSuccessVisible(true);
+      }
+    }catch(error){
+      console.log(error);
+      alert(error);
+    }finally{
+      setRender(!render);
+    }
 
-    // Close cancel registration pop-up
-    setCancelRegistrationVisible(false);
-
-    // Show cancellation success pop-up
-    setCancellationSuccessVisible(true);
+    
   };
 
   // Function to handle cancel registration cancellation
@@ -62,14 +130,14 @@ const EventTable = () => {
             </tr>
           </thead>
           <tbody>
-            {events.map((event, index) => (
+            {interestedPerson?.map((event, index) => (
               <tr key={index}>
-                <td>{event.Orphanage_Name}</td>
-                <td>{event.Event_Name}</td>
-                <td>{event.Description}</td>
-                <td>{event.Date}</td>
+                <td>{event.eventData.OrphanageData?.orphanageName}</td>
+                <td>{event.eventData.title}</td>
+                <td>{event.eventData.description}</td>
+                <td>{event.eventData.date} {event.eventData.time}</td>
                 <td>
-                  <button className="cancel-event-button" onClick={() => handleCancelEvent(index)}>
+                  <button className="cancel-event-button" onClick={() => handleCancelEvent(event.eventId)}>
                     Cancel Registration
                   </button>
                 </td>

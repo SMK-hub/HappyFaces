@@ -33,7 +33,7 @@ public interface DonorService {
 
     String eventRegister(String eventId, String donorId);
 
-    void cancelEventRegistration(String eventId, String donorId);
+    String cancelEventRegistration(String eventId, String donorId);
 
     Optional<Donor> getDonorByEmail(String email);
 
@@ -45,4 +45,6 @@ public interface DonorService {
     String saveDonationRequirements(DonationRequirements donationRequirements);
 
     List<DonationRequirements> getAllDonationRequirementByDonorId(String donorId);
+    List<InterestedPerson> findAllInterestedPersonByDonorId(String donorId);
+    Events findEventByEventId(String eventId);
 }

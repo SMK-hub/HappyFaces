@@ -223,7 +223,7 @@ public class DonorServiceImpl implements DonorService {
     }
 
     @Override
-    public void cancelEventRegistration(String eventId, String donorId) {
+    public String cancelEventRegistration(String eventId, String donorId) {
         List<InterestedPerson> donorParticipating = interestedPersonRepository.findAllInterestedPersonByDonorId(donorId);
         Optional<InterestedPerson> cancellingEvent = donorParticipating.stream().filter(donorParticipating1->donorParticipating1.getEventId().equals(eventId)).findAny();
         if(cancellingEvent.isPresent()) {
@@ -232,7 +232,10 @@ public class DonorServiceImpl implements DonorService {
             String subject = "Event Registration Cancelled";
             String body = "We appreciate your initial commitment, and while we understand your circumstances, we hope to welcome you back as a valued donor in the future.";
             emailService.sendSimpleMail(donorEmail, subject, body);
+            System.out.println(subject);
+            return subject;
         }
+        return "Unable to Cancel the registration";
     }
 
     @Override
@@ -284,6 +287,20 @@ public class DonorServiceImpl implements DonorService {
         Optional<Donor> donor = donorRepository.findById(donorId);
         if(donor.isPresent()){
             return donationRequirementRepository.findAllDonationsRequirementByDonorId(donorId);
+        }
+        return null;
+    }
+
+    @Override
+    public List<InterestedPerson> findAllInterestedPersonByDonorId(String donorId) {
+        return interestedPersonRepository.findAllInterestedPersonByDonorId(donorId);
+    }
+
+    @Override
+    public Events findEventByEventId(String eventId) {
+        Optional<Events> events = eventsRepository.findById(eventId);
+        if(events.isPresent()){
+            return events.get();
         }
         return null;
     }
