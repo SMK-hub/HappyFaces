@@ -148,15 +148,18 @@ public class DonorController {
         return ResponseEntity.ok(donorService.getVerifiedOrphanageDetailsById(orphanageId));
     }
 
-    @GetMapping("/{orphanageId}/VerifiedEvents")
+    @GetMapping("/VerifiedEvents/{orphanageId}")
     public ResponseEntity<List<Events>> getVerifiedEvents(@PathVariable("orphanageId") String orphanageId) {
         return ResponseEntity.ok(donorService.getVerifiedEvents(orphanageId));
     }
 
     @PostMapping("/{donorId}/eventRegister/{eventId}")
     public ResponseEntity<String> eventRegister(@PathVariable("donorId") String donorId, @PathVariable("eventId") String eventId) {
-        donorService.eventRegister(eventId, donorId);
+        String alpha=donorService.eventRegister(eventId, donorId);
+        if(alpha.equals("Event Registration is Done")){
         return new ResponseEntity<>("Registration Successfully Done", HttpStatus.OK);
+        }
+        return new ResponseEntity<>(alpha,HttpStatus.CONFLICT);
     }
 
     @PostMapping("/{donorId}/cancelEventRegister/{eventId}")
@@ -205,5 +208,14 @@ public class DonorController {
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+    @GetMapping("/participatedDonorsId/{eventId}")
+    public ResponseEntity<List<String>> getAllParticipatedDonorsId(@PathVariable String eventId) {
+        return new ResponseEntity<>(donorService.getDonorIdFromEvent(eventId),HttpStatus.OK);
+    }
+
+    @PostMapping("/save/DonationRequirement")
+    public ResponseEntity<String> saveDonationRequirement(@RequestBody DonationRequirements donationRequirements){
+        return new ResponseEntity<>(donorService.saveDonationRequirements(donationRequirements),HttpStatus.OK);
     }
 }

@@ -1,19 +1,63 @@
 package com.example.Demo.Model;
 
-public class   InterestedPerson {
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document("interestedPerson")
+public class InterestedPerson {
+    @Id
+    private String id;
     private String donorId;
+    private String eventId;
     private String name;
     private String email;
+    private String contact;
 
-
-    public InterestedPerson() {
-        // Default constructor
+    public String getId() {
+        return id;
     }
 
-    public InterestedPerson(String donorId,String name, String email) {
-        this.donorId=donorId;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
+    }
+    public InterestedPerson() {
+        super();
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public InterestedPerson(String contact) {
+        super();
+    }
+
+    public InterestedPerson(String donorId, String name, String email, String contact,String eventId) {
+        this.donorId = donorId;
         this.name = name;
         this.email = email;
+        this.contact = contact;
+        this.eventId = eventId;
     }
 
     // Getters and setters
@@ -25,13 +69,6 @@ public class   InterestedPerson {
         this.name = name;
     }
 
-    public String getEmails() {
-        return email;
-    }
-
-    public void setEmails(String email) {
-        this.email = email;
-    }
     public String getDonorId() {
         return donorId;
     }
@@ -45,7 +82,7 @@ public class   InterestedPerson {
     public String toString() {
         return "InterestedPerson{" +
                 "name='" + name + '\'' +
-                ", email='" + email + '\''+"DonorId=" +donorId+
+                ", email='" + email + '\'' + "DonorId=" + donorId +
                 '}';
     }
 }

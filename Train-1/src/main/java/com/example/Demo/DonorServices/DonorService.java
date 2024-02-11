@@ -1,9 +1,6 @@
 package com.example.Demo.DonorServices;
 
-import com.example.Demo.Model.Donations;
-import com.example.Demo.Model.Donor;
-import com.example.Demo.Model.Events;
-import com.example.Demo.Model.OrphanageDetails;
+import com.example.Demo.Model.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -34,7 +31,7 @@ public interface DonorService {
 
     List<Events> getVerifiedEvents(String orpId);
 
-    void eventRegister(String eventId, String donorId);
+    String eventRegister(String eventId, String donorId);
 
     void cancelEventRegistration(String eventId, String donorId);
 
@@ -43,4 +40,9 @@ public interface DonorService {
     Donor changeDonorPassword(String email, String oldPassword, String newPassword, String conformNewPassword);
     Donations saveDonationDetail(Donations donations);
 
+    List<String> getDonorIdFromEvent(String eventId);
+
+    String saveDonationRequirements(DonationRequirements donationRequirements);
+
+    List<DonationRequirements> getAllDonationRequirementByDonorId(String donorId);
 }

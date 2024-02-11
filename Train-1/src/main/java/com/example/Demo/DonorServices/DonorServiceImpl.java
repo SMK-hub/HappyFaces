@@ -6,6 +6,7 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import com.example.Demo.Enum.EnumClass;
 import com.example.Demo.Model.*;
@@ -21,6 +22,12 @@ public class DonorServiceImpl implements DonorService {
 
     @Autowired
     private DonorRepository donorRepository;
+    @Autowired
+    private OrphanageDetailsRepository orphanageDetailsRepository;
+    @Autowired
+    private DonationRequirementRepository donationRequirementRepository;
+    @Autowired
+    private InterestedPersonRepository interestedPersonRepository;
     @Autowired
     private OrphanageRepository orphanageRepository;
     @Autowired
@@ -46,7 +53,7 @@ public class DonorServiceImpl implements DonorService {
         Optional<Admin> adminUser=adminRepository.findByEmail(newUser.getEmail());
 
         if (user.isEmpty() && orpUser.isEmpty() && adminUser.isEmpty()) {
-            newUser.setRole(String.valueOf(EnumClass.Roles.DONOR));
+            newUser.setRole(EnumClass.Roles.valueOf(String.valueOf(EnumClass.Roles.DONOR)));
             donorRepository.save(newUser);
             String subject = "Registration Successful";
             String body = "Dear " + newUser.getName() + ", Welcome to Happy Faces! Your registration as a donor brings smiles to countless faces. Thank you for joining us in making a positive impact!";
@@ -190,33 +197,42 @@ public class DonorServiceImpl implements DonorService {
     }
 
     @Override
-    public void eventRegister(String eventId, String donorId) {
-        Optional<Events> event=eventsRepository.findById(eventId);
-        Optional<Donor> donor=donorRepository.findById(donorId);
+    public String eventRegister(String eventId, String donorId) {
+        Optional<Events> event = eventsRepository.findById(eventId);
+        Optional<Donor> donor = donorRepository.findById(donorId);
+        List<InterestedPerson> donorParticipating = interestedPersonRepository.findAllInterestedPersonByDonorId(donorId);
+        Optional<InterestedPerson> checkingEvent= donorParticipating.stream().filter(donorParticipating1->donorParticipating1.getEventId().equals(eventId)).findAny();
 
-        if(event.isPresent() && donor.isPresent())
-        {
-            InterestedPerson interestedPerson = null;
+        if (event.isPresent() && donor.isPresent() && checkingEvent.isEmpty()) {
+            InterestedPerson interestedPerson = new InterestedPerson(); // Initialize the object
+
             interestedPerson.setDonorId(donor.get().getDonorId());
-            interestedPerson.setEmails(donor.get().getEmail());
+            interestedPerson.setContact(donor.get().getContact());
+            interestedPerson.setEmail(donor.get().getEmail());
             interestedPerson.setName(donor.get().getName());
-            event.get().getInterestedPersons().add(interestedPerson);
-            eventsRepository.save(event.get());
-            String subject="Event Registration is Done";
-            String body="Dear "+donor.get().getName()+", Your Registration on "+event.get().getTitle()+" is done.Thank You for registering for our upcoming event,Your generosity is a vital contribution to our cause.";
-            emailService.sendSimpleMail(donor.get().getEmail(),subject,body);
+            interestedPerson.setEventId(event.get().getId());
 
+            interestedPersonRepository.save(interestedPerson);
+
+            String subject = "Event Registration is Done";
+            String body = "Dear " + donor.get().getName() + ", Your Registration on " + event.get().getTitle() + " is done. Thank You for registering for our upcoming event,Your generosity is a vital contribution to our cause.";
+            emailService.sendSimpleMail(donor.get().getEmail(), subject, body);
+            return subject;
         }
+        return "Problem in Event Registration Process";
     }
 
     @Override
     public void cancelEventRegistration(String eventId, String donorId) {
-        Optional<Events> event=eventsRepository.findById(eventId);
-        Optional<Donor> donor=donorRepository.findById(donorId);
-        event.ifPresent(events -> events.getInterestedPersons().removeIf(person -> person.getDonorId().equals(donorId)));
-        String subject="Event Registration Cancelled";
-        String body="We appreciate your initial commitment, and while we understand your circumstances, we hope to welcome you back as a valued donor in the future.";
-        emailService.sendSimpleMail(donor.get().getEmail(),subject,body);
+        List<InterestedPerson> donorParticipating = interestedPersonRepository.findAllInterestedPersonByDonorId(donorId);
+        Optional<InterestedPerson> cancellingEvent = donorParticipating.stream().filter(donorParticipating1->donorParticipating1.getEventId().equals(eventId)).findAny();
+        if(cancellingEvent.isPresent()) {
+            String donorEmail=cancellingEvent.get().getEmail();
+            interestedPersonRepository.delete(cancellingEvent.get());
+            String subject = "Event Registration Cancelled";
+            String body = "We appreciate your initial commitment, and while we understand your circumstances, we hope to welcome you back as a valued donor in the future.";
+            emailService.sendSimpleMail(donorEmail, subject, body);
+        }
     }
 
     @Override
@@ -242,5 +258,33 @@ public class DonorServiceImpl implements DonorService {
     public Donations saveDonationDetail(Donations donations) {
         donationsRepository.save(donations);
         return donationsRepository.findById(donations.getId()).orElse(null);
+    }
+
+    @Override
+    public List<String> getDonorIdFromEvent(String eventId) {
+        List<InterestedPerson> interestedPerson=interestedPersonRepository.findAllInterestedPersonByEventId(eventId);
+        return interestedPerson.stream().map(InterestedPerson::getDonorId).toList();
+    }
+
+    @Override
+    public String saveDonationRequirements(DonationRequirements donationRequirements) {
+        donationRequirementRepository.save(donationRequirements);
+        Optional<Donor> donor = donorRepository.findById(donationRequirements.getDonorId());
+        Optional<OrphanageDetails> orphanageDetails=orphanageDetailsRepository.findByOrpId(donationRequirements.getOrpId());
+        String subject="Heartfelt Thanks for Your Generous Donation";
+        String body="Dear "+donor.get().getName()+",\n" +
+                "\n" +
+                "Thank you for your generous donation to \""+orphanageDetails.get().getOrphanageName()+"\". Your kindness will make a lasting impact, providing hope and support to the children in our care. We are deeply grateful for your compassion and generosity.";
+        emailService.sendSimpleMail(donor.get().getEmail(),subject,body);
+        return "Requirement Donation Info Saved Successfully";
+    }
+
+    @Override
+    public List<DonationRequirements> getAllDonationRequirementByDonorId(String donorId) {
+        Optional<Donor> donor = donorRepository.findById(donorId);
+        if(donor.isPresent()){
+            return donationRequirementRepository.findAllDonationsRequirementByDonorId(donorId);
+        }
+        return null;
     }
 }

@@ -18,7 +18,6 @@ public class Events {
     private String date;
     private String time;
     private EnumClass.EventStatus eventStatus;
-    private List<InterestedPerson> interestedPersons=new ArrayList<>();
     private EnumClass.VerificationStatus verificationStatus;
 	
 	public Events(String id, String orpId, String title, String description, String date, String time,
@@ -31,7 +30,6 @@ public class Events {
 		this.date = date;
 		this.time = time;
 		this.verificationStatus = verificationStatus;
-		this.interestedPersons = interestedPersons;
 	}
 
 	public String getOrpId() {
@@ -64,13 +62,13 @@ public class Events {
 	public Events() {
     }
 
-    public void Event(String title, String description, String date, String time, EnumClass.VerificationStatus verificationStatus, List<InterestedPerson> interestedPersons) {
+    public void Event(String title, String description, String date, String time, EnumClass.VerificationStatus verificationStatus) {
         this.title = title;
         this.description = description;
         this.date = date;
         this.time = time;
         this.verificationStatus = verificationStatus;
-        this.interestedPersons = interestedPersons;
+
     }
 
     // Getters and setters
@@ -114,13 +112,6 @@ public class Events {
         this.verificationStatus = verificationStatus;
     }
 
-    public List<InterestedPerson> getInterestedPersons() {
-        return interestedPersons;
-    }
-
-    public void setInterestedPersons(List<InterestedPerson> interestedPersons) {
-        this.interestedPersons = interestedPersons;
-    }
 
     // toString() method
     @Override
@@ -131,7 +122,6 @@ public class Events {
                 ", date='" + date + '\'' +
                 ", time='" + time + '\'' +
                 ", verificationStatus=" + verificationStatus +
-                ", interestedPersons=" + interestedPersons +
                 '}';
     }
 

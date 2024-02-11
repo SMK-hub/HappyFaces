@@ -7,6 +7,7 @@ import { jsPDF } from "jspdf";
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import RazorPay from '../Details/RazorPay'; // Corrected import statement
+import {useUser} from '../../../../UserContext'
 import axios from "axios";
  
 function srcset(image, size, rows = 1, cols = 1) {
@@ -27,7 +28,11 @@ const OrphDash = () => {
   const [donationPopupVisible, setDonationPopupVisible] = useState(false);
   const [donationDescriptionVisible, setDonationDescriptionVisible] = useState(false);
   const [viewImagesPopupVisible, setViewImagesPopupVisible] = useState(false); // New state for view images pop-up
- 
+  const [donationDescription, setDonationDescription] = useState('');
+  const  {setUserData} = useUser();
+  const {userDetails} = useUser();
+  console.log(userDetails);
+
   const[orphanagesData,setOrphanagesData] = useState([])
   useEffect(()=>{
     const fetch=async()=>{
@@ -53,9 +58,55 @@ const OrphDash = () => {
   };
  
   const openModal = async (orphanage) => {
-    const events = await fetchEvents(orphanage.orpId);
-    setSelectedOrphanage(orphanage);
+    // const events = await fetchEvents(orphanage.orpId);
+    const orphanageWithImageData=await fetchImageData(orphanage.orpId);
+    const orphanagaeWithEventData=await fetchEventData(orphanage.orpId);
+    const eventParticipant = await Promise.all(
+      orphanagaeWithEventData.map(async(event)=>{        
+        const participant = await fetchParticipatedDonorsId(event.id);
+        return {
+          ...event,
+          participantData:participant,
+        }
+}
+
+      )
+    )
+    setSelectedOrphanage({
+      ...orphanage,
+      imageData:orphanageWithImageData,
+      eventData:eventParticipant,
+    });
   };
+  console.log(selectedOrphanage);
+
+  const fetchParticipatedDonorsId = async (eventId)=>{
+      try{
+        const response=await axios.get(`http://localhost:8079/donor/participatedDonorsId/${eventId}`);
+        return response.data;
+      }catch(error){
+        alert(error);
+      }
+  }
+  const fetchImageData = async (orpId)=> {
+    try{
+      const response=await axios.get(`http://localhost:8079/orphanage/${orpId}/orphanageDetails/viewImages`);
+      return response.data;
+
+    }catch(error)
+    {
+      console.log(error);
+    }
+  }
+  const fetchEventData = async(orpId)=> {
+    try{
+      const response= await axios.get(`http://localhost:8079/donor/VerifiedEvents/${orpId}`);
+      return response.data;
+    }catch(error)
+  {
+    console.log(error);
+  }
+  }
  
   const closeModal = () => {
     setSelectedOrphanage();
@@ -113,9 +164,15 @@ const OrphDash = () => {
     setEventDetailsVisible(false);
   };
  
-  const handleRegisterEvent = () => {
-    console.log("Event registered");
-    setRegistrationSuccessVisible(true);
+  const handleRegisterEvent = async(eventId) => {
+    try{
+      const response= await axios.post(`http://localhost:8079/donor/${userDetails?.donorId}/eventRegister/${eventId}`);
+      console.log("Event registered");
+      setRegistrationSuccessVisible(true);
+    }catch(error){
+      console.log(error);
+      alert(error);
+    }
   };
  
   const handleDonateButtonClick = () => {
@@ -151,7 +208,14 @@ const OrphDash = () => {
   };
  
   const handleDonationDescriptionSave = () => {
+    const data = {
+      orpId: selectedOrphanage.orpId,
+      donorId: userDetails.donorId,
+      description: donationDescription
+    };
+    saveDonationData(data);
     console.log("Donation description saved");
+    setDonationDescription('');
     setDonationDescriptionVisible(false);
   };
  
@@ -166,25 +230,22 @@ const OrphDash = () => {
     );
   });
  
-  const fetchEvents = (orphanageId) => {
-    return [
-      { id: 1, dateTime: "2024-02-10 15:00:00" },
-      { id: 2, dateTime: "2024-02-15 18:30:00" },
-    ];
+  const pictureUrl = (image) => {
+    return `data:image/jpeg;base64,${image}`;
   };
- 
-const [itemData,setItemData]=useState("");
 
-  const fetchImageData = async ()=> {
-    try{
-      const response=await axios.get(`http://localhost:8079/orphanage/`);
-
-    }catch(error)
-    {
-      console.log(error);
+  const saveDonationData = async (data) => {
+    try {
+      // Send the data to your backend API for saving
+      const response = await axios.post('http://localhost:8079/donor/save/DonationRequirement', data);
+      // Handle success response if needed
+      console.log(response.data);
+    } catch (error) {
+      // Handle error
+      console.error('Error saving donation data:', error);
     }
-  }
- 
+  };
+    
   return (
     <div>
       <div className="OrphDash">
@@ -282,24 +343,34 @@ const [itemData,setItemData]=useState("");
           <div className="modal">
             <div className="event-details-content">
               <span className="close" onClick={handleEventDetailsClose}>&times;</span>
-              <h3>{selectedOrphanage.orphanage.name} Event Details</h3>
+              <h3>{selectedOrphanage.orphanageName} - Event Details</h3>
  
               {/* Display Events in a Table */}
               <table>
                 <thead>
                   <tr>
                     <th>Orphanage Name</th>
+                    <th>Event Name</th>
+                    <th>Event Description</th>
                     <th>Date/Time</th>
                     <th>Register Event</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {selectedOrphanage.events.map((event, index) => (
+                  {selectedOrphanage.eventData.map((event, index) => (
                     <tr key={index}>
-                      <td>{selectedOrphanage.orphanage.name}</td>
-                      <td>{event.dateTime}</td>
+                      <td>{selectedOrphanage.orphanageName}</td>
+                      <td>{event.title}</td>
+                      <td>{event.description}</td>
+                      <td>{event.date} {event.time}</td>
                       <td>
-                        <button onClick={handleRegisterEvent}>Register Event</button>
+                        <button disabled={event.participantData.includes(userDetails.donorId)}  
+                                onClick={()=>handleRegisterEvent(event.id)} 
+                                style={{ 
+                                  cursor: event.participantData.includes(userDetails.donorId) ? 'not-allowed' : 'pointer',
+                                  backgroundColor: event.participantData.includes(userDetails.donorId) ? 'grey' : 'initial',}}>
+                                    Register Event
+                                    </button>
                       </td>
                     </tr>
                   ))}
@@ -324,11 +395,11 @@ const [itemData,setItemData]=useState("");
         )}
  
         {/* Donation Pop-up */}
-        {donationPopupVisible && selectedOrphanage.orphanage && (
+        {donationPopupVisible && selectedOrphanage&& (
           <div className="modal">
             <div className="donation-popup-content">
               <span className="close" onClick={() => setDonationPopupVisible(false)}>&times;</span>
-              <h3>Donate to {selectedOrphanage.orphanage.name}</h3>
+              <h3>Donate to {selectedOrphanage.orphanageName}</h3>
               <p>Choose a donation option:</p>
               <div className="button-container">
                 <button onClick={() => handleDonationOption('Requirements')}>Donate Requirements</button>
@@ -342,24 +413,30 @@ const [itemData,setItemData]=useState("");
  
         {/* Donation Description Pop-up */}
         {donationDescriptionVisible && (
-          <div className="modal donation-description-modal">
-            <div className="donation-description-popup-content">
-              <span className="close" onClick={handleDonationDescriptionClose}>&times;</span>
-              <h3>Donate Requirements - {selectedOrphanage.orphanage.name}</h3>
-              <p>Enter a description of the requirements you wish to donate:</p>
-              <textarea placeholder="Description" rows="4" cols="50"></textarea>
-              <div className="button-container">
-                <button onClick={handleDonationDescriptionSave}>Save</button>
-                <button onClick={handleDonationDescriptionClose}>Close</button>
-              </div>
-            </div>
+      <div className="modal donation-description-modal">
+        <div className="donation-description-popup-content">
+          <span className="close" onClick={handleDonationDescriptionClose}>&times;</span>
+          <h3>Donate Requirements - {selectedOrphanage.orphanageName}</h3>
+          <p>Enter a description of the requirements you wish to donate:</p>
+          <textarea
+            placeholder="Description"
+            rows="4"
+            cols="50"
+            value={donationDescription}
+            onChange={(e) => setDonationDescription(e.target.value)}
+          ></textarea>
+          <div className="button-container">
+            <button onClick={handleDonationDescriptionSave}>Notify Orphanage</button>
+            <button onClick={() => { handleDonationDescriptionClose(); setDonationDescription(''); }}>Close</button>
           </div>
-        )}
+        </div>
+      </div>
+    )}
 
 {donationRazorPayVisible && (
           <div className="modal donation-description-modal">
             <div className="donation-description-popup-content">
-              <RazorPay onClose={handledonationRazorPayVisible}/>
+              <RazorPay onClose={handledonationRazorPayVisible} selectedOrphanage={selectedOrphanage}/>
               
             </div>
           </div>
@@ -367,30 +444,33 @@ const [itemData,setItemData]=useState("");
  
         {/* View Images Pop-up */}
         {viewImagesPopupVisible && selectedOrphanage && (
-          <div className="modal">
-            <div className="view-images-content">
-              <span className="close" onClick={closeViewImagesPopup}>&times;</span>
-              <h3>{selectedOrphanage.orphanageName} Images</h3>
-              <div className="image-container">
-                <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164}>
-                  {itemData.map((item) => (
-                    <ImageListItem key={item.img}>
-                      <img
-                        src={`${item.img}?w=248&fit=crop&auto=format`}
-                        srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
-                        alt={item.title}
-                        loading="lazy"
-                      />
-                    </ImageListItem>
-                  ))}
-                </ImageList>
-              </div>
-            </div>
-          </div>
+  <div className="modal">
+    <div className="view-images-content">
+      <span className="close" onClick={closeViewImagesPopup}>&times;</span>
+      <h3>{selectedOrphanage.orphanageName} Images</h3>
+      <div className="image-container" style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)', padding: '10px', borderRadius: '5px' }}>
+        {selectedOrphanage.imageData && selectedOrphanage.imageData.length > 0 ? (
+          <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164}>
+            {selectedOrphanage.imageData.map((item) => (
+              <ImageListItem key={item.img}>
+                <img style={{ minHeight: '200px', maxHeight: '200px', width: '150px', objectFit: 'cover' }}
+                  src={`${pictureUrl(item.image)}`}
+                  srcSet={`${pictureUrl(item.image)}`}
+                  loading="lazy"
+                />
+              </ImageListItem>
+            ))}
+          </ImageList>
+        ) : (
+          <p style={{ textAlign: 'center', color: '#333', marginTop: '20px', alignItems: 'center' }}>No Images to Display</p>
         )}
+      </div>
+    </div>
+  </div>
+)}
+
       </div>
     </div>
   );
 };
- 
 export default OrphDash;
