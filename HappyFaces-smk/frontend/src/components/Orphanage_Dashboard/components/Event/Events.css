@@ -1,0 +1,63 @@
+/* Events.css */
+
+.main-events{
+  flex: 1;
+    padding: 20px;
+    justify-content: center;
+}
+
+.eventContainer {
+  margin: 20px;
+  padding: 20px;
+  border: 4px solid #831898;
+  border-radius: 8px;
+}
+
+.event-table { 
+  width: 10%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.event-table th, .event-table td {
+  border: 2px solid #ddd;
+  stroke: rgb(20, 88, 147);
+  stroke-width: 4rem;
+  padding: 10px;
+  text-align: left;
+}
+
+.new-event-button, .cancel-event-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  margin-right: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.new-event-button:hover, .cancel-event-button:hover {
+  background-color: #0056b3;
+}
+
+.button-container {
+  text-align: right;
+}
+
+/* Additional styling for layout */
+.App {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* .AppGlass {
+  display: flex;
+  width: 80%;
+  background-color: #fff;
+  box-shadow: 0px 0px 10px 0px #ccc;
+} */
+
+/* Add any other styles as needed */

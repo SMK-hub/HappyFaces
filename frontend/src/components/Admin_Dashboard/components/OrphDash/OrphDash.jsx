@@ -21,16 +21,37 @@ const OrphDash = () => {
 
   useEffect(() => {
     fetchOrphanages();
+    // updateOrphanageStatus();
   }, []);
 
   const fetchOrphanages = async () => {
     try {
       const response = await axios.get("http://localhost:8079/admin/orphanageDetailsList");
-      const data = response.data;
+      const data = response.data.map(orphanage => ({
+        name: orphanage.orphanageName,
+        location: orphanage.address.city,
+        contact: orphanage.contact,
+        status: orphanage.verificationStatus,
+        director: orphanage.directorName,
+        // establishedDate: orphanage.establishedDate,
+        // images: orphanage.images,
+      }));
       console.log(data);
       setOrphanagesData(data);
     } catch (error) {
       console.error("Error fetching orphanages", error);
+    }
+  };
+
+  const updateOrphanageStatus = async (OrpId, newStatus) => {
+    try {
+      await axios.put(`http://localhost:8079/admin/orphanageDetailsList/${OrpId}`, {
+        verificationStatus: newStatus
+      });
+      console.log("Orphanage status updated ");
+    } catch(error) {
+      console.error("Error updating the orphanage status",error);
+      throw error;
     }
   };
 
@@ -66,24 +87,31 @@ const OrphDash = () => {
     pdf.save(`${orphanage.name}_certificates.pdf`);
   };
 
-  const showConfirmation = (action) => {
+  const showConfirmation = async (action, OrpId) => {
     const confirmationMessage = `Are you sure to ${action === 'Decline' ? 'Decline' : 'Accept'} this?`;
     if (window.confirm(confirmationMessage)) {
-      if (action === 'Decline') {
-        console.log("Decline");
-        // Add logic for Decline action here
-      } else {
-        console.log("Accept");
-        // Add logic for Accept action here
+      try {
+        if (action === 'Decline') {
+          await updateOrphanageStatus(OrpId, 'IN_VALID');
+        } else {
+          await updateOrphanageStatus(OrpId, 'VERIFIED');
+        }
+        fetchOrphanages();
+      } catch(error) {
+        console.error("Error in updating the status",error);
       }
     } else {
-      // User clicked Cancel, do nothing or add additional logic as needed
+      if(action === 'Decline') {
+        console.log('Decline action is not working');
+      } else {
+        console.log('Accept action is not working');
+      }
     }
-  };
+  };  
 
   const filteredOrphanages = orphanagesData.filter((orphanage) => {
     return (
-      (selectedLocation === "All" || orphanage.address === selectedLocation) &&
+      (selectedLocation === "All" || orphanage.location === selectedLocation) &&
       (selectedStatus === "All" || orphanage.status === selectedStatus)
     );
   });
@@ -146,10 +174,14 @@ const OrphDash = () => {
                 </td>
                 <td>{orphanage.status}</td>
                 <td className="requests">
-                  {orphanage.status === "Verified" ? (
-                    <button onClick={() => showConfirmation("Decline")} style={{ fontSize: "10px", padding: "5px" }}>Decline</button>
-                  ) : (
-                    <button onClick={() => showConfirmation("Accept")} style={{ fontSize: "10px", padding: "5px" }}>Accept</button>
+                  {orphanage.status === "VALID" && (
+                    <button onClick={() => showConfirmation("Decline", orphanage.orpId)} style={{ fontSize: "10px", padding: "5px" }}>Decline</button>
+                  )}
+                  {orphanage.status === "NOT_VERIFIED" && (
+                    <button onClick={() => showConfirmation("Accept")} style={{ fontSize: "10px",padding:"5px"}}>Accept</button>
+                  )}
+                  {orphanage.status === "IN_VALID" && (
+                    <span>Rejected!</span>
                   )}
                 </td>
               </tr>
@@ -175,7 +207,7 @@ const OrphDash = () => {
               </span>
               <h3>{selectedOrphanage.name}</h3>
               <p className="field-name">Director:<span> {selectedOrphanage.director}</span></p>
-              <p className="field-name">Established Date:<span> {selectedOrphanage.establishedDate}</span></p>
+              {/* <p className="field-name">Established Date:<span> {selectedOrphanage.establishedDate}</span></p> */}
               <p className="field-name">Location<span> {selectedOrphanage.location}</span></p>
               <p className="field-name">Contact<span> {selectedOrphanage.contact}</span></p>
               <p className="field-name">Image:{" "} <button onClick={openImagePopup}>View</button></p>
