@@ -26,6 +26,8 @@ const Donors = () => {
         tid: donate.transactionId,
         entry: donate.dateTime,
       }))
+    }catch(error){
+      console.log(error);
     }
   }
 
