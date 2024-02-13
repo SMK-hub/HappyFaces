@@ -1,4 +1,3 @@
-// SignInDonor.js
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../All_css/SignInDonor.css'; // Import the CSS file for styles
@@ -12,7 +11,7 @@ const SignInDonor = () => {
     email: '',
     password: '',
   });
-  const [enteredOtp,setEnteredOtp] = useState();
+  const [enteredOtp, setEnteredOtp] = useState();
   const [showForgotPasswordPopup, setShowForgotPasswordPopup] = useState(false);
   const [showOtpVerificationPopup, setShowOtpVerificationPopup] = useState(false);
   const [showNewPasswordPopup, setShowNewPasswordPopup] = useState(false);
@@ -44,14 +43,12 @@ const SignInDonor = () => {
     }
   };
 
-<<<<<<< HEAD
-=======
-  const fetchOtp = async()=>{
-    try{
-      const response = await axios.post(`http://localhost:8079/donor/sendOtp`,forgotPasswordData); 
-      const status=response.status;
-      if(status === 200){
-        const data=response.data;
+  const fetchOtp = async () => {
+    try {
+      const response = await axios.post(`http://localhost:8079/donor/sendOtp`, forgotPasswordData);
+      const status = response.status;
+      if (status === 200) {
+        const data = response.data;
         console.log(data);
         setForgotPasswordData(prevData => ({
           ...prevData,
@@ -59,28 +56,27 @@ const SignInDonor = () => {
         }));
       }
 
-    }catch(error){
+    } catch (error) {
       console.log(error);
     }
   }
 
-  const changePassword = async()=>{
-    try{
-        const response = await axios.post(`http://localhost:8079/donor/ForgetPassword/${forgotPasswordData.email}/${enteredOtp}/${newPasswordData.password}/${newPasswordData.confirmPassword}`);
-        const status = response.status;
-        if(status === 200){
-          alert(response.data);
-          setShowOtpVerificationPopup(false);
-          setShowForgotPasswordPopup(false);
-        }
+  const changePassword = async () => {
+    try {
+      const response = await axios.post(`http://localhost:8079/donor/ForgetPassword/${forgotPasswordData.email}/${enteredOtp}/${newPasswordData.password}/${newPasswordData.confirmPassword}`);
+      const status = response.status;
+      if (status === 200) {
+        alert(response.data);
+        setShowOtpVerificationPopup(false);
+        setShowForgotPasswordPopup(false);
       }
-     
-    catch(error){
+    }
+
+    catch (error) {
       console.log(error);
     }
   }
- 
->>>>>>> 67b9fcc51ad9bf623d8d47caf83ed2617df89702
+
   const handleSignIn = (e) => {
     e.preventDefault();
     console.log(donorDetails);
@@ -150,9 +146,10 @@ const SignInDonor = () => {
             <button type="submit" className="form-button">
               Sign In
             </button>
-            <Link to="#" className="forgot-password-link" onClick={handleForgotPassword}>
+            {/* Changed "Forgot Password" button to text */}
+            <span className="forgot-password-link" onClick={handleForgotPassword}>
               Forgot Password?
-            </Link>
+            </span>
           </div>
         </form>
         <Link to="/signin" className="back-link">
@@ -174,60 +171,13 @@ const SignInDonor = () => {
               required
               placeholder="Enter your email"
             />
-            <div className="form-buttons">
-<<<<<<< HEAD
-              <input type="submit" value="Send OTP" className="form-button" />
-              <Link to="#" className="forgot-password-link" onClick={handleBack}>
-                Back
-              </Link>
-=======
-            <button type="submit" onClick={()=>fetchOtp()}>Send OTP</button>
+            <div className="form-buttons" style={{ display: 'flex', flexDirection: 'row' }}>
+              <button type="submit" onClick={() => fetchOtp()}>Send OTP</button>
               <button onClick={handleBack}>Back</button>
->>>>>>> 67b9fcc51ad9bf623d8d47caf83ed2617df89702
             </div>
           </form>
         </div>
       )}
-<<<<<<< HEAD
-
-      {/* New Password Popup */}
-      {showNewPasswordPopup && (
-        <div className="new-password-popup">
-          <h2>Reset Password</h2>
-          <form onSubmit={handleNewPasswordSubmit}>
-            <label>OTP:</label>
-            <input
-              type="text"
-              value={newPasswordData.otp}
-              onChange={(e) => setNewPasswordData({ ...newPasswordData, otp: e.target.value })}
-              required
-              placeholder="Enter the OTP"
-            />
-            <label>New Password:</label>
-            <input
-              type="password"
-              value={newPasswordData.password}
-              onChange={(e) => setNewPasswordData({ ...newPasswordData, password: e.target.value })}
-              required
-              placeholder="Enter your new password"
-            />
-            <label>Confirm Password:</label>
-            <input
-              type="password"
-              value={newPasswordData.confirmPassword}
-              onChange={(e) => setNewPasswordData({ ...newPasswordData, confirmPassword: e.target.value })}
-              required
-              placeholder="Confirm your new password"
-            />
-            {passwordsMatchError && <p>Passwords do not match</p>}
-            <div className="form-buttons">
-              <button type="submit">Submit</button>
-              <button onClick={handleBack}>Back</button>
-            </div>
-          </form>
-=======
- 
-     
 
       {/* OTP Verification Popup */}
       {showOtpVerificationPopup && (
@@ -240,7 +190,7 @@ const SignInDonor = () => {
               <input
                 type="text"
                 value={enteredOtp}
-                onChange={(e) => setEnteredOtp( e.target.value )}
+                onChange={(e) => setEnteredOtp(e.target.value)}
                 required
                 placeholder="Enter OTP"
               />
@@ -261,13 +211,12 @@ const SignInDonor = () => {
                 placeholder="Confirm new password"
               />
               {passwordsMatchError && <p>Passwords do not match</p>}
-              <div className="form-buttons">
-                <button type="submit" onClick={()=>changePassword()}>Submit</button>
+              <div className="form-buttons" style={{ display: 'flex', flexDirection: 'row' }}>
+                <button type="submit" onClick={() => changePassword()}>Submit</button>
                 <button onClick={handleBack}>Back</button>
               </div>
             </form>
           </div>
->>>>>>> 67b9fcc51ad9bf623d8d47caf83ed2617df89702
         </div>
       )}
     </div>

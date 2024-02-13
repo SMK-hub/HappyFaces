@@ -148,7 +148,7 @@ const SignInAdmin = () => {
                   />
                 </>
               )}
-              <div className="form-buttons">
+              <div className="form-buttons" style={{ display: 'flex', flexDirection: 'row' }}>
                 <button type="submit">Send OTP</button>
                 <button onClick={handleBack}>Back</button>
               </div>
@@ -191,7 +191,7 @@ const SignInAdmin = () => {
                 placeholder="Confirm new password"
               />
               {passwordsMatchError && <p>Passwords do not match</p>}
-              <div className="form-buttons">
+              <div className="form-buttons" style={{ display: 'flex', flexDirection: 'row' }}>
                 <button type="submit">Submit</button>
                 <button onClick={handleBack}>Back</button>
               </div>
