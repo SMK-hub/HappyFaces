@@ -9,6 +9,7 @@ import ImageListItem from '@mui/material/ImageListItem';
 import RazorPay from '../Details/RazorPay'; // Corrected import statement
 import {useUser} from '../../../../UserContext'
 import axios from "axios";
+import { LoadingButton } from "@mui/lab";
  
 function srcset(image, size, rows = 1, cols = 1) {
   return {
@@ -29,6 +30,9 @@ const OrphDash = () => {
   const [donationDescriptionVisible, setDonationDescriptionVisible] = useState(false);
   const [viewImagesPopupVisible, setViewImagesPopupVisible] = useState(false); // New state for view images pop-up
   const [donationDescription, setDonationDescription] = useState('');
+  const [allEventData, setAllEventData] = useState();
+  const [RegisteringProcess,setRegisteringProcess] = useState(false);
+  
   const  {setUserData} = useUser();
   const {userDetails} = useUser();
   console.log(userDetails);
@@ -61,6 +65,7 @@ const OrphDash = () => {
     // const events = await fetchEvents(orphanage.orpId);
     const orphanageWithImageData=await fetchImageData(orphanage.orpId);
     const orphanagaeWithEventData=await fetchEventData(orphanage.orpId);
+    const orphanageWithAllEventData=await fetchAllEventData(orphanage.orpId);
     const eventParticipant = await Promise.all(
       orphanagaeWithEventData.map(async(event)=>{        
         const participant = await fetchParticipatedDonorsId(event.id);
@@ -76,10 +81,21 @@ const OrphDash = () => {
       ...orphanage,
       imageData:orphanageWithImageData,
       eventData:eventParticipant,
+      allEventData:orphanageWithAllEventData
     });
   };
   console.log(selectedOrphanage);
 
+  const fetchAllEventData = async (orpId)=>{
+    try{
+      const response=await axios.get(`http://localhost:8079/donor/VerifiedEvents/${orpId}`);
+      console.log(response.data);
+      return response.data;
+      
+    }catch(error){
+      console.log(error);
+    }
+  }
   const fetchParticipatedDonorsId = async (eventId)=>{
       try{
         const response=await axios.get(`http://localhost:8079/donor/participatedDonorsId/${eventId}`);
@@ -145,8 +161,8 @@ const OrphDash = () => {
             link.setAttribute('download', `${orpName}_certificates.pdf`);
             document.body.appendChild(link);
             link.click();
-            document.body.removeChild(link); // Cleanup
-            window.URL.revokeObjectURL(url); // Cleanup
+            document.body.removeChild(link); 
+            window.URL.revokeObjectURL(url); 
         } else {
             alert(response.status);
         }
@@ -166,12 +182,18 @@ const OrphDash = () => {
  
   const handleRegisterEvent = async(eventId) => {
     try{
+      setRegisteringProcess(true);
       const response= await axios.post(`http://localhost:8079/donor/${userDetails?.donorId}/eventRegister/${eventId}`);
       console.log("Event registered");
+      
       setRegistrationSuccessVisible(true);
     }catch(error){
       console.log(error);
       alert(error);
+    }
+    finally{
+      setRegisteringProcess(false);
+      window.location.reload();
     }
   };
  
@@ -357,20 +379,27 @@ const OrphDash = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {selectedOrphanage.eventData.map((event, index) => (
+                {console.log(selectedOrphanage.allEventData)}
+                  {selectedOrphanage.allEventData?.map((event, index) => (
+                    
                     <tr key={index}>
                       <td>{selectedOrphanage.orphanageName}</td>
                       <td>{event.title}</td>
                       <td>{event.description}</td>
                       <td>{event.date} {event.time}</td>
                       <td>
-                        <button disabled={event.participantData.includes(userDetails.donorId)}  
-                                onClick={()=>handleRegisterEvent(event.id)} 
-                                style={{ 
-                                  cursor: event.participantData.includes(userDetails.donorId) ? 'not-allowed' : 'pointer',
-                                  backgroundColor: event.participantData.includes(userDetails.donorId) ? 'grey' : 'initial',}}>
-                                    Register Event
-                                    </button>
+                        {console.log(selectedOrphanage.eventData[index].participantData)}
+                      <LoadingButton
+                          disabled={selectedOrphanage.eventData[index].participantData?.includes(userDetails.donorId)}  
+                          loading={RegisteringProcess}
+                          
+                          loadingIndicator={<div>Registering...</div>}
+                          onClick={() => handleRegisterEvent(event.id)} 
+                          style={{ 
+                            cursor: selectedOrphanage.eventData[index].participantData ? (selectedOrphanage.eventData[index].participantData.includes(userDetails.donorId) ? 'not-allowed' : 'pointer') : 'pointer',
+                            backgroundColor: selectedOrphanage.eventData[index].participantData ? (selectedOrphanage.eventData[index].participantData.includes(userDetails.donorId) ? 'grey' : 'initial') : 'initial',
+                          }}
+                          > Register Event</LoadingButton>
                       </td>
                     </tr>
                   ))}

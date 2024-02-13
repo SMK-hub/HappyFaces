@@ -274,11 +274,15 @@ public class DonorServiceImpl implements DonorService {
         donationRequirementRepository.save(donationRequirements);
         Optional<Donor> donor = donorRepository.findById(donationRequirements.getDonorId());
         Optional<OrphanageDetails> orphanageDetails=orphanageDetailsRepository.findByOrpId(donationRequirements.getOrpId());
+        Optional<Orphanage> orphanage= orphanageRepository.findById(donationRequirements.getOrpId());
         String subject="Heartfelt Thanks for Your Generous Donation";
         String body="Dear "+donor.get().getName()+",\n" +
                 "\n" +
                 "Thank you for your generous donation to \""+orphanageDetails.get().getOrphanageName()+"\". Your kindness will make a lasting impact, providing hope and support to the children in our care. We are deeply grateful for your compassion and generosity.";
+        String subjectOrp = "Generous Donation Offer from "+donor.get().getName() +"\uD83D\uDE0A";
+        String bodyOrp = "We are thrilled to inform you that "+donor.get().getName()+" has graciously offered to donate essential items to support the children in your care. In their own words, \""+donationRequirements.getDescription()+".\" We are excited to coordinate this contribution to enhance the lives of the children at your orphanage.\uD83D\uDE0A";
         emailService.sendSimpleMail(donor.get().getEmail(),subject,body);
+        emailService.sendSimpleMail(orphanage.get().getEmail(),subjectOrp,bodyOrp);
         return "Requirement Donation Info Saved Successfully";
     }
 
