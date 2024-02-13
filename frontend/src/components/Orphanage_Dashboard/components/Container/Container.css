@@ -4,11 +4,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  padding: 11px;
   border: 4px solid #831898;
   border-radius: 8px;
+  min-width: 60%;
+  height: -moz-fit-content;
   height: fit-content;
-  margin-top: 15%;
+  margin: auto;
 }
 
 .head {
