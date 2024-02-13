@@ -19,6 +19,8 @@ public class OrphanageServiceImpl implements OrphanageService {
     @Autowired
     private OrphanageRepository orphanageRepository;
     @Autowired
+    private DonationsRepository donationsRepo;
+    @Autowired
     private DonorRepository donorRepository;
     @Autowired
     private AdminRepository adminRepository;
@@ -303,4 +305,16 @@ public class OrphanageServiceImpl implements OrphanageService {
         }
         return Optional.empty();
     }
+
+    @Override
+    public List<Donations> getDonationsByOrphanageId(String id) {
+        return donationsRepo.getDonationsByOrpId(id);
+    }
+
+    @Override
+    public Donor getDonorById(String donorId) {
+        Optional<Donor> donor = donorRepository.findById(donorId);
+        return donor.orElse(null);
+    }
+
 }

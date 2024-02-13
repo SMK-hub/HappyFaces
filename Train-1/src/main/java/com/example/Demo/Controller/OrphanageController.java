@@ -241,4 +241,12 @@ public class OrphanageController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    @GetMapping("/donation/{orpId}")
+    public ResponseEntity<List<Donations>> getDonationsByOrphanageId(@PathVariable String orpId){
+        return new ResponseEntity<>(orphanageService.getDonationsByOrphanageId(orpId),HttpStatus.OK);
+    }
+    @GetMapping("donor/{donorId}")
+    public ResponseEntity<Donor> getDonorById(@PathVariable String donorId){
+        return new ResponseEntity<>(orphanageService.getDonorById(donorId),HttpStatus.OK);
+    }
 }

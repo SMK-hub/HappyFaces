@@ -73,9 +73,7 @@ const OrphDash = () => {
           ...event,
           participantData:participant,
         }
-}
-
-      )
+      })
     )
     setSelectedOrphanage({
       ...orphanage,

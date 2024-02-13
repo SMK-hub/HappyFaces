@@ -6,6 +6,9 @@ import { SidebarData } from "../Data/Data";
 import { UilBars } from "@iconscout/react-unicons";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import {useUser} from '../../../UserContext'
+
+
 
 // ... (imports and other code)
 
@@ -16,7 +19,7 @@ const Sidebar = ({onOptionSelect}) => {
 
     onOptionSelect(value);
   }
-
+  const  {setUserData} = useUser();
   const sidebarVariants = {
     true: {
       left: "0"
@@ -63,9 +66,9 @@ const Sidebar = ({onOptionSelect}) => {
           );
         })}
           {/* signoutIcon */}
-          <Link to="/logout" className="menuItem">
+          <Link to="/" className="menuItem">
             <UilSignOutAlt />
-            <h3>Logout</h3>
+            <h3 onClick={()=>setUserData("")}>Logout</h3>
           </Link>
         </div>
       </motion.div>

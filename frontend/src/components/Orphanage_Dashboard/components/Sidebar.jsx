@@ -6,11 +6,13 @@ import { SidebarData } from "../Data/Data";
 import { UilBars } from "@iconscout/react-unicons";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import {useUser} from '../../../UserContext'
 
 
 const Sidebar = ({onOptionSelect}) => {
   const [selected, setSelected] = useState(0);
   const [expanded, setExpaned] = useState(true)
+  const  {setUserData} = useUser();
 const SelectOption=(value)=>{
 
   onOptionSelect(value);
@@ -59,9 +61,9 @@ const SelectOption=(value)=>{
           );
         })}
         {/* signoutIcon */}
-        <Link to="/logout" className="menuItem">
+        <Link to="/" className="menuItem">
             <UilSignOutAlt />
-            <h3>Logout</h3>
+            <h3 onClick={()=>setUserData("")}>Logout</h3>
           </Link>
       </div>
     </motion.div>
