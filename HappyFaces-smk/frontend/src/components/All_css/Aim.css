@@ -1,0 +1,37 @@
+/* .css */
+
+.aim-container {
+  /* background-image: linear-gradient(to left, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1); */
+  padding: 40px;
+  padding-top: 25px;
+  text-align: center;
+  position: relative; /* Added */
+}
+
+.aim-image {
+  width: 100%; 
+  max-height: 300px; /* Adjust the max-height as needed */
+  object-fit: cover; /* Maintain aspect ratio while covering the container */
+  margin-bottom: 10px;
+}
+
+.aim-container h2 {
+  font-size: 5.0rem;
+  margin-bottom: 10px;
+  position: absolute; /* Added */
+  top: 0; /* Position the h2 element at the top of the container */
+  left: 50%; /* Center the h2 horizontally */
+  transform: translateX(-50%); /* Adjust for centering */
+  padding: 10px 20px; /* Optional: Add padding for better readability */
+}
+
+.aim-container p {
+  font-size: 1.5rem;
+  font-family: 'Oswald', sans-serif;
+  line-height: 1.5;
+  color: #333;
+  max-width: 1050px;
+  max-height: max-content;
+  margin: 0 auto;
+  padding-bottom: 20px;
+}

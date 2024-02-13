@@ -1,0 +1,55 @@
+/* MainDash.css */
+.welcomeMessage {
+    font-weight: bold;
+  }
+
+
+.MainDash {
+    /* padding-top: 1rem; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height:95vh;
+}
+
+@media screen and (max-width: 1200px) {
+    .MainDash {
+        justify-content: flex-start;
+        margin-top: 3rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .MainDash {
+        align-items: center;
+    }
+}
+
+.welcomeMessage {
+    font-weight: bold;
+    font-family: 'Your Desired Font', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; /* Replace 'Your Desired Font' with the actual font name */
+    font-size: 1.2rem; /* Adjust the font size as needed */
+    margin-top: -0.5rem; /* Adjust the negative margin to move the message up */
+}
+.card-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.card {
+    flex: 1; /* Equal flex basis for both cards */
+    background-color: #f595ad;
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.card h2 {
+    font-size: 1.2rem;
+}
+
+.card p {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+  
