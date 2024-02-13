@@ -1,65 +1,65 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../All_css/SignInOrphanage.css'; // Import the CSS file for styles
-import Header from "./Header"
+import Header from './Header';
 import axios from 'axios';
 import { useUser } from '../../UserContext';
- 
+
 const SignInOrphanage = () => {
   const navigate = useNavigate();
   const [orphanageDetails, setOrphanageDetails] = useState({
-    email: "",
-    password: ""
+    email: '',
+    password: '',
   });
   const [showForgotPasswordPopup, setShowForgotPasswordPopup] = useState(false);
   const [showOtpVerificationPopup, setShowOtpVerificationPopup] = useState(false);
   const [showNewPasswordPopup, setShowNewPasswordPopup] = useState(false);
   const [forgotPasswordData, setForgotPasswordData] = useState({
-    email: "",
-    otp: ""
+    email: '',
+    otp: '',
   });
   const [newPasswordData, setNewPasswordData] = useState({
-    password: "",
-    confirmPassword: ""
+    password: '',
+    confirmPassword: '',
   });
   const [passwordsMatchError, setPasswordsMatchError] = useState(false);
   const [showOtpField, setShowOtpField] = useState(false); // State to control the display of OTP field
   const { setUserData } = useUser();
- 
+
   const fetchData = async () => {
     try {
-      const response = await axios.post("http://localhost:8079/orphanage/login", orphanageDetails);
+      const response = await axios.post('http://localhost:8079/orphanage/login', orphanageDetails);
       const status = response.status;
       console.log(status);
       if (status === 200) {
         const userDetailResponse = await axios.get(`http://localhost:8079/orphanage/orphanage/${orphanageDetails.email}`);
-        setUserData(userDetailResponse.data)
-        navigate("/orphanage-dashboard");
+        setUserData(userDetailResponse.data);
+        navigate('/orphanage-dashboard');
       }
     } catch (error) {
-      alert("Invalid Email/Password");
+      alert('Invalid Email/Password');
       console.log(error);
     }
   };
- 
+
   const handleSignIn = (e) => {
     e.preventDefault();
     console.log(orphanageDetails);
     fetchData();
   };
- 
+
   const handleForgotPassword = (e) => {
     e.preventDefault();
     setShowForgotPasswordPopup(true);
   };
- 
+
   const handleOtpSubmit = (e) => {
     e.preventDefault();
     // Add logic to send OTP to the user's email
     // For demonstration, we can simply set showOtpField to true
     setShowOtpVerificationPopup(true);
   };
- 
+
   const handleNewPasswordSubmit = (e) => {
     e.preventDefault();
     if (newPasswordData.password === newPasswordData.confirmPassword) {
@@ -70,7 +70,26 @@ const SignInOrphanage = () => {
       setPasswordsMatchError(true);
     }
   };
- 
+
+  const handleSendOtp = (e) => {
+    e.preventDefault();
+    // Add logic to send OTP to the user's email
+    // For demonstration, we can simply set showOtpField to true
+    setShowOtpField(true);
+  };
+
+  const handleForgotPasswordBack = () => {
+    setShowForgotPasswordPopup(false);
+  };
+
+  const handleOtpVerificationBack = () => {
+    setShowOtpVerificationPopup(false);
+  };
+
+  const handleNewPasswordBack = () => {
+    setShowNewPasswordPopup(false);
+  };
+
   const handleBack = () => {
     setShowForgotPasswordPopup(false);
     setShowOtpVerificationPopup(false);
@@ -78,17 +97,10 @@ const SignInOrphanage = () => {
     setPasswordsMatchError(false);
     setShowOtpField(false); // Hide OTP field when navigating back
   };
- 
-  const handleSendOtp = (e) => {
-    e.preventDefault();
-    // Add logic to send OTP to the user's email
-    // For demonstration, we can simply set showOtpField to true
-    setShowOtpField(true);
-  };
- 
+
   return (
-    <div className='sign-in-orphanage'>
-      <Header/>
+    <div className="sign-in-orphanage">
+      <Header />
       <div className="sign-in-orphanage-container">
         <h2 className="sign-in-orphanage-heading">Orphanage Sign In</h2>
         <form onSubmit={handleSignIn} className="sign-in-orphanage-form">
@@ -97,7 +109,7 @@ const SignInOrphanage = () => {
             <input
               type="email"
               value={orphanageDetails.email}
-              onChange={(e) => setOrphanageDetails({...orphanageDetails,email:e.target.value})}
+              onChange={(e) => setOrphanageDetails({ ...orphanageDetails, email: e.target.value })}
               required
               className="form-input"
             />
@@ -107,7 +119,7 @@ const SignInOrphanage = () => {
             <input
               type="password"
               value={orphanageDetails.password}
-              onChange={(e) => setOrphanageDetails({...orphanageDetails,password:e.target.value})}
+              onChange={(e) => setOrphanageDetails({ ...orphanageDetails, password: e.target.value })}
               required
               className="form-input"
             />
@@ -125,12 +137,12 @@ const SignInOrphanage = () => {
           Back
         </Link>
       </div>
- 
+
       {/* Forgot Password Popup */}
       {showForgotPasswordPopup && (
         <div className="popup">
           <div className="popup-inner">
-            <button className="close-btn" onClick={handleBack}>X</button>
+            <button className="close-btn" onClick={handleForgotPasswordBack}>X</button>
             <h2>Forgot Password</h2>
             <form onSubmit={handleOtpSubmit}>
               <label>Email:</label>
@@ -143,18 +155,20 @@ const SignInOrphanage = () => {
               />
               <div className="form-buttons">
                 <button type="submit">Send OTP</button>
-                <button onClick={handleBack}>Back</button>
               </div>
             </form>
+            <div className="form-back buttons">
+              <button onClick={handleBack}>Back</button>
+            </div>
           </div>
         </div>
       )}
- 
+
       {/* OTP Verification Popup */}
       {showOtpVerificationPopup && (
         <div className="popup">
           <div className="popup-inner">
-            <button className="close-btn" onClick={handleBack}>X</button>
+            <button className="close-btn" onClick={handleOtpVerificationBack}>X</button>
             <h2>OTP Verification</h2>
             <form onSubmit={handleNewPasswordSubmit}>
               <label>Enter OTP:</label>
@@ -182,18 +196,18 @@ const SignInOrphanage = () => {
                 placeholder="Confirm new password"
               />
               {passwordsMatchError && <p>Passwords do not match</p>}
-              <div className="form-buttons">
+              <div className="form-Submit buttons">
                 <button type="submit">Submit</button>
-                <button onClick={handleBack}>Back</button>
               </div>
             </form>
+            <div className="form-OTPBackbuttons">
+              <button onClick={handleBack}>Back</button>
+            </div>
           </div>
         </div>
       )}
- 
-      {/* Other popups */}
     </div>
   );
 };
- 
+
 export default SignInOrphanage;

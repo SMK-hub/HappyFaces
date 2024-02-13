@@ -6,11 +6,11 @@
   background-image: linear-gradient(106.37deg, #ffe1bc 29.63%, #ffcfd1 51.55%, #f3c6f1 90.85%);
 }
 
-.logo {
+.logoHF {
   position: absolute;
   top: 20px;
   left: 20px;
-  width: 150px; /* Adjust width as needed */
+  width: 75px; /* Adjust width as needed */
   height: auto; /* Maintain aspect ratio */
   z-index: 1;
 }
@@ -49,7 +49,7 @@
   padding: 0; /* Remove padding */
   position: absolute; /* Added */
   top: 20px; /* Adjust top positioning */
-  left: 20px; /* Adjust left positioning */
+  left: 124px; /* Adjust left positioning */
   font-family: 'Anton', sans-serif;
   stroke: rgb(16, 16, 4);
   filter: drop-shadow();

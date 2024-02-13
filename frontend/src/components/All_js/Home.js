@@ -16,7 +16,7 @@ const Home = () => {
     <div className="home-background">
       <Header/>
       <div className="home-container">
-        <img src="https://godwinfoundation.org/assets/images/logo_desktop_1.png" alt="Logo" className="logo" />
+        <img src="https://godwinfoundation.org/assets/images/logo_desktop_1.png" alt="Logo" className="logoHF" />
         <video autoPlay muted loop id="background-video">
           <source src="https://player.vimeo.com/external/555730946.sd.mp4?s=6882418f3ab902044ca28a586c1f3c24ae939ea4&profile_id=164&oauth2_token_id=57447761" type="video/mp4"/>
           Your browser does not support the video tag.
