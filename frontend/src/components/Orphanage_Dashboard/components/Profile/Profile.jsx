@@ -169,15 +169,15 @@ const Profile = () => {
           <table className="user-details-table">
           <tbody>
           <tr>
-          <td style={{ fontFamily: 'Roboto, sans-serif' }}>Name: George Bush</td>
+          <td style={{ fontFamily: 'Roboto, sans-serif' }}>Name: </td>
           <td style={{ fontFamily: 'Roboto, sans-serif' }}>{userDetails?.name}</td>
           </tr>
           <tr>
-          <td style={{ fontFamily: 'Roboto, sans-serif' }}>Email: georgebush@gmail.com </td>
+          <td style={{ fontFamily: 'Roboto, sans-serif' }}>Email: </td>
           <td style={{ fontFamily: 'Roboto, sans-serif' }}>{userDetails?.email}</td>
           </tr>
           <tr>
-          <td style={{ fontFamily: 'Roboto, sans-serif' }}>Contact no.: 7894561230</td>
+          <td style={{ fontFamily: 'Roboto, sans-serif' }}>Contact no.:</td>
           <td style={{ fontFamily: 'Roboto, sans-serif' }}>{userDetails?.contact}</td>
           </tr>
           </tbody>

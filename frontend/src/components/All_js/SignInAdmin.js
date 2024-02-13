@@ -3,9 +3,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import '../All_css/SignInAdmin.css'; // Import the CSS file for styles
 import Header from "./Header";
 import axios from 'axios';
+import { useUser } from '../../UserContext';
+
  
 const SignInAdmin = () => {
   const navigate = useNavigate();
+  const { setUserData } = useUser();
   const [adminDetails, setAdminDetails] = useState({
     email: "",
     password: ""
@@ -31,6 +34,8 @@ const SignInAdmin = () => {
       const status = response.status;
       console.log(status);
       if (status === 200) {
+        const userDetailResponse = await axios.get(`http://localhost:8079/admin/admin/${adminDetails.email}`)
+        setUserData(userDetailResponse.data);
         navigate("/admin-dashboard");
       }
     } catch (error) {
@@ -148,7 +153,7 @@ const SignInAdmin = () => {
                   />
                 </>
               )}
-              <div className="form-buttons">
+              <div className="form-buttons" style={{ display: 'flex', flexDirection: 'row' }}>
                 <button type="submit">Send OTP</button>
                 <button onClick={handleBack}>Back</button>
               </div>
@@ -191,7 +196,7 @@ const SignInAdmin = () => {
                 placeholder="Confirm new password"
               />
               {passwordsMatchError && <p>Passwords do not match</p>}
-              <div className="form-buttons">
+              <div className="form-buttons" style={{ display: 'flex', flexDirection: 'row' }}>
                 <button type="submit">Submit</button>
                 <button onClick={handleBack}>Back</button>
               </div>

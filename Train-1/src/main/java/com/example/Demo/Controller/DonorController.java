@@ -121,7 +121,7 @@ public class DonorController {
         }
         return new ResponseEntity<>(alpha,HttpStatus.CONFLICT);
     }
-    @PostMapping("/ChangePassword/{email}/{oldPassword}/{newPassword}/{conformNewPassword}")
+    @PostMapping("/ChangePassword/{email}/{oldPassword}/{newPassword}/{confirmNewPassword}")
     public ResponseEntity<Donor> changeDonorPassword(@PathVariable("email") String email,@PathVariable("oldPassword") String oldPassword,@PathVariable("newPassword") String newPassword,@PathVariable("conformNewPassword") String conformNewPassword){
         Donor alpha=donorService.changeDonorPassword(email,oldPassword,newPassword,conformNewPassword);
         if(alpha!=null){

@@ -226,13 +226,26 @@ public class AdminController {
 	}
 
 	@PutMapping("/{adminId}/editProfile")
-	public ResponseEntity<String> editProfile(@PathVariable("adminId") String adminId,@RequestBody Admin admin){
-		String alpha=adminService.editProfile(adminId,admin);
+	public ResponseEntity<Admin> editProfile(@PathVariable("adminId") String adminId,@RequestBody Admin admin){
+		Admin alpha=adminService.editProfile(adminId,admin);
 		if(alpha!=null)
 		{
 			return new ResponseEntity<>(alpha,HttpStatus.OK);
 		}
-		return new ResponseEntity<>("Problem in Update the Profile",HttpStatus.CONFLICT);
+		return new ResponseEntity<>(null,HttpStatus.CONFLICT);
 	}
-	
+
+	@PostMapping("/ChangePassword/{email}/{oldPassword}/{newPassword}/{confirmNewPassword}")
+	public ResponseEntity<Admin> changeAdminPassword(@PathVariable("email") String email,@PathVariable("oldPassword") String oldPassword,@PathVariable("newPassword") String newPassword,@PathVariable("confirmNewPassword") String confirmNewPassword){
+		Admin alpha=adminService.changeAdminPassword(email,oldPassword,newPassword,confirmNewPassword);
+		if(alpha!=null){
+			return new ResponseEntity<>(alpha,HttpStatus.OK);
+		}
+		return new ResponseEntity<>(null,HttpStatus.CONFLICT);
+	}
+	@GetMapping("/admin/{adminEmail}")
+	public ResponseEntity<Admin> getAdminByEmail(@PathVariable String adminEmail){
+		Optional<Admin> admin=adminService.getAdminByEmail(adminEmail);
+		return admin.map(ResponseEntity::ok).orElseGet(()->ResponseEntity.notFound().build());
+	}
 }

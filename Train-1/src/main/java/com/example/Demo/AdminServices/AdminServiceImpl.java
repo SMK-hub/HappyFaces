@@ -1,6 +1,7 @@
 package com.example.Demo.AdminServices;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.*;
 
 import com.example.Demo.Enum.EnumClass;
@@ -85,13 +86,33 @@ public class AdminServiceImpl implements AdminService {
         return (List<Donations>) donationRepo.findAll();
     }
 
-    public String editProfile(String adminId, Admin admin) {
+    @Override
+    public Admin editProfile(String adminId, Admin admin) {
         Optional<Admin> optionalAdmin = adminRepo.findById(adminId);
+
         if (optionalAdmin.isPresent()) {
-            admin.setAdminId(adminId);
-            adminRepo.save(admin);
-            return "Profile Updatded Successfully";
+            Admin existingAdmin = optionalAdmin.get();
+
+            Class<?> adminClass = Admin.class;
+            Field[] fields = adminClass.getDeclaredFields();
+
+            for (Field field : fields) {
+                field.setAccessible(true);
+
+                try {
+                    Object newValue = field.get(admin);
+                    if (newValue != null && !newValue.toString().isEmpty()) {
+                        field.set(existingAdmin, newValue);
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace(); // Handle the exception according to your needs
+                }
+            }
+
+            adminRepo.save(existingAdmin);
+            return existingAdmin;
         }
+
         return null;
     }
 
@@ -275,5 +296,25 @@ public class AdminServiceImpl implements AdminService {
         }
         return "user not existed";
     }
+
+    @Override
+    public Admin changeAdminPassword(String email, String oldPassword, String newPassword, String confirmNewPassword) {
+        Optional<Admin> admin=adminRepo.findByEmail(email);
+        if(admin.isPresent()){
+            if(newPassword.equals(confirmNewPassword)){
+                admin.get().setPassword(newPassword);
+                adminRepo.save(admin.get());
+                return admin.get();
+            }
+            return null;
+        }
+        return null;
+    }
+    @Override
+    public Optional<Admin> getAdminByEmail(String email) {
+        return adminRepo.findByEmail(email);
+    }
+
+
 
 }

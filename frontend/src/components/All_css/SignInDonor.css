@@ -1,5 +1,5 @@
 /* SignInDonor.css */
- 
+
 .sign-in-donor-container {
   display: flex;
   flex-direction: column;
@@ -10,12 +10,12 @@
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   max-width: 400px;
   margin: 5vh auto;
-
 }
-.donorSignIn{
-  display:flex;
+
+.donorSignIn {
+  display: flex;
   flex-direction: column;
-  background-image:linear-gradient( 106.37deg, #ffe1bc 29.63%, #ffcfd1 51.55%, #f3c6f1 90.85% );
+  background-image: linear-gradient(106.37deg, #ffe1bc 29.63%, #ffcfd1 51.55%, #f3c6f1 90.85%);
   height: 100vh;
 }
 
@@ -50,7 +50,7 @@
   width: 100%;
   padding: 15px;
   cursor: pointer;
-  background-image:linear-gradient( 106.37deg, #f3c6f1 29.63%, #ffcfd1 51.55%, #ffe1bc 90.85% );
+  background-image: linear-gradient(106.37deg, #f3c6f1 29.63%, #ffcfd1 51.55%, #ffe1bc 90.85%);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   color: #fff;
   border: none;
@@ -60,7 +60,7 @@
 }
 
 .form-button:hover {
-  background-image:linear-gradient( 106.37deg, #f3c6f1 29.63%, #ffcfd1 51.55%, #ffe1bc 90.85% );
+  background-image: linear-gradient(106.37deg, #f3c6f1 29.63%, #ffcfd1 51.55%, #ffe1bc 90.85%);
 }
 
 .back-link {
@@ -92,6 +92,7 @@
 .forgot-password-link:hover {
   color: #ffe1bc;
 }
+
 .forgot-password-popup {
   position: fixed;
   top: 50%;
@@ -134,15 +135,14 @@
   cursor: pointer;
   border: none;
   border-radius: 5px;
-  background-color: #007bff;
+  background-color: #cfb7cf;
   color: white;
 }
 
 .forgot-password-popup .form-buttons button:hover {
-  background-color: #0056b3;
+  background-color: #cfb7cf;
 }
 
-/* Other styles remain the same */
 .new-password-popup {
   position: fixed;
   top: 50%;
@@ -180,6 +180,7 @@
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
+  flex-direction: column;
 }
 
 .new-password-popup .form-buttons button {
@@ -187,10 +188,16 @@
   cursor: pointer;
   border: none;
   border-radius: 5px;
-  background-color: #007bff;
+  background-color: #cfb7cf;
   color: white;
+  display: flex;
+  justify-content: space-between;
+  width: 48%;
+  margin-bottom: 10px;
+  flex: 1;
 }
 
 .new-password-popup .form-buttons button:hover {
-  background-color: #0056b3;
+  background-color: #c7a3bf;
+  width: 48%;
 }

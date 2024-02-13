@@ -11,6 +11,7 @@ const SignInOrphanage = () => {
     email: "",
     password: ""
   });
+  const [enteredOtp,setEnteredOtp] = useState();
   const [showForgotPasswordPopup, setShowForgotPasswordPopup] = useState(false);
   const [showOtpVerificationPopup, setShowOtpVerificationPopup] = useState(false);
   const [showNewPasswordPopup, setShowNewPasswordPopup] = useState(false);
@@ -19,8 +20,9 @@ const SignInOrphanage = () => {
     otp: ""
   });
   const [newPasswordData, setNewPasswordData] = useState({
-    password: "",
-    confirmPassword: ""
+    password: '',
+    confirmPassword: '',
+    otp: '',
   });
   const [passwordsMatchError, setPasswordsMatchError] = useState(false);
   const [showOtpField, setShowOtpField] = useState(false); // State to control the display of OTP field
@@ -41,6 +43,40 @@ const SignInOrphanage = () => {
       console.log(error);
     }
   };
+ 
+  const fetchOtp = async()=>{
+    try{
+      const response = await axios.post(`http://localhost:8079/orphanage/sendOtp`,forgotPasswordData);
+      const status=response.status;
+      if(status === 200){
+        const data=response.data;
+        console.log(data);
+        setForgotPasswordData(prevData => ({
+          ...prevData,
+          otp: data // Update with the actual response key for OTP
+        }));
+      }
+ 
+    }catch(error){
+      console.log(error);
+    }
+  }
+ 
+  const changePassword = async()=>{
+    try{
+        const response = await axios.post(`http://localhost:8079/orphanage/ForgetPassword/${forgotPasswordData.email}/${enteredOtp}/${newPasswordData.password}/${newPasswordData.confirmPassword}`);
+        const status = response.status;
+        if(status === 200){
+          alert(response.data);
+          setShowOtpVerificationPopup(false);
+          setShowForgotPasswordPopup(false);
+        }
+      }
+     
+    catch(error){
+      console.log(error);
+    }
+  }
  
   const handleSignIn = (e) => {
     e.preventDefault();
@@ -100,6 +136,7 @@ const SignInOrphanage = () => {
               onChange={(e) => setOrphanageDetails({...orphanageDetails,email:e.target.value})}
               required
               className="form-input"
+              placeholder="Enter your email"
             />
           </label>
           <label className="form-label">
@@ -141,8 +178,8 @@ const SignInOrphanage = () => {
                 required
                 placeholder="Enter your email"
               />
-              <div className="form-buttons">
-                <button type="submit">Send OTP</button>
+              <div className="form-buttons" style={{ display: 'flex', flexDirection: 'row' }}>
+                <button type="submit" onClick={()=>fetchOtp()}>Send OTP</button>
                 <button onClick={handleBack}>Back</button>
               </div>
             </form>
@@ -160,8 +197,8 @@ const SignInOrphanage = () => {
               <label>Enter OTP:</label>
               <input
                 type="text"
-                value={forgotPasswordData.otp}
-                onChange={(e) => setForgotPasswordData({ ...forgotPasswordData, otp: e.target.value })}
+                value={enteredOtp}
+                onChange={(e) => setEnteredOtp( e.target.value )}
                 required
                 placeholder="Enter OTP"
               />
@@ -182,8 +219,8 @@ const SignInOrphanage = () => {
                 placeholder="Confirm new password"
               />
               {passwordsMatchError && <p>Passwords do not match</p>}
-              <div className="form-buttons">
-                <button type="submit">Submit</button>
+              <div className="form-buttons" style={{ display: 'flex', flexDirection: 'row' }}>
+                <button type="submit" onClick={()=>changePassword()}>Submit</button>
                 <button onClick={handleBack}>Back</button>
               </div>
             </form>
