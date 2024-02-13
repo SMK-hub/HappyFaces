@@ -20,15 +20,26 @@ public class Admin {
 	public String getContact() {
 		return contact;
 	}
-
 	public void setContact(String contact) {
 		this.contact = contact;
 	}
 
-
-
 	public String getAdminId() {
 		return adminId;
+	}
+
+	@Override
+	public String toString() {
+		return "Admin{" +
+				"adminId='" + adminId + '\'' +
+				", name='" + name + '\'' +
+				", email='" + email + '\'' +
+				", profilePhoto=" + Arrays.toString(profilePhoto) +
+				", password='" + password + '\'' +
+				", role='" + role + '\'' +
+				", passcode='" + passcode + '\'' +
+				", contact='" + contact + '\'' +
+				'}';
 	}
 
 	public void setAdminId(String adminId) {
@@ -77,17 +88,5 @@ public class Admin {
 	}
 	public void setProfilePhoto(byte[] profilePhoto) {
 		this.profilePhoto = profilePhoto;
-	}
-	@Override
-	public String toString() {
-		return "Admin{" +
-				"adminId='" + adminId + '\'' +
-				", name='" + name + '\'' +
-				", email='" + email + '\'' +
-				", profilePhoto=" + Arrays.toString(profilePhoto) +
-				", password='" + password + '\'' +
-				", role='" + role + '\'' +
-				", passcode='" + passcode + '\'' +
-				'}';
 	}
 }
