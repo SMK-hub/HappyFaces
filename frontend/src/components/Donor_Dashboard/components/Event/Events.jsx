@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './Events.css';
 import axios from 'axios';
 import {useUser} from '../../../../UserContext'
+import { LoadingButton } from '@mui/lab';
 
 const EventTable = () => {
   // Use state to manage events
@@ -11,6 +12,7 @@ const EventTable = () => {
   const [render,setRender] = useState(false);
   const  {setUserData} = useUser();
   const {userDetails} = useUser();
+  const[cancelling,setCancelling]= useState(false);
 useEffect(()=>{
   const participatedEvents = async()=>{
     try{
@@ -87,6 +89,7 @@ const fetchOrphanageDetails = async (orpId)=>{
   // Function to confirm cancel registration
   const handleConfirmCancel = async() => {
     try{
+      setCancelling(true);
       console.log(interestedPerson)
       const response = await axios.post(`http://localhost:8079/donor/${userDetails.donorId}/cancelEventRegister/${cancelEventId}`);
       
@@ -101,6 +104,7 @@ const fetchOrphanageDetails = async (orpId)=>{
       alert(error);
     }finally{
       setRender(!render);
+      setCancelling(false);
     }
 
     
@@ -154,8 +158,11 @@ const fetchOrphanageDetails = async (orpId)=>{
             <h3>Cancel Registration</h3>
             <p>Are you sure you want to cancel the registration?</p>
             <div className="button-container">
-              <button onClick={handleConfirmCancel}>Yes</button>
-              <button onClick={handleCancelCancel}>No</button>
+              <LoadingButton 
+              onClick={()=>handleConfirmCancel()}
+              loading={cancelling}
+              loadingIndicator={<div>Cancelling...</div>}>Yes</LoadingButton>
+              <LoadingButton onClick={()=>handleCancelCancel()}>No</LoadingButton>
             </div>
           </div>
         </div>

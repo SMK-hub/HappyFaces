@@ -5,6 +5,7 @@ import "./EvenDash.css";
 // index.js or App.js
 import '@fortawesome/fontawesome-free/css/all.css';
 import ImagePopup from "./ImagePopup";
+import axios from "axios";
 
 const EvenDash = () => {
   const [imagePopupVisible, setImagePopupVisible] = useState(false);
@@ -16,16 +17,22 @@ const EvenDash = () => {
   const entriesPerPage = 5;
 
   const uniqueLocations = ["All", ...new Set(eventsData.map((event) => event.location))];
-  const uniqueStatus = ["All", ...new Set(eventsData.map((event) => event.status))];
+  const uniqueStatus = ["All", ...new Set(eventsData.map((event) => event.stats))];
 
   useEffect(() => {
-    fetchOrphanages();
+    fetchEvents();
   }, []);
 
-  const fetchOrphanages = async () => {
+  const fetchEvents = async () => {
     try {
-      const response = await fetch("http://localhost:8060/api/events");
-      const data = await response.json();
+      const response = await axios.get("http://localhost:8079/admin/eventList");
+      const data = response.data.map(event => ({
+        name: event.title,
+        date: event.date,
+        time: event.time,
+        stats: event.verificationStatus,
+        attend: event.interestedPersons,
+      }));
       setEventsData(data);
     } catch (error) {
       console.error("Error fetching orphanages", error);
@@ -61,7 +68,7 @@ const EvenDash = () => {
   const filteredEvents = eventsData.filter((event) => {
     return (
       (selectedLocation === "All" || event.location === selectedLocation) &&
-      (selectedStatus === "All" || event.status === selectedStatus)
+      (selectedStatus === "All" || event.stats === selectedStatus)
     );
   });
 
@@ -90,9 +97,9 @@ const EvenDash = () => {
         </select>
         <label htmlFor="statusFilter">Search by Status</label>
         <select id="statusFilter" value={selectedStatus} onChange={handleStatusChange}>
-          {uniqueStatus.map((status, index) => (
-            <option key={index} value={status}>
-              {status}
+          {uniqueStatus.map((stats, index) => (
+            <option key={index} value={stats}>
+              {stats}
             </option>
           ))}
         </select>
@@ -102,7 +109,7 @@ const EvenDash = () => {
           <thead>
             <tr>
               <th>Name</th>
-              <th>Location</th>
+              {/* <th>Location</th> */}
               <th>Date</th>
               <th>Details</th>
               <th>Status</th>
@@ -114,15 +121,15 @@ const EvenDash = () => {
             {currentEntries.map((event, index) => (
               <tr key={index}>
                 <td>{event.name}</td>
-                <td>{event.location}</td>
+                {/* <td>{event.location}</td> */}
                 <td>{event.date}</td>
                 <td>
                   <button onClick={() => openModal(event)} className="smallButton">Details</button>
                 </td>
-                <td>{event.status}</td>
+                <td>{event.stats}</td>
                 <td>{event.time}</td>
                 <td className="requests">
-                  {event.status === "Verified" ? (
+                  {event.stats === "Verified" ? (
                     <button onClick={() => console.log("Decline")} style={{ fontSize: "10px", padding: "5px" }}>Decline</button>
                   ) : (
                     <button onClick={() => console.log("Accept")} style={{ fontSize: "10px", padding: "5px" }}>Accept</button>
@@ -151,9 +158,10 @@ const EvenDash = () => {
               </span>
               <h3>{selectedEvent.name}</h3>
               <p className="field-name">Event Name<span> {selectedEvent.name}</span></p>
-              <p className="field-name">Location<span> {selectedEvent.location}</span></p>
+              {/* <p className="field-name">Location<span> {selectedEvent.location}</span></p> */}
               <p className="field-name">Date<span> {selectedEvent.date}</span></p>
               <p className="field-name">Time<span> {selectedEvent.time}</span></p>
+              <p className="field-name">Interested Persons<span> {selectedEvent.attend}</span></p>
             </div>
           </div>
         )}

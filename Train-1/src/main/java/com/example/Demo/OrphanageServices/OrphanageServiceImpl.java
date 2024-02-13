@@ -175,7 +175,7 @@ public class OrphanageServiceImpl implements OrphanageService {
             Otp = sixDigitCode;
             emailService.sendSimpleMail(user.get().getEmail(), subject, body);
 
-            return "Otp sent successfully";
+            return Otp;
         }
         return null;
     }
