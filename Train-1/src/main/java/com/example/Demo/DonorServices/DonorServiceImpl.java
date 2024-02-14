@@ -178,13 +178,13 @@ public class DonorServiceImpl implements DonorService {
 
     @Override
     public List<OrphanageDetails> getVerifiedOrphanageDetails() {
-        return detailsRepository.findByVerificationStatus(String.valueOf(EnumClass.VerificationStatus.VALID));
+        return detailsRepository.findByVerificationStatus(String.valueOf(EnumClass.VerificationStatus.VERIFIED));
     }
 
     @Override
     public Optional<OrphanageDetails> getVerifiedOrphanageDetailsById(String orpId) {
         Optional<OrphanageDetails> optionalOrphanageDetails=detailsRepository.findByOrpId(orpId);
-        if(optionalOrphanageDetails.isPresent() && optionalOrphanageDetails.get().getVerificationStatus().equals(EnumClass.VerificationStatus.VALID)){
+        if(optionalOrphanageDetails.isPresent() && optionalOrphanageDetails.get().getVerificationStatus().equals(EnumClass.VerificationStatus.VERIFIED)){
             return optionalOrphanageDetails;
         }else {
             return Optional.empty();
@@ -193,7 +193,7 @@ public class DonorServiceImpl implements DonorService {
 
     @Override
     public List<Events> getVerifiedEvents(String orpId) {
-        return eventsRepository.findByVerificationStatus(String.valueOf(EnumClass.VerificationStatus.VALID),orpId);
+        return eventsRepository.findByVerificationStatus(String.valueOf(EnumClass.VerificationStatus.VERIFIED),orpId);
     }
 
     @Override

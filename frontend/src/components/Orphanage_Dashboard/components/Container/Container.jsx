@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './Container.css';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { useState } from 'react';
@@ -6,14 +6,18 @@ import Galleries from '../Galleries/Galleries'
 import UpdateDetails from '../UpdateDetails/UpdateDetails'
 import Certificates from '../Certificates/Certificates'
 import Photos from '../Photos/Photos'
+import {useUser} from '../../../../UserContext'
+import axios from 'axios';
+
+
 const MyContainer = () => {
 
   const handleOk = () => {
     // Implement your logic for handling OK button click
     console.log('OK button clicked');
   };
-  const orphanageInfo = {
-    Name: 'ABC Orphanage',
+  const [orphanageInfo,setOrphanageInfo] = useState({
+    OrphanageName: 'ABC Orphanage',
     DirectorName: 'Rajnikanth',
     Contact: '123-456-7890',
     Description: 'A place for children in need.',
@@ -23,8 +27,45 @@ const MyContainer = () => {
     Requirements: 'Food, clothing, education materials',
     PriorityStatus: 'High',
     GalleryLink: '/Galleries',
-    OrphanageName: 'Miracle Foundation',
-  };
+  }) 
+
+  const  {setUserData} = useUser();
+  const {userDetails} = useUser();
+
+  useEffect(()=>{
+    const fetch=async()=>{
+      try{
+        const res=await fetchOrphanageDetailsData();
+        console.log(res);
+        setOrphanageInfo({
+          ...orphanageInfo,
+          OrphanageName: res.orphanageName,
+          DirectorName: res.directorName,
+          Contact: res.contact,
+          Description: res.description,
+          Address: res.address.house_no+","+res.address.street+","+res.address.city+"-"+res.address.postalCode+","+res.address.state+","+res.address.country ,
+          VerificationStatus: res.verificationStatus,
+          Website: res.website,
+          Requirements: res.requirements.need,
+          PriorityStatus: res.requirements.priority,
+          GalleryLink: '/Galleries',
+        });
+      }catch(error){
+        console.log(error);    
+      }
+    }
+    fetch();
+  },[])
+
+  const fetchOrphanageDetailsData = async() =>{
+    try{
+      const response=await axios.get(`http://localhost:8079/orphanage/${userDetails?.orpId}/details`)
+      return response.data;
+    }catch(error){
+      console.log(error);
+    }
+  }
+
   const [open, setOpen] = React.useState(false);
  const [gopen, setgOpen] = useState(false);
 const [openCer,setOpenCer]=useState(false);

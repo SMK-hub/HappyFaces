@@ -7,7 +7,7 @@ public class EnumClass {
     }
 
     public enum VerificationStatus {
-        NOT_VERIFIED, VALID, IN_VALID
+        NOT_VERIFIED, VERIFIED;
     }
 
     public enum Roles{
