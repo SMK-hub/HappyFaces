@@ -10,6 +10,8 @@ import {useUser} from '../../../../UserContext'
 import axios from 'axios';
 
 
+
+
 const MyContainer = () => {
 
   const handleOk = () => {
@@ -55,7 +57,29 @@ const MyContainer = () => {
       }
     }
     fetch();
-  },[])
+  },[userDetails.orpId])
+
+  const fetchOrphanageCertificate = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8079/orphanage/getCertificate/${userDetails.orpId}`, {
+        responseType: 'arraybuffer'
+      });
+  
+      const status = response.status;
+  
+      if (status === 200) {
+        const blob = new Blob([response.data]);
+        const file = new File([blob], 'certificate.pdf', { type: 'application/pdf' });
+  
+        // Convert File object into a URL
+        const fileUrl = URL.createObjectURL(file);
+  
+        return fileUrl;
+      }
+    } catch (error) {
+      console.log("Error in Fetching Certificate:", error);
+    }
+  }
 
   const fetchOrphanageDetailsData = async() =>{
     try{
@@ -93,6 +117,22 @@ const handleGalleriesOpen = () => {
 const openCertificates=()=>{
 setOpenCer(true)
 }
+
+const [openPdfDialog, setOpenPdfDialog] = useState(false);
+  const [certificateUrl, setCertificateUrl] = useState('');
+
+  const handleViewCertificate = async () => {
+    setOpenPdfDialog(true);
+    const certificateUrl = await fetchOrphanageCertificate();
+    setCertificateUrl(certificateUrl);
+  };
+
+// Function to handle closing the PDF dialog
+const handleClosePdfDialog = () => {
+  setOpenPdfDialog(false);
+  setCertificateUrl(''); // Clear the certificate URL
+};
+
 const openPhotos=()=>{
   setOpenPh(true)
   }
@@ -139,18 +179,36 @@ const openPhotos=()=>{
           <button className="button" onClick={() => handleClickOpen()}>
             Update Details
           </button>
-  
           <button className="button" onClick={() => openCertificates()}>
             Update Certificates
           </button>
-      
-        
           <button className="button" onClick={() => openPhotos()}>
             Upload Photos
           </button>
+          <button className='button' onClick={handleViewCertificate}>
+            View Certificate
+          </button>
         
       </div>
-
+      <Dialog
+        open={openPdfDialog}
+        onClose={handleClosePdfDialog}
+        fullWidth
+        maxWidth="md"
+      >
+        <DialogTitle>View Certificate</DialogTitle>
+        <DialogContent>
+          <iframe
+            title="certificate"
+            src={certificateUrl}
+            width="100%"
+            height="600"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClosePdfDialog}>Close</Button>
+        </DialogActions>
+      </Dialog>
       <Dialog
         open={gopen}
         onClose={handleClose} 
@@ -180,13 +238,10 @@ const openPhotos=()=>{
           },
         }}
       >
-        
         <DialogContent>
-        <UpdateDetails />
+            <UpdateDetails />
         </DialogContent>
-        <DialogActions>
-        <button type="submit" onClick={handleClose}>Save Changes</button> 
-        </DialogActions>
+        
       </Dialog>
 
       <Dialog
@@ -209,7 +264,6 @@ const openPhotos=()=>{
         <Certificates />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Save Changes</Button>
           <Button type="submit">Cancel</Button>
         </DialogActions>
       </Dialog>
