@@ -28,6 +28,7 @@ const OrphDash = () => {
     try {
       const response = await axios.get("http://localhost:8079/admin/orphanageDetailsList");
       const data = response.data.map(orphanage => ({
+        ...orphanage,
         name: orphanage.orphanageName,
         location: orphanage.address.city,
         contact: orphanage.contact,
@@ -43,11 +44,10 @@ const OrphDash = () => {
     }
   };
 
-  const updateOrphanageStatus = async (OrpId, newStatus) => {
+  const updateOrphanageStatus = async (OrpId,status) => {
     try {
-      await axios.put(`http://localhost:8079/admin/orphanageDetailsList/${OrpId}`, {
-        verificationStatus: newStatus
-      });
+      await axios.post(`http://localhost:8079/admin/verifyOrphanageDetails/${OrpId}/${status}`);
+      fetchOrphanages();
       console.log("Orphanage status updated ");
     } catch(error) {
       console.error("Error updating the orphanage status",error);
@@ -92,7 +92,7 @@ const OrphDash = () => {
     if (window.confirm(confirmationMessage)) {
       try {
         if (action === 'Decline') {
-          await updateOrphanageStatus(OrpId, 'IN_VALID');
+          await updateOrphanageStatus(OrpId, 'NOT_VERIFIED');
         } else {
           await updateOrphanageStatus(OrpId, 'VERIFIED');
         }
@@ -174,15 +174,14 @@ const OrphDash = () => {
                 </td>
                 <td>{orphanage.status}</td>
                 <td className="requests">
-                  {orphanage.status === "VALID" && (
+                  
+                  {orphanage.status === "VERIFIED" && (
                     <button onClick={() => showConfirmation("Decline", orphanage.orpId)} style={{ fontSize: "10px", padding: "5px" }}>Decline</button>
                   )}
                   {orphanage.status === "NOT_VERIFIED" && (
-                    <button onClick={() => showConfirmation("Accept")} style={{ fontSize: "10px",padding:"5px"}}>Accept</button>
+                    <button onClick={() => showConfirmation("Accept", orphanage.orpId)} style={{ fontSize: "10px",padding:"5px"}}>Accept</button>
                   )}
-                  {orphanage.status === "IN_VALID" && (
-                    <span>Rejected!</span>
-                  )}
+                  
                 </td>
               </tr>
             ))}

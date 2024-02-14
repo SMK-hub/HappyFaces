@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.example.Demo.Enum.EnumClass;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -96,14 +97,14 @@ public class AdminController {
 		}
 		return new ResponseEntity<>(alpha,HttpStatus.CONFLICT);
 	}
-	@PostMapping("/verifyOrphanageDetails")
-	public ResponseEntity<String> verifyOrphanageDetails(@RequestBody OrphanageDetails orph)
+	@PostMapping("/verifyOrphanageDetails/{orpId}/{status}")
+	public ResponseEntity<OrphanageDetails> verifyOrphanageDetails(@PathVariable("orpId") String  orpId, @PathVariable("status") String verificationStatus)
 	{
-		String alpha=adminService.verifyOrphanageDetails(orph);
-		if(alpha.equals("Done")){
-			return new ResponseEntity<>("Verification Done",HttpStatus.OK);
+		OrphanageDetails alpha=adminService.verifyOrphanageDetails(orpId,verificationStatus);
+		if(alpha!=null){
+			return new ResponseEntity<>(alpha,HttpStatus.OK);
 		}
-		return new ResponseEntity<>("Verification Not Done, Try again",HttpStatus.CONFLICT);
+		return new ResponseEntity<>(null,HttpStatus.CONFLICT);
 	}
 	@GetMapping("/donationList")
 	public ResponseEntity<List<Donations>> getAllDonations() {
