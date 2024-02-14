@@ -1,8 +1,10 @@
 package com.example.Demo.AdminServices;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.Demo.Enum.EnumClass;
 import com.example.Demo.Model.Admin;
 import com.example.Demo.Model.Donations;
 import com.example.Demo.Model.Donor;
@@ -37,11 +39,13 @@ public interface AdminService {
 
     OrphanageDetails getOrphanageDetailByOrphanageId(String orpId);
 
-    String verifyOrphanageDetails(OrphanageDetails orph);
+    OrphanageDetails verifyOrphanageDetails(String orpId, String verificationStatus);
 
-    Admin editProfile(String adminId,Admin admin);
+    Admin editProfile(String adminId, Admin admin);
 
     String verifyEventDetails(Events event);
+
+    OrphanageDetails notVerifyEventDetails(Events event);
 
     Orphanage getOrphanageById(String id);
 
@@ -64,5 +68,6 @@ public interface AdminService {
     String forgetPassword(String email, String otp, String create, String confirm);
 
     Admin changeAdminPassword(String email, String oldPassword, String newPassword, String confirmNewPassword);
+
     Optional<Admin> getAdminByEmail(String email);
 }
