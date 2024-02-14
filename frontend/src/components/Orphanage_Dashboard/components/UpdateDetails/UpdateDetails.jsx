@@ -31,9 +31,15 @@ const FormComponent = () => {
     console.log('Form submitted:', formData);
   };
 
-  const handlePasswordChange = () => {
-    console.log('Password change requested');
-  };
+  // const handlePasswordChange = () => {
+  //   console.log('Password change requested');
+  // };
+
+  // const handlePasswordChange = () => {
+  //   setIsChangePasswordMode(true);
+  //   setIsEditMode(false);
+  //   setPasswordMismatchError('');
+  // };
 
   return (
     <div>
@@ -107,10 +113,14 @@ const FormComponent = () => {
             <option value="medium">Medium</option>
           </select>
         </label>
+        <label>
+          Requirement Description:
+          <textarea name="Description" value={formData.RequirementDescription} onChange={handleChange}></textarea>
+        </label>
 
         <div className="button-container">
           <button type="submit">Update</button>
-          <button type="button" onClick={handlePasswordChange}>Change Password</button>
+          {/* <button type="button" onClick={handlePasswordChange}>Change Password</button> */}
         </div>
       </form>
     </div>
