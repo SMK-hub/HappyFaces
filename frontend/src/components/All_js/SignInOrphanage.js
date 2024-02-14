@@ -147,6 +147,8 @@ const SignInOrphanage = () => {
               onChange={(e) => setOrphanageDetails({...orphanageDetails,password:e.target.value})}
               required
               className="form-input"
+              placeholder="Enter your password"
+
             />
           </label>
           <div className="form-buttons">
