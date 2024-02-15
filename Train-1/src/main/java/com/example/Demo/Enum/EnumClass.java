@@ -17,6 +17,6 @@ public class EnumClass {
         SUCCESS,FAIL;
     }
     public enum Need{
-        FOOD,CLOTHES,BOOKS;
+        FOOD,CLOTHES,BOOKS,OTHERS;
     }
 }

@@ -47,9 +47,11 @@ public interface OrphanageService {
 
     Optional<Orphanage> getOrphanageByEmail(String email);
 
-    public String storeCertificate(String orpId,MultipartFile file) throws IOException;
+    public String storeCertificate(String orpId, MultipartFile file) throws IOException;
 
     public byte[] getCertificate(String orpId);
+
     public List<Donations> getDonationsByOrphanageId(String id);
+
     public Donor getDonorById(String donorId);
 }

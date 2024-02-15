@@ -1,128 +1,169 @@
 import React, { useState } from 'react';
 import './UpdateDetails.css';
+import axios from 'axios';
+import { useUser } from '../../../../UserContext';
 
 const FormComponent = () => {
+
+
   const [formData, setFormData] = useState({
-    Name: '',
-    DirectorName: '',
-    Contact: '',
-    Description: '',
-    HouseNumber: '',
-    StreetAddress: '',
-    City: '',
-    State: '',
-    ZipCode: '',
-    Country: '',
-    Website: '',
-    Requirements: '',
-    PriorityStatus: '',
+    orphanageName: '',
+    directorName: '',
+    contact: '',
+    orphanageEmail: '',
+    description: '',
+    address: {
+      house_no: '',
+      street: '',
+      city: '',
+      state: '',
+      postalCode: '',
+      country: '',
+    },
+    website: '',
+    requirements: {
+      need: '',
+      priority: '',
+      description: '',
+    },
   });
+
+  const{userDetails} = useUser();
+
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setFormData(prevState => ({
+      ...prevState,
       [name]: value,
-    });
+    }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Form submitted:', formData);
+  const handleAddressChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      address: {
+        ...prevState.address,
+        [name]: value,
+      },
+    }));
   };
 
-  // const handlePasswordChange = () => {
-  //   console.log('Password change requested');
-  // };
+  const handleRequirementChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      requirements: {
+        ...prevState.requirements,
+        [name]: value,
+      },
+    }));
+  };
 
-  // const handlePasswordChange = () => {
-  //   setIsChangePasswordMode(true);
-  //   setIsEditMode(false);
-  //   setPasswordMismatchError('');
-  // };
+  
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      console.log("Form Data:", formData);
+      updateOrphanageDetails();
+    };
+  
+
+  const updateOrphanageDetails = async()=>{
+    try{
+      const response=await axios.put(`http://localhost:8079/orphanage/${userDetails.orpId}/editDetails`,formData);
+      const status= response.status;
+      if(status===200){
+        console.log(response.data);
+      }
+
+    }catch(error){
+      console.log(error);
+    }
+  }
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <h1>Orphanage Details</h1>
-        <label>
-          Name:
-          <input type="text" name="Name" value={formData.Name} onChange={handleChange} />
-        </label>
-        <label>
-          Director Name:
-          <input type="text" name="DirectorName" value={formData.DirectorName} onChange={handleChange} />
-        </label>
-        <label>
-          Contact:
-          <input type="text" name="Contact" value={formData.Contact} onChange={handleChange} />
-        </label>
-        <label>
-          Description:
-          <textarea name="Description" value={formData.Description} onChange={handleChange}></textarea>
-        </label>
-        <div className="address-inputs">
-          <h3>Address</h3>
-          <form>
-            <label>
-            House Number:
-            <input type="text" name="HouseNumber" value={formData.HouseNumber} onChange={handleChange} />
-          </label>
-          <label>
-            Street Address:
-            <input type="text" name="StreetAddress" value={formData.StreetAddress} onChange={handleChange} />
-          </label>
-          <label>
-            City:
-            <input type="text" name="City" value={formData.City} onChange={handleChange} />
-          </label>
-          <label>
-            State:
-            <input type="text" name="State" value={formData.State} onChange={handleChange} />
-          </label>
-          <label>
-            Zip Code:
-            <input type="text" name="ZipCode" value={formData.ZipCode} onChange={handleChange} />
-          </label>
-          <label>
-            Country:
-            <input type="text" name="Country" value={formData.Country} onChange={handleChange} />
-          </label>
-          </form>
-          
-        </div>
-        <label>
-          Website:
-          <input type="text" name="Website" value={formData.Website} onChange={handleChange} />
-        </label>
-        <label>
-          Requirements:
-          <select name="Requirements" value={formData.Requirements} onChange={handleChange}>
-            <option value="">Select Requirement</option>
-            <option value="food">Food</option>
-            <option value="clothing">Clothing</option>
-            <option value="books">Books</option>
-            <option value="others">Others</option>
-          </select>
-        </label>
-        <label>
-          Priority Status:
-          <select name="PriorityStatus" value={formData.PriorityStatus} onChange={handleChange}>
-            <option value="">Select Priority Status</option>
-            <option value="high">High</option>
-            <option value="medium">Medium</option>
-          </select>
-        </label>
-        <label>
-          Requirement Description:
-          <textarea name="Description" value={formData.RequirementDescription} onChange={handleChange}></textarea>
-        </label>
+  <h1>Orphanage Details</h1>
+  <label>
+    Orphanage Name<span className="required-star">*</span>:
+    <input type="text" name="orphanageName" value={formData.orphanageName} onChange={handleChange} required/>
+  </label>
+  <label>
+    Director Name:
+    <input type="text" name="directorName" value={formData.directorName} onChange={handleChange} required/>
+  </label>
+  <label>
+    Contact:
+    <input type="tel" name="contact" value={formData.contact} onChange={handleChange} required/>
+  </label>
+  <label>
+    Orphanage Email:
+    <input type="email" name="orphanageEmail" value={formData.orphanageEmail} onChange={handleChange} required/>
+  </label>
+  <label>
+    Description:
+    <textarea name="description" value={formData.description} onChange={handleChange} required></textarea>
+  </label>
+    <h3>Address</h3>
+    <label>
+      House Number:
+      <input type="text" name="house_no" value={formData.address.house_no} onChange={handleAddressChange} required/>
+    </label>
+    <label>
+      Street Address:
+      <input type="text" name="street" value={formData.address.street} onChange={handleAddressChange} required/>
+    </label>
+    <label>
+      City:
+      <input type="text" name="city" value={formData.address.city} onChange={handleAddressChange} required/>
+    </label>
+    <label>
+      State:
+      <input type="text" name="state" value={formData.address.state} onChange={handleAddressChange} required/>
+    </label>
+    <label>
+      Zip Code:
+      <input type="number" name="postalCode" value={formData.address.postalCode} onChange={handleAddressChange} required/>
+    </label>
+    <label>
+      Country:
+      <input type="text" name="country" value={formData.address.country} onChange={handleAddressChange} required/>
+    </label>
+  <label>
+    Website:
+    <input type="text" name="website" value={formData.website} onChange={handleChange} />
+  </label>
+  <label>
+    Requirements:
+    <select name="need" value={formData.requirements.need} onChange={handleRequirementChange} required>
+      <option value="">Select Requirement</option>
+      <option value="FOOD">FOOD</option>
+      <option value="CLOTHES">CLOTHES</option>
+      <option value="BOOKS">BOOKS</option>
+      <option value="OTHERS">OTHERS</option>
+    </select>
+  </label>
+  <label>
+    Priority Status:
+    <select name="priority" value={formData.requirements.priority} onChange={handleRequirementChange} required>
+      <option value="">Select Priority Status</option>
+      <option value="high">High</option>
+      <option value="medium">Medium</option>
+    </select>
+  </label>
+  <label>
+    Requirement Description:
+    <textarea name="description" value={formData.requirements.description} onChange={handleRequirementChange} required></textarea>
+  </label>
 
-        <div className="button-container">
-          <button type="submit">Update</button>
-          {/* <button type="button" onClick={handlePasswordChange}>Change Password</button> */}
-        </div>
-      </form>
+  <div className="button-container">
+    <button type="submit" onClick={handleSubmit}>Update</button>
+  </div>
+</form>
+
     </div>
   );
 };
