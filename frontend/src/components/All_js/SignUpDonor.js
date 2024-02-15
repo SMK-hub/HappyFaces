@@ -43,8 +43,8 @@ const SignUpDonor = () => {
     {loading ? (
       <div className="loading-screen">Loading...</div>
     ) : (
-    <div className="sign-up-donor-container">
-      <h2 className="sign-up-donor-heading">Donor Sign Up</h2>
+    <div>
+      <h2 className="sign-up-donor-heading">DONOR SIGN UP</h2>
       <form onSubmit={handleSignUp} className="sign-up-donor-form">
         <label className="form-label">
           Username:

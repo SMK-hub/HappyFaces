@@ -27,6 +27,7 @@ const OrphDash = () => {
   const fetchOrphanages = async () => {
     try {
       const response = await axios.get("http://localhost:8079/admin/orphanageDetailsList");
+      
       const data = response.data.map(orphanage => ({
         ...orphanage,
         name: orphanage.orphanageName,

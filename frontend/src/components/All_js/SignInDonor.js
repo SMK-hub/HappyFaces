@@ -116,8 +116,8 @@ const SignInDonor = () => {
   return (
     <div className="donorSignIn">
       <Header />
-      <div className="sign-in-donor-container">
-        <h2 className="sign-in-donor-heading">Donor Sign In</h2>
+      <div>
+        <h2 className="sign-in-donor-heading">DONOR SIGN IN</h2>
         <form onSubmit={handleSignIn} className="sign-in-donor-form">
           <label className="form-label">
             Email:

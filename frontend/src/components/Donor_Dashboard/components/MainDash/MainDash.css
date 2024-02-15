@@ -5,87 +5,131 @@
         justify-content: center;
         align-items: center;
         margin-top: 1cm; /* Adjust the spacing between the heading and the cards */
-       */
-  
-  
-  .dashboard-text {
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px; /* Adjust the margin as needed */
-  }
-  
-  .card-container {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
-    position: absolute;
-    top: 150px; /* Adjust the top position as needed */
-    width: 100%; /* Make the cards container full width */
-  }
-  
-  @media screen and (max-width: 1200px) {
-    .card-container {
-      top: 170px; /* Adjust the top position for smaller screens if needed */
-    }
-  }
-  
-  .card {
-    width: 200px;
-    height: 150px;
-    background-color: #ffcfd1;
-    border-radius: 8px;
-    padding: 20px;
-    text-align: center;
-    transition: transform 0.3s ease;
-  }
-  
-  .card h2 {
-    margin-bottom: 10px;
-    font-size: 18px;
-  }
-  
-  .card p {
-    font-size: 24px;
-    font-weight: bold;
-  }
-  
-  .cartoon-woman {
-    position: absolute;
-    bottom: -15px;
-    right: -45px;
-    width: 250px; /* Adjust size as needed */
-    height: auto; /* Maintain aspect ratio */
-  }
-  
-  .card-container.blink {
-    animation: blink-animation 0.1s infinite alternate;
-  }
-  
-  @keyframes blink-animation {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 0;
-    }
-  }
-    
-  /* MainDash.css */
-  
- /* MainDash.css */
-
-.MainDash {
-    position: relative;
-  }
-  
-  .dashboard-heading {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 2rem; /* Adjust the font size of the heading */
-    margin-bottom: 1rem; /* Adjust the spacing below the heading */
-  }
-  
-  
+        */
+ 
+ 
+        .dashboard-text {
+          text-align: center;
+          font-size: 24px;
+          font-weight: bold;
+          margin-bottom: 20px; /* Adjust the margin as needed */
+        }
+       
+        .MainDashcard-container {
+          display: flex;
+          justify-content: space-around;
+          margin-top: 20px;
+          position: absolute;
+          top: 150px; /* Adjust the top position as needed */
+          width: 100%; /* Make the cards container full width */
+        }
+       
+        @media screen and (max-width: 1200px) {
+          .MainDashcard-container {
+            top: 170px; /* Adjust the top position for smaller screens if needed */
+          }
+        }
+       
+        .MainDashcard {
+          width: 200px;
+          height: 150px;
+          background-color: #ffcfd1;
+          border-radius: 8px;
+          padding: 20px;
+          text-align: center;
+          transition: transform 0.3s ease;
+        }
+       
+        .card h2 {
+          margin-bottom: 10px;
+          font-size: 18px;
+        }
+       
+        .card p {
+          font-size: 24px;
+          font-weight: bold;
+        }
+       
+        .cartoon-woman {
+          position: absolute;
+          bottom: -15px;
+          right: -45px;
+          width: 250px; /* Adjust size as needed */
+          height: auto; /* Maintain aspect ratio */
+        }
+       
+        .card-container.blink {
+          animation: blink-animation 0.1s infinite alternate;
+        }
+       
+        @keyframes blink-animation {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 0;
+          }
+        }
+         
+        /* MainDash.css */
+       
+       /* MainDash.css */
+     
+      .MainDash {
+          position: relative;
+        }
+       
+        .dashboard-heading {
+          position: absolute;
+          top: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          font-size: 2rem; /* Adjust the font size of the heading */
+          margin-bottom: 1rem; /* Adjust the spacing below the heading */
+        }
+       
+ 
+        .modal {
+          display: none;
+          position: fixed;
+          z-index: 9999;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.5);
+        }
+       
+        .modal-active {
+          display: block;
+        }
+       
+        .modal-content {
+          position: absolute;
+          background-color: #fefefe;
+          margin: auto;
+          padding: 20px;
+          border: 1px solid #888;
+          border-radius: 5px;
+          animation-name: slideIn;
+          animation-duration: 0.5s;
+        }
+       
+        @keyframes slideIn {
+          from { top: -50%; opacity: 0; }
+          to { top: 50%; opacity: 1; }
+        }
+       
+        .close {
+          color: #aaa;
+          float: right;
+          font-size: 28px;
+          font-weight: bold;
+        }
+       
+        .close:hover,
+        .close:focus {
+          color: black;
+          text-decoration: none;
+          cursor: pointer;
+        }

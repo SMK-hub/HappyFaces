@@ -125,8 +125,8 @@ const SignInOrphanage = () => {
   return (
     <div className='sign-in-orphanage'>
       <Header/>
-      <div className="sign-in-orphanage-container">
-        <h2 className="sign-in-orphanage-heading">Orphanage Sign In</h2>
+      <div>
+        <h2 className="sign-in-orphanage-heading">ORPHANAGE SIGN IN</h2>
         <form onSubmit={handleSignIn} className="sign-in-orphanage-form">
           <label className="form-label">
             Email:
@@ -152,7 +152,7 @@ const SignInOrphanage = () => {
             />
           </label>
           <div className="form-buttons">
-            <button type="submit" className="form-button">
+            <button type="submit" className="orp-button">
               Sign In
             </button>
             <a href="#" onClick={handleForgotPassword} className="forgot-password-link">

@@ -54,7 +54,8 @@
   
   .sign-up-option.selected {
     background-image:linear-gradient( 106.37deg, #ffe1bc 29.63%, #ffcfd1 51.55%, #f3c6f1 90.85% );
-    color: #fff;
+    /* background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1); */
+    color: #420429;
   }
   
   .option-label {
@@ -72,7 +73,7 @@
     margin: 22px 140px;
     padding: 15px 30px;
     cursor: pointer;
-    background-image:linear-gradient( 106.37deg, #f3c6f1 29.63%, #ffcfd1 51.55%,  #ffe1bc 90.85% );
+    background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
     color: #fff;
     border: none;
     border-radius: 10px;

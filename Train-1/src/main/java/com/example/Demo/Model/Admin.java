@@ -1,5 +1,6 @@
 package com.example.Demo.Model;
 
+import com.example.Demo.Enum.EnumClass;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -14,7 +15,7 @@ public class Admin {
     private String email;
 	private byte[] profilePhoto;
     private String password;
-    private String role;
+    private EnumClass.Roles Role;
 	private String passcode;
 	private String contact;
 	public String getContact() {
@@ -36,7 +37,7 @@ public class Admin {
 				", email='" + email + '\'' +
 				", profilePhoto=" + Arrays.toString(profilePhoto) +
 				", password='" + password + '\'' +
-				", role='" + role + '\'' +
+				", role='" + Role + '\'' +
 				", passcode='" + passcode + '\'' +
 				", contact='" + contact + '\'' +
 				'}';
@@ -68,12 +69,12 @@ public class Admin {
 		this.password = password;
 	}
 
-	public String getRole() {
-		return role;
+	public EnumClass.Roles getRole() {
+		return Role;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
+	public void setRole(EnumClass.Roles Role) {
+		this.Role = Role;
 	}
 
 	public String getPasscode() {

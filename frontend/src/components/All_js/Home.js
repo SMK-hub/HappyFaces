@@ -1,6 +1,8 @@
 import React from 'react';
+import vid from './video (2160p).mp4';
 import { Link } from 'react-router-dom';
 import '../All_css/Home.css';
+
 import Aim from './Aim';
 import FocusSection from './FocusSection';
 import NumberCounter from './NumberCounter';
@@ -11,20 +13,19 @@ import Contact from './Contact';
 import Footer from './Footer';
 import Header from './Header';
 
+
 const Home = () => {
   return (
     <div className="home-background">
       <Header/>
       <div className="home-container">
         <img src="https://godwinfoundation.org/assets/images/logo_desktop_1.png" alt="Logo" className="logoHF" />
-        <video autoPlay muted loop id="background-video">
-          <source src="https://player.vimeo.com/external/555730946.sd.mp4?s=6882418f3ab902044ca28a586c1f3c24ae939ea4&profile_id=164&oauth2_token_id=57447761" type="video/mp4"/>
-          Your browser does not support the video tag.
-        </video>
+        <video src={vid} autoPlay loop muted/>        
         <h1>HAPPY FACES</h1>
         <p>
-          <span className="subhead">Creating a digital presence to bring hope to the lives of orphaned children.</span><br />
-           Home for every child
+          <span className="subhead">Creating a digital presence to bring hope to the lives of orphaned children.</span>
+          <br />
+           HOME FOR EVERY CHILD
         </p>
         <Link to="/signin/donor">
           <button className="donate">DONATE NOW</button>

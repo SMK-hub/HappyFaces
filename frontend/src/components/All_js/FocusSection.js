@@ -14,8 +14,11 @@ const ProductSection = () => {
               <h1>Donating books is not merely gifting knowledge; it's planting the seeds of imagination, curiosity, and a brighter future for those eager to learn.</h1>
               <span className="price">Book Blessing</span>
               <div className="card-back">
-                <a href="#">Donate</a>
-                <a href="#">View Orphanage</a>
+           
+              <a href="/signup/donor">Donate</a>
+              <a href="/signup/donor">View Orphanage</a>
+            
+            
               </div>
             </div>
           </div>
@@ -26,8 +29,8 @@ const ProductSection = () => {
               <h1>In the act of donating food, we nourish more than just bodies; we feed the spirit of compassion and alleviate hunger, creating a world where no one goes to bed without a meal</h1>
               <span className="price">Feast Forward</span>
               <div className="card-back">
-                <a href="#">Donate</a>
-                <a href="#">View Orphanage</a>
+                <a href="/signup/donor">Donate</a>
+                <a href="/signup/donor">View Orphanage</a>
               </div>
             </div>
           </div>
@@ -38,8 +41,8 @@ const ProductSection = () => {
               <h1>Donating clothing is not just about giving warmth; it's about wrapping someone in dignity, confidence, and the assurance that they matter</h1>
               <span className="price">Thread Treasures</span>
               <div className="card-back">
-              <a href="#">Donate</a>
-                <a href="#">View Orphanage</a>
+              <a href="/signup/donor">Donate</a>
+                <a href="/signup/donor">View Orphanage</a>
               </div>
             </div>
           </div>

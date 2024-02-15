@@ -34,13 +34,14 @@
 }
 
 .home-container video {
-  position: absolute; /* Added */
+  position: absolute; 
   margin-top: 0%; /* Added */
   left: 10; /* Added */
   width: 100%; /* Added */
   height: 100%; /* Added */
-  object-fit: cover; /* Added */
+  object-fit: fill; /* Added */
   z-index: 0;
+
 }
 
 .home-container h1 {
@@ -57,8 +58,8 @@
 }
 
 .subhead {
-  font-size: 100%;
-  margin-bottom: 20px;
+  font-size: 90%;
+  margin-bottom: 25px;
   background-size: cover;
   z-index: 1;
   font-family: 'Anton', sans-serif;

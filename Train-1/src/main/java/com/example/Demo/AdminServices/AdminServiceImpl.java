@@ -123,7 +123,7 @@ public class AdminServiceImpl implements AdminService {
         Optional<Donor> donorUser=donorRepository.findByEmail(newUser.getEmail());
         if (user.isEmpty() && orpUser.isEmpty() && donorUser.isEmpty()) {
             if (newUser.getPasscode().equals(passcode)) {
-                newUser.setRole(String.valueOf(EnumClass.Roles.ADMIN));
+                newUser.setRole(EnumClass.Roles.ADMIN);
                 adminRepo.save(newUser);
                 String subject = "Registration Successful";
                 String body = "Dear Admin, congratulations on taking the lead in maintaining the Happy Faces website! Your dedication will make a positive impact on our mission to support and uplift the lives of those in need.";

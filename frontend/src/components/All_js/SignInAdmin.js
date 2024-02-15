@@ -89,8 +89,8 @@ const SignInAdmin = () => {
   return (
     <div className='sign-in-admin'>
       <Header/>
-      <div className="sign-in-admin-container">
-        <h2 className="sign-in-admin-heading">Admin Sign In</h2>
+      <div >
+        <h2 className="sign-in-admin-heading">ADMIN SIGN IN</h2>
         <form onSubmit={handleSignIn} className="sign-in-admin-form">
           <label className="form-label">
             Email:
@@ -113,10 +113,10 @@ const SignInAdmin = () => {
             />
           </label>
           <div className="form-buttons">
-            <button type="submit" className="form-button">
+            <button type="submit" className="in-button">
               Sign In
             </button>
-            <a href="#" onClick={handleForgotPassword} className="forgot-password-link">
+            <a href="#" onClick={handleForgotPassword} className="forgot-link">
               Forgot Password?
             </a>
           </div>
