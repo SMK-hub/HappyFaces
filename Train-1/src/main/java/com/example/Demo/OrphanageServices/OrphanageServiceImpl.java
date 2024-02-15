@@ -47,7 +47,7 @@ public class OrphanageServiceImpl implements OrphanageService {
         Optional<Admin> adminUser=adminRepository.findByEmail(newUser.getEmail());
 
         if (user.isEmpty() && donorUser.isEmpty() && adminUser.isEmpty()) {
-            newUser.setRole(String.valueOf(EnumClass.Roles.ORPHANAGE));
+            newUser.setRole(EnumClass.Roles.ORPHANAGE);
             orphanageRepository.save(newUser);
             String subject = "Registration Successful";
             String body = "Dear " + newUser.getName()

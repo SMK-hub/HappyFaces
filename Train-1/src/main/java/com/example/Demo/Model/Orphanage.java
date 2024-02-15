@@ -1,6 +1,7 @@
 package com.example.Demo.Model;
 
 
+import com.example.Demo.Enum.EnumClass;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -14,7 +15,7 @@ public class Orphanage {
     private byte[] profilePhoto;
     private String password;
     private String contact;
-    private String role;
+    private EnumClass.Roles Role;
 
     public String getContact() {
         return contact;
@@ -56,12 +57,12 @@ public class Orphanage {
         this.password = password;
     }
 
-    public String getRole() {
-        return role;
+    public EnumClass.Roles getRole() {
+        return Role;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRole(EnumClass.Roles Role) {
+        this.Role = Role;
     }
 
     public byte[] getProfilePhoto() {
@@ -72,14 +73,14 @@ public class Orphanage {
         this.profilePhoto = profilePhoto;
     }
 
-    public Orphanage(String id, String name, String email, String password, String contact, String role) {
+    public Orphanage(String id, String name, String email, String password, String contact, EnumClass.Roles Role) {
         super();
         this.orpId = id;
         this.name = name;
         this.email = email;
         this.password = password;
         this.contact = contact;
-        this.role = role;
+        this.Role = Role;
     }
 
     public Orphanage(String contact) {
