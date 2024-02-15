@@ -22,14 +22,19 @@
 .sign-in-donor-heading {
   font-size: 28px;
   margin-bottom: 20px;
+  position: relative;
   color: #333;
+  margin-top: 82px;
+  left: 549px;
 }
 
 .sign-in-donor-form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  position: relative;
+  left: 393px;
+  width: 36%;
 }
 
 .form-label {
@@ -83,8 +88,9 @@
 }
 
 .forgot-password-link {
-  color: #f3c6f1;
+  color: #0e0e0e;
   text-decoration: none;
+  margin-top: 20px;
   font-size: 16px;
   transition: color 0.3s ease;
 }

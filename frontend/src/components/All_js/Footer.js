@@ -8,15 +8,18 @@ import '../All_css/Footer.css';
 function Homepage() {
   return (
     <div className="homepage">
+      
       {/* ...other homepage content */}
       
       <footer className="footer">
-        <div className="footer-background"></div>
+        <div className="footer-background">
+        <img src="https://images.pexels.com/photos/911738/pexels-photo-911738.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Aim" className="aim-image" />
+        </div>
         <div className="footer-content">
           <nav>
-            <a href="/admin">Admin</a>
-            <a href="/donor">Donor</a>
-            <a href="/orphanage">Orphanage</a>
+            <a href="/signup/admin">ADMIN</a>
+            <a href="/signup/donor">DONOR</a>
+            <a href="/signup/orphanage">ORPHANAGE</a>
           </nav>
           <div className="social-links">
             <p>Follow us:</p>

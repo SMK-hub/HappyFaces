@@ -5,9 +5,9 @@ import '../All_css/NumberCounter.css';
 
 const CounterSection = () => {
   const counters = [
-    { id: 1, title: 'Children’s lives improved', count: 105 },
-    { id: 2, title: 'Social workers and government officials trained', count: 122 },
-    { id: 3, title: 'Families supported', count: 653 },
+    { id: 1, title: 'Array of orphanages', count: 105 },
+    { id: 2, title: 'Legion of donors', count: 122 },
+    { id: 3, title: 'Volume of donations', count: 353 },
   ];
 
   const sectionStyle = [{

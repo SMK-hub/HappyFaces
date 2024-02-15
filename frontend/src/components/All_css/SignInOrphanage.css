@@ -26,14 +26,19 @@
 .sign-in-orphanage-heading {
   font-size: 28px;
   margin-bottom: 20px;
+  margin-top: 76px;
   color: #333;
+  position: relative;
+  left: 476px;
 }
 
 .sign-in-orphanage-form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  width: 42%;
+  position: relative;
+  left: 333px;
 }
 
 .form-label {
@@ -50,7 +55,7 @@
   font-size: 16px;
 }
 
-.form-button {
+.orp-button {
   width: 100%;
   padding: 15px;
   cursor: pointer;

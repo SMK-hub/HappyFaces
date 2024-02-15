@@ -41,8 +41,8 @@ const SignUpOrphanage = () => {
     {loading ? (
       <div className="loading-screen">Loading...</div>
     ) : (
-    <div className="sign-up-orphanage-container">
-      <h2 className="sign-up-orphanage-heading">Orphanage Sign Up</h2>
+    <div>
+      <h2 className="sign-up-orphanage-heading">ORPHANAGE SIGN UP</h2>
       <form onSubmit={handleSignUp} className="sign-up-orphanage-form">
         <label className="form-label">
           Username:

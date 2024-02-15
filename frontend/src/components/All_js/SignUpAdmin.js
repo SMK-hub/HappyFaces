@@ -46,8 +46,8 @@ const SignUpAdmin = () => {
     {loading ? (
       <div className="loading-screen">Loading...</div>
     ) : (
-<div className="sign-up-admin-container">
-      <h2 className="sign-up-admin-heading">Admin Sign Up</h2>
+<div>
+      <h2 className="sign-up-admin-heading">ADMIN SIGN UP</h2>
       <form onSubmit={handleSignUp} className="sign-up-admin-form">
         <label className="form-label">
           Username:
