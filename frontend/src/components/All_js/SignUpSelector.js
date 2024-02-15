@@ -28,7 +28,7 @@ const SignUpSelector = () => {
             <Header/>
     <div className="sign-up-selector-container">
       <div className="box-enclosure">
-        <h2 className="sign-up-selector-heading">Choose Your Role</h2>
+        <h2 className="sign-up-selector-heading">CHOOSE YOUR ROLE</h2>
         <div className="sign-up-options">
           <label className={`sign-up-option ${selectedOption === 'admin' ? 'selected' : ''}`}>
             <input

@@ -32,11 +32,11 @@ const OrphDash = () => {
   const [donationDescription, setDonationDescription] = useState('');
   const [allEventData, setAllEventData] = useState();
   const [RegisteringProcess,setRegisteringProcess] = useState(false);
-  
+ 
   const  {setUserData} = useUser();
   const {userDetails} = useUser();
   console.log(userDetails);
-
+ 
   const[orphanagesData,setOrphanagesData] = useState([])
   useEffect(()=>{
     const fetch=async()=>{
@@ -49,9 +49,9 @@ const OrphDash = () => {
     }
     }
     fetch();
-    
+   
   },[])
-
+ 
  
   const handleLocationChange = (e) => {
     setSelectedLocation(e.target.value);
@@ -83,13 +83,13 @@ const OrphDash = () => {
     });
   };
   console.log(selectedOrphanage);
-
+ 
   const fetchAllEventData = async (orpId)=>{
     try{
       const response=await axios.get(`http://localhost:8079/donor/VerifiedEvents/${orpId}`);
       console.log(response.data);
       return response.data;
-      
+     
     }catch(error){
       console.log(error);
     }
@@ -106,7 +106,7 @@ const OrphDash = () => {
     try{
       const response=await axios.get(`http://localhost:8079/orphanage/${orpId}/orphanageDetails/viewImages`);
       return response.data;
-
+ 
     }catch(error)
     {
       console.log(error);
@@ -159,12 +159,12 @@ const OrphDash = () => {
             link.setAttribute('download', `${orpName}_certificates.pdf`);
             document.body.appendChild(link);
             link.click();
-            document.body.removeChild(link); 
-            window.URL.revokeObjectURL(url); 
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
         } else {
             alert(response.status);
         }
-
+ 
     }catch(error){
       console.log(error);
     }
@@ -183,7 +183,7 @@ const OrphDash = () => {
       setRegisteringProcess(true);
       const response= await axios.post(`http://localhost:8079/donor/${userDetails?.donorId}/eventRegister/${eventId}`);
       console.log("Event registered");
-      
+     
       setRegistrationSuccessVisible(true);
     }catch(error){
       console.log(error);
@@ -211,7 +211,7 @@ const OrphDash = () => {
   const handleRegistrationSuccessClose = () => {
     setRegistrationSuccessVisible(false);
   };
-
+ 
   const handledonationRazorPayVisible  = () => {
     SetdonationRazorPayVisible(!donationRazorPayVisible);
   }
@@ -253,7 +253,7 @@ const OrphDash = () => {
   const pictureUrl = (image) => {
     return `data:image/jpeg;base64,${image}`;
   };
-
+ 
   const saveDonationData = async (data) => {
     try {
       // Send the data to your backend API for saving
@@ -265,7 +265,7 @@ const OrphDash = () => {
       console.error('Error saving donation data:', error);
     }
   };
-    
+   
   return (
     <div>
       <div className="OrphDash">
@@ -379,7 +379,7 @@ const OrphDash = () => {
                 <tbody>
                 {console.log(selectedOrphanage.allEventData)}
                   {selectedOrphanage.allEventData?.map((event, index) => (
-                    
+                   
                     <tr key={index}>
                       <td>{selectedOrphanage.orphanageName}</td>
                       <td>{event.title}</td>
@@ -390,10 +390,10 @@ const OrphDash = () => {
                       <LoadingButton
                           disabled={selectedOrphanage.eventData[index].participantData?.includes(userDetails.donorId)}  
                           loading={RegisteringProcess}
-                          
+                         
                           loadingIndicator={<div>Registering...</div>}
-                          onClick={() => handleRegisterEvent(event.id)} 
-                          style={{ 
+                          onClick={() => handleRegisterEvent(event.id)}
+                          style={{
                             cursor: selectedOrphanage.eventData[index].participantData ? (selectedOrphanage.eventData[index].participantData.includes(userDetails.donorId) ? 'not-allowed' : 'pointer') : 'pointer',
                             backgroundColor: selectedOrphanage.eventData[index].participantData ? (selectedOrphanage.eventData[index].participantData.includes(userDetails.donorId) ? 'grey' : 'initial') : 'initial',
                           }}
@@ -459,12 +459,12 @@ const OrphDash = () => {
         </div>
       </div>
     )}
-
+ 
 {donationRazorPayVisible && (
           <div className="modal donation-description-modal">
             <div className="donation-description-popup-content">
               <RazorPay onClose={handledonationRazorPayVisible} selectedOrphanage={selectedOrphanage}/>
-              
+             
             </div>
           </div>
         )}
@@ -495,7 +495,7 @@ const OrphDash = () => {
     </div>
   </div>
 )}
-
+ 
       </div>
     </div>
   );
