@@ -119,12 +119,12 @@ setOpenCer(true)
 }
 
 const [openPdfDialog, setOpenPdfDialog] = useState(false);
-  const [certificateUrl, setCertificateUrl] = useState('');
+  const [certificateUrl, setCertificateUrl] = useState(null);
 
   const handleViewCertificate = async () => {
-    setOpenPdfDialog(true);
     const certificateUrl = await fetchOrphanageCertificate();
     setCertificateUrl(certificateUrl);
+    setOpenPdfDialog(true);
   };
 
 // Function to handle closing the PDF dialog
@@ -180,7 +180,7 @@ const openPhotos=()=>{
             Update Details
           </button>
           <button className="button" onClick={() => openCertificates()}>
-            Update Certificates
+            Upload Certificates
           </button>
           <button className="button" onClick={() => openPhotos()}>
             Upload Photos
@@ -190,6 +190,8 @@ const openPhotos=()=>{
           </button>
         
       </div>
+
+      {/*View Certificate*/}
       <Dialog
         open={openPdfDialog}
         onClose={handleClosePdfDialog}
@@ -198,17 +200,18 @@ const openPhotos=()=>{
       >
         <DialogTitle>View Certificate</DialogTitle>
         <DialogContent>
-          <iframe
+          {certificateUrl ? (<iframe
             title="certificate"
             src={certificateUrl}
             width="100%"
             height="600"
-          />
+          />): (<div>No Certificate to view</div>)}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClosePdfDialog}>Close</Button>
         </DialogActions>
       </Dialog>
+      {/*View Certificate*/}
       <Dialog
         open={gopen}
         onClose={handleClose} 
@@ -279,7 +282,6 @@ const openPhotos=()=>{
             const formData = new FormData(event.currentTarget);
             const formJson = Object.fromEntries(formData.entries());
             const email = formJson.email;
-            console.log(email);
             handleClose();
           },
         }}
@@ -287,10 +289,6 @@ const openPhotos=()=>{
         <DialogContent>
        <Photos />
         </DialogContent>
-        <DialogActions>
-          <Button className="ok-button" onClick={handleOk}>OK</Button>
-          <Button onClick={handleClose}>Cancel</Button>
-        </DialogActions>
       </Dialog>
     </div>
   );
