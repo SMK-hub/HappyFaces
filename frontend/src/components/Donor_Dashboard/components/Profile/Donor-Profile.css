@@ -1,15 +1,13 @@
-/* Profile.css */
-
-.admin-heading {
+.donor-heading {
   text-align: center;
   margin: auto;
 }
-.admin-editContainer{
+.donor-editContainer{
   display:flex;
   flex-direction: row;
 }
 
-.admin-profile-container {
+.donor-profile-container {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -22,26 +20,26 @@
   margin: auto; /* Center the container horizontally */
 }
 
-.admin-profile-picture {
+.donor-profile-picture {
   margin-right: 50px;
 }
 
-.admin-profile-details {
+.donor-profile-details {
   text-align: left;
 }
 
-.admin-profile-picture img {
+.donor-profile-picture img {
   display: block;
   margin: 0;
 }
 
-.admin-profile-buttons {
+.donor-profile-buttons {
   margin-top: 20px;
-  display:flex;
+  display :flex;
 }
 
-.admin-edit-profile-button,
-.admin-change-password-button {
+.donor-edit-profile-button,
+.donor-change-password-button {
   background-color: #be72ab;
   border: none;
   color: white;
@@ -54,11 +52,11 @@
   cursor: pointer;
 }
 
-.admin-edit-profile-button:hover,
-.admin-change-password-button:hover {
+.donor-edit-profile-button:hover,
+.donor-change-password-button:hover {
   background-color: #a14094; 
 }
 
-.admin-profile-details button {
+.donor-profile-details button {
   background-color: #d69dca;
 }

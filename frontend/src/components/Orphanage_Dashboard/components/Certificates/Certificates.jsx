@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import Sidebar from '../Sidebar';
-import RightSide from '../RigtSide/RightSide';
 import './Certificates.css';
+import axios from 'axios';
+import { useUser } from '../../../../UserContext';
+
 const FileUploadComponent = () => {
   const [uploadedFile, setUploadedFile] = useState(null);
+  const { userDetails ,setUserData} = useUser();
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
@@ -19,9 +21,24 @@ const FileUploadComponent = () => {
     setUploadedFile(null);
   };
 
-  const handleOkButtonClick = () => {
-    // Implement your lgic for handling OK button click
-    console.log('OK button clicked');
+  const handleOkButtonClick = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('file', uploadedFile);
+  
+      const response = await axios.post(`http://localhost:8079/orphanage/uploadCertificate/${userDetails.orpId}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+  
+      const status = response.status;
+      if (status === 200) {
+        alert("Certificate Uploaded Successfully");
+      }
+    } catch (error) {
+      alert("Try Again Later:\n"+error);
+    }
   };
 
   return (
@@ -55,7 +72,7 @@ const FileUploadComponent = () => {
       )}
 
       <button className="ok-button" onClick={handleOkButtonClick}>
-        OK
+        Upload
       </button>
     </div>
     

@@ -5,6 +5,9 @@ import com.example.Demo.Enum.EnumClass;
 import com.example.Demo.Enum.EnumClass.VerificationStatus;
 import com.example.Demo.Model.*;
 import com.example.Demo.Repository.*;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.stream.Stream;
 
 @Service
 public class OrphanageServiceImpl implements OrphanageService {
@@ -47,7 +51,7 @@ public class OrphanageServiceImpl implements OrphanageService {
         Optional<Admin> adminUser=adminRepository.findByEmail(newUser.getEmail());
 
         if (user.isEmpty() && donorUser.isEmpty() && adminUser.isEmpty()) {
-            newUser.setRole(String.valueOf(EnumClass.Roles.ORPHANAGE));
+            newUser.setRole(EnumClass.Roles.ORPHANAGE);
             orphanageRepository.save(newUser);
             String subject = "Registration Successful";
             String body = "Dear " + newUser.getName()
@@ -228,14 +232,46 @@ public class OrphanageServiceImpl implements OrphanageService {
     }
 
     @Override
-    public String editDetails(String orphanageId, OrphanageDetails orphanageDetails) {
-        Optional<OrphanageDetails> optionalOrphanageDetails = detailRepository.findById(orphanageId);
-        if (optionalOrphanageDetails.isPresent()) {
-            orphanageDetails.setId(orphanageId);
-            detailRepository.save(orphanageDetails);
+    public String editDetails(String orphanageId,OrphanageDetails incomingDetails) {
+        Optional<OrphanageDetails> existingDetails = detailRepository.findByOrpId(orphanageId);
+        if (existingDetails.isPresent()) {
+            OrphanageDetails updatedDetails = existingDetails.get();
+
+            String[] excludedFields = {"id","orpId","verificationStatus","certificate"};
+
+            BeanUtils.copyProperties(incomingDetails, updatedDetails, excludedFields);
+
+            // Handle nested data selectively (optional)
+            if (incomingDetails.getAddress() != null) {
+                BeanUtils.copyProperties(incomingDetails.getAddress(), updatedDetails.getAddress());
+            }
+            if (incomingDetails.getRequirements() != null) {
+                BeanUtils.copyProperties(incomingDetails.getRequirements(), updatedDetails.getRequirements());
+            }
+            updatedDetails.setVerificationStatus(VerificationStatus.NOT_VERIFIED);
+            detailRepository.save(updatedDetails);
             return "Details Updated Successfully";
         }
-        return null;
+        else {
+            OrphanageDetails newOrphanageDetails = new OrphanageDetails();
+            newOrphanageDetails.setOrpId(orphanageId);
+            newOrphanageDetails.setVerificationStatus(VerificationStatus.NOT_VERIFIED);
+            String[] excludedFields = {"id","orpId","verificationStatus"};
+
+            BeanUtils.copyProperties(incomingDetails, newOrphanageDetails, excludedFields);
+
+            // Handle nested data selectively (optional)
+            if (incomingDetails.getAddress() != null) {
+                BeanUtils.copyProperties(incomingDetails.getAddress(), newOrphanageDetails.getAddress());
+            }
+            if (incomingDetails.getRequirements() != null) {
+                BeanUtils.copyProperties(incomingDetails.getRequirements(), newOrphanageDetails.getRequirements());
+            }
+
+            detailRepository.save(newOrphanageDetails);
+            return "Details Updated Successfully";
+        }
+
     }
     @Override
     public void uploadImages(String orphanageId, List<MultipartFile> imageFiles) throws IOException {
@@ -269,16 +305,34 @@ public class OrphanageServiceImpl implements OrphanageService {
         Optional<OrphanageDetails> optionalOrphanageDetails = orphanageDetailsRepository.findByOrpId(orpId);
         if (optionalOrphanageDetails.isPresent()) {
             OrphanageDetails orphanageDetails = optionalOrphanageDetails.get();
-            orphanageDetails.setCertificate(Base64.getEncoder().encodeToString(file.getBytes()).getBytes());
-            // Ensure the OrphanageDetails object has an ID before saving
-            if (orphanageDetails.getId() == null) {
-                orphanageDetails.setId(UUID.randomUUID().toString()); // Generate a new ID if it's null
-            }
+            orphanageDetails.setVerificationStatus(VerificationStatus.NOT_VERIFIED);
+            orphanageDetails.setCertificate(file.getBytes());
             orphanageDetailsRepository.save(orphanageDetails);
             return "Certificate Uploaded Successfully";
+        } else {
+            OrphanageDetails orphanageDetails = new OrphanageDetails();
+            if (validateCertificate(file)) {
+                orphanageDetails.setCertificate(file.getBytes());
+                orphanageDetails.setOrpId(orpId);
+                orphanageDetails.setVerificationStatus(VerificationStatus.NOT_VERIFIED);
+                orphanageDetailsRepository.save(orphanageDetails);
+                return "Certificate Uploaded Successfully";
+            } else {
+                return "Invalid certificate format or size (optional error message)";
+            }
         }
-        return null; // OrphanageDetails not found
     }
+
+    private boolean validateCertificate(MultipartFile file) {
+        if (!Objects.requireNonNull(file.getContentType()).startsWith("application/pdf")) {
+            return false;
+        }
+        if (file.getSize() > 1048576) {
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public byte[] getCertificate(String orpId) {
         Optional<OrphanageDetails> optionalOrphanageDetails = orphanageDetailsRepository.findByOrpId(orpId);
@@ -286,7 +340,7 @@ public class OrphanageServiceImpl implements OrphanageService {
             OrphanageDetails orphanageDetails = optionalOrphanageDetails.get();
             byte[] certificateBytes = orphanageDetails.getCertificate();
             if (certificateBytes != null) {
-                return Base64.getDecoder().decode(certificateBytes);
+                return certificateBytes;
             }
         }
         return null;

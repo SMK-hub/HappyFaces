@@ -12,7 +12,7 @@ import {useUser} from '../../../UserContext'
 const Sidebar = ({onOptionSelect}) => {
   const [selected, setSelected] = useState(0);
   const [expanded, setExpaned] = useState(true)
-  const  {setUserData} = useUser();
+  const  {userDetails,setUserData} = useUser();
 const SelectOption=(value)=>{
 
   onOptionSelect(value);
@@ -68,7 +68,7 @@ const SelectOption=(value)=>{
       </div>
     </motion.div>
     </>
-  );
+  )
 };
 
 export default Sidebar;

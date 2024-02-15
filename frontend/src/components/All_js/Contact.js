@@ -24,7 +24,9 @@ const ContactForm = () => {
 
   return (
     <div className="contact-form-container">
-      <form onSubmit={handleSubmit}>
+      <h2 className='query-css'> Raise Query</h2>
+      <form className='query-form' onSubmit={handleSubmit}>
+      
         <div className="form-group">
           <label htmlFor="name">Name:</label>
           <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required />

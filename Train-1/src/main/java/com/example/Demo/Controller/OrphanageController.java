@@ -156,7 +156,7 @@ public class OrphanageController {
        return new ResponseEntity<>(alpha,HttpStatus.CONFLICT);
     }
     @PostMapping("/ChangePassword/{email}/{oldPassword}/{newPassword}/{confirmNewPassword}")
-    public ResponseEntity<Optional<Orphanage>> changeDonorPassword(@PathVariable("email") String email,@PathVariable("oldPassword") String oldPassword,@PathVariable("newPassword") String newPassword,@PathVariable("conformNewPassword") String conformNewPassword){
+    public ResponseEntity<Optional<Orphanage>> changeOrphanagePassword(@PathVariable("email") String email,@PathVariable("oldPassword") String oldPassword,@PathVariable("newPassword") String newPassword,@PathVariable("conformNewPassword") String conformNewPassword){
         Optional<Orphanage> alpha=orphanageService.changeOrphanagePassword(email,oldPassword,newPassword,conformNewPassword);
         if(alpha.isPresent()){
             return new ResponseEntity<>(alpha,HttpStatus.OK);
@@ -173,7 +173,7 @@ public class OrphanageController {
     }
 
     @GetMapping("/{orphanageId}/details")
-    public ResponseEntity<Optional<OrphanageDetails>> detailsById(@PathVariable("orphanageId") String orphanageId){
+    public ResponseEntity<Optional<OrphanageDetails>> getDetailsById(@PathVariable("orphanageId") String orphanageId){
         Optional<OrphanageDetails> orphanageDetails = orphanageService.getDetailById(orphanageId);
         if(orphanageDetails.isPresent()){
             return new ResponseEntity<>(orphanageDetails,HttpStatus.OK);

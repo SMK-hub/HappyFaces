@@ -123,7 +123,7 @@ public class AdminServiceImpl implements AdminService {
         Optional<Donor> donorUser=donorRepository.findByEmail(newUser.getEmail());
         if (user.isEmpty() && orpUser.isEmpty() && donorUser.isEmpty()) {
             if (newUser.getPasscode().equals(passcode)) {
-                newUser.setRole(String.valueOf(EnumClass.Roles.ADMIN));
+                newUser.setRole(EnumClass.Roles.ADMIN);
                 adminRepo.save(newUser);
                 String subject = "Registration Successful";
                 String body = "Dear Admin, congratulations on taking the lead in maintaining the Happy Faces website! Your dedication will make a positive impact on our mission to support and uplift the lives of those in need.";
@@ -187,14 +187,14 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public String verifyOrphanageDetails(OrphanageDetails orphanageDetails) {
-        Optional<OrphanageDetails> orphanage = orphanageDetailsRepository.findByOrpId(orphanageDetails.getOrpId());
+    public OrphanageDetails verifyOrphanageDetails(String orpId, String verificationStatus) {
+        Optional<OrphanageDetails> orphanage = orphanageDetailsRepository.findByOrpId(orpId);
         if (orphanage.isPresent()) {
-            orphanage.get().setVerificationStatus(orphanageDetails.getVerificationStatus());
+            orphanage.get().setVerificationStatus(EnumClass.VerificationStatus.valueOf(verificationStatus));
             orphanageDetailsRepository.save(orphanage.get());
-            return "Done";
+            return orphanage.get();
         }
-        return "Not Done";
+        return null;
     }
 
     @Override
@@ -206,6 +206,11 @@ public class AdminServiceImpl implements AdminService {
             return "Done";
         }
         return "Not Done";
+    }
+
+    @Override
+    public OrphanageDetails notVerifyEventDetails(Events event) {
+        return null;
     }
 
     @Override

@@ -7,7 +7,7 @@ public class EnumClass {
     }
 
     public enum VerificationStatus {
-        NOT_VERIFIED, VALID, IN_VALID
+        NOT_VERIFIED, VERIFIED;
     }
 
     public enum Roles{
@@ -17,6 +17,6 @@ public class EnumClass {
         SUCCESS,FAIL;
     }
     public enum Need{
-        FOOD,CLOTHES,BOOKS;
+        FOOD,CLOTHES,BOOKS,OTHERS;
     }
 }

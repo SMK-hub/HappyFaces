@@ -62,11 +62,7 @@ const Gallery = () => {
         inputElement.files = dataTransfer.files;
       }
     }
-  };
-  
-  
-  
-  
+  };  
 
   const [itemData, setItemData] = useState([
     {

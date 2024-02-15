@@ -11,6 +11,9 @@ import PaymentDashboard from './components/Payments/Payment';
 import MainDash from './components/MainDash/MainDash';
 import { Route, Router, Routes } from 'react-router-dom';
 import UpdateDetails from './components/UpdateDetails/UpdateDetails'
+
+import { Button, Result } from 'antd';
+import { useUser } from '../../UserContext';
 function DashboardOrphanage() {
   const [selectedOption, setSelectedOption] = useState(null);
 
@@ -18,6 +21,9 @@ function DashboardOrphanage() {
     console.log(option)
     setSelectedOption(option);
   };
+
+  const  {userDetails,setUserData} = useUser();
+
 
   const renderContent = () => {
     switch (selectedOption) {
@@ -48,7 +54,7 @@ function DashboardOrphanage() {
       
     </div>
     
-  );
+  )
 }
 
 export default DashboardOrphanage;

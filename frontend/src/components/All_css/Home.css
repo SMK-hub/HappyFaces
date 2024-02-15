@@ -8,10 +8,10 @@
 
 .logoHF {
   position: absolute;
-  top: 20px;
-  left: 20px;
-  width: 75px; /* Adjust width as needed */
-  height: auto; /* Maintain aspect ratio */
+  top: 9px;
+  left: -3px;
+  width: 75px;
+  height: auto;
   z-index: 1;
 }
 
@@ -35,7 +35,7 @@
 
 .home-container video {
   position: absolute; /* Added */
-  margin-top: 4%; /* Added */
+  margin-top: 0%; /* Added */
   left: 10; /* Added */
   width: 100%; /* Added */
   height: 100%; /* Added */
@@ -44,16 +44,16 @@
 }
 
 .home-container h1 {
-  font-size: 50%;
-  margin: 0; /* Remove margin */
-  padding: 0; /* Remove padding */
-  position: absolute; /* Added */
-  top: 20px; /* Adjust top positioning */
-  left: 124px; /* Adjust left positioning */
+  font-size: 61%;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 4px;
+  left: 68px;
   font-family: 'Anton', sans-serif;
   stroke: rgb(16, 16, 4);
   filter: drop-shadow();
-  color: lightcoral;
+  color: #f0de80;
 }
 
 .subhead {

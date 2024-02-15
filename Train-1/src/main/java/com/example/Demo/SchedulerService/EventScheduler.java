@@ -35,17 +35,12 @@ public class EventScheduler {
                 case PLANNED:
                     LocalDate currentDate = LocalDate.now();
                     LocalDate eventDate = LocalDate.parse(event.getDate(),formatter);
-
                     if (eventDate.isEqual(currentDate)) {
-                        // Change the status to "Ongoing" if the event date is today
                         event.setEventStatus(event.setEventStatus(EnumClass.EventStatus.ONGOING));
                     } else if (eventDate.isBefore(currentDate)) {
-                        // Change the status to "Completed" if the event date is in the past
                         event.setEventStatus(EnumClass.EventStatus.COMPLETED);
                     }
-                    // Note: No action needed if the event date is in the future
                     break;
-                // Add more cases if there are additional event statuses
             }
         }
     }
