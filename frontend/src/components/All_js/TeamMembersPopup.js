@@ -41,7 +41,7 @@ const TeamMembersPopup = ({ onClose }) => {
     <div className="team-members-popup">
       <div className="popup-overlay" onClick={onClose}></div>
       <div className="popup-content">
-        <span className="close-icon" onClick={onClose}>&times;</span>
+        <span className="close-icon"  onClick={onClose}>&times;</span>
         <h2>Our Team Members</h2>
         <SwipeableViews
           index={currentPage}
@@ -49,7 +49,7 @@ const TeamMembersPopup = ({ onClose }) => {
           enableMouseEvents
         >
           {teamMembersData.map((member, index) => (
-            <div key={index} className="team-member">
+            <div key={index} className="team-membercard">
               <img src={member.image} alt={member.name} />
               <h3>{member.name}</h3>
               <p><strong>Joined:</strong> {member.joinedDate}</p>
@@ -62,8 +62,8 @@ const TeamMembersPopup = ({ onClose }) => {
         <div className="navigation-buttons">
           <button onClick={() => setCurrentPage((prevPage) => (prevPage - 1 + teamMembersData.length) % teamMembersData.length)}>&lt; Prev</button>
           <button onClick={() => setCurrentPage((prevPage) => (prevPage + 1) % teamMembersData.length)}>Next &gt;</button>
-          <button className="close-" onClick={onClose}>Close</button>
         </div>
+        <button className="close-icon" onClick={onClose}>Close</button>
       </div>
     </div>
   );
