@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import Sidebar from '../Sidebar';
-import RightSide from '../RigtSide/RightSide';
 import './Certificates.css';
 import axios from 'axios';
 import { useUser } from '../../../../UserContext';
@@ -39,7 +37,7 @@ const FileUploadComponent = () => {
         alert("Certificate Uploaded Successfully");
       }
     } catch (error) {
-      console.log(error);
+      alert("Try Again Later:\n"+error);
     }
   };
 
@@ -74,7 +72,7 @@ const FileUploadComponent = () => {
       )}
 
       <button className="ok-button" onClick={handleOkButtonClick}>
-        OK
+        Upload
       </button>
     </div>
     
