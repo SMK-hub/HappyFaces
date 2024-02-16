@@ -23,7 +23,7 @@ const PaymentDashboard = () => {
   useEffect(() => {
     const fetchPaymentData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8079/donor/DonationList/${userDetails?.donorId}`);
+        const response = await axios.get(`${API_BASE_URL}/donor/DonationList/${userDetails?.donorId}`);
         const status = response.status;
         console.log(response);
         if (status !== 200) {

@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import './Container.css';
 import axios from 'axios';
+import { API_BASE_URL } from '../../../../config';
  
 const MyContainer = () => {
   // Dummy data for orphanage information
@@ -21,7 +22,7 @@ const MyContainer = () => {
   useEffect(() => {
     const fetchOrphanageData = async () => {
       try {
-        const response = await axios.get('http://localhost:8079/orphanageDetails');
+        const response = await axios.get(`${API_BASE_URL}/orphanageDetails`);
         setOrphanageData(response.data);
       } catch (error) {
         console.error('Error fetching orphanage data:', error);

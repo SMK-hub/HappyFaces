@@ -6,6 +6,7 @@ import "./EvenDash.css";
 import '@fortawesome/fontawesome-free/css/all.css';
 import ImagePopup from "./ImagePopup";
 import axios from "axios";
+import { API_BASE_URL } from "../../../../config";
 
 const EvenDash = () => {
   const [imagePopupVisible, setImagePopupVisible] = useState(false);
@@ -25,7 +26,7 @@ const EvenDash = () => {
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get("http://localhost:8079/admin/eventList");
+      const response = await axios.get(`${API_BASE_URL}/admin/eventList`);
       const data = response.data.map(event => ({
         name: event.title,
         date: event.date,

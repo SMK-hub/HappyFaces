@@ -5,6 +5,7 @@ import './Donors.css'; // Import the CSS file
 import { fetchDonorsData } from '../../Data/Data';
 import DonorCard from './DonorCard'; // Import the DonorCard component
 import axios from "axios";
+import {API_BASE_URL} from "../../../../config"
 
 const Donors = () => {
   const [selectedDonor, setSelectedDonor] = useState(null);
@@ -19,7 +20,7 @@ const Donors = () => {
 
   const fetchDonors = async () => {
     try {
-      const response = await axios.get("http://localhost:8079/admin/donationList");
+      const response = await axios.get(`${API_BASE_URL}/donationList`);
       const data = response.data.map(donate => ({
         name: donate.orphanageName,
         amount: donate.amount,

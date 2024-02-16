@@ -32,7 +32,7 @@ const RazorPay = ({ onClose, selectedOrphanage }) => {
     console.log(wholeAmount);
     try {
       // Send donation amount to backend API
-      const response = await axios.post("http://localhost:8079/donor/generateOrder", { amount: wholeAmount });
+      const response = await axios.post(`${API_BASE_URL}/donor/generateOrder`, { amount: wholeAmount });
       // Initialize Razorpay options
       const options = {
         key: "rzp_test_MO6ugcoVHpPBDT", // Enter the Key ID generated from the Dashboard
@@ -52,7 +52,7 @@ const RazorPay = ({ onClose, selectedOrphanage }) => {
             transactionId: response.razorpay_payment_id
           }
           try{
-              const response=await axios.post("http://localhost:8079/donor/donationData",donationData);
+              const response=await axios.post(`${API_BASE_URL}/donor/donationData`,donationData);
               const status = response.status;
               console.log(status);
           }catch(error){
@@ -83,7 +83,7 @@ const RazorPay = ({ onClose, selectedOrphanage }) => {
           transactionId: "-",
         }
         try{
-            const response=await axios.post("http://localhost:8079/donor/donationData",donationData);
+            const response=await axios.post(`${API_BASE_URL}/donor/donationData`,donationData);
             const status = response.status;
             console.log(status);
         }catch(error){
