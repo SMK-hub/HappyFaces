@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import './Payment.css'; // Import the corresponding CSS file
 import axios from 'axios';
+import { API_BASE_URL } from '../../../../config';
 import { useUser } from '../../../../UserContext';
 
 
@@ -14,7 +15,7 @@ const PaymentDashboard = () => {
   const fetchDonorData = async(donorId) => {
     
     try{
-      const response = await axios.get(`http://localhost:8079/orphanage/donor/${donorId}`);
+      const response = await axios.get(`${API_BASE_URL}/orphanage/donor/${donorId}`);
       const status = response.status;
       console.log(response.data);
       if(status === 200){
@@ -30,7 +31,7 @@ const PaymentDashboard = () => {
 useEffect(() => {
   const createData = async() => {
     try{
-      const response = await axios.get(`http://localhost:8079/orphanage/donation/${userDetails?.orpId}`);
+      const response = await axios.get(`${API_BASE_URL}9/orphanage/donation/${userDetails?.orpId}`);
       const status= response.status;
       console.log(response.data);
       if(status !== 200){

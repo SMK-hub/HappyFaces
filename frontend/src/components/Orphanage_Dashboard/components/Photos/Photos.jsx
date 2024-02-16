@@ -3,6 +3,7 @@ import './Photos.css';
 import { useUser } from '../../../../UserContext';
 import { message } from 'antd';
 import axios from 'axios';
+import { API_BASE_URL } from '../../../../config';
 
 
 const PhotosComponent = () => {
@@ -14,7 +15,7 @@ const PhotosComponent = () => {
   useEffect(() => {
     const fetchImage = async () => {
       try {
-        const response = await axios.get(`http://localhost:8079/orphanage/${userDetails.orpId}/orphanageDetails/viewImages`);
+        const response = await axios.get(`${API_BASE_URL}/orphanage/${userDetails.orpId}/orphanageDetails/viewImages`);
         setOrphanageImages(response.data);
       } catch (error) {
         console.error(error);
@@ -65,7 +66,7 @@ const PhotosComponent = () => {
     if (uploadedFiles.length > 0) {
       try {
         const response = await axios.post(
-          `http://localhost:8079/orphanage/${userDetails.orpId}/orphanageDetails/uploadImages`,
+          `${API_BASE_URL}/orphanage/${userDetails.orpId}/orphanageDetails/uploadImages`,
           formdata, // Send FormData instead of uploadedFiles
           { headers: { 'Content-Type': 'multipart/form-data' } }
         );

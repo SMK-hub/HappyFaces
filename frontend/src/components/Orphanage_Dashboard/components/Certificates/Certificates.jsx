@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Certificates.css';
 import axios from 'axios';
+import { API_BASE_URL } from '../../../../config';
 import { useUser } from '../../../../UserContext';
 
 const FileUploadComponent = () => {
@@ -26,7 +27,7 @@ const FileUploadComponent = () => {
       const formData = new FormData();
       formData.append('file', uploadedFile);
   
-      const response = await axios.post(`http://localhost:8079/orphanage/uploadCertificate/${userDetails.orpId}`, formData, {
+      const response = await axios.post(`${API_BASE_URL}/orphanage/uploadCertificate/${userDetails.orpId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

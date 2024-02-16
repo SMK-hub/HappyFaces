@@ -7,6 +7,7 @@ import ListSubheader from '@mui/material/ListSubheader';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
+import { API_BASE_URL } from '../../../../config';
 import { useUser } from '../../../../UserContext';
 
 const Gallery = () => {
@@ -39,7 +40,7 @@ const Gallery = () => {
   const handleDeleteButton = async(imageId) => {
 if(window.confirm("Do you want to delete this image???????????")){
    try{
-      const response = await axios.post(`http://localhost:8079/orphanage/${userDetails.orpId}/orphanageDetails/removeImage/${imageId}`);
+      const response = await axios.post(`${API_BASE_URL}/orphanage/${userDetails.orpId}/orphanageDetails/removeImage/${imageId}`);
       const status = response.status;
       setOnChangeVariable(!onChangeVariable);
        alert("Image Deleted Successfully");
@@ -55,7 +56,7 @@ const [orphanageDetailWithImage,setOrphanageDetailWithImage] = useState();
   useEffect(()=>{
     const fetchOrphanageDetails = async() =>{
       try {
-        const response = await axios.get(`http://localhost:8079/orphanage/${userDetails.orpId}/details`);
+        const response = await axios.get(`${API_BASE_URL}/orphanage/${userDetails.orpId}/details`);
         const imageData= await fetchImageData();
         setOrphanageDetailWithImage({
           ...response.data,
@@ -70,7 +71,7 @@ const [orphanageDetailWithImage,setOrphanageDetailWithImage] = useState();
   },[onChangeVariable]);
       const fetchImageData =async() =>{
     try{
-        const response = await axios.get(`http://localhost:8079/orphanage/${userDetails.orpId}/orphanageDetails/viewImages`);
+        const response = await axios.get(`${API_BASE_URL}/orphanage/${userDetails.orpId}/orphanageDetails/viewImages`);
         return response.data;
     }catch(error){
       console.log(error);
