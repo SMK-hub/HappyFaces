@@ -4,6 +4,7 @@ import '../All_css/SignInAdmin.css'; // Import the CSS file for styles
 import Header from "./Header";
 import axios from 'axios';
 import { useUser } from '../../UserContext';
+import { API_BASE_URL } from '../../config';
 
  
 const SignInAdmin = () => {
@@ -30,11 +31,11 @@ const SignInAdmin = () => {
  
   const fetchData = async () => {
     try {
-      const response = await axios.post("http://localhost:8079/admin/login", adminDetails);
+      const response = await axios.post(`${API_BASE_URL}/admin/login`, adminDetails);
       const status = response.status;
       console.log(status);
       if (status === 200) {
-        const userDetailResponse = await axios.get(`http://localhost:8079/admin/admin/${adminDetails.email}`)
+        const userDetailResponse = await axios.get(`${API_BASE_URL}/admin/admin/${adminDetails.email}`)
         setUserData(userDetailResponse.data);
         navigate("/admin-dashboard");
       }
@@ -90,7 +91,7 @@ const SignInAdmin = () => {
     <div className='sign-in-admin'>
       <Header/>
       <div >
-        <h2 className="sign-in-admin-heading">ADMIN SIGN IN</h2>
+        <h2 className="sign-in-admin-heading"><center>ADMIN SIGN IN</center></h2>
         <form onSubmit={handleSignIn} className="sign-in-admin-form">
           <label className="form-label">
             Email:
@@ -119,11 +120,13 @@ const SignInAdmin = () => {
             <a href="#" onClick={handleForgotPassword} className="forgot-link">
               Forgot Password?
             </a>
-          </div>
-        </form>
-        <Link to="/signin" className="back-link">
+            <Link to="/signin" className="admin-back-link">
           Back
         </Link>
+          </div>
+          
+        </form>
+        
       </div>
  
       {/* Forgot Password Popup */}

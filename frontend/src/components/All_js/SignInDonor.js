@@ -4,6 +4,7 @@ import '../All_css/SignInDonor.css'; // Import the CSS file for styles
 import Header from './Header';
 import axios from 'axios';
 import { useUser } from '../../UserContext';
+import { API_BASE_URL } from '../../config';
 
 const SignInDonor = () => {
   const navigate = useNavigate();
@@ -29,11 +30,11 @@ const SignInDonor = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.post('http://localhost:8079/donor/login', donorDetails);
+      const response = await axios.post(`${API_BASE_URL}/donor/login`, donorDetails);
       const status = response.status;
       console.log(status);
       if (status === 200) {
-        const userDetailResponse = await axios.get(`http://localhost:8079/donor/donor/${donorDetails.email}`);
+        const userDetailResponse = await axios.get(`${API_BASE_URL}/donor/${donorDetails.email}`);
         setUserData(userDetailResponse.data);
         navigate('/donor-dashboard');
       }
@@ -45,7 +46,7 @@ const SignInDonor = () => {
 
   const fetchOtp = async () => {
     try {
-      const response = await axios.post(`http://localhost:8079/donor/sendOtp`, forgotPasswordData);
+      const response = await axios.post(`${API_BASE_URL}/donor/sendOtp`, forgotPasswordData);
       const status = response.status;
       if (status === 200) {
         const data = response.data;
@@ -63,7 +64,7 @@ const SignInDonor = () => {
 
   const changePassword = async () => {
     try {
-      const response = await axios.post(`http://localhost:8079/donor/ForgetPassword/${forgotPasswordData.email}/${enteredOtp}/${newPasswordData.password}/${newPasswordData.confirmPassword}`);
+      const response = await axios.post(`${API_BASE_URL}/donor/ForgetPassword/${forgotPasswordData.email}/${enteredOtp}/${newPasswordData.password}/${newPasswordData.confirmPassword}`);
       const status = response.status;
       if (status === 200) {
         alert(response.data);

@@ -4,7 +4,8 @@ import '../All_css/SignInOrphanage.css'; // Import the CSS file for styles
 import Header from "./Header"
 import axios from 'axios';
 import { useUser } from '../../UserContext';
- 
+import { API_BASE_URL } from '../../config'; 
+
 const SignInOrphanage = () => {
   const navigate = useNavigate();
   const [orphanageDetails, setOrphanageDetails] = useState({
@@ -30,11 +31,11 @@ const SignInOrphanage = () => {
  
   const fetchData = async () => {
     try {
-      const response = await axios.post("http://localhost:8079/orphanage/login", orphanageDetails);
+      const response = await axios.post(`${API_BASE_URL}/orphanage/login`, orphanageDetails);
       const status = response.status;
       console.log(status);
       if (status === 200) {
-        const userDetailResponse = await axios.get(`http://localhost:8079/orphanage/orphanage/${orphanageDetails.email}`);
+        const userDetailResponse = await axios.get(`${API_BASE_URL}/orphanage/orphanage/${orphanageDetails.email}`);
         setUserData(userDetailResponse.data)
         navigate("/orphanage-dashboard");
       }
@@ -46,7 +47,7 @@ const SignInOrphanage = () => {
  
   const fetchOtp = async()=>{
     try{
-      const response = await axios.post(`http://localhost:8079/orphanage/sendOtp`,forgotPasswordData);
+      const response = await axios.post(`${API_BASE_URL}/orphanage/sendOtp`,forgotPasswordData);
       const status=response.status;
       if(status === 200){
         const data=response.data;
@@ -64,7 +65,7 @@ const SignInOrphanage = () => {
  
   const changePassword = async()=>{
     try{
-        const response = await axios.post(`http://localhost:8079/orphanage/ForgetPassword/${forgotPasswordData.email}/${enteredOtp}/${newPasswordData.password}/${newPasswordData.confirmPassword}`);
+        const response = await axios.post(`${API_BASE_URL}/orphanage/ForgetPassword/${forgotPasswordData.email}/${enteredOtp}/${newPasswordData.password}/${newPasswordData.confirmPassword}`);
         const status = response.status;
         if(status === 200){
           alert(response.data);

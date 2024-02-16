@@ -66,8 +66,8 @@ const PhotosComponent = () => {
       try {
         const response = await axios.post(
           `http://localhost:8079/orphanage/${userDetails.orpId}/orphanageDetails/uploadImages`,
-          uploadedFiles,
-          { params: { images: uploadedFiles }, headers: { 'Content-Type': 'multipart/form-data' } }
+          formdata, // Send FormData instead of uploadedFiles
+          { headers: { 'Content-Type': 'multipart/form-data' } }
         );
         message.success(response.data);
         setUploadedFiles([]); // Clear uploaded files after successful upload
