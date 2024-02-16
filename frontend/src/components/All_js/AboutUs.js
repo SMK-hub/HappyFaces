@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import '../All_css/AboutUs.css';
 import Header from './Header';
 import Footer from './Footer';
-import TeamMembersPopup from './TeamMembersPopup'; // Import the TeamMembersPopup component
 
 const AboutUs = () => {
   const emailLink = "mailto:demo@gmail.com"; // Gmail mailto link
@@ -89,8 +88,6 @@ const AboutUs = () => {
       </div>
       <Footer/>
 
-      {/* Render TeamMembersPopup if showTeamMembersPopup is true */}
-      {showTeamMembersPopup && <TeamMembersPopup onClose={() => setShowTeamMembersPopup(false)} />}
     </div>
   );
 };
