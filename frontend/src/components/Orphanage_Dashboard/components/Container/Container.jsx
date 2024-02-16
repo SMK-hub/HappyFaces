@@ -8,6 +8,7 @@ import Certificates from '../Certificates/Certificates'
 import Photos from '../Photos/Photos'
 import {useUser} from '../../../../UserContext'
 import axios from 'axios';
+import { API_BASE_URL } from '../../../../config';
 
 
 
@@ -61,7 +62,7 @@ const MyContainer = () => {
 
   const fetchOrphanageCertificate = async () => {
     try {
-      const response = await axios.get(`http://localhost:8079/orphanage/getCertificate/${userDetails.orpId}`, {
+      const response = await axios.get(`${API_BASE_URL}/orphanage/getCertificate/${userDetails.orpId}`, {
         responseType: 'arraybuffer'
       });
   
@@ -83,7 +84,7 @@ const MyContainer = () => {
 
   const fetchOrphanageDetailsData = async() =>{
     try{
-      const response=await axios.get(`http://localhost:8079/orphanage/${userDetails?.orpId}/details`)
+      const response=await axios.get(`${API_BASE_URL}/orphanage/${userDetails?.orpId}/details`)
       return response.data;
     }catch(error){
       console.log(error);

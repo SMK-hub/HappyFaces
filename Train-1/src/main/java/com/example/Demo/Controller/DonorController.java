@@ -175,6 +175,7 @@ public class DonorController {
     @GetMapping("/donor/{donorEmail}")
     public ResponseEntity<Donor> getDonorByEmail(@PathVariable String donorEmail){
         Optional<Donor> donor=donorService.getDonorByEmail(donorEmail);
+        System.out.println(donorEmail);
         return donor.map(ResponseEntity::ok).orElseGet(()->ResponseEntity.notFound().build());
     }
     @GetMapping("/orphanageImages/{orphanageId}")

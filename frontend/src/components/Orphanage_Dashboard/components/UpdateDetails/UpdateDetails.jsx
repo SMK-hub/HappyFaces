@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './UpdateDetails.css';
 import axios from 'axios';
+import { API_BASE_URL } from '../../../../config';
 import { useUser } from '../../../../UserContext';
 
 const FormComponent = () => {
@@ -72,7 +73,7 @@ const FormComponent = () => {
 
   const updateOrphanageDetails = async()=>{
     try{
-      const response=await axios.put(`http://localhost:8079/orphanage/${userDetails.orpId}/editDetails`,formData);
+      const response=await axios.put(`${API_BASE_URL}/orphanage/${userDetails.orpId}/editDetails`,formData);
       const status= response.status;
       if(status===200){
         console.log(response.data);

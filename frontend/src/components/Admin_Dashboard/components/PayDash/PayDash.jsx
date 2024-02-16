@@ -1,100 +1,186 @@
-// Donors.jsx
+/* eslint-disable no-unused-vars */
+// OrphDash.js
+import React, { useState, useEffect } from "react";
+import "./PayDash.css";
+// index.js or App.js
+import '@fortawesome/fontawesome-free/css/all.css';
+// import ImagePopup from "./ImagePopup";
+import axios from "axios";
+import { useUser } from '../../../../UserContext';
+import {API_BASE_URL} from '../../../../config'
 
-import React, { useState } from 'react';
-import './PayDash.css'; // Import the CSS file
-import { payData } from '../../Data/Data';
-import PayCard from './PayCard'; 
 
 const PayDash = () => {
-  const [selectedDonor, setSelectedDonor] = useState(null);
-  const [selectedName, setSelectedName] = useState('All');
 
-  const openDonorCard = (donor) => {
-    setSelectedDonor(donor);
+  const { userDetails } = useUser();
+  const [paymentData, setPaymentData] = useState([]);
+  const [requireData, setRequireData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const fetchDonorData = async(donorId) => {
+    try{
+      const response = await axios.get(`${API_BASE_URL}/admin/donor/${donorId}`);
+      const status = response.status;
+      if(status === 200){
+        const data=response.data.name;
+        return data;
+      } 
+      
+    }catch(error){
+      console.log(error);
+    }
+  }
+  
+  const fetchOrphangeData = async(orpId) => {
+    try{
+      const resp = await axios.get(`${API_BASE_URL}/admin/orphanageDetails/${orpId}`);
+      const stat = resp.status;
+      console.log(resp.data);
+      if(stat === 200){
+        const data=resp.data.orphanageName;
+        return data;
+      }
+    }catch(error){
+      console.log(error);
+    }
+  }
+
+useEffect(() => {
+  const createData = async() => {
+    try{
+      const response = await axios.get(`${API_BASE_URL}/admin/donationList`);
+      const status= response.status;
+      if(status !== 200){
+        throw new Error('Failed to fetch data');
+      }
+      const donationData = response.data;
+      const donationDataWithDonorName = await Promise.all(
+        donationData.map(async(data)=>{
+          const donorName = await fetchDonorData(data.donorId);
+          return{
+            ...data,
+            donorName:donorName,
+          }
+        })
+      )
+      console.log(donationDataWithDonorName);
+      setPaymentData(donationDataWithDonorName);
+      
+    }catch(error){
+      console.log(error);
+      setError(error.message);
+    }finally{
+      setLoading(false);
+    }
   };
+  
+createData();
+}, []);
 
-  const closeDonorCard = () => {
-    setSelectedDonor(null);
+useEffect(() => {
+  const createReq = async() => {
+    try{
+      const res = await axios.get(`${API_BASE_URL}/admin/requirementList`);
+      const status= res.status;
+      if(status !== 200){
+        throw new Error('Failed to fetch data');
+      }
+      const reqData = res.data;
+      const reqDataWithDonorName = await Promise.all(
+        reqData.map(async(data)=>{
+          const donorName = await fetchDonorData(data.donorId);
+          console.log(data.orpId);
+          const orphanageName = await fetchOrphangeData(data.orpId);
+          return{
+            ...data,
+            donorName:donorName,
+            orphanageName:orphanageName,
+          }
+        })
+      )  
+      console.log(reqDataWithDonorName);
+      setRequireData(reqDataWithDonorName);
+      
+    }catch(error){
+      console.log(error);
+      setError(error.message);
+    }finally{
+      setLoading(false);
+    }
   };
+  
+createReq();
+}, []);
 
-  const handleNameChange = (e) => {
-    setSelectedName(e.target.value);
-  };
+const getTotalAmount = () => {
+  let totalAmount = 0;
+  paymentData.forEach((payment) => {
+    if (payment.status === "SUCCESS") {
+      totalAmount += parseFloat(payment.amount);
+    }
+  });
+  return totalAmount.toFixed(2);
+};
 
-  const filteredDonors = selectedName === 'All'
-    ? payData
-    :payData.filter((donor) => donor.name === selectedName);
+if (loading) {
+  return <div>Loading...</div>;
+}
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const entriesPerPage = 5;  
-  const totalEntries = payData.length;
-  const totalPages = Math.ceil(totalEntries / entriesPerPage);
-
-  const indexOfLastEntry = currentPage * entriesPerPage;
-  const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
-  const currentEntries = filteredDonors.slice(indexOfFirstEntry, indexOfLastEntry);
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
+if (error) {
+  return <div>Error: {error}</div>;
+}
 
   return (
-    <div className="donors">
-      <h2 className="donors-title">Payments</h2>
+    <div>
+      <div className="OrphDash">
+        <h2>Payments</h2>
 
-      {/* Dropdown search bar */}
-      <div className="search-bar">
-        <label htmlFor="name">Search through Name </label>
-        <select id="name" value={selectedName} onChange={handleNameChange}>
-          <option value="All">All</option>
-          {/* Add options for each unique location in your data */}
-          {Array.from(new Set(payData.map(donor => donor.name))).map((name, index) => (
-            <option key={index} value={name}>{name}</option>
-          ))}
-        </select>
-      </div>
-
-      {/* Table */}
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Location</th>
-            <th>Contact</th>
-            <th>Orphanage</th>
-            <th>Date</th>
-            <th>Donated</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentEntries.map((donor) => (
-            <tr key={donor.id} onClick={() => openDonorCard(donor)} style={{ cursor: 'pointer' }}>
-              <td>{donor.name}</td>
-              <td>{donor.location}</td>
-              <td>{donor.contact}</td>
-              <td>{donor.orphanage}</td>
-              <td>{donor.date}</td>
-              <td>{donor.donated}</td>
+        {/* Table */}
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Amount</th>
+              <th>Transaction Id</th>
+              <th>Date</th>
+              <th>Orphanage</th>
+              <th>Status</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+              {paymentData?.map((data, index) => (
+                <tr key={index}>
+                  <td>{data?.donorName}</td>
+                  <td>Rs.{data?.amount}</td>
+                  <td>{data?.transactionId}</td>
+                  <td>{data?.dateTime}</td>
+                  <td>{data?.orphanageName}</td>
+                  <td>{data?.status}</td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
 
-      <div className="pagination">
-          {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
-            <button key={page} onClick={() => handlePageChange(page)} className={`pagination-button ${currentPage === page ? 'active' : ''}`}>
-              {page}
-            </button>
-          ))}
-          <p>Page {currentPage} of {totalPages}</p>
+        <h2>Donations</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Donor Name</th>
+              <th>Orphanage Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {requireData?.map((data, index) =>
+                <tr key={index}>
+                  <td>{data?.donorName}</td>
+                  <td>{data?.orphanageName}</td>
+                  <td>{data?.description}</td>
+                </tr>
+            )}
+          </tbody>
+        </table>
       </div>
-
-      {/* Donor Card Popup */}
-      {selectedDonor && (
-        <div className="overlay">
-          <PayCard donor={selectedDonor} onClose={closeDonorCard} />
-        </div>
-      )}
     </div>
   );
 };

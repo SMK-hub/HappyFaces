@@ -3,6 +3,8 @@ import './Events.css';
 import axios from 'axios';
 import {useUser} from '../../../../UserContext'
 import { LoadingButton } from '@mui/lab';
+import { API_BASE_URL } from '../../../../config';
+
 
 const EventTable = () => {
   // Use state to manage events

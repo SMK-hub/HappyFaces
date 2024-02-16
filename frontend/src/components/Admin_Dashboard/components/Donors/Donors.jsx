@@ -1,113 +1,126 @@
-// Donors.jsx
-
-import React, { useState , useEffect } from 'react';
-import './Donors.css'; // Import the CSS file
-import { fetchDonorsData } from '../../Data/Data';
-import DonorCard from './DonorCard'; // Import the DonorCard component
+/* eslint-disable no-unused-vars */
+// OrphDash.js
+import React, { useState, useEffect } from "react";
+import "./Donors.css";
+// index.js or App.js
+import '@fortawesome/fontawesome-free/css/all.css';
+// import ImagePopup from "./ImagePopup";
 import axios from "axios";
-import {API_BASE_URL} from "../../../../config"
+import {API_BASE_URL} from '../../../../config'
 
 const Donors = () => {
-  const [selectedDonor, setSelectedDonor] = useState(null);
-  const [selectedLocation, setSelectedLocation] = useState('All');
+  const [imagePopupVisible, setImagePopupVisible] = useState(false);
+  const [selectedName, setSelectedName] = useState("All");
+  const [selectedPayment, setSelectedPayment] = useState(null);
+  // const [selectedStatus, setSelectedStatus] = useState("All");
+  const [paymentsData, setPaymentsData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const entriesPerPage = 5;
-  const [donorsData,setDonorsData] = useState([]);
+
+  // const uniqueLocations = ["All", ...new Set(paymentsData.map((event) => event.location))];
+  // const uniqueStatus = ["All", ...new Set(paymentsData.map((event) => event.stats))];
+
+  const uniqueName = ["All", ...new Set(paymentsData.map((donor) => donor.name))];
 
   useEffect(() => {
-    fetchDonors();
+    fetchDonations();
   }, []);
 
-  const fetchDonors = async () => {
+  const fetchDonations = async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/donationList`);
-      const data = response.data.map(donate => ({
-        name: donate.orphanageName,
-        amount: donate.amount,
-        tid: donate.transactionId,
-        entry: donate.dateTime,
-      }))
-    }catch(error){
-      console.log(error);
+      const response = await axios.get(`${API_BASE_URL}}/admin/donorList`);
+      const data = response.data.map(donor => ({
+        name: donor.name,
+        contact: donor.contact,
+        email: donor.email,
+        role: donor.role,
+
+      }));
+      setPaymentsData(data);
+    } catch (error) {
+      console.error("Error fetching donations", error);
     }
-  }
-
-  const openDonorCard = (donor) => {
-    setSelectedDonor(donor);
   };
 
-  const closeDonorCard = () => {
-    setSelectedDonor(null);
-  };
 
-  const handleLocationChange = (e) => {
-    setSelectedLocation(e.target.value);
+  const handleNameChange = (e) => {
+    setSelectedName(e.target.value);
     setCurrentPage(1);
   };
-  // let filteredDonors;
-  // let currentEntries;
-  // let totalPages;
-  // let totalEntries;
-  // let indexOfFirstEntry;
-  // let indexOfLastEntry;
-// useEffect(()=>{
-  const filteredDonors = selectedLocation === 'All'
-    ? donorsData
-    : donorsData.filter((donor) => donor.location === selectedLocation);
-  const totalEntries = filteredDonors?.length;
+
+  const openModal = (payment) => {
+    setSelectedPayment(payment);
+  };
+
+  const closeModal = () => {
+    setSelectedPayment(null);
+  };
+
+  const openImagePopup = () => {
+    setImagePopupVisible(true);
+  };
+
+  const closeImagePopup = () => {
+    setImagePopupVisible(false);
+  };
+
+  const filteredEvents = paymentsData.filter((payment) => {
+    return (
+      (selectedName === "All" || payment.name === selectedName)
+    );
+  });
+
+  const totalEntries = filteredEvents.length;
   const totalPages = Math.ceil(totalEntries / entriesPerPage);
+
   const indexOfLastEntry = currentPage * entriesPerPage;
   const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
-  const currentEntries = filteredDonors.slice(indexOfFirstEntry, indexOfLastEntry);
-// },[donorsData]);
-  
-  console.log(currentEntries);
+  const currentEntries = filteredEvents.slice(indexOfFirstEntry, indexOfLastEntry);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
-  return (donorsData && donorsData.length > 0) && (
-    <div className="donors">
-      <h2 className="donors-title">Donors</h2>
-      {/* Dropdown search bar */}
-      <div className="search-bar">
-        <label htmlFor="location">Search through Location </label>
-        <select id="location" value={selectedLocation} onChange={handleLocationChange}>
-          <option value="All">All</option>
-          {
-            donorsData && Array.from(new Set(donorsData.map(donor => donor.location))).map((location, index) => (
-            <option key={index} value={location}>{location}</option>
+  return (
+    <div>
+      <div className="OrphDash">
+        <h2>Donors</h2>
+        <label htmlFor="locationFilter">Search by Name</label>
+        <select id="locationFilter" value={selectedName} onChange={handleNameChange}>
+          {uniqueName.map((name, index) => (
+            <option key={index} value={name}>
+              {name}
+            </option>
           ))}
-          
-          
         </select>
-      </div>
 
-      {/* Table */}
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Contact</th>
-            <th>Location</th>
-          </tr>
-        </thead>
-        <tbody>
-          
-          {currentEntries && currentEntries.map((donor) => (
-            <tr key={donor.id} onClick={() => openDonorCard(donor)} style={{ cursor: 'pointer' }}>
-              <td>{donor.name}</td>
-              <td>{donor.email}</td>
-              <td>{donor.contact}</td>
-              <td>{donor.location}</td>
+        {/* Table */}
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              {/* <th>Location</th> */}
+              <th>Contact</th>
+              <th>Email</th>
+              <th>Details</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {currentEntries.map((donor, index) => (
+              <tr key={index}>
+                <td>{donor.name}</td>
+                {/* <td>{event.location}</td> */}
+                <td>{donor.contact}</td>
+                <td>{donor.email}</td>
+                <td>
+                  <button onClick={() => openModal(donor)} className="smallButton">Details</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
-      <div className="pagination">
+        <div className="pagination">
           {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
             <button key={page} onClick={() => handlePageChange(page)} className={`pagination-button ${currentPage === page ? 'active' : ''}`}>
               {page}
@@ -116,12 +129,25 @@ const Donors = () => {
           <p>Page {currentPage} of {totalPages}</p>
         </div>
 
-      {/* Donor Card Popup */}
-      {selectedDonor && (
-        <div className="overlay">
-          <DonorCard donor={selectedDonor} onClose={closeDonorCard} />
-        </div>
-      )}
+        {/* Modal */}
+        {selectedPayment && (
+          <div className="modal">
+            <div className="modal-content">
+              <span className="close" onClick={closeModal}>
+                &times;
+              </span>
+              <h3>{selectedPayment.name}</h3>
+              <p className="field-name">Name<span> {selectedPayment.name}</span></p>
+              <p className="field-name">Contact<span> {selectedPayment.contact}</span></p>
+              {/* <p className="field-name">Location<span> {selectedEvent.location}</span></p> */}
+              <p className="field-name">Email<span> {selectedPayment.email}</span></p>
+              {/* <p className="field-name">Time<span> {selectedPayment.time}</span></p> */}
+              <p className="field-name">Role<span> {selectedPayment.role}</span></p>
+            </div>
+          </div>
+        )}
+
+      </div>
     </div>
   );
 };

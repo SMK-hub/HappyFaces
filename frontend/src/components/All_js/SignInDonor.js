@@ -34,7 +34,7 @@ const SignInDonor = () => {
       const status = response.status;
       console.log(status);
       if (status === 200) {
-        const userDetailResponse = await axios.get(`${API_BASE_URL}/donor/${donorDetails.email}`);
+        const userDetailResponse = await axios.get(`${API_BASE_URL}/donor/donor/${donorDetails.email}`);
         setUserData(userDetailResponse.data);
         navigate('/donor-dashboard');
       }

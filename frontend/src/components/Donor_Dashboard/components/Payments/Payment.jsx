@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './Payment.css';
 import axios from 'axios';
 import { useUser } from '../../../../UserContext';
+import { API_BASE_URL } from '../../../../config';
+
  
 function createData(name, amount, transactionId, time, status) {
   return { name, amount, transactionId, time, status };

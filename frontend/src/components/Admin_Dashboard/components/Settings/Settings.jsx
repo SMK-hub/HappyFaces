@@ -6,7 +6,7 @@ import axios from 'axios';
 import { message, Upload } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { Avatar } from '@mui/material';
-import { API_BASE_URL } from '../../../../config';
+import {API_BASE_URL} from '../../../../config'
 
 const Profile = () => {
    const [isEditMode, setIsEditMode] = useState(false);

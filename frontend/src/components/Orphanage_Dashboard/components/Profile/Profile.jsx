@@ -3,6 +3,7 @@ import React, { useState , useEffect} from 'react';
 import './Orphanage-Profile.css';
 import {useUser} from '../../../../UserContext'
 import axios from 'axios';
+import { API_BASE_URL } from '../../../../config';
 import { message, Upload } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { Avatar } from '@mui/material';
@@ -54,7 +55,7 @@ const Profile = () => {
  
   const handleSaveChangesClick = async() => {
     try{
-      const response=await axios.put(`http://localhost:8079/orphanage/${userDetails?.orpId}/editProfile`,orphanageDetail);
+      const response=await axios.put(`${API_BASE_URL}/orphanage/${userDetails?.orpId}/editProfile`,orphanageDetail);
       const status=response.status;
       console.log(status);
       if(status === 200){
@@ -82,7 +83,7 @@ const Profile = () => {
       setPasswordMismatchError('New password and confirm password do not match');
     } else {
       try{
-        const response = await axios.post(`http://localhost:8079/orphanage/ChangePassword/${userDetails?.email}/${oldPassword}/${newPassword}/${confirmPassword}`);
+        const response = await axios.post(`${API_BASE_URL}/orphanage/ChangePassword/${userDetails?.email}/${oldPassword}/${newPassword}/${confirmPassword}`);
         const status = response.status;
         console.log(status);
         if(status == 200){
@@ -110,7 +111,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchPhoto = async () => {
       try {
-        const response = await axios.get(`http://localhost:8079/orphanage/getPhoto/${userDetails?.orpId}`, {
+        const response = await axios.get(`${API_BASE_URL}/orphanage/getPhoto/${userDetails?.orpId}`, {
           responseType: 'arraybuffer',
         });
  
@@ -141,7 +142,7 @@ const Profile = () => {
       };
       reader.readAsDataURL(file);
       try{
-        const response=await axios.post(`http://localhost:8079/orphanage/addPhoto/${userDetails?.orpId}`,formData);
+        const response=await axios.post(`${API_BASE_URL}/orphanage/addPhoto/${userDetails?.orpId}`,formData);
         const status=response.status;
         console.log(status);
         if(status ===200){
