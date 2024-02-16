@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.Demo.EmailServices.EmailService;
 import com.example.Demo.Model.Admin;
+import com.example.Demo.Model.DonationRequirements;
 import com.example.Demo.Model.Donations;
 import com.example.Demo.Model.Donor;
 import com.example.Demo.Model.Events;
@@ -18,6 +19,7 @@ import com.example.Demo.Model.Orphanage;
 import com.example.Demo.Model.OrphanageDetails;
 import com.example.Demo.Repository.AdminRepository;
 import com.example.Demo.Repository.DonationsRepository;
+import com.example.Demo.Repository.DonationRequirementRepository;
 import com.example.Demo.Repository.DonorRepository;
 import com.example.Demo.Repository.EventsRepository;
 import com.example.Demo.Repository.OrphanageDetailsRepository;
@@ -45,6 +47,8 @@ public class AdminServiceImpl implements AdminService {
     private EventsRepository eventRepo;
     @Autowired
     private DonationsRepository donationRepo;
+    @Autowired
+    private DonationRequirementRepository requireRepo;
 
     private String passcode = "Admin123Admin";
 
@@ -84,6 +88,11 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public List<Donations> getAllDonations() {
         return (List<Donations>) donationRepo.findAll();
+    }
+
+    @Override
+    public List<DonationRequirements> getAllRequirements() {
+        return (List<DonationRequirements>) requireRepo.findAll();
     }
 
     @Override
@@ -198,15 +207,16 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public String verifyEventDetails(Events events) {
-        Optional<Events> event = eventRepo.findById(events.getId());
+    public Events verifyEventDetails(String orpId, String verificationStatus) {
+        Optional<Events> event = eventRepo.findByOrpId(orpId);
         if (event.isPresent()) {
-            event.get().setVerificationStatus(events.getVerificationStatus());
+            event.get().setVerificationStatus(EnumClass.VerificationStatus.valueOf(verificationStatus));
             eventRepo.save(event.get());
-            return "Done";
+            return event.get();
         }
-        return "Not Done";
+        return null;
     }
+
 
     @Override
     public OrphanageDetails notVerifyEventDetails(Events event) {
@@ -320,6 +330,17 @@ public class AdminServiceImpl implements AdminService {
         return adminRepo.findByEmail(email);
     }
 
-
+    @Override
+    public byte[] getCertificate(String orpId) {
+        Optional<OrphanageDetails> optionalOrphanageDetails = orphanageDetailsRepository.findByOrpId(orpId);
+        if (optionalOrphanageDetails.isPresent()) {
+            OrphanageDetails orphanageDetails = optionalOrphanageDetails.get();
+            byte[] certificateBytes = orphanageDetails.getCertificate();
+            if (certificateBytes != null) {
+                return Base64.getDecoder().decode(certificateBytes);
+            }
+        }
+        return null;
+    }
 
 }

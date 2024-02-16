@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.Demo.AdminServices.AdminService;
 import com.example.Demo.Model.Admin;
+import com.example.Demo.Model.DonationRequirements;
 import com.example.Demo.Model.Donations;
 import com.example.Demo.Model.Donor;
 import com.example.Demo.Model.Events;
@@ -55,7 +56,7 @@ public class AdminController {
 	public ResponseEntity<List<OrphanageDetails>> getAllOrphanageDetails(){
 		return new ResponseEntity<>(adminService.getAllOrphanageDetails(),HttpStatus.OK);
 	}
-  	@GetMapping("/orphanageDetails/{id}")
+	@GetMapping("/orphanageDetails/{orpId}")
 	public ResponseEntity<OrphanageDetails> getOrphanageDetailByOrpId(@PathVariable String orpId)
 	{
 		Optional<OrphanageDetails> orphanageDetails = Optional.ofNullable(adminService.getOrphanageDetailByOrphanageId(orpId));
@@ -69,8 +70,8 @@ public class AdminController {
 	@GetMapping("/donor/{id}")
 	public ResponseEntity<Donor> getDonorById(@PathVariable String id){
 		Optional<Donor> donor=Optional.ofNullable(adminService.getDonorById(id));
-        return donor.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(null, HttpStatus.CONFLICT));
-    }
+		return donor.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(null, HttpStatus.CONFLICT));
+	}
 
 	@GetMapping("/eventList")
 	public ResponseEntity<List<Events>> getAllEvents() {
@@ -80,23 +81,23 @@ public class AdminController {
 	@GetMapping("/event/{id}")
 	public ResponseEntity<Events> getEventById(@PathVariable String id){
 		Optional<Events> events = Optional.ofNullable(adminService.getEventById(id));
-        return events.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(null, HttpStatus.CONFLICT));
-    }
+		return events.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(null, HttpStatus.CONFLICT));
+	}
 
 	@GetMapping("/event/orphanageId/{id}")
 	public ResponseEntity<List<Events>> getEventsByOrphanageId(@PathVariable String id){
 		return new ResponseEntity<>(adminService.getEventsByOrphanageId(id),HttpStatus.OK);
 	}
 
-	@PostMapping("/event/verifyEvents")
-	public ResponseEntity<String> verifyEvents(@RequestBody Events event)
-	{
-		String alpha=adminService.verifyEventDetails(event);
-		if(alpha.equals("Done")){
-			return new ResponseEntity<>(alpha,HttpStatus.OK);
-		}
-		return new ResponseEntity<>(alpha,HttpStatus.CONFLICT);
-	}
+	//	@PostMapping("/event/verifyEvents")
+//	public ResponseEntity<String> verifyEvents(@RequestBody Events event)
+//	{
+//		String alpha=adminService.verifyEventDetails(event);
+//		if(alpha.equals("Done")){
+//			return new ResponseEntity<>(alpha,HttpStatus.OK);
+//		}
+//		return new ResponseEntity<>(alpha,HttpStatus.CONFLICT);
+//	}
 	@PostMapping("/verifyOrphanageDetails/{orpId}/{status}")
 	public ResponseEntity<OrphanageDetails> verifyOrphanageDetails(@PathVariable("orpId") String  orpId, @PathVariable("status") String verificationStatus)
 	{
@@ -106,6 +107,18 @@ public class AdminController {
 		}
 		return new ResponseEntity<>(null,HttpStatus.CONFLICT);
 	}
+
+	@PostMapping("/verifyEventDetails/{orpId}/{status}")
+	public ResponseEntity<Events> verifyEventDetails(@PathVariable("orpId") String orpId, @PathVariable("status") String verificationStatus)
+	{
+		Events alpha = adminService.verifyEventDetails(orpId,verificationStatus);
+		if(alpha!=null) {
+			return new ResponseEntity<>(alpha,HttpStatus.OK);
+		}
+		return new ResponseEntity<>(null,HttpStatus.CONFLICT);
+
+	}
+
 	@GetMapping("/donationList")
 	public ResponseEntity<List<Donations>> getAllDonations() {
 		return new ResponseEntity<>(adminService.getAllDonations(),HttpStatus.OK);
@@ -248,5 +261,24 @@ public class AdminController {
 	public ResponseEntity<Admin> getAdminByEmail(@PathVariable String adminEmail){
 		Optional<Admin> admin=adminService.getAdminByEmail(adminEmail);
 		return admin.map(ResponseEntity::ok).orElseGet(()->ResponseEntity.notFound().build());
+	}
+
+	@GetMapping("/requirementList")
+	public ResponseEntity<List<DonationRequirements>> getAllRequirements() {
+		return new ResponseEntity<>(adminService.getAllRequirements(),HttpStatus.OK);
+	}
+
+	@GetMapping("/getCertificate/{orpId}")
+	public ResponseEntity<byte[]> getCertificate(@PathVariable String orpId) {
+		byte[] certificateBytes = adminService.getCertificate(orpId);
+		if (certificateBytes != null) {
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_PDF);
+			headers.setContentDispositionFormData("filename", "certificate.pdf");
+			headers.setContentLength(certificateBytes.length);
+			return new ResponseEntity<>(certificateBytes, headers, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 }

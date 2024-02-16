@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import '../All_css/SignUpDonor.css'; // Import the CSS file for styles
 import Header from "./Header";
 import axios from 'axios';
+import { API_BASE_URL } from '../../config';
 
 const SignUpDonor = () => {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ const SignUpDonor = () => {
     try{
       setLoading(true);
       console.log(donordetails);
-      const response= await axios.post("http://localhost:8079/donor/register",donordetails);
+      const response= await axios.post(`${API_BASE_URL}/donor/register`,donordetails);
       const status=response.status;
       if(status == 200){
         navigate("/signin/donor");

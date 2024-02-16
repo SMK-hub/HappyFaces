@@ -7,6 +7,7 @@ import java.util.Optional;
 import com.example.Demo.Enum.EnumClass;
 import com.example.Demo.Model.Admin;
 import com.example.Demo.Model.Donations;
+import com.example.Demo.Model.DonationRequirements;
 import com.example.Demo.Model.Donor;
 import com.example.Demo.Model.Events;
 import com.example.Demo.Model.Orphanage;
@@ -27,6 +28,8 @@ public interface AdminService {
 
     List<Donations> getAllDonations();
 
+    List<DonationRequirements> getAllRequirements();
+
     String registerUser(Admin user);
 
     boolean loginUser(String email, String password);
@@ -41,9 +44,11 @@ public interface AdminService {
 
     OrphanageDetails verifyOrphanageDetails(String orpId, String verificationStatus);
 
+    Events verifyEventDetails(String orpId, String verificationStatus);
+
     Admin editProfile(String adminId, Admin admin);
 
-    String verifyEventDetails(Events event);
+//    String verifyEventDetails(Events event);
 
     OrphanageDetails notVerifyEventDetails(Events event);
 
@@ -70,4 +75,6 @@ public interface AdminService {
     Admin changeAdminPassword(String email, String oldPassword, String newPassword, String confirmNewPassword);
 
     Optional<Admin> getAdminByEmail(String email);
+
+    public byte[] getCertificate(String orpId);
 }
