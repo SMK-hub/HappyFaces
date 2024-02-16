@@ -10,6 +10,7 @@ import RazorPay from '../Details/RazorPay'; // Corrected import statement
 import {useUser} from '../../../../UserContext'
 import axios from "axios";
 import { LoadingButton } from "@mui/lab";
+import { API_BASE_URL } from "../../../../config";
  
 function srcset(image, size, rows = 1, cols = 1) {
   return {
@@ -86,7 +87,7 @@ const OrphDash = () => {
  
   const fetchAllEventData = async (orpId)=>{
     try{
-      const response=await axios.get(`http://localhost:8079/donor/VerifiedEvents/${orpId}`);
+      const response=await axios.get(`${API_BASE_URL}/donor/VerifiedEvents/${orpId}`);
       console.log(response.data);
       return response.data;
      
@@ -96,7 +97,7 @@ const OrphDash = () => {
   }
   const fetchParticipatedDonorsId = async (eventId)=>{
       try{
-        const response=await axios.get(`http://localhost:8079/donor/participatedDonorsId/${eventId}`);
+        const response=await axios.get(`${API_BASE_URL}/donor/participatedDonorsId/${eventId}`);
         return response.data;
       }catch(error){
         alert(error);
@@ -104,7 +105,7 @@ const OrphDash = () => {
   }
   const fetchImageData = async (orpId)=> {
     try{
-      const response=await axios.get(`http://localhost:8079/orphanage/${orpId}/orphanageDetails/viewImages`);
+      const response=await axios.get(`${API_BASE_URL}/orphanage/${orpId}/orphanageDetails/viewImages`);
       return response.data;
  
     }catch(error)
@@ -114,7 +115,7 @@ const OrphDash = () => {
   }
   const fetchEventData = async(orpId)=> {
     try{
-      const response= await axios.get(`http://localhost:8079/donor/VerifiedEvents/${orpId}`);
+      const response= await axios.get(`${API_BASE_URL}/donor/VerifiedEvents/${orpId}`);
       return response.data;
     }catch(error)
   {
@@ -145,7 +146,7 @@ const OrphDash = () => {
  
   const downloadCertificates = async(orpId,orpName) => {
     try{
-      const response = await axios.get(`http://localhost:8079/orphanage/getCertificate/${orpId}`, { responseType: 'blob' });
+      const response = await axios.get(`${API_BASE_URL}/orphanage/getCertificate/${orpId}`, { responseType: 'blob' });
         const status = response.status;
         if (status === 200) {
             const blob = new Blob([response.data], { type: 'application/pdf' });
@@ -181,7 +182,7 @@ const OrphDash = () => {
   const handleRegisterEvent = async(eventId) => {
     try{
       setRegisteringProcess(true);
-      const response= await axios.post(`http://localhost:8079/donor/${userDetails?.donorId}/eventRegister/${eventId}`);
+      const response= await axios.post(`${API_BASE_URL}/donor/${userDetails?.donorId}/eventRegister/${eventId}`);
       console.log("Event registered");
      
       setRegistrationSuccessVisible(true);
@@ -257,7 +258,7 @@ const OrphDash = () => {
   const saveDonationData = async (data) => {
     try {
       // Send the data to your backend API for saving
-      const response = await axios.post('http://localhost:8079/donor/save/DonationRequirement', data);
+      const response = await axios.post(`${API_BASE_URL}/donor/save/DonationRequirement`, data);
       // Handle success response if needed
       console.log(response.data);
     } catch (error) {

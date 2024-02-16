@@ -6,6 +6,8 @@ import axios from 'axios';
 import { message, Upload } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { Avatar } from '@mui/material';
+import { API_BASE_URL } from '../../../../config';
+
 
 const Profile = () => {
    const [isEditMode, setIsEditMode] = useState(false);
@@ -54,7 +56,7 @@ const Profile = () => {
  
   const handleSaveChangesClick = async() => {
     try{
-      const response=await axios.put(`http://localhost:8079/donor/${userDetails?.donorId}/editProfile`,donorDetail);
+      const response=await axios.put(`${API_BASE_URL}/donor/${userDetails?.donorId}/editProfile`,donorDetail);
       const status=response.status;
       console.log(status);
       if(status === 200){
@@ -82,7 +84,7 @@ const Profile = () => {
       setPasswordMismatchError('New password and confirm password do not match');
     } else {
       try{
-        const response = await axios.post(`http://localhost:8079/donor/ChangePassword/${userDetails?.email}/${oldPassword}/${newPassword}/${confirmPassword}`);
+        const response = await axios.post(`${API_BASE_URL}/donor/ChangePassword/${userDetails?.email}/${oldPassword}/${newPassword}/${confirmPassword}`);
         const status = response.status;
         console.log(status);
         if(status == 200){
@@ -110,7 +112,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchPhoto = async () => {
       try {
-        const response = await axios.get(`http://localhost:8079/donor/getPhoto/${userDetails?.donorId}`, {
+        const response = await axios.get(`${API_BASE_URL}/donor/getPhoto/${userDetails?.donorId}`, {
           responseType: 'arraybuffer',
         });
  
@@ -141,7 +143,7 @@ const Profile = () => {
       };
       reader.readAsDataURL(file);
       try{
-        const response=await axios.post(`http://localhost:8079/donor/addPhoto/${userDetails?.donorId}`,formData);
+        const response=await axios.post(`${API_BASE_URL}/donor/addPhoto/${userDetails?.donorId}`,formData);
         const status=response.status;
         console.log(status);
         if(status ===200){

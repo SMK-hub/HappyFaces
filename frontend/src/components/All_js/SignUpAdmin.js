@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import '../All_css/SignUpAdmin.css'; // Import the CSS file for styles
 import Header from "./Header";
 import axios from 'axios';
+import { API_BASE_URL } from '../../config';
 
 const SignUpAdmin = () => {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ const SignUpAdmin = () => {
     try{
       setLoading(true);
       console.log(admindetails);
-    const response=await axios.post("http://localhost:8079/admin/register",admindetails);
+    const response=await axios.post(`${API_BASE_URL}/admin/register`,admindetails);
     const status=response.status;
     console.log(status);
       if(status == 200){

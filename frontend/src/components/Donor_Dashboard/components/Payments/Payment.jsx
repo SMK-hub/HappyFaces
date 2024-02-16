@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './Payment.css';
 import axios from 'axios';
 import { useUser } from '../../../../UserContext';
+import { API_BASE_URL } from '../../../../config';
+
  
 function createData(name, amount, transactionId, time, status) {
   return { name, amount, transactionId, time, status };
@@ -23,7 +25,7 @@ const PaymentDashboard = () => {
   useEffect(() => {
     const fetchPaymentData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8079/donor/DonationList/${userDetails?.donorId}`);
+        const response = await axios.get(`${API_BASE_URL}/donor/DonationList/${userDetails?.donorId}`);
         const status = response.status;
         console.log(response);
         if (status !== 200) {
