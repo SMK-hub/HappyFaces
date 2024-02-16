@@ -3,6 +3,8 @@ import './Events.css';
 import axios from 'axios';
 import {useUser} from '../../../../UserContext'
 import { LoadingButton } from '@mui/lab';
+import { API_BASE_URL } from '../../../../config';
+
 
 const EventTable = () => {
   // Use state to manage events
@@ -16,7 +18,7 @@ const EventTable = () => {
 useEffect(()=>{
   const participatedEvents = async()=>{
     try{
-      const response=await axios.get(`http://localhost:8079/donor/RegisteredEvents/${userDetails.donorId}`);
+      const response=await axios.get(`${API_BASE_URL}/donor/RegisteredEvents/${userDetails.donorId}`);
       const status=response.status;
       const responseWithEventData = await Promise.all(response.data.map(async(interestedPerson)=>{
         const eventData=await fetchEventData(interestedPerson.eventId);
@@ -38,7 +40,7 @@ useEffect(()=>{
   
 const fetchEventData = async (eventId) => {
   try {
-      const response = await axios.get(`http://localhost:8079/donor/Event/${eventId}`);
+      const response = await axios.get(`${API_BASE_URL}/donor/Event/${eventId}`);
       const status = response.status;
       
       if (status === 200) {
@@ -58,7 +60,7 @@ const fetchEventData = async (eventId) => {
 
 const fetchOrphanageDetails = async (orpId)=>{
   try{
-    const response=await axios.post(`http://localhost:8079/donor/${orpId}/OrphanageDetails`)
+    const response=await axios.post(`${API_BASE_URL}/donor/${orpId}/OrphanageDetails`)
     console.log(response+"*");
     const status = response.status;
       if (status === 200) {
@@ -91,7 +93,7 @@ const fetchOrphanageDetails = async (orpId)=>{
     try{
       setCancelling(true);
       console.log(interestedPerson)
-      const response = await axios.post(`http://localhost:8079/donor/${userDetails.donorId}/cancelEventRegister/${cancelEventId}`);
+      const response = await axios.post(`${API_BASE_URL}/donor/${userDetails.donorId}/cancelEventRegister/${cancelEventId}`);
       
       const status=response.status;
       console.log(status);
