@@ -7,7 +7,6 @@ import MyContainer from './components/Container/Container';
 import Profile from './components/Profile/Profile';
 import EventTable from './components/Event/Events';
 import Sidebar from './components/Sidebar';
-import RightSide from './components/RigtSide/RightSide';
 import PaymentDashboard from './components/Payments/Payment';
 import MainDash from './components/MainDash/MainDash';
 import OrphDash from './components/Details/OrphDash';

@@ -1,7 +1,6 @@
 import './DashboardAdmin.css'
 import React, { useState } from 'react';
 import MainDash from './components/MainDash/MainDash';
-import RightSide from './components/RigtSide/RightSide';
 import Sidebar from './components/Sidebar';
 import OrphDash from './components/OrphDash/OrphDash.jsx';
 import Home from './components/AdminHome';
