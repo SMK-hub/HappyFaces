@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import '../All_css/SignUpOrphanage.css'; // Import the CSS file for styles
 import Header from "./Header";
 import axios from 'axios';
+import { API_BASE_URL } from '../../config';
 
 const SignUpOrphanage = () => {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ const SignUpOrphanage = () => {
   const fetchData=async()=>{
     try{
       setLoading(true);
-      const response=await axios.post("http://localhost:8079/orphanage/register",orphanageDetails);
+      const response=await axios.post(`${API_BASE_URL}/orphanage/register`,orphanageDetails);
       const status=response.status;
       if(status==200)
       {
