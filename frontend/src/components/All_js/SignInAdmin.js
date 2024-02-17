@@ -88,36 +88,39 @@ const SignInAdmin = () => {
   };
  
   return (
+    
     <div className='sign-in-admin'>
       <Header/>
-      <div >
-        <h2 className="sign-in-admin-heading"><center>ADMIN SIGN IN</center></h2>
+      <div>
+        <h2 className="sign-in-admin-heading">ADMIN SIGN IN</h2>
         <form onSubmit={handleSignIn} className="sign-in-admin-form">
-          <label className="form-label">
+          <label className="admin-form-label">
             Email:
             <input
               type="email"
               value={adminDetails.email}
               onChange={(e) => setAdminDetails({...adminDetails,email:e.target.value})}
               required
-              className="form-input"
+              className="admin-form-input"
+              placeholder="Enter your email"
             />
           </label>
-          <label className="form-label">
+          <label className="admin-form-label">
             Password:
             <input
               type="password"
               value={adminDetails.password}
               onChange={(e) => setAdminDetails({...adminDetails,password:e.target.value})}
               required
-              className="form-input"
+              className="admin-form-input"
+              placeholder="Enter your password"
             />
           </label>
-          <div className="form-buttons">
+          <div className="admin-form-buttons">
             <button type="submit" className="in-button">
               Sign In
             </button>
-            <a href="#" onClick={handleForgotPassword} className="forgot-link">
+            <a href="#" onClick={handleForgotPassword} className="admin-forgot-link">
               Forgot Password?
             </a>
             <Link to="/signin" className="admin-back-link">
@@ -131,9 +134,9 @@ const SignInAdmin = () => {
  
       {/* Forgot Password Popup */}
       {showForgotPasswordPopup && (
-        <div className="popup">
-          <div className="popup-inner">
-            <button className="close-btn" onClick={handleBack}>X</button>
+        <div className="admin-popup">
+          <div className="admin-popup-inner">
+            <button className="admin-close-btn" onClick={handleBack}>X</button>
             <h2>Forgot Password</h2>
             <form onSubmit={handleOtpSubmit}>
               <label>Email:</label>
@@ -156,7 +159,7 @@ const SignInAdmin = () => {
                   />
                 </>
               )}
-              <div className="form-buttons" style={{ display: 'flex', flexDirection: 'row' }}>
+              <div className="admin-form-buttons" style={{ display: 'flex', flexDirection: 'row' }}>
                 <button type="submit">Send OTP</button>
                 <button onClick={handleBack}>Back</button>
               </div>
@@ -167,9 +170,9 @@ const SignInAdmin = () => {
  
       {/* New Password Popup */}
       {showNewPasswordPopup && (
-        <div className="popup">
-          <div className="popup-inner">
-            <button className="close-btn" onClick={handleBack}>X</button>
+        <div className="admin-popup">
+          <div className="admin-popup-inner">
+            <button className="admin-close-btn" onClick={handleBack}>X</button>
             <h2>Set New Password</h2>
             <form onSubmit={handleNewPasswordSubmit}>
             <label>OTP:</label>
@@ -186,7 +189,7 @@ const SignInAdmin = () => {
                 value={newPasswordData.password}
                 onChange={(e) => setNewPasswordData({ ...newPasswordData, password: e.target.value })}
                 required
-                className="form-input"
+                className="admin-form-input"
                 placeholder="Enter new password"
               />
               <label>Confirm Password:</label>
@@ -195,11 +198,11 @@ const SignInAdmin = () => {
                 value={newPasswordData.confirmPassword}
                 onChange={(e) => setNewPasswordData({ ...newPasswordData, confirmPassword: e.target.value })}
                 required
-                className="form-input"
+                className="admin-form-input"
                 placeholder="Confirm new password"
               />
               {passwordsMatchError && <p>Passwords do not match</p>}
-              <div className="form-buttons" style={{ display: 'flex', flexDirection: 'row' }}>
+              <div className="admin-form-buttons" style={{ display: 'flex', flexDirection: 'row' }}>
                 <button type="submit">Submit</button>
                 <button onClick={handleBack}>Back</button>
               </div>

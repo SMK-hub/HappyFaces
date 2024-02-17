@@ -127,50 +127,50 @@ const SignInOrphanage = () => {
     <div className='sign-in-orphanage'>
       <Header/>
       <div>
-        <h2 className="sign-in-orphanage-heading">ORPHANAGE SIGN IN</h2>
+        <h2 className="sign-in-orphanage-heading"><center>ORPHANAGE SIGN IN</center></h2>
         <form onSubmit={handleSignIn} className="sign-in-orphanage-form">
-          <label className="form-label">
+          <label className="orphanage-form-label">
             Email:
             <input
               type="email"
               value={orphanageDetails.email}
               onChange={(e) => setOrphanageDetails({...orphanageDetails,email:e.target.value})}
               required
-              className="form-input"
+              className="orphanage-form-input"
               placeholder="Enter your email"
             />
           </label>
-          <label className="form-label">
+          <label className="orphanage-form-label">
             Password:
             <input
               type="password"
               value={orphanageDetails.password}
               onChange={(e) => setOrphanageDetails({...orphanageDetails,password:e.target.value})}
               required
-              className="form-input"
+              className="orphanage-form-input"
               placeholder="Enter your password"
-
             />
           </label>
-          <div className="form-buttons">
+          <div className="orphanage-form-buttons">
             <button type="submit" className="orp-button">
               Sign In
             </button>
-            <a href="#" onClick={handleForgotPassword} className="forgot-password-link">
+            <a href="#" onClick={handleForgotPassword} className="orphanage-forgot-password-link">
               Forgot Password?
             </a>
           </div>
-        </form>
-        <Link to="/signin" className="back-link">
+          <Link to="/signin" className="orphanage-back-link">
           Back
         </Link>
+        </form>
+        
       </div>
  
       {/* Forgot Password Popup */}
       {showForgotPasswordPopup && (
-        <div className="popup">
-          <div className="popup-inner">
-            <button className="close-btn" onClick={handleBack}>X</button>
+        <div className="orphanage-popup">
+          <div className="orphanage-popup-inner">
+            <button className="orphanage-close-btn" onClick={handleBack}>X</button>
             <h2>Forgot Password</h2>
             <form onSubmit={handleOtpSubmit}>
               <label>Email:</label>
@@ -181,7 +181,7 @@ const SignInOrphanage = () => {
                 required
                 placeholder="Enter your email"
               />
-              <div className="form-buttons" style={{ display: 'flex', flexDirection: 'row' }}>
+              <div className="orphanage-form-buttons" style={{ display: 'flex', flexDirection: 'row' }}>
                 <button type="submit" onClick={()=>fetchOtp()}>Send OTP</button>
                 <button onClick={handleBack}>Back</button>
               </div>
@@ -192,9 +192,9 @@ const SignInOrphanage = () => {
  
       {/* OTP Verification Popup */}
       {showOtpVerificationPopup && (
-        <div className="popup">
-          <div className="popup-inner">
-            <button className="close-btn" onClick={handleBack}>X</button>
+        <div className="orphanage-popup">
+          <div className="orphanage-popup-inner">
+            <button className="orphanage-close-btn" onClick={handleBack}>X</button>
             <h2>OTP Verification</h2>
             <form onSubmit={handleNewPasswordSubmit}>
               <label>Enter OTP:</label>
@@ -222,7 +222,7 @@ const SignInOrphanage = () => {
                 placeholder="Confirm new password"
               />
               {passwordsMatchError && <p>Passwords do not match</p>}
-              <div className="form-buttons" style={{ display: 'flex', flexDirection: 'row' }}>
+              <div className="orphanage-form-buttons" style={{ display: 'flex', flexDirection: 'row' }}>
                 <button type="submit" onClick={()=>changePassword()}>Submit</button>
                 <button onClick={handleBack}>Back</button>
               </div>

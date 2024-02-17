@@ -11,6 +11,7 @@ const PhotosComponent = () => {
 
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [orphanageImages, setOrphanageImages] = useState([]);
+const [refresh,setRefresh] = useState(false)
 
   useEffect(() => {
     const fetchImage = async () => {
@@ -19,12 +20,12 @@ const PhotosComponent = () => {
         setOrphanageImages(response.data);
       } catch (error) {
         console.error(error);
+        message.error(error.message || 'An error occurred while fetching images.');
       }
     };
     fetchImage();
-  }, []);
+  }, [refresh]);
 
-  const formdata = new FormData();
 
   const handleFileUpload = (e) => {
     const files = e.target.files;
@@ -51,10 +52,6 @@ const PhotosComponent = () => {
 
   const { userDetails } = useUser();
 
-  useEffect(() => {
-    formdata.append("images", uploadedFiles);
-  }, [uploadedFiles]);
-
   const handleRemoveFile = (index) => {
     const updatedFiles = [...uploadedFiles];
     updatedFiles.splice(index, 1);
@@ -62,23 +59,46 @@ const PhotosComponent = () => {
   };
 
   const handleOkButtonClick = async () => {
-    console.log("Hello", uploadedFiles, formdata);
-    if (uploadedFiles.length > 0) {
-      try {
-        const response = await axios.post(
-          `${API_BASE_URL}/orphanage/${userDetails.orpId}/orphanageDetails/uploadImages`,
-          formdata, // Send FormData instead of uploadedFiles
-          { headers: { 'Content-Type': 'multipart/form-data' } }
-        );
-        message.success(response.data);
-        setUploadedFiles([]); // Clear uploaded files after successful upload
-      } catch (error) {
-        console.error(error);
-        message.error(error.message || 'An error occurred while uploading images. Please try again later.');
-      }
-    } else {
+    if (uploadedFiles.length === 0) {
       message.info('No files selected to upload.');
+      return;
     }
+
+    const formData = new FormData();
+    for (const file of uploadedFiles) {
+      formData.append('images', file);
+    }
+
+    try {
+      const response = await axios.post(
+        `${API_BASE_URL}/orphanage/${userDetails.orpId}/orphanageDetails/uploadImages`,
+        formData,
+        { headers: { 'Content-Type': 'multipart/form-data' } }
+      );
+      message.success(response.data);
+      setUploadedFiles([]); // Clear uploaded files after successful upload
+      setRefresh(!refresh);
+    } catch (error) {
+      console.error(error);
+      message.error(error.message || 'An error occurred while uploading images. Please try again later.');
+    }
+  
+    // else if (uploadedFiles.length > 0) {
+    //   try {
+    //     const response = await axios.post(
+    //       `${API_BASE_URL}/orphanage/${userDetails.orpId}/orphanageDetails/uploadImages`,
+    //       formdata, // Send FormData instead of uploadedFiles
+    //       { headers: { 'Content-Type': 'multipart/form-data' } }
+    //     );
+    //     message.success(response.data);
+    //     setUploadedFiles([]); // Clear uploaded files after successful upload
+    //   } catch (error) {
+    //     console.error(error);
+    //     message.error(error.message || 'An error occurred while uploading images. Please try again later.');
+    //   }
+    // } else {
+    //   message.info('No files selected to upload.');
+    // }
   };
 
   return (

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import './Container.css';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { useState } from 'react';
 import Galleries from '../Galleries/Galleries'
 import UpdateDetails from '../UpdateDetails/UpdateDetails'
@@ -142,6 +142,9 @@ const openPhotos=()=>{
     console.log(`Button clicked: ${action}`);
   };
 
+  const [isLoading, setIsLoading] = useState(false); // Initial state is false
+
+
   return (
     <div className="container">
       <h1 className="head">ORPHANAGE DETAILS</h1>
@@ -183,12 +186,13 @@ const openPhotos=()=>{
           <button className="button" onClick={() => openCertificates()}>
             Upload Certificates
           </button>
-          <button className="button" onClick={() => openPhotos()}>
-            Upload Photos
-          </button>
           <button className='button' onClick={handleViewCertificate}>
             View Certificate
           </button>
+          <button className="button" onClick={() => openPhotos()}>
+            Upload Photos
+          </button>
+          
         
       </div>
 
@@ -201,31 +205,40 @@ const openPhotos=()=>{
       >
         <DialogTitle>View Certificate</DialogTitle>
         <DialogContent>
-          {certificateUrl ? (<iframe
+          {certificateUrl ? (<>
+        {isLoading ? (
+          <CircularProgress sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} />
+        ) : (
+          <iframe
             title="certificate"
             src={certificateUrl}
             width="100%"
             height="600"
-          />): (<div>No Certificate to view</div>)}
+          />
+        )}
+      </>
+    ): (<div>No Certificate to view</div>)}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClosePdfDialog}>Close</Button>
         </DialogActions>
       </Dialog>
-      {/*View Certificate*/}
+
+
+      {/*View Gallery*/}
       <Dialog
         open={gopen}
         onClose={handleClose} 
       >
-        
         <DialogContent>
           <Galleries />
         </DialogContent>
         <DialogActions>
-        <button type="submit" onClick={handleClose}>Save Changes</button>
+        <button type="submit" onClick={handleClose}>Back</button>
         </DialogActions>
       </Dialog>
 
+      {/*Upload Details*/}
       <Dialog
         open={open}
         onClose={handleClose}
@@ -248,6 +261,8 @@ const openPhotos=()=>{
         
       </Dialog>
 
+
+      {/*Upload Certificates*/}
       <Dialog
         open={openCer}
         onClose={handleClose}
@@ -272,6 +287,7 @@ const openPhotos=()=>{
         </DialogActions>
       </Dialog>
 
+      {/*Upload Photos*/}
       <Dialog
         open={openPh}
         onClose={handleClose}

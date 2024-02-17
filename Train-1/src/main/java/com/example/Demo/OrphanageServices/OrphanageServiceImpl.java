@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -140,18 +141,39 @@ public class OrphanageServiceImpl implements OrphanageService {
     public String editEvent(String eventId,Events event){
         Optional<Events> optionalEvents=eventsRepository.findById(eventId);
         if(optionalEvents.isPresent()){
-            event.setId(eventId);
-            eventsRepository.save(event);
+            optionalEvents.get().setVerificationStatus(VerificationStatus.NOT_VERIFIED);
+            optionalEvents.get().setTitle(event.getTitle());
+            optionalEvents.get().setTime(event.getTime());
+            optionalEvents.get().setDate(event.getDate());
+            optionalEvents.get().setDescription(event.getDescription());
+            eventsRepository.save(optionalEvents.get());
             return "Event Updated Successfully";
         }
         return "Error occurred try again";
     }
 
     @Override
+    public List<Events> getPlannedEvents(String orpId) {
+        List<Events> events= eventsRepository.getEventsByOrpId(orpId);
+        if(events == null || events.isEmpty()){
+            return null;
+        }
+        return (List<Events>) events.stream()
+                .filter(event->event.getEventStatus().equals(EnumClass.EventStatus.PLANNED )
+                           ||  event.getEventStatus().equals(EnumClass.EventStatus.ONGOING))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public String cancelEvent(String eventId) {
         Optional<Events> optionalEvent = eventsRepository.findById(eventId);
-        optionalEvent.ifPresent(events -> events.setEventStatus(EnumClass.EventStatus.CANCELLED));
-        return "Event Cancelled Successfully";
+        if(optionalEvent.isPresent()){
+            optionalEvent.get().setEventStatus(EnumClass.EventStatus.CANCELLED);
+            eventsRepository.save(optionalEvent.get());
+            return "Event Cancelled Successfully";
+        }
+        return "Problem in Event Cancellation";
+
     }
 
     @Override

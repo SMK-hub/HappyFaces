@@ -27,6 +27,8 @@ public interface OrphanageService {
 
     String editEvent(String eventId, Events event);
 
+    List<Events> getPlannedEvents(String orpId);
+
     String cancelEvent(String eventId);
 
     String sendOtp(Orphanage orphanage);

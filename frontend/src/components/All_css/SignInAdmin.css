@@ -6,7 +6,7 @@
 }
 .sign-in-admin-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; 
   align-items: center;
   padding: 40px;
   background-image: linear-gradient(to right top, #ffe1bc, #ffdcbf, #ffd8c2, #ffd5c7, #ffd2cb, #ffcfce, #ffcdd2, #ffcbd6, #ffc9db, #fdc7e2, #f9c6e9, #f3c6f1);
@@ -38,15 +38,14 @@
   position: relative;
   align-content: center;
   justify-content: center;
-  left: 420px;
 }
  
-.form-label {
+.admin-form-label {
   font-size: 18px;
   margin-bottom: 10px;
 }
  
-.form-input {
+.admin-form-input {
   width: 100%;
   padding: 10px;
   margin-bottom: 15px;
@@ -59,8 +58,6 @@
   width: 23%;
   padding: 15px;
   cursor: pointer;
-  /* background-image:linear-gradient( 106.37deg, #f3c6f1 29.63%, #ffcfd1 51.55%, #ffe1bc 90.85% ); */
-  
   background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   color: #050505;
@@ -70,7 +67,7 @@
   transition: background-color 0.3s ease;
 }
  
-.form-button:hover {
+.admin-form-button:hover {
   background-image:linear-gradient( 106.37deg, #f3c6f1 29.63%, #ffcfd1 51.55%, #ffe1bc 90.85% );
 }
  
@@ -83,28 +80,28 @@
 }
  
 .admin-back-link:hover {
-  color: #ffe1bc;
+  color: #4c2d07;
 }
  
-.form-buttons {
+.admin-form-buttons {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
 }
  
-.forgot-link {
+.admin-forgot-link {
   color: #774c75;
   text-decoration: none;
   font-size: 16px;
   transition: color 0.3s ease;
 }
  
-.forgot-link:hover {
+.admin-forgot-link:hover {
   color: #4c2d07;
 }
 
-.popup {
+.admin-popup {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -117,7 +114,7 @@
   justify-content: center;
 }
  
-.popup-inner {
+.admin-popup-inner {
   background-color: white;
   padding: 20px;
   border-radius: 10px;
