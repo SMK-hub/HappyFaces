@@ -26,11 +26,12 @@
   font-size: 28px;
   margin-bottom: 20px;
   margin-top: 76px;
+  margin:auto;
   color: #333;
-  align-content: center;
   position: relative;
+  align-content: center;
 }
- 
+
 .sign-in-admin-form {
   display: flex;
   flex-direction: column;
@@ -38,6 +39,7 @@
   position: relative;
   align-content: center;
   justify-content: center;
+  margin:auto;
 }
  
 .admin-form-label {

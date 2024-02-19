@@ -65,7 +65,6 @@ const FormComponent = () => {
 
   
     const handleSubmit = (e) => {
-      e.preventDefault();
       console.log("Form Data:", formData);
       updateOrphanageDetails();
     };
@@ -86,7 +85,7 @@ const FormComponent = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={()=>handleSubmit()}>
   <h1>Orphanage Details</h1>
   <label>
     Orphanage Name<span className="required-star">*</span>:
@@ -161,7 +160,7 @@ const FormComponent = () => {
   </label>
 
   <div className="button-container">
-    <button type="submit" onClick={handleSubmit}>Update</button>
+    <button type="submit">Update</button>
   </div>
 </form>
 

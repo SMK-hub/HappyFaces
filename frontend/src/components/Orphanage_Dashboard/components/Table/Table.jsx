@@ -8,43 +8,50 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import "./Table.css";
+import axios from "axios";
+import { API_BASE_URL } from "../../../../config";
+import { useUser } from "../../../../UserContext";
+import { message } from "antd";
 
 
-function createData(name, trackingId, date, status) {
-  return { name, trackingId, date, status };
-}
 
-const rows = [
-  createData("Tarun", 18908424, "2 January 2024", "Successful"),
-  createData("Sangeeta ", 18908424, "12 January 2024", "Processing"),
-  createData("Ankit", 18908424, "16 January 2024", "Successful"),
-  createData("Anjali", 18908421, "18 January 2024", "Failed"),
-];
-
-const makeStyle = (status) => {
-  if (status === "Successful") {
-    return {
-      background: 'rgb(145 254 159 / 47%)',
-      color: 'green',
-    };
-  } else if (status === "Failed") {
-    return {
-      background: '#ffadad8f',
-      color: 'red',
-    };
-  } else {
-    return {
-      background: '#59bfff',
-      color: 'white',
-    };
-  }
-};
 
 export default function BasicTable() {
+  
+  const {userDetails} =useUser();
+  const [sortedData, setSortedData] = React.useState([]);
+  const [data,setData] = React.useState([]);
+
+  React.useEffect(()=>{
+    const donationData = async()=>{
+      try{
+        const response = await axios.get(`${API_BASE_URL}/orphanage/DonationList/${userDetails.orpId}`);
+        const status = response.status;
+        if(status === 200){
+          const data=response.data;
+          setData(response.data);
+          const sorted = [...data].sort((a, b) => new Date(a.date) - new Date(b.date));
+          const firstFour = sorted.slice(0, 4);
+          setSortedData(firstFour);
+        }
+      }catch(error){
+        message.error(error);
+      }
+    } 
+    donationData();
+  },[data])
+  const getDonorName = async(donorId)=>{
+    try{
+      const response = await axios.get(`${API_BASE_URL}/orphanage/donor/${donorId}`)
+      return response.name; 
+    }catch(error){
+      message.error(error);
+    }
+  }
+  
+  
   return (
-    // <div className="App">
-    //   <div className="AppGlass">
-    //     <Sidebar />
+   
         <div className="Table">
           <h3 style={{ fontFamily: 'Anton, sans-serif', fontSize: '1em' , justifyContent: 'left' , padding : '1em'}}>Donation Details</h3>
           <TableContainer
@@ -57,12 +64,11 @@ export default function BasicTable() {
                   <TableCell>Donor Name</TableCell>
                   <TableCell align="left">Transaction ID</TableCell>
                   <TableCell align="left">Date</TableCell>
-                  <TableCell align="left">Status</TableCell>
-                  <TableCell align="left"></TableCell>
+                  <TableCell align="left">Amount</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody style={{ color: "white" }}>
-                {rows.map((row) => (
+                {sortedData.map((row) => (
                   <TableRow
                     key={row.name}
                     sx={{
@@ -70,17 +76,14 @@ export default function BasicTable() {
                     }}
                   >
                     <TableCell component="th" scope="row">
-                      {row.name}
+                      {()=>getDonorName(row.donorId)}
                     </TableCell>
-                    <TableCell align="left">{row.trackingId}</TableCell>
-                    <TableCell align="left">{row.date}</TableCell>
+                    <TableCell align="left">{row.transactionId}</TableCell>
+                    <TableCell align="left">{row.dateTime}</TableCell>
                     <TableCell align="left">
-                      <span className="status" style={makeStyle(row.status)}>
+                      <span className="status">
                         {row.status}
                       </span>
-                    </TableCell>
-                    <TableCell align="left" className="Details">
-                      Details
                     </TableCell>
                   </TableRow>
                 ))}

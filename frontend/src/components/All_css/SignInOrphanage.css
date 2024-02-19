@@ -26,6 +26,7 @@
   font-size: 28px;
   margin-bottom: 20px;
   margin-top: 76px;
+  margin:auto;
   color: #333;
   position: relative;
   align-content: center;
@@ -38,6 +39,7 @@
   position: relative;
   align-content: center;
   justify-content: center;
+  margin:auto;
 }
 
 .orphanage-form-label {

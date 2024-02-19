@@ -22,27 +22,29 @@
 .sign-in-donor-heading {
   font-size: 28px;
   margin-bottom: 20px;
-  position: relative;
+  margin-top: 76px;
+  margin:auto;
   color: #333;
-  margin-top: 82px;
-  left: 549px;
+  position: relative;
+  align-content: center;
 }
 
 .sign-in-donor-form {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  width: 37%;
   position: relative;
-  left: 393px;
-  width: 36%;
+  align-content: center;
+  justify-content: center;
+  margin:auto;
 }
 
-.form-label {
+.donor-form-label {
   font-size: 18px;
   margin-bottom: 10px;
 }
 
-.form-input {
+.donor-form-input {
   width: 100%;
   padding: 10px;
   margin-bottom: 15px;
@@ -51,7 +53,7 @@
   font-size: 16px;
 }
 
-.form-button {
+.donor-form-button {
   width: 100%;
   padding: 15px;
   cursor: pointer;
@@ -64,30 +66,43 @@
   transition: background-color 0.3s ease;
 }
 
-.form-button:hover {
+.donor-form-button:hover {
   background-image: linear-gradient(106.37deg, #f3c6f1 29.63%, #ffcfd1 51.55%, #ffe1bc 90.85%);
 }
 
-.back-link {
+.don-button{
+  width: 23%;
+  padding: 15px;
+  cursor: pointer;
+  background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  color: #050505;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  transition: background-color 0.3s ease;
+}
+
+.donor-back-link {
   margin-top: 20px;
-  color: #ffe1bc;
+  color: #774c75;
   text-decoration: none;
   font-size: 16px;
   transition: color 0.3s ease;
 }
 
-.back-link:hover {
-  color: #f3c6f1;
+.donor-back-link:hover {
+  color: #4c2d07;
 }
 
-.form-buttons {
+.donor-form-buttons {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
 }
 
-.forgot-password-link {
+.donor-forgot-password-link {
   color: #0e0e0e;
   text-decoration: none;
   margin-top: 20px;
@@ -95,11 +110,11 @@
   transition: color 0.3s ease;
 }
 
-.forgot-password-link:hover {
+.donor-forgot-password-link:hover {
   color: #ffe1bc;
 }
 
-.forgot-password-popup {
+.donor-forgot-password-popup {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -110,33 +125,33 @@
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
-.forgot-password-popup h2 {
+.donor-forgot-password-popup h2 {
   margin-top: 0;
   text-align: center;
 }
 
-.forgot-password-popup form {
+.donor-forgot-password-popup form {
   display: flex;
   flex-direction: column;
 }
 
-.forgot-password-popup label {
+.donor-forgot-password-popup label {
   margin-bottom: 5px;
 }
 
-.forgot-password-popup input[type="email"],
-.forgot-password-popup input[type="text"] {
+.donor-forgot-password-popup input[type="email"],
+.donor-forgot-password-popup input[type="text"] {
   padding: 8px;
   margin-bottom: 10px;
 }
 
-.forgot-password-popup .form-buttons {
+.donor-forgot-password-popup .form-buttons {
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
 }
 
-.forgot-password-popup .form-buttons button {
+.donor-forgot-password-popup .form-buttons button {
   padding: 8px 20px;
   cursor: pointer;
   border: none;
@@ -145,11 +160,11 @@
   color: white;
 }
 
-.forgot-password-popup .form-buttons button:hover {
+.donor-forgot-password-popup .form-buttons button:hover {
   background-color: #cfb7cf;
 }
 
-.new-password-popup {
+.donor-new-password-popup {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -161,35 +176,35 @@
   z-index: 9999; /* Ensure it appears above other content */
 }
 
-.new-password-popup h2 {
+.donor-new-password-popup h2 {
   margin-top: 0;
   text-align: center;
 }
 
-.new-password-popup form {
+.donor-new-password-popup form {
   display: flex;
   flex-direction: column;
 }
 
-.new-password-popup label {
+.donor-new-password-popup label {
   margin-bottom: 5px;
 }
 
-.new-password-popup input[type="password"],
-.new-password-popup input[type="text"] {
+.donor-new-password-popup input[type="password"],
+.donor-new-password-popup input[type="text"] {
   padding: 8px;
   margin-bottom: 10px;
   width: 100%;
 }
 
-.new-password-popup .form-buttons {
+.donor-new-password-popup .donor-form-buttons {
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
   flex-direction: column;
 }
 
-.new-password-popup .form-buttons button {
+.donor-new-password-popup .donor-form-buttons button {
   padding: 8px 20px;
   cursor: pointer;
   border: none;
@@ -203,7 +218,7 @@
   flex: 1;
 }
 
-.new-password-popup .form-buttons button:hover {
+.donor-new-password-popup .donor-form-buttons button:hover {
   background-color: #c7a3bf;
   width: 48%;
 }

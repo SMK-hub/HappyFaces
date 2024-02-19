@@ -126,8 +126,8 @@ const SignInOrphanage = () => {
   return (
     <div className='sign-in-orphanage'>
       <Header/>
-      <div>
-        <h2 className="sign-in-orphanage-heading"><center>ORPHANAGE SIGN IN</center></h2>
+      <div style={{display:'flex',flexDirection:'column', justifyContent:'center', margin:'auto 0px'}}>
+        <h2 className="sign-in-orphanage-heading">ORPHANAGE SIGN IN</h2>
         <form onSubmit={handleSignIn} className="sign-in-orphanage-form">
           <label className="orphanage-form-label">
             Email:
@@ -158,12 +158,12 @@ const SignInOrphanage = () => {
             <a href="#" onClick={handleForgotPassword} className="orphanage-forgot-password-link">
               Forgot Password?
             </a>
-          </div>
-          <Link to="/signin" className="orphanage-back-link">
+            <Link to="/signin" className="orphanage-back-link">
           Back
         </Link>
+          </div>          
         </form>
-        
+
       </div>
  
       {/* Forgot Password Popup */}

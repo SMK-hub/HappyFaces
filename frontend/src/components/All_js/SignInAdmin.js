@@ -91,7 +91,7 @@ const SignInAdmin = () => {
     
     <div className='sign-in-admin'>
       <Header/>
-      <div>
+      <div style={{display:'flex',flexDirection:'column', justifyContent:'center', margin:'auto 0px'}}>
         <h2 className="sign-in-admin-heading">ADMIN SIGN IN</h2>
         <form onSubmit={handleSignIn} className="sign-in-admin-form">
           <label className="admin-form-label">
