@@ -47,9 +47,9 @@ const AboutUs = () => {
             <p>
               Meet the incredible team behind Happy Faces—passionate individuals dedicated to nurturing smiles and building a brighter future for orphaned children. Committed to compassion, innovation, and positive impact. Together, we make dreams blossom! #HappyFacesTeam
             </p>
-            <button className="view-details-button" onClick={handleViewTeamMembers}>
+            {/* <button className="view-details-button" onClick={handleViewTeamMembers}>
               View Team Members
-            </button>
+            </button> */}
           </div>
         </div>
 

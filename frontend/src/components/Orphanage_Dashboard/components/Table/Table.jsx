@@ -28,9 +28,18 @@ export default function BasicTable() {
         const response = await axios.get(`${API_BASE_URL}/orphanage/DonationList/${userDetails.orpId}`);
         const status = response.status;
         if(status === 200){
-          const data=response.data;
-          setData(response.data);
-          const sorted = [...data].sort((a, b) => new Date(a.date) - new Date(b.date));
+          const datas=response.data;
+          const donationWithDonorData = await Promise.all(
+            datas.map(async(data)=>{
+              const donorData = await getDonorData(data.id);
+              return {
+                ...data,
+                donorData:donorData,
+              }
+            })
+          )
+          setData(donationWithDonorData);
+          const sorted = [...datas].sort((a, b) => new Date(a.date) - new Date(b.date));
           const firstFour = sorted.slice(0, 4);
           setSortedData(firstFour);
         }
@@ -40,10 +49,10 @@ export default function BasicTable() {
     } 
     donationData();
   },[data])
-  const getDonorName = async(donorId)=>{
+  const getDonorData = async(donorId)=>{
     try{
       const response = await axios.get(`${API_BASE_URL}/orphanage/donor/${donorId}`)
-      return response.name; 
+      return response.data; 
     }catch(error){
       message.error(error);
     }
@@ -68,7 +77,7 @@ export default function BasicTable() {
                 </TableRow>
               </TableHead>
               <TableBody style={{ color: "white" }}>
-                {sortedData.map((row) => (
+                {sortedData?.map((row) => (
                   <TableRow
                     key={row.name}
                     sx={{
@@ -76,7 +85,7 @@ export default function BasicTable() {
                     }}
                   >
                     <TableCell component="th" scope="row">
-                      {()=>getDonorName(row.donorId)}
+                      {row?.donorData.donorId}
                     </TableCell>
                     <TableCell align="left">{row.transactionId}</TableCell>
                     <TableCell align="left">{row.dateTime}</TableCell>
