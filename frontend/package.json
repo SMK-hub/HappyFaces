@@ -70,6 +70,7 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/dom": "^9.3.4",
     "source-map-loader": "^5.0.0"
   }
 }

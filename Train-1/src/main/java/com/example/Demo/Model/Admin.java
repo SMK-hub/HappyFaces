@@ -37,7 +37,7 @@ public class Admin {
 				", email='" + email + '\'' +
 				", profilePhoto=" + Arrays.toString(profilePhoto) +
 				", password='" + password + '\'' +
-				", role='" + Role + '\'' +
+				", Role='" + Role + '\'' +
 				", passcode='" + passcode + '\'' +
 				", contact='" + contact + '\'' +
 				'}';
