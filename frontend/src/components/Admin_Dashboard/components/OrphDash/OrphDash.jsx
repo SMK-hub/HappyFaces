@@ -81,15 +81,15 @@ const{userDetails}= useUser();
   const [openPdfDialog, setOpenPdfDialog] = useState(false);
   const [certificateUrl, setCertificateUrl] = useState(null);
 
-  const handleViewCertificate = async () => {
-    const certificateUrl = await fetchOrphanageCertificate();
+  const handleViewCertificate = async (orpId) => {
+    const certificateUrl = await fetchOrphanageCertificate(orpId);
     setCertificateUrl(certificateUrl);
     setOpenPdfDialog(true);
   };
 
-  const fetchOrphanageCertificate = async () => {
+  const fetchOrphanageCertificate = async (orpId) => {
     try {
-      const response = await axios.get(`http://localhost:8079/admin/getCertificate/${userDetails.orpId}`, {
+      const response = await axios.get(`http://localhost:8079/admin/getCertificate/${orpId}`, {
         responseType: 'arraybuffer'
       });
   
@@ -313,7 +313,7 @@ const handleClosePdfDialog = () => {
               <p className="field-name">Website<span> {selectedOrphanage.web}</span></p>
               <p className="field-name">Description<span> {selectedOrphanage.desc}</span></p>
               <p className="field-name">Images:{" "} <button onClick={openViewImagesPopup}>View Images</button><span></span></p>
-              <p className="field-name">Certificates{" "} <button onClick={handleViewCertificate} className="smallButton">View Certificates</button></p>
+              <p className="field-name">Certificates{" "} <button onClick={()=>handleViewCertificate(selectedOrphanage.orpId)} className="smallButton">View Certificates</button></p>
             </div>
           </div>
         )}
