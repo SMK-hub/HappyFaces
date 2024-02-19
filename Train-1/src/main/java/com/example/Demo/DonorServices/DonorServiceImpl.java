@@ -244,10 +244,10 @@ public class DonorServiceImpl implements DonorService {
     }
 
     @Override
-    public Donor changeDonorPassword(String email,String oldPassword, String newPassword, String conformNewPassword) {
+    public Donor changeDonorPassword(String email,String oldPassword, String newPassword, String confirmNewPassword) {
         Optional<Donor> donor=donorRepository.findByEmail(email);
         if(donor.isPresent()){
-            if(newPassword.equals(conformNewPassword)){
+            if(newPassword.equals(confirmNewPassword)){
                 donor.get().setPassword(newPassword);
                 donorRepository.save(donor.get());
                 return donor.get();

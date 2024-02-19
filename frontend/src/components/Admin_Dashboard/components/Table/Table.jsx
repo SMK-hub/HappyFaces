@@ -40,12 +40,6 @@ export default function BasicTable() {
           location: orphanage.address.city,
           contact: orphanage.contact,
           status: orphanage.verificationStatus,
-          // director: orphanage.directorName,
-          // web: orphanage.website,
-          // email: orphanage.orphanageEmail,
-          // desc: orphanage.description,
-          // establishedDate: orphanage.establishedDate,
-          // images: orphanage.images,
         }));
       console.log(data);
       setOrphanagesData(data.slice(0, 5));

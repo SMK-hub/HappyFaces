@@ -37,7 +37,7 @@ public interface DonorService {
 
     Optional<Donor> getDonorByEmail(String email);
 
-    Donor changeDonorPassword(String email, String oldPassword, String newPassword, String conformNewPassword);
+    Donor changeDonorPassword(String email, String oldPassword, String newPassword, String confirmNewPassword);
     Donations saveDonationDetail(Donations donations);
 
     List<String> getDonorIdFromEvent(String eventId);
