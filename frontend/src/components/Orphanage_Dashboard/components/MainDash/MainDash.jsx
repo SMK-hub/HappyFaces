@@ -7,7 +7,6 @@ const MainDash = () => {
     
     <div className="MainDashboard">
       <h1 style={{ fontFamily: 'Anton, sans-serif', fontSize: '2em' }}>Dashboard</h1>
-
       <Cards />
       <Table />
     </div>
