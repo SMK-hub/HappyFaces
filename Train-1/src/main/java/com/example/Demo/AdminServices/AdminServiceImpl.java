@@ -5,25 +5,13 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 import com.example.Demo.Enum.EnumClass;
+import com.example.Demo.Model.*;
+import com.example.Demo.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.Demo.EmailServices.EmailService;
-import com.example.Demo.Model.Admin;
-import com.example.Demo.Model.DonationRequirements;
-import com.example.Demo.Model.Donations;
-import com.example.Demo.Model.Donor;
-import com.example.Demo.Model.Events;
-import com.example.Demo.Model.Orphanage;
-import com.example.Demo.Model.OrphanageDetails;
-import com.example.Demo.Repository.AdminRepository;
-import com.example.Demo.Repository.DonationsRepository;
-import com.example.Demo.Repository.DonationRequirementRepository;
-import com.example.Demo.Repository.DonorRepository;
-import com.example.Demo.Repository.EventsRepository;
-import com.example.Demo.Repository.OrphanageDetailsRepository;
-import com.example.Demo.Repository.OrphanageRepository;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -49,6 +37,8 @@ public class AdminServiceImpl implements AdminService {
     private DonationsRepository donationRepo;
     @Autowired
     private DonationRequirementRepository requireRepo;
+    @Autowired
+    private InterestedPersonRepository interestedPersonRepository;
 
     private String passcode = "Admin123Admin";
 
@@ -123,6 +113,11 @@ public class AdminServiceImpl implements AdminService {
         }
 
         return null;
+    }
+
+    @Override
+    public List<InterestedPerson> getInterestedPersonByEventId(String eventId) {
+        return interestedPersonRepository.findAllInterestedPersonByEventId(eventId);
     }
 
     @Override
@@ -207,8 +202,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Events verifyEventDetails(String orpId, String verificationStatus) {
-        Optional<Events> event = eventRepo.findByOrpId(orpId);
+    public Events verifyEventDetails(String eventId, String verificationStatus) {
+        Optional<Events> event = eventRepo.findById(eventId);
         if (event.isPresent()) {
             event.get().setVerificationStatus(EnumClass.VerificationStatus.valueOf(verificationStatus));
             eventRepo.save(event.get());
@@ -218,10 +213,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
 
-    @Override
-    public OrphanageDetails notVerifyEventDetails(Events event) {
-        return null;
-    }
+
 
     @Override
     public Orphanage getOrphanageById(String id) {

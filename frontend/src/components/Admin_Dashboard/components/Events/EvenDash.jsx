@@ -6,6 +6,8 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import ImagePopup from "./ImagePopup";
 import { jsPDF } from "jspdf";
 import axios from "axios";
+import { Button, message } from "antd";
+import { API_BASE_URL } from "../../../../config";
 
 const EvenDash = () => {
   const [imagePopupVisible, setImagePopupVisible] = useState(false);
@@ -14,7 +16,12 @@ const EvenDash = () => {
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [eventsData, setEventsData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+
   const entriesPerPage = 5;
+
+  const [interestedDonors, setInterestedDonors] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   // const uniqueLocations = ["All", ...new Set(eventsData.map((event) => orphanage.location))];
   const uniqueStatus = ["All", ...new Set(eventsData.map((event) => event.status))];
@@ -43,9 +50,26 @@ const EvenDash = () => {
     }
   };
 
-  const updateEventStatus = async (OrpId,status) => {
+  const fetchInterestedDonors = async (eventId) => {
+    setIsLoading(true);
+    setError(null);
+
     try {
-      await axios.post(`http://localhost:8079/admin/verifyEventDetails/${OrpId}/${status}`);
+      const response = await axios.get(
+        `${API_BASE_URL}/event/interestedPerson/${eventId}`
+      );
+      setInterestedDonors(response.data);
+    } catch (error) {
+      setError(error.message || 'An error occurred while fetching data.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+
+  const updateEventStatus = async (eventId,status) => {
+    try {
+      await axios.post(`http://localhost:8079/admin/verifyEventDetails/${eventId}/${status}`);
       fetchEvents();
       console.log("Event status updated ");
     } catch(error) {
@@ -54,10 +78,6 @@ const EvenDash = () => {
     }
   };
 
-  // const handleLocationChange = (e) => {
-  //   setSelectedLocation(e.target.value);
-  //   setCurrentPage(1);
-  // };
 
   const handleStatusChange = (e) => {
     setSelectedStatus(e.target.value);
@@ -86,14 +106,14 @@ const EvenDash = () => {
     pdf.save(`${orphanage.name}_certificates.pdf`);
   };
 
-  const showConfirmation = async (action, OrpId) => {
+  const showConfirmation = async (action, eventId) => {
     const confirmationMessage = `Are you sure to ${action === 'Decline' ? 'Decline' : 'Accept'} this?`;
     if (window.confirm(confirmationMessage)) {
       try {
         if (action === 'Decline') {
-          await updateEventStatus(OrpId, 'NOT_VERIFIED');
+          await updateEventStatus(eventId, 'NOT_VERIFIED');
         } else {
-          await updateEventStatus(OrpId, 'VERIFIED');
+          await updateEventStatus(eventId, 'VERIFIED');
         }
         fetchEvents();
       } catch(error) {
@@ -101,9 +121,9 @@ const EvenDash = () => {
       }
     } else {
       if(action === 'Decline') {
-        console.log('Decline action is not working');
+        message.info('Decline action is not working');
       } else {
-        console.log('Accept action is not working');
+        message.info('Accept action is not working');
       }
     }
   };  
@@ -123,6 +143,11 @@ const EvenDash = () => {
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
+  };
+
+  const handleViewInterestedDonors = async(eventId) => {
+     await fetchInterestedDonors(eventId);
+    console.log('View interested donors:', interestedDonors);
   };
 
   return (
@@ -176,10 +201,10 @@ const EvenDash = () => {
                 <td className="requests">
                   
                   {event.status === "VERIFIED" && (
-                    <button onClick={() => showConfirmation("Decline", event.orpId)} style={{ fontSize: "10px", padding: "5px" }}>Decline</button>
+                    <button onClick={() => showConfirmation("Decline", event.id)} style={{ fontSize: "10px", padding: "5px" }}>Decline</button>
                   )}
                   {event.status === "NOT_VERIFIED" && (
-                    <button onClick={() => showConfirmation("Accept", event.orpId)} style={{ fontSize: "10px",padding:"5px"}}>Accept</button>
+                    <button onClick={() => showConfirmation("Accept", event.id)} style={{ fontSize: "10px",padding:"5px"}}>Accept</button>
                   )}
                   
                 </td>
@@ -209,9 +234,30 @@ const EvenDash = () => {
               <p className="field-name">Date:<span> {selectedEvent.date}</span></p>
               <p className="field-name">Time:<span> {selectedEvent.time}</span></p>
               <p className="field-name">Current Status:<span> {selectedEvent.state}</span></p>
+              <p className="field-name">Interested People:<Button type="primary" onClick={()=>handleViewInterestedDonors(selectedEvent.id)} disabled={isLoading}>
+            {isLoading ? 'Loading...' : 'View'}
+          </Button></p>
+          {interestedDonors.length === 0 && (
+          <p className="no-data-message">No one has registered for this event yet.</p>
+        )}
+          {interestedDonors.length > 0 && (
+          <div className="interested-donors-list">
+            <h4>Interested Donors</h4>
+            <ul>
+              {interestedDonors.map((donor) => (
+                <li key={donor.id}>
+                  {donor.name} ({donor.email}) - {donor.contactNumber}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}        
+        {error && <p className="error-message">{error}</p>}
+
             </div>
           </div>
         )}
+        
 
         {imagePopupVisible && (
           <ImagePopup

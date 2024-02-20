@@ -5,13 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.example.Demo.Enum.EnumClass;
-import com.example.Demo.Model.Admin;
-import com.example.Demo.Model.Donations;
-import com.example.Demo.Model.DonationRequirements;
-import com.example.Demo.Model.Donor;
-import com.example.Demo.Model.Events;
-import com.example.Demo.Model.Orphanage;
-import com.example.Demo.Model.OrphanageDetails;
+import com.example.Demo.Model.*;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface AdminService {
@@ -44,13 +38,13 @@ public interface AdminService {
 
     OrphanageDetails verifyOrphanageDetails(String orpId, String verificationStatus);
 
-    Events verifyEventDetails(String orpId, String verificationStatus);
+    Events verifyEventDetails(String eventId, String verificationStatus);
 
     Admin editProfile(String adminId, Admin admin);
 
 //    String verifyEventDetails(Events event);
 
-    OrphanageDetails notVerifyEventDetails(Events event);
+    List<InterestedPerson> getInterestedPersonByEventId(String eventId);
 
     Orphanage getOrphanageById(String id);
 

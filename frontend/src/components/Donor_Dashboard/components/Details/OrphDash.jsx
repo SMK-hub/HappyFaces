@@ -88,8 +88,11 @@ const OrphDash = () => {
   const fetchAllEventData = async (orpId)=>{
     try{
       const response=await axios.get(`${API_BASE_URL}/donor/VerifiedEvents/${orpId}`);
-      console.log(response.data);
-      return response.data;
+      const filteredData = response.data.filter(
+        (event) => event.eventStatus === 'PLANNED' || event.eventStatus === 'ONGOING'
+      );
+      console.log(filteredData);
+      return filteredData;
      
     }catch(error){
       console.log(error);
