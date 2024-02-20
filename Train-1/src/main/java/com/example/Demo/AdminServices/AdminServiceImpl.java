@@ -328,8 +328,14 @@ public class AdminServiceImpl implements AdminService {
         if (optionalOrphanageDetails.isPresent()) {
             OrphanageDetails orphanageDetails = optionalOrphanageDetails.get();
             byte[] certificateBytes = orphanageDetails.getCertificate();
-            if (certificateBytes != null) {
-                return Base64.getDecoder().decode(certificateBytes);
+            if (certificateBytes != null && certificateBytes.length > 0) { // Check for null and empty data
+                try {
+                    return Base64.getDecoder().decode(certificateBytes);
+                } catch (IllegalArgumentException e) {
+                    // Handle decoding exception gracefully, e.g., log the error and return null
+                    System.err.println("Error decoding certificate: " + e.getMessage());
+                    return null;
+                }
             }
         }
         return null;

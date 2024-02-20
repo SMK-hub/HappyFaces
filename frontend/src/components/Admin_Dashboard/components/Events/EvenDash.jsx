@@ -8,6 +8,7 @@ import { jsPDF } from "jspdf";
 import axios from "axios";
 import { Button, message } from "antd";
 import { API_BASE_URL } from "../../../../config";
+import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 
 const EvenDash = () => {
   const [imagePopupVisible, setImagePopupVisible] = useState(false);
@@ -33,8 +34,11 @@ const EvenDash = () => {
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get("http://localhost:8079/admin/eventList");
-      const data = response.data.map(event => ({
+      const response = await axios.get(`${API_BASE_URL}/admin/eventList`);
+      const data = await Promise.all(response.data.map(async(event) => {
+        const interestedDonors = await fetchInterestedDonors(event.id)
+        console.log(interestedDonors)
+        return{
         ...event,
         name: event.title,
         desc: event.description,
@@ -42,23 +46,30 @@ const EvenDash = () => {
         date: event.date,
         time: event.time,
         status: event.verificationStatus,
-      }));
+        interestedDonors:interestedDonors,
+      }
+    }
+    )) 
       console.log(data);
       setEventsData(data);
     } catch (error) {
       console.error("Error fetching events", error);
     }
   };
+  const [showInterestedDonorsModal, setShowInterestedDonorsModal] = useState(false);
 
   const fetchInterestedDonors = async (eventId) => {
     setIsLoading(true);
     setError(null);
-
     try {
       const response = await axios.get(
-        `${API_BASE_URL}/event/interestedPerson/${eventId}`
+        `${API_BASE_URL}/admin/event/interestedPerson/${eventId}`
       );
-      setInterestedDonors(response.data);
+      
+      console.log(response.data);
+      if (error || interestedDonors.length === 0) {
+        setShowInterestedDonorsModal(false);
+      }return(response.data);
     } catch (error) {
       setError(error.message || 'An error occurred while fetching data.');
     } finally {
@@ -145,10 +156,10 @@ const EvenDash = () => {
     setCurrentPage(pageNumber);
   };
 
-  const handleViewInterestedDonors = async(eventId) => {
-     await fetchInterestedDonors(eventId);
-    console.log('View interested donors:', interestedDonors);
-  };
+  // const handleViewInterestedDonors = async(eventId) => {
+  //    await fetchInterestedDonors(eventId);
+  //   console.log('View interested donors:', interestedDonors);
+  // };
 
   return (
     <div>
@@ -234,26 +245,18 @@ const EvenDash = () => {
               <p className="field-name">Date:<span> {selectedEvent.date}</span></p>
               <p className="field-name">Time:<span> {selectedEvent.time}</span></p>
               <p className="field-name">Current Status:<span> {selectedEvent.state}</span></p>
-              <p className="field-name">Interested People:<Button type="primary" onClick={()=>handleViewInterestedDonors(selectedEvent.id)} disabled={isLoading}>
-            {isLoading ? 'Loading...' : 'View'}
-          </Button></p>
-          {interestedDonors.length === 0 && (
+              <p className="field-name">Interested People:
+              <Button 
+              type="primary" 
+              onClick={()=>setShowInterestedDonorsModal(true)} 
+              disabled={isLoading || selectedEvent?.interestedDonors?.length == 0}>
+            {isLoading ? 'Loading...' : 'View Interested Donors' }
+          </Button>
+          {error && <p className="error-message">{error}</p>}
+        </p>
+          {selectedEvent?.interestedDonors?.length === 0 && (
           <p className="no-data-message">No one has registered for this event yet.</p>
         )}
-          {interestedDonors.length > 0 && (
-          <div className="interested-donors-list">
-            <h4>Interested Donors</h4>
-            <ul>
-              {interestedDonors.map((donor) => (
-                <li key={donor.id}>
-                  {donor.name} ({donor.email}) - {donor.contactNumber}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}        
-        {error && <p className="error-message">{error}</p>}
-
             </div>
           </div>
         )}
@@ -265,8 +268,32 @@ const EvenDash = () => {
             onClose={closeImagePopup}
           />
         )}
+        {showInterestedDonorsModal && (
+        <Dialog
+          open={showInterestedDonorsModal}
+          onClose={() => setShowInterestedDonorsModal(false)}
+          style={{ overflowY: 'auto', maxHeight: '50vh' }} // Add vertical scroll bar
+        >
+          <DialogTitle>Interested Donors</DialogTitle>
+          <DialogContent>
+            {console.log(selectedEvent)}
+            <ul>
+              {selectedEvent?.interestedDonors?.map((donor) => (
+                <li key={selectedEvent.interestedDonors.id}>
+                  {donor.name} ({donor.email}) - {donor.contact}
+
+                </li>
+              ))}
+              
+            </ul>
+          </DialogContent>
+          
+        </Dialog>
+      )}
+        
       </div>
     </div>
+
   );
 };
 
