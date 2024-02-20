@@ -65,6 +65,7 @@ const Profile = () => {
       console.log(status);
       if(status === 200){
         setUserData(response.data);
+        message.info("Profile Updated Successfully")
         setIsEditMode(false);
       }
     }catch(error){
@@ -93,6 +94,7 @@ const Profile = () => {
         console.log(status);
         if(status == 200){
           setUserData(response.data);
+          message.info("Password Changed Successfully")
           setIsChangePasswordMode(false);
           setPasswordMismatchError('');
         }

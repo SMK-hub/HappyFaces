@@ -36,7 +36,6 @@ const OrphDash = () => {
  
   const  {setUserData} = useUser();
   const {userDetails} = useUser();
-  console.log(userDetails);
  
   const[orphanagesData,setOrphanagesData] = useState([])
   useEffect(()=>{
