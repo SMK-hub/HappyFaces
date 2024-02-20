@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import "./EvenDash.css";
 import '@fortawesome/fontawesome-free/css/all.css';
-import ImagePopup from "./ImagePopup";
+// import ImagePopup from "./ImagePopup";
 import { jsPDF } from "jspdf";
 import axios from "axios";
 import { Button, message } from "antd";
@@ -11,7 +11,7 @@ import { API_BASE_URL } from "../../../../config";
 import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 
 const EvenDash = () => {
-  const [imagePopupVisible, setImagePopupVisible] = useState(false);
+  // const [imagePopupVisible, setImagePopupVisible] = useState(false);
   // const [selectedLocation, setSelectedLocation] = useState("All");
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState("All");
@@ -106,13 +106,13 @@ const EvenDash = () => {
     setSelectedEvent(null);
   };
 
-  const openImagePopup = () => {
-    setImagePopupVisible(true);
-  };
+  // const openImagePopup = () => {
+  //   setImagePopupVisible(true);
+  // };
 
-  const closeImagePopup = () => {
-    setImagePopupVisible(false);
-  };
+  // const closeImagePopup = () => {
+  //   setImagePopupVisible(false);
+  // };
 
   const downloadCertificates = (orphanage) => {
     const pdf = new jsPDF();
@@ -258,21 +258,23 @@ const EvenDash = () => {
 
         {/* Modal */}
         {selectedEvent && (
-          <div className="modal">
-            <div className="modal-content">
-              <span className="close" onClick={closeModal}>
+          <div className="modal" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', backdropFilter: 'blur(5px)' }}>
+            <div className="modal-content" style={{ background: '#fff', border: '1px solid #ddd', padding: '20px' }}>
+              <span className="close" onClick={closeModal} style={{ position: 'absolute', top: '10px', right: '10px', cursor: 'pointer' }}>
                 &times;
               </span>
               <h3>{selectedEvent.name}</h3>
-              <p className="field-name">Description:<span> {selectedEvent.desc}</span></p>
-              <p className="field-name">Date:<span> {selectedEvent.date}</span></p>
-              <p className="field-name">Time:<span> {selectedEvent.time}</span></p>
-              <p className="field-name">Current Status:<span> {selectedEvent.state}</span></p>
-              <p className="field-name">Interested People:
+              <p className="field-name" style={{ margin: '10px 0' }}>Description:<span> {selectedEvent.desc}</span></p>
+              <p className="field-name" style={{ margin: '10px 0' }}>Date:<span> {selectedEvent.date}</span></p>
+              <p className="field-name" style={{ margin: '10px 0' }}>Time:<span> {selectedEvent.time}</span></p>
+              <p className="field-name" style={{ margin: '10px 0' }}>Current Status:<span> {selectedEvent.state}</span></p>
+              <p className="field-name"style={{ margin: '10px 0' }}>Interested People:
               <Button 
               type="primary" 
               onClick={()=>setShowInterestedDonorsModal(true)} 
-              disabled={isLoading || selectedEvent?.interestedDonors?.length == 0}>
+              disabled={isLoading || selectedEvent?.interestedDonors?.length == 0}
+              style={{ backgroundColor: '#f0f0f0', color: '#333', border: 'none' }}
+              >
             {isLoading ? 'Loading...' : 'View Interested Donors' }
           </Button>
           {error && <p className="error-message">{error}</p>}
@@ -285,26 +287,29 @@ const EvenDash = () => {
         )}
         
 
-        {imagePopupVisible && (
+        {/* {imagePopupVisible && (
           <ImagePopup
             images={selectedEvent ? selectedEvent.images : []}
             onClose={closeImagePopup}
           />
-        )}
+        )} */}
         {showInterestedDonorsModal && (
         <Dialog
           open={showInterestedDonorsModal}
           onClose={() => setShowInterestedDonorsModal(false)}
-          style={{ overflowY: 'auto', maxHeight: '50vh' }} // Add vertical scroll bar
-        >
+          style={{
+            overflowY: 'auto',
+            maxHeight: '50vh',
+            borderRadius: '5px', // Added inline style for rounded corners
+            boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.1)', // Added inline style for subtle shadow
+          }}        
+          >
           <DialogTitle>Interested Donors</DialogTitle>
           <DialogContent>
-            {console.log(selectedEvent)}
-            <ul>
+            <ul style={{ listStyle: 'none', padding: '0' }}>
               {selectedEvent?.interestedDonors?.map((donor) => (
-                <li key={selectedEvent.interestedDonors.id}>
+                <li key={selectedEvent.interestedDonors.id} style={{ margin: '10px 0', padding: '10px', borderBottom: '1px solid #ddd' }}>
                   {donor.name} ({donor.email}) - {donor.contact}
-
                 </li>
               ))}
               

@@ -18,7 +18,7 @@ public class EventScheduler {
     @Autowired
     private AdminService adminService;
 
-    @Scheduled(cron = "0 0 0 * * * *")  // Scheduled to run every minute, adjust as needed
+    @Scheduled(cron = "0 0 0 * * * *") 
     public void checkEventStatus() throws ParseException {
         List<Events> events=adminService.getAllEvents();
         Iterator<Events> iterator = events.iterator();
