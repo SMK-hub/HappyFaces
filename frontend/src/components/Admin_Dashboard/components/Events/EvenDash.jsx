@@ -19,7 +19,10 @@ const EvenDash = () => {
 
   const entriesPerPage = 5;
 
-  const [interestedDonors, setInterestedDonors] = useState([]);
+  const [interestedDonors, setInterestedDonors] = useState([
+    { id: 1, name: "John Doe", email: "john@example.com", contactNumber: "1234567890" },
+    { id: 2, name: "Jane Smith", email: "jane@example.com", contactNumber: "9876543210" }
+  ]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -126,7 +129,27 @@ const EvenDash = () => {
         message.info('Accept action is not working');
       }
     }
-  };  
+  }; 
+  
+  const InterestedDonorsPopup = ({ donors, onClose }) => {
+    return (
+      <div className="popup">
+        <div className="popup-content">
+          <span className="close" onClick={onClose}>&times;</span>
+          <h2>Interested Donors</h2>
+          <ul>
+            {donors.map((donor, index) => (
+              <li key={index}>
+                <strong>Name:</strong> {donor.name} <br />
+                <strong>Email:</strong> {donor.email} <br />
+                <strong>Contact:</strong> {donor.contactNumber}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    );
+  }
 
   const filteredEvents = eventsData.filter((event) => {
     return (
@@ -241,16 +264,7 @@ const EvenDash = () => {
           <p className="no-data-message">No one has registered for this event yet.</p>
         )}
           {interestedDonors.length > 0 && (
-          <div className="interested-donors-list">
-            <h4>Interested Donors</h4>
-            <ul>
-              {interestedDonors.map((donor) => (
-                <li key={donor.id}>
-                  {donor.name} ({donor.email}) - {donor.contactNumber}
-                </li>
-              ))}
-            </ul>
-          </div>
+            <InterestedDonorsPopup donors={interestedDonors} onClose={() => setInterestedDonors([])}/>
         )}        
         {error && <p className="error-message">{error}</p>}
 
