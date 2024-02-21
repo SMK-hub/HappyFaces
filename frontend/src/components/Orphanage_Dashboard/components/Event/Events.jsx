@@ -134,7 +134,7 @@ const EventTable = () => {
 
   return (
     <div className='main-events'>
-      <h1 style={{ fontFamily: 'Anton, sans-serif', fontSize: '2em', justifyContent: 'center' }}>EVENTS</h1>
+      <h1 style={{ fontFamily: 'Anton, sans-serif', fontSize: '2em', justifyContent: 'center' ,justifyItems: 'center'}}>EVENTS</h1>
       <div className="eventContainer">
         <table className="event-table">
           <thead>
