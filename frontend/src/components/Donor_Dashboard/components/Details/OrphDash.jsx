@@ -64,9 +64,11 @@ const OrphDash = () => {
  
   const openModal = async (orphanage) => {
     // const events = await fetchEvents(orphanage.orpId);
-    const orphanageWithImageData=await fetchImageData(orphanage.orpId);
-    const orphanagaeWithEventData=await fetchEventData(orphanage.orpId);
-    const orphanageWithAllEventData=await fetchAllEventData(orphanage.orpId);
+    const [orphanageWithImageData, orphanagaeWithEventData, orphanageWithAllEventData] = await Promise.all([
+      fetchImageData(orphanage.orpId),
+      fetchEventData(orphanage.orpId),
+      fetchAllEventData(orphanage.orpId),
+    ]);
     const eventParticipant = await Promise.all(
       orphanagaeWithEventData.map(async(event)=>{        
         const participant = await fetchParticipatedDonorsId(event.id);
@@ -144,30 +146,26 @@ const OrphDash = () => {
     setViewImagesPopupVisible(false);
   };
  
-  const downloadCertificates = async(orpId,orpName) => {
-    try{
+  const downloadCertificates = async (orpId, orpName) => {
+    try {
       const response = await axios.get(`${API_BASE_URL}/orphanage/getCertificate/${orpId}`, { responseType: 'blob' });
-        const status = response.status;
-        if (status === 200) {
-            const blob = new Blob([response.data], { type: 'application/pdf' });
-            if (blob.size === 0) {
-              alert('The file is empty.');
-              return;
-          }
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', `${orpName}_certificates.pdf`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            window.URL.revokeObjectURL(url);
-        } else {
-            alert(response.status);
-        }
- 
-    }catch(error){
-      console.log(error);
+      if (response.status !== 200) {
+        alert(`Error downloading certificates: ${response.status}`);
+        return;
+      }
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      if (blob.size === 0) {
+        alert('The file is empty.');
+        return;
+      }
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `${orpName}_certificates.pdf`);
+      link.click();
+      [link, url].forEach(window.URL.revokeObjectURL);
+    } catch (error) {
+      console.error("Error downloading certificates:", error);
     }
   };
  

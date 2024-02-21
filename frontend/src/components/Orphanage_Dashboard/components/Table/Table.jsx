@@ -39,7 +39,7 @@ export default function BasicTable() {
             })
           )
           setData(donationWithDonorData);
-          const sorted = [...datas].sort((a, b) => new Date(a.date) - new Date(b.date));
+          const sorted = [...donationWithDonorData].sort((a, b) => new Date(a.date) - new Date(b.date));
           const firstFour = sorted.slice(0, 4);
           setSortedData(firstFour);
         }
@@ -91,7 +91,7 @@ export default function BasicTable() {
                     <TableCell align="left">{row.dateTime}</TableCell>
                     <TableCell align="left">
                       <span className="status">
-                        {row.status}
+                        {row.amount}
                       </span>
                     </TableCell>
                   </TableRow>

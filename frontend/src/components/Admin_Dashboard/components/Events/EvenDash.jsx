@@ -54,11 +54,6 @@ const EvenDash = () => {
     }
   };
 
-  // const handleLocationChange = (e) => {
-  //   setSelectedLocation(e.target.value);
-  //   setCurrentPage(1);
-  // };
-
   const handleStatusChange = (e) => {
     setSelectedStatus(e.target.value);
     setCurrentPage(1);
