@@ -5,7 +5,7 @@ import ImagePopup from "./ImagePopup";
 import { jsPDF } from "jspdf";
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
-import RazorPay from '../Details/RazorPay'; // Corrected import statement
+import RazorPay from '../Details/RazorPay';
 import { useUser } from '../../../../UserContext';
 import axios from "axios";
 import { LoadingButton } from "@mui/lab";
@@ -16,6 +16,7 @@ const OrphDash = () => {
   const [donationRazorPayVisible, SetdonationRazorPayVisible] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState("All");
   const [selectedOrphanage, setSelectedOrphanage] = useState();
+  const [selectedImage, setSelectedImage] = useState(null); // Define selectedImage state
   const [selectedRequirement, setSelectedRequirement] = useState("All");
   const [eventDetailsVisible, setEventDetailsVisible] = useState(false);
   const [registrationSuccessVisible, setRegistrationSuccessVisible] = useState(false);
@@ -40,7 +41,6 @@ const OrphDash = () => {
       }
     }
     fetch();
-
   }, []);
 
   const handleLocationChange = (e) => {
@@ -121,14 +121,15 @@ const OrphDash = () => {
     setEventDetailsVisible(false);
   };
 
-  const openImagePopup = () => {
+  const openImagePopup = (image) => {
+    setSelectedImage(image);
     setImagePopupVisible(true);
   };
 
   const closeImagePopup = () => {
     setImagePopupVisible(false);
   };
-
+  
   const openViewImagesPopup = () => {
     setViewImagesPopupVisible(true);
   };
@@ -302,23 +303,49 @@ const OrphDash = () => {
             <div className="modal-content">
               <span className="close" onClick={closeModal}>&times;</span>
               <h3>{selectedOrphanage.orphanageName}</h3>
-              {/* <p className="field-name">Certificates:{" "} <button onClick={() => downloadCertificates(selectedOrphanage.orpId, selectedOrphanage.orphanageName)}>Download</button>{" "} <button onClick={viewCertificates}>View Certificates</button></p> */}
-              <p className="field-name">Orphanage Name:<span> {selectedOrphanage.orphanageName}</span></p>
-              <p className="field-name">Director:<span> {selectedOrphanage.directorName}</span></p>
-              <p className="field-name">Location:
-              <span>
-                {selectedOrphanage.address.house_no},
-                {selectedOrphanage.address.street},
-                {selectedOrphanage.address.city}-{selectedOrphanage.address.postalCode},
-                {selectedOrphanage.address.state},
-                {selectedOrphanage.address.country}
-                </span>
-              </p>
-              <p className="field-name">Email:<span>{selectedOrphanage.orphanageEmail}</span></p>
-              <p className="field-name">Description:<span>{selectedOrphanage.description}</span></p>
-              <p className="field-name">Website:<span>{selectedOrphanage.website}</span></p>
-              <p className="field-name">Certificates:{" "} <button onClick={() => downloadCertificates(selectedOrphanage.orpId, selectedOrphanage.orphanageName)}>Download</button>{" "} <button onClick={viewCertificates}>View Certificates</button></p>
-              <p className="field-name">View Images:{" "} <button onClick={openViewImagesPopup}>View Images</button><span></span></p>
+              <table>
+                <tbody>
+                  <tr>
+                    <td className="field-name">Orphanage Name:</td>
+                    <td>{selectedOrphanage.orphanageName}</td>
+                  </tr>
+                  <tr>
+                    <td className="field-name">Director:</td>
+                    <td>{selectedOrphanage.directorName}</td>
+                  </tr>
+                  <tr>
+                    <td className="field-name">Location:</td>
+                    <td>
+                      {selectedOrphanage.address.house_no}, {selectedOrphanage.address.street}, {selectedOrphanage.address.city} - {selectedOrphanage.address.postalCode}, {selectedOrphanage.address.state}, {selectedOrphanage.address.country}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="field-name">Email:</td>
+                    <td>{selectedOrphanage.orphanageEmail}</td>
+                  </tr>
+                  <tr>
+                    <td className="field-name">Description:</td>
+                    <td>{selectedOrphanage.description}</td>
+                  </tr>
+                  <tr>
+                    <td className="field-name">Website:</td>
+                    <td>{selectedOrphanage.website}</td>
+                  </tr>
+                  <tr>
+                    <td className="field-name">Certificates:</td>
+                    <td>
+                      <button onClick={() => downloadCertificates(selectedOrphanage.orpId, selectedOrphanage.orphanageName)}>Download</button>
+                      <button onClick={viewCertificates}>View Certificates</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="field-name">View Images:</td>
+                    <td>
+                      <button onClick={openViewImagesPopup}>View Images</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
               {/* Add "Events" and "Donate" buttons */}
               <div className="button-container">
                 <button onClick={handleEventsButtonClick}>Events</button>
@@ -447,35 +474,47 @@ const OrphDash = () => {
           </div>
         )}
  
+ {/* Other JSX content */}
         {/* View Images Pop-up */}
         {viewImagesPopupVisible && selectedOrphanage && (
-  <div className="modal">
-    <div className="view-images-content">
-      <span className="close" onClick={closeViewImagesPopup}>&times;</span>
-      <h3>{selectedOrphanage.orphanageName} Images</h3>
-      <div className="image-container" style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)', padding: '10px', borderRadius: '5px' }}>
-        {selectedOrphanage.imageData && selectedOrphanage.imageData.length > 0 ? (
-          <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164}>
-            {selectedOrphanage.imageData.map((item) => (
-              <ImageListItem key={item.img}>
-                <img style={{ minHeight: '200px', maxHeight: '200px', width: '150px', objectFit: 'cover' }}
-                  src={`${pictureUrl(item.image)}`}
-                  srcSet={`${pictureUrl(item.image)}`}
-                  loading="lazy"
-                />
-              </ImageListItem>
-            ))}
-          </ImageList>
-        ) : (
-          <p style={{ textAlign: 'center', color: '#333', marginTop: '20px', alignItems: 'center' }}>No Images to Display</p>
+          <div className="modal" onClick={closeViewImagesPopup}>
+            <div className="view-images-content" style={{ maxHeight: '80vh', overflowY: 'auto' }}> {/* Added style */}
+              <span className="close">&times;</span>
+              <h3>{selectedOrphanage.orphanageName} Images</h3>
+              <div className="image-container" style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)', padding: '10px', borderRadius: '5px' }}>
+                {selectedOrphanage.imageData && selectedOrphanage.imageData.length > 0 ? (
+                  <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164}>
+                    {selectedOrphanage.imageData.map((item, index) => (
+                      <ImageListItem key={index}>
+                        <img
+                          style={{ minHeight: '200px', maxHeight: '200px', width: '150px', objectFit: 'cover', cursor: 'pointer' }}
+                          src={`data:image/jpeg;base64,${item.image}`}
+                          onClick={() => openImagePopup(item.image)}
+                          alt={`Image ${index}`}
+                        />
+                      </ImageListItem>
+                    ))}
+                  </ImageList>
+                ) : (
+                  <p style={{ textAlign: 'center', color: '#333', marginTop: '20px', alignItems: 'center' }}>No Images to Display</p>
+                )}
+              </div>
+            </div>
+          </div>
         )}
-      </div>
-    </div>
-  </div>
-)}
- 
+
+        {/* Image Popup */}
+        {imagePopupVisible && selectedImage && (
+          <div className="modal" onClick={closeImagePopup}>
+            <div className="image-popup-content">
+              <span className="close">&times;</span>
+              <img src={`data:image/jpeg;base64,${selectedImage}`} alt="Zoomed Image" />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
 };
+ 
 export default OrphDash;

@@ -24,9 +24,9 @@
 .MainDashcard {
   background-color: #daa6c4;
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 7px;
   cursor: pointer;
-  flex: 0 1 calc(33.33% - 20px); /* Adjust card width and margin */
+  flex: 0 1 calc(33.33% - 14px); /* Adjust card width and margin */
   margin-bottom: 20px; /* Adjust the bottom margin for spacing */
   margin-right: 20px; /* Adjust the right margin for spacing */
   box-sizing: border-box; /* Include padding and border in the width */
@@ -56,7 +56,7 @@
 }
  
 .modal-content {
-  background-color: #fefefe;
+  background-color: #ddb7d5;
   margin: 20% auto;
   padding: 20px;
   border: 1px solid #888;
