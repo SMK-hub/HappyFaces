@@ -117,10 +117,10 @@ const SignInDonor = () => {
   return (
     <div className="donorSignIn">
       <Header />
-      <div>
+      <div style={{display:'flex',flexDirection:'column', justifyContent:'center', margin:'auto 0px'}}>
         <h2 className="sign-in-donor-heading">DONOR SIGN IN</h2>
         <form onSubmit={handleSignIn} className="sign-in-donor-form">
-          <label className="form-label">
+          <label className="donor-form-label">
             Email:
             <input
               type="email"
@@ -131,36 +131,38 @@ const SignInDonor = () => {
               placeholder="Enter your email"
             />
           </label>
-          <label className="form-label">
+          <label className="donor-form-label">
             Password:
             <input
               type="password"
               value={donorDetails.password}
               onChange={(e) => setDonorDetails({ ...donorDetails, password: e.target.value })}
               required
-              className="form-input"
+              className="donor-form-input"
               placeholder="Enter your password"
             />
           </label>
 
-          <div className="form-buttons">
-            <button type="submit" className="form-button">
+          <div className="donor-form-buttons">
+            <button type="submit" className="don-button">
               Sign In
             </button>
             {/* Changed "Forgot Password" button to text */}
-            <span className="forgot-password-link" onClick={handleForgotPassword}>
+            <span className="donor-forgot-password-link" onClick={handleForgotPassword}>
               Forgot Password?
             </span>
-          </div>
-        </form>
-        <Link to="/signin" className="back-link">
+            <Link to="/signin" className="donor-back-link">
           Back
         </Link>
+          </div>
+          
+        </form>
+        
       </div>
 
       {/* Forgot Password Popup */}
       {showForgotPasswordPopup && (
-        <div className="forgot-password-popup">
+        <div className="donor-forgot-password-popup">
           <button className="close-btn" onClick={handleBack}>X</button>
           <h2>Forgot Password</h2>
           <form onSubmit={handleOtpSubmit}>
@@ -172,7 +174,7 @@ const SignInDonor = () => {
               required
               placeholder="Enter your email"
             />
-            <div className="form-buttons" style={{ display: 'flex', flexDirection: 'row' }}>
+            <div className="donor-form-buttons" style={{ display: 'flex', flexDirection: 'row' }}>
               <button type="submit" onClick={() => fetchOtp()}>Send OTP</button>
               <button onClick={handleBack}>Back</button>
             </div>
@@ -182,8 +184,8 @@ const SignInDonor = () => {
 
       {/* OTP Verification Popup */}
       {showOtpVerificationPopup && (
-        <div className="popup">
-          <div className="popup-inner">
+        <div className="donor-popup">
+          <div className="donor-popup-inner">
             <button className="close-btn" onClick={handleBack}>X</button>
             <h2>OTP Verification</h2>
             <form onSubmit={handleNewPasswordSubmit}>
@@ -212,7 +214,7 @@ const SignInDonor = () => {
                 placeholder="Confirm new password"
               />
               {passwordsMatchError && <p>Passwords do not match</p>}
-              <div className="form-buttons" style={{ display: 'flex', flexDirection: 'row' }}>
+              <div className="donor-form-buttons" style={{ display: 'flex', flexDirection: 'row' }}>
                 <button type="submit" onClick={() => changePassword()}>Submit</button>
                 <button onClick={handleBack}>Back</button>
               </div>

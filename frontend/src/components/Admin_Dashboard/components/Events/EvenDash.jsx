@@ -2,46 +2,94 @@
 // OrphDash.js
 import React, { useState, useEffect } from "react";
 import "./EvenDash.css";
-// index.js or App.js
 import '@fortawesome/fontawesome-free/css/all.css';
-import ImagePopup from "./ImagePopup";
+// import ImagePopup from "./ImagePopup";
+import { jsPDF } from "jspdf";
 import axios from "axios";
+import { Button, message } from "antd";
+import { API_BASE_URL } from "../../../../config";
+import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 
 const EvenDash = () => {
-  const [imagePopupVisible, setImagePopupVisible] = useState(false);
-  const [selectedLocation, setSelectedLocation] = useState("All");
+  // const [imagePopupVisible, setImagePopupVisible] = useState(false);
+  // const [selectedLocation, setSelectedLocation] = useState("All");
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [eventsData, setEventsData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+
   const entriesPerPage = 5;
 
-  const uniqueLocations = ["All", ...new Set(eventsData.map((event) => event.location))];
-  const uniqueStatus = ["All", ...new Set(eventsData.map((event) => event.stats))];
+  const [interestedDonors, setInterestedDonors] = useState([
+    { id: 1, name: "John Doe", email: "john@example.com", contactNumber: "1234567890" },
+    { id: 2, name: "Jane Smith", email: "jane@example.com", contactNumber: "9876543210" }
+  ]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  // const uniqueLocations = ["All", ...new Set(eventsData.map((event) => orphanage.location))];
+  const uniqueStatus = ["All", ...new Set(eventsData.map((event) => event.status))];
 
   useEffect(() => {
     fetchEvents();
+    // updateOrphanageStatus();
   }, []);
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get("http://localhost:8079/admin/eventList");
-      const data = response.data.map(event => ({
+      const response = await axios.get(`${API_BASE_URL}/admin/eventList`);
+      const data = await Promise.all(response.data.map(async(event) => {
+        const interestedDonors = await fetchInterestedDonors(event.id)
+        console.log(interestedDonors)
+        return{
+        ...event,
         name: event.title,
+        desc: event.description,
+        state: event.eventStatus,
         date: event.date,
         time: event.time,
-        stats: event.verificationStatus,
-        attend: event.interestedPersons,
-      }));
+        status: event.verificationStatus,
+        interestedDonors:interestedDonors,
+      }
+    }
+    )) 
+      console.log(data);
       setEventsData(data);
     } catch (error) {
-      console.error("Error fetching orphanages", error);
+      console.error("Error fetching events", error);
+    }
+  };
+  const [showInterestedDonorsModal, setShowInterestedDonorsModal] = useState(false);
+
+  const fetchInterestedDonors = async (eventId) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}/admin/event/interestedPerson/${eventId}`
+      );
+      
+      console.log(response.data);
+      if (error || interestedDonors.length === 0) {
+        setShowInterestedDonorsModal(false);
+      }return(response.data);
+    } catch (error) {
+      setError(error.message || 'An error occurred while fetching data.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleLocationChange = (e) => {
-    setSelectedLocation(e.target.value);
-    setCurrentPage(1);
+
+  const updateEventStatus = async (eventId,status) => {
+    try {
+      await axios.post(`http://localhost:8079/admin/verifyEventDetails/${eventId}/${status}`);
+      fetchEvents();
+      console.log("Event status updated ");
+    } catch(error) {
+      console.error("Error updating the event status",error);
+      throw error;
+    }
   };
 
   const handleStatusChange = (e) => {
@@ -57,18 +105,65 @@ const EvenDash = () => {
     setSelectedEvent(null);
   };
 
-  const openImagePopup = () => {
-    setImagePopupVisible(true);
+  // const openImagePopup = () => {
+  //   setImagePopupVisible(true);
+  // };
+
+  // const closeImagePopup = () => {
+  //   setImagePopupVisible(false);
+  // };
+
+  const downloadCertificates = (orphanage) => {
+    const pdf = new jsPDF();
+    pdf.text(`Certificates for ${orphanage.name}`, 20, 20);
+    pdf.save(`${orphanage.name}_certificates.pdf`);
   };
 
-  const closeImagePopup = () => {
-    setImagePopupVisible(false);
-  };
+  const showConfirmation = async (action, eventId) => {
+    const confirmationMessage = `Are you sure to ${action === 'Decline' ? 'Decline' : 'Accept'} this?`;
+    if (window.confirm(confirmationMessage)) {
+      try {
+        if (action === 'Decline') {
+          await updateEventStatus(eventId, 'NOT_VERIFIED');
+        } else {
+          await updateEventStatus(eventId, 'VERIFIED');
+        }
+        fetchEvents();
+      } catch(error) {
+        console.error("Error in updating the status",error);
+      }
+    } else {
+      if(action === 'Decline') {
+        message.info('Decline action is not working');
+      } else {
+        message.info('Accept action is not working');
+      }
+    }
+  }; 
+  
+  const InterestedDonorsPopup = ({ donors, onClose }) => {
+    return (
+      <div className="popup">
+        <div className="popup-content">
+          <span className="close" onClick={onClose}>&times;</span>
+          <h2>Interested Donors</h2>
+          <ul>
+            {donors.map((donor, index) => (
+              <li key={index}>
+                <strong>Name:</strong> {donor.name} <br />
+                <strong>Email:</strong> {donor.email} <br />
+                <strong>Contact:</strong> {donor.contactNumber}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    );
+  }
 
   const filteredEvents = eventsData.filter((event) => {
     return (
-      (selectedLocation === "All" || event.location === selectedLocation) &&
-      (selectedStatus === "All" || event.stats === selectedStatus)
+      (selectedStatus === "All" || event.status === selectedStatus)
     );
   });
 
@@ -83,37 +178,45 @@ const EvenDash = () => {
     setCurrentPage(pageNumber);
   };
 
+  // const handleViewInterestedDonors = async(eventId) => {
+  //    await fetchInterestedDonors(eventId);
+  //   console.log('View interested donors:', interestedDonors);
+  // };
+
   return (
     <div>
       <div className="OrphDash">
-        <h2>Events</h2>
-        <label htmlFor="locationFilter">Search by Location</label>
+        <h2>Orphanages</h2>
+        
+        <div className="selection">
+          {/* <label htmlFor="locationFilter">Search by Location</label>
+        
         <select id="locationFilter" value={selectedLocation} onChange={handleLocationChange}>
           {uniqueLocations.map((location, index) => (
             <option key={index} value={location}>
               {location}
             </option>
           ))}
-        </select>
+        </select> */}
         <label htmlFor="statusFilter">Search by Status</label>
         <select id="statusFilter" value={selectedStatus} onChange={handleStatusChange}>
-          {uniqueStatus.map((stats, index) => (
-            <option key={index} value={stats}>
-              {stats}
+          {uniqueStatus.map((status, index) => (
+            <option key={index} value={status}>
+              {status}
             </option>
           ))}
         </select>
-
+        </div>
         {/* Table */}
         <table>
           <thead>
             <tr>
-              <th>Name</th>
-              {/* <th>Location</th> */}
+              <th>Event</th>
+              <th>Description</th>
               <th>Date</th>
+              <th>Time</th>
               <th>Details</th>
               <th>Status</th>
-              <th>Time</th>
               <th>Requests</th>
             </tr>
           </thead>
@@ -121,19 +224,22 @@ const EvenDash = () => {
             {currentEntries.map((event, index) => (
               <tr key={index}>
                 <td>{event.name}</td>
-                {/* <td>{event.location}</td> */}
+                <td>{event.desc}</td>
                 <td>{event.date}</td>
+                <td>{event.time}</td>
                 <td>
                   <button onClick={() => openModal(event)} className="smallButton">Details</button>
                 </td>
-                <td>{event.stats}</td>
-                <td>{event.time}</td>
+                <td>{event.status}</td>
                 <td className="requests">
-                  {event.stats === "Verified" ? (
-                    <button onClick={() => console.log("Decline")} style={{ fontSize: "10px", padding: "5px" }}>Decline</button>
-                  ) : (
-                    <button onClick={() => console.log("Accept")} style={{ fontSize: "10px", padding: "5px" }}>Accept</button>
+                  
+                  {event.status === "VERIFIED" && (
+                    <button onClick={() => showConfirmation("Decline", event.id)} style={{ fontSize: "10px", padding: "5px" }}>Decline</button>
                   )}
+                  {event.status === "NOT_VERIFIED" && (
+                    <button onClick={() => showConfirmation("Accept", event.id)} style={{ fontSize: "10px",padding:"5px"}}>Accept</button>
+                  )}
+                  
                 </td>
               </tr>
             ))}
@@ -151,29 +257,70 @@ const EvenDash = () => {
 
         {/* Modal */}
         {selectedEvent && (
-          <div className="modal">
-            <div className="modal-content">
-              <span className="close" onClick={closeModal}>
+          <div className="modal" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', backdropFilter: 'blur(5px)' }}>
+            <div className="modal-content" style={{ background: '#fff', border: '1px solid #ddd', padding: '20px' }}>
+              <span className="close" onClick={closeModal} style={{ position: 'absolute', top: '10px', right: '10px', cursor: 'pointer' }}>
                 &times;
               </span>
               <h3>{selectedEvent.name}</h3>
-              <p className="field-name">Event Name<span> {selectedEvent.name}</span></p>
-              {/* <p className="field-name">Location<span> {selectedEvent.location}</span></p> */}
-              <p className="field-name">Date<span> {selectedEvent.date}</span></p>
-              <p className="field-name">Time<span> {selectedEvent.time}</span></p>
-              <p className="field-name">Interested Persons<span> {selectedEvent.attend}</span></p>
+              <p className="field-name" style={{ margin: '10px 0' }}>Description:<span> {selectedEvent.desc}</span></p>
+              <p className="field-name" style={{ margin: '10px 0' }}>Date:<span> {selectedEvent.date}</span></p>
+              <p className="field-name" style={{ margin: '10px 0' }}>Time:<span> {selectedEvent.time}</span></p>
+              <p className="field-name" style={{ margin: '10px 0' }}>Current Status:<span> {selectedEvent.state}</span></p>
+              <p className="field-name"style={{ margin: '10px 0' }}>Interested People:
+              <Button 
+              type="primary" 
+              onClick={()=>setShowInterestedDonorsModal(true)} 
+              disabled={isLoading || selectedEvent?.interestedDonors?.length == 0}
+              style={{ backgroundColor: '#f0f0f0', color: '#333', border: 'none' }}
+              >
+            {isLoading ? 'Loading...' : 'View Interested Donors' }
+          </Button>
+          {error && <p className="error-message">{error}</p>}
+        </p>
+          {selectedEvent?.interestedDonors?.length === 0 && (
+          <p className="no-data-message">No one has registered for this event yet.</p>
+        )}
             </div>
           </div>
         )}
+        
 
-        {imagePopupVisible && (
+        {/* {imagePopupVisible && (
           <ImagePopup
             images={selectedEvent ? selectedEvent.images : []}
             onClose={closeImagePopup}
           />
-        )}
+        )} */}
+        {showInterestedDonorsModal && (
+        <Dialog
+          open={showInterestedDonorsModal}
+          onClose={() => setShowInterestedDonorsModal(false)}
+          style={{
+            overflowY: 'auto',
+            maxHeight: '50vh',
+            borderRadius: '5px', // Added inline style for rounded corners
+            boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.1)', // Added inline style for subtle shadow
+          }}        
+          >
+          <DialogTitle>Interested Donors</DialogTitle>
+          <DialogContent>
+            <ul style={{ listStyle: 'none', padding: '0' }}>
+              {selectedEvent?.interestedDonors?.map((donor) => (
+                <li key={selectedEvent.interestedDonors.id} style={{ margin: '10px 0', padding: '10px', borderBottom: '1px solid #ddd' }}>
+                  {donor.name} ({donor.email}) - {donor.contact}
+                </li>
+              ))}
+              
+            </ul>
+          </DialogContent>
+          
+        </Dialog>
+      )}
+        
       </div>
     </div>
+
   );
 };
 

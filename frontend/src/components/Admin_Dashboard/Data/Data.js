@@ -22,6 +22,7 @@ import img1 from "../imgs/img1.png";
 // import img2 from "../imgs/img2.png";
 import img3 from "../imgs/img3.png";
 import axios from "axios";
+import { API_BASE_URL } from "../../../config";
 
 // Sidebar Data
 export const SidebarData = [
@@ -133,7 +134,7 @@ export const UpdatesData = [
 
 export const fetchOrphanagesData= async() =>{
   try{
-    const response=await axios.get("http://localhost:8079/admin/orphanageList")
+    const response=await axios.get(`${API_BASE_URL}/admin/orphanageList`)
     return response.data;
   }catch(error){
     console.log(error);
@@ -142,7 +143,7 @@ export const fetchOrphanagesData= async() =>{
 
 export const fetchorphanageDetailById = async(orphanageId) =>{
   try{
-    const response=await axios.get(`http://localhost:8079/admin/orphanageDetails/${orphanageId}`);
+    const response=await axios.get(`${API_BASE_URL}/admin/orphanageDetails/${orphanageId}`);
     return response.data;
   }catch(error){
     console.log(error);
@@ -151,7 +152,7 @@ export const fetchorphanageDetailById = async(orphanageId) =>{
 
 export const fetchOrphanageDetailsData = async() =>{
   try{
-    const response=await axios.get("http://localhost:8079/admin/orphanageDetailsList")
+    const response=await axios.get(`${API_BASE_URL}/admin/orphanageDetailsList`)
     return response.data;
   }catch(error){
     console.log(error);
@@ -160,7 +161,7 @@ export const fetchOrphanageDetailsData = async() =>{
 
 export const fetchDonorsData = async() =>{
   try{
-    const response=await axios.get("http://localhost:8079/admin/donorList");
+    const response=await axios.get(`${API_BASE_URL}/admin/donorList`);
     return response.data;
   }catch(error){
     console.log(error);
@@ -170,7 +171,7 @@ export const fetchDonorsData = async() =>{
 
 export const fetchEventsData = async() =>{
   try{
-    const response=await axios.get("http://localhost:8079/admin/eventList");
+    const response=await axios.get(`${API_BASE_URL}/admin/eventList`);
     return response.data;
   }catch(error){
     console.log(error);
@@ -179,7 +180,7 @@ export const fetchEventsData = async() =>{
 
 export const fetchDonationsData = async() =>{
   try{
-    const response=await axios.get("http://localhost:8079/admin/donationList");
+    const response=await axios.get(`${API_BASE_URL}/admin/donationList`);
     return response.data;
   }catch(error){
     console.log(error);

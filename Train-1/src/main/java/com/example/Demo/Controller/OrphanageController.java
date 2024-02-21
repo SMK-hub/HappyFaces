@@ -124,10 +124,22 @@ public class OrphanageController {
         return new ResponseEntity<>("Internal Error",HttpStatus.CONFLICT);
     }
 
+    @GetMapping("/plannedEvents/{orpId}")
+    public ResponseEntity<List<Events>> getPlannedEvents(@PathVariable String orpId){
+        List<Events> alpha = orphanageService.getPlannedEvents(orpId);
+        if(alpha!=null){
+            return new ResponseEntity<>(alpha,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(alpha,HttpStatus.CONFLICT);
+    }
+
     @PostMapping("/cancelEvent/{eventId}")
     public ResponseEntity<String> cancelEvents(@PathVariable String eventId){
         String alpha = orphanageService.cancelEvent(eventId);
-        return new ResponseEntity<>(alpha,HttpStatus.OK);
+        if(alpha.equals("Event Cancelled Successfully")) {
+            return new ResponseEntity<>(alpha, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(alpha,HttpStatus.CONFLICT);
     }
 
     @PutMapping("/editEvents/{eventId}")

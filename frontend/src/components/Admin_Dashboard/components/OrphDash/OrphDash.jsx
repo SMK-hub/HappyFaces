@@ -38,11 +38,6 @@ const OrphDash = () => {
     // updateOrphanageStatus();
   }, []);
 
-//   setSelectedOrphanage({
-//     ...orphanage,
-//     imageData:orphanageWithImageData,
-//   });
-// };
 const{userDetails}= useUser();
 
   const fetchOrphanages = async () => {
@@ -83,7 +78,6 @@ const{userDetails}= useUser();
 
   const handleViewCertificate = async (orpId) => {
     const certificateUrl = await fetchOrphanageCertificate(orpId);
-    console.log(certificateUrl);
     setCertificateUrl(certificateUrl);
     setOpenPdfDialog(true);
   };
@@ -313,7 +307,7 @@ const handleClosePdfDialog = () => {
               <p className="field-name">Email<span> {selectedOrphanage.email}</span></p>
               <p className="field-name">Website<span> {selectedOrphanage.web}</span></p>
               <p className="field-name">Description<span> {selectedOrphanage.desc}</span></p>
-              <p className="field-name">Images:{" "} <button onClick={()=>openViewImagesPopup()}>View Images</button><span></span></p>
+              <p className="field-name">Images:{" "} <button onClick={openViewImagesPopup}>View Images</button><span></span></p>
               <p className="field-name">Certificates{" "} <button onClick={()=>handleViewCertificate(selectedOrphanage.orpId)} className="smallButton">View Certificates</button></p>
             </div>
           </div>

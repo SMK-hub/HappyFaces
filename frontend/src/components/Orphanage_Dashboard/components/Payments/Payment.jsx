@@ -31,7 +31,7 @@ const PaymentDashboard = () => {
 useEffect(() => {
   const createData = async() => {
     try{
-      const response = await axios.get(`${API_BASE_URL}9/orphanage/donation/${userDetails?.orpId}`);
+      const response = await axios.get(`${API_BASE_URL}/orphanage/donation/${userDetails?.orpId}`);
       const status= response.status;
       console.log(response.data);
       if(status !== 200){

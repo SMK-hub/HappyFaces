@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -7,43 +7,47 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import "./Table.css";
-
-function createData(name, trackingId, date, status) {
-  return { name, trackingId, date, status };
-}
-
-const rows = [
-  createData("Leo", "Himachal Pradesh", 7995043132, "Approved"),
-  createData("Kaithi", "Chennai", 6301478132, "Pending"),
-  createData("Vikram", "Kashmir", 9490052625, "Approved"),
-  createData("Rolex", "Bombay", 7855523212, "Declined"),
-];
-
+import axios from "axios";
+import {API_BASE_URL} from '../../../../config'
 
 const makeStyle=(status)=>{
-  if(status === 'Approved')
+  if(status === 'NOT_VERIFIED')
   {
     return {
       background: 'rgb(145 254 159 / 47%)',
-      color: 'green',
-    }
-  }
-  else if(status === 'Pending')
-  {
-    return{
-      background: '#ffadad8f',
       color: 'red',
-    }
-  }
-  else{
-    return{
-      background: '#59bfff',
-      color: 'white',
     }
   }
 }
 
 export default function BasicTable() {
+
+  const [orphanagesData, setOrphanagesData] = useState([]);
+  
+  useEffect(() => {
+    fetchOrphanages();
+    // updateOrphanageStatus();
+  }, []);
+
+  const fetchOrphanages = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/admin/orphanageDetailsList`);
+      const data = response.data
+        .filter(orphanage => orphanage.verificationStatus !== 'VERIFIED')
+        .map(orphanage => ({
+          ...orphanage,
+          name: orphanage.orphanageName,
+          location: orphanage.address.city,
+          contact: orphanage.contact,
+          status: orphanage.verificationStatus,
+        }));
+      console.log(data);
+      setOrphanagesData(data.slice(0, 5));
+    } catch (error) {
+      console.error("Error fetching orphanages", error);
+    }
+  };
+
   return (
       <div className="Table">
       <h3>Recent Orphanages</h3>
@@ -62,18 +66,18 @@ export default function BasicTable() {
               </TableRow>
             </TableHead>
             <TableBody style={{ color: "white" }}>
-              {rows.map((row) => (
+              {orphanagesData.map((orphanage,index) => (
                 <TableRow
-                  key={row.name}
+                  key={index}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell component="th" scope="row">
-                    {row.name}
+                    {orphanage.name}
                   </TableCell>
-                  <TableCell align="left">{row.trackingId}</TableCell>
-                  <TableCell align="left">{row.date}</TableCell>
+                  <TableCell align="left">{orphanage.location}</TableCell>
+                  <TableCell align="left">{orphanage.contact}</TableCell>
                   <TableCell align="left">
-                    <span className="status" style={makeStyle(row.status)}>{row.status}</span>
+                    <span className="status" style={makeStyle(orphanage.status)}>{orphanage.status}</span>
                   </TableCell>
                   {/* <TableCell align="left" className="Details">Details</TableCell> */}
                 </TableRow>

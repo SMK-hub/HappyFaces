@@ -18,12 +18,9 @@ import DashboardOrphanage from './components/Orphanage_Dashboard/DashboardOrphan
 import DashboardDonor from './components/Donor_Dashboard/DashboardDonor';
 
 import OrphanageHome from './components/Orphanage_Dashboard/components/OrphanageHome';
-import { Container } from '@mui/material';
 import MyContainer from './components/Orphanage_Dashboard/components/Container/Container';
 import Profile from './components/Orphanage_Dashboard/components/Profile/Profile';
 import EventTable from './components/Orphanage_Dashboard/components/Event/Events';
-import Sidebar from './components/Orphanage_Dashboard/components/Sidebar';
-import RightSide from './components/Orphanage_Dashboard/components/RigtSide/RightSide';
 import PaymentDashboard from './components/Orphanage_Dashboard/components/Payments/Payment';
 import OrphDash from './components/Admin_Dashboard/components/OrphDash/OrphDash';
 import Settings from './components/Admin_Dashboard/components/Settings/Settings';
