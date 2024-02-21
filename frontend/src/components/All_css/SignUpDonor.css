@@ -70,14 +70,16 @@
   
   .back-link {
     margin-top: 20px;
-    color: #ffe1bc;
+    position: relative;
+    color: #000000;
     text-decoration: none;
     font-size: 16px;
     transition: color 0.3s ease;
-  }
+    
+}
   
   .back-link:hover {
-    color: #f3c6f1;
+    color: #e81470;
   }
   
   .form-buttons {

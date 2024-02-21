@@ -4,15 +4,15 @@ import { Link } from 'react-router-dom';
 import '../All_css/AboutUs.css';
 import Header from './Header';
 import Footer from './Footer';
-import TeamMembersPopup from './TeamMembersPopup'; // Import the TeamMembersPopup component
+
 
 const AboutUs = () => {
   const emailLink = "mailto:demo@gmail.com"; // Gmail mailto link
-  const [showTeamMembersPopup, setShowTeamMembersPopup] = useState(false);
+  // const [showTeamMembersPopup, setShowTeamMembersPopup] = useState(false);
 
-  const handleViewTeamMembers = () => {
-    setShowTeamMembersPopup(true);
-  };
+  // const handleViewTeamMembers = () => {
+  //   setShowTeamMembersPopup(true);
+  
 
   return (
     <div className='about-us'>
@@ -48,9 +48,7 @@ const AboutUs = () => {
             <p>
               Meet the incredible team behind Happy Faces—passionate individuals dedicated to nurturing smiles and building a brighter future for orphaned children. Committed to compassion, innovation, and positive impact. Together, we make dreams blossom! #HappyFacesTeam
             </p>
-            <button className="view-details-button" onClick={handleViewTeamMembers}>
-              View Team Members
-            </button>
+            
           </div>
         </div>
 
@@ -89,8 +87,7 @@ const AboutUs = () => {
       </div>
       <Footer/>
 
-      {/* Render TeamMembersPopup if showTeamMembersPopup is true */}
-      {showTeamMembersPopup && <TeamMembersPopup onClose={() => setShowTeamMembersPopup(false)} />}
+     
     </div>
   );
 };

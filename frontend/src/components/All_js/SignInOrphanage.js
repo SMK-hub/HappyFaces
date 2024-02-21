@@ -159,11 +159,12 @@ const SignInOrphanage = () => {
             <a href="#" onClick={handleForgotPassword} className="forgot-password-link">
               Forgot Password?
             </a>
+            <Link to="/signin" className="back-link">
+              Back
+            </Link>
           </div>
         </form>
-        <Link to="/signin" className="back-link">
-          Back
-        </Link>
+        
       </div>
  
       {/* Forgot Password Popup */}
