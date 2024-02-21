@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.example.Demo.Enum.EnumClass;
+import com.example.Demo.Model.*;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -16,13 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.Demo.AdminServices.AdminService;
-import com.example.Demo.Model.Admin;
-import com.example.Demo.Model.DonationRequirements;
-import com.example.Demo.Model.Donations;
-import com.example.Demo.Model.Donor;
-import com.example.Demo.Model.Events;
-import com.example.Demo.Model.Orphanage;
-import com.example.Demo.Model.OrphanageDetails;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
@@ -108,15 +102,20 @@ public class AdminController {
 		return new ResponseEntity<>(null,HttpStatus.CONFLICT);
 	}
 
-	@PostMapping("/verifyEventDetails/{orpId}/{status}")
-	public ResponseEntity<Events> verifyEventDetails(@PathVariable("orpId") String orpId, @PathVariable("status") String verificationStatus)
+	@PostMapping("/verifyEventDetails/{eventId}/{status}")
+	public ResponseEntity<Events> verifyEventDetails(@PathVariable("eventId") String eventId, @PathVariable("status") String verificationStatus)
 	{
-		Events alpha = adminService.verifyEventDetails(orpId,verificationStatus);
+		Events alpha = adminService.verifyEventDetails(eventId,verificationStatus);
 		if(alpha!=null) {
 			return new ResponseEntity<>(alpha,HttpStatus.OK);
 		}
 		return new ResponseEntity<>(null,HttpStatus.CONFLICT);
 
+	}
+
+	@GetMapping("/event/interestedPerson/{eventId}")
+	public ResponseEntity<List<InterestedPerson>> getInterestedPersonByEventId(@PathVariable String eventId){
+		return new ResponseEntity<>(adminService.getInterestedPersonByEventId(eventId),HttpStatus.OK);
 	}
 
 	@GetMapping("/donationList")

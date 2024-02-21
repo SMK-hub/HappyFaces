@@ -3,18 +3,29 @@
 import React, { useState, useEffect } from "react";
 import "./EvenDash.css";
 import '@fortawesome/fontawesome-free/css/all.css';
-import ImagePopup from "./ImagePopup";
+// import ImagePopup from "./ImagePopup";
 import { jsPDF } from "jspdf";
 import axios from "axios";
+import { Button, message } from "antd";
+import { API_BASE_URL } from "../../../../config";
+import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 
 const EvenDash = () => {
-  const [imagePopupVisible, setImagePopupVisible] = useState(false);
+  // const [imagePopupVisible, setImagePopupVisible] = useState(false);
   // const [selectedLocation, setSelectedLocation] = useState("All");
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [eventsData, setEventsData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+
   const entriesPerPage = 5;
+
+  const [interestedDonors, setInterestedDonors] = useState([
+    { id: 1, name: "John Doe", email: "john@example.com", contactNumber: "1234567890" },
+    { id: 2, name: "Jane Smith", email: "jane@example.com", contactNumber: "9876543210" }
+  ]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   // const uniqueLocations = ["All", ...new Set(eventsData.map((event) => orphanage.location))];
   const uniqueStatus = ["All", ...new Set(eventsData.map((event) => event.status))];
@@ -26,8 +37,11 @@ const EvenDash = () => {
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get("http://localhost:8079/admin/eventList");
-      const data = response.data.map(event => ({
+      const response = await axios.get(`${API_BASE_URL}/admin/eventList`);
+      const data = await Promise.all(response.data.map(async(event) => {
+        const interestedDonors = await fetchInterestedDonors(event.id)
+        console.log(interestedDonors)
+        return{
         ...event,
         name: event.title,
         desc: event.description,
@@ -35,17 +49,41 @@ const EvenDash = () => {
         date: event.date,
         time: event.time,
         status: event.verificationStatus,
-      }));
+        interestedDonors:interestedDonors,
+      }
+    }
+    )) 
       console.log(data);
       setEventsData(data);
     } catch (error) {
       console.error("Error fetching events", error);
     }
   };
+  const [showInterestedDonorsModal, setShowInterestedDonorsModal] = useState(false);
 
-  const updateEventStatus = async (OrpId,status) => {
+  const fetchInterestedDonors = async (eventId) => {
+    setIsLoading(true);
+    setError(null);
     try {
-      await axios.post(`http://localhost:8079/admin/verifyEventDetails/${OrpId}/${status}`);
+      const response = await axios.get(
+        `${API_BASE_URL}/admin/event/interestedPerson/${eventId}`
+      );
+      
+      console.log(response.data);
+      if (error || interestedDonors.length === 0) {
+        setShowInterestedDonorsModal(false);
+      }return(response.data);
+    } catch (error) {
+      setError(error.message || 'An error occurred while fetching data.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+
+  const updateEventStatus = async (eventId,status) => {
+    try {
+      await axios.post(`http://localhost:8079/admin/verifyEventDetails/${eventId}/${status}`);
       fetchEvents();
       console.log("Event status updated ");
     } catch(error) {
@@ -67,13 +105,13 @@ const EvenDash = () => {
     setSelectedEvent(null);
   };
 
-  const openImagePopup = () => {
-    setImagePopupVisible(true);
-  };
+  // const openImagePopup = () => {
+  //   setImagePopupVisible(true);
+  // };
 
-  const closeImagePopup = () => {
-    setImagePopupVisible(false);
-  };
+  // const closeImagePopup = () => {
+  //   setImagePopupVisible(false);
+  // };
 
   const downloadCertificates = (orphanage) => {
     const pdf = new jsPDF();
@@ -81,14 +119,14 @@ const EvenDash = () => {
     pdf.save(`${orphanage.name}_certificates.pdf`);
   };
 
-  const showConfirmation = async (action, OrpId) => {
+  const showConfirmation = async (action, eventId) => {
     const confirmationMessage = `Are you sure to ${action === 'Decline' ? 'Decline' : 'Accept'} this?`;
     if (window.confirm(confirmationMessage)) {
       try {
         if (action === 'Decline') {
-          await updateEventStatus(OrpId, 'NOT_VERIFIED');
+          await updateEventStatus(eventId, 'NOT_VERIFIED');
         } else {
-          await updateEventStatus(OrpId, 'VERIFIED');
+          await updateEventStatus(eventId, 'VERIFIED');
         }
         fetchEvents();
       } catch(error) {
@@ -96,12 +134,32 @@ const EvenDash = () => {
       }
     } else {
       if(action === 'Decline') {
-        console.log('Decline action is not working');
+        message.info('Decline action is not working');
       } else {
-        console.log('Accept action is not working');
+        message.info('Accept action is not working');
       }
     }
-  };  
+  }; 
+  
+  const InterestedDonorsPopup = ({ donors, onClose }) => {
+    return (
+      <div className="popup">
+        <div className="popup-content">
+          <span className="close" onClick={onClose}>&times;</span>
+          <h2>Interested Donors</h2>
+          <ul>
+            {donors.map((donor, index) => (
+              <li key={index}>
+                <strong>Name:</strong> {donor.name} <br />
+                <strong>Email:</strong> {donor.email} <br />
+                <strong>Contact:</strong> {donor.contactNumber}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    );
+  }
 
   const filteredEvents = eventsData.filter((event) => {
     return (
@@ -119,6 +177,11 @@ const EvenDash = () => {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+
+  // const handleViewInterestedDonors = async(eventId) => {
+  //    await fetchInterestedDonors(eventId);
+  //   console.log('View interested donors:', interestedDonors);
+  // };
 
   return (
     <div>
@@ -171,10 +234,10 @@ const EvenDash = () => {
                 <td className="requests">
                   
                   {event.status === "VERIFIED" && (
-                    <button onClick={() => showConfirmation("Decline", event.orpId)} style={{ fontSize: "10px", padding: "5px" }}>Decline</button>
+                    <button onClick={() => showConfirmation("Decline", event.id)} style={{ fontSize: "10px", padding: "5px" }}>Decline</button>
                   )}
                   {event.status === "NOT_VERIFIED" && (
-                    <button onClick={() => showConfirmation("Accept", event.orpId)} style={{ fontSize: "10px",padding:"5px"}}>Accept</button>
+                    <button onClick={() => showConfirmation("Accept", event.id)} style={{ fontSize: "10px",padding:"5px"}}>Accept</button>
                   )}
                   
                 </td>
@@ -194,28 +257,70 @@ const EvenDash = () => {
 
         {/* Modal */}
         {selectedEvent && (
-          <div className="modal">
-            <div className="modal-content">
-              <span className="close" onClick={closeModal}>
+          <div className="modal" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', backdropFilter: 'blur(5px)' }}>
+            <div className="modal-content" style={{ background: '#fff', border: '1px solid #ddd', padding: '20px' }}>
+              <span className="close" onClick={closeModal} style={{ position: 'absolute', top: '10px', right: '10px', cursor: 'pointer' }}>
                 &times;
               </span>
               <h3>{selectedEvent.name}</h3>
-              <p className="field-name">Description:<span> {selectedEvent.desc}</span></p>
-              <p className="field-name">Date:<span> {selectedEvent.date}</span></p>
-              <p className="field-name">Time:<span> {selectedEvent.time}</span></p>
-              <p className="field-name">Current Status:<span> {selectedEvent.state}</span></p>
+              <p className="field-name" style={{ margin: '10px 0' }}>Description:<span> {selectedEvent.desc}</span></p>
+              <p className="field-name" style={{ margin: '10px 0' }}>Date:<span> {selectedEvent.date}</span></p>
+              <p className="field-name" style={{ margin: '10px 0' }}>Time:<span> {selectedEvent.time}</span></p>
+              <p className="field-name" style={{ margin: '10px 0' }}>Current Status:<span> {selectedEvent.state}</span></p>
+              <p className="field-name"style={{ margin: '10px 0' }}>Interested People:
+              <Button 
+              type="primary" 
+              onClick={()=>setShowInterestedDonorsModal(true)} 
+              disabled={isLoading || selectedEvent?.interestedDonors?.length == 0}
+              style={{ backgroundColor: '#f0f0f0', color: '#333', border: 'none' }}
+              >
+            {isLoading ? 'Loading...' : 'View Interested Donors' }
+          </Button>
+          {error && <p className="error-message">{error}</p>}
+        </p>
+          {selectedEvent?.interestedDonors?.length === 0 && (
+          <p className="no-data-message">No one has registered for this event yet.</p>
+        )}
             </div>
           </div>
         )}
+        
 
-        {imagePopupVisible && (
+        {/* {imagePopupVisible && (
           <ImagePopup
             images={selectedEvent ? selectedEvent.images : []}
             onClose={closeImagePopup}
           />
-        )}
+        )} */}
+        {showInterestedDonorsModal && (
+        <Dialog
+          open={showInterestedDonorsModal}
+          onClose={() => setShowInterestedDonorsModal(false)}
+          style={{
+            overflowY: 'auto',
+            maxHeight: '50vh',
+            borderRadius: '5px', // Added inline style for rounded corners
+            boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.1)', // Added inline style for subtle shadow
+          }}        
+          >
+          <DialogTitle>Interested Donors</DialogTitle>
+          <DialogContent>
+            <ul style={{ listStyle: 'none', padding: '0' }}>
+              {selectedEvent?.interestedDonors?.map((donor) => (
+                <li key={selectedEvent.interestedDonors.id} style={{ margin: '10px 0', padding: '10px', borderBottom: '1px solid #ddd' }}>
+                  {donor.name} ({donor.email}) - {donor.contact}
+                </li>
+              ))}
+              
+            </ul>
+          </DialogContent>
+          
+        </Dialog>
+      )}
+        
       </div>
     </div>
+
   );
 };
 

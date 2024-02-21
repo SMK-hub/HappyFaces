@@ -85,13 +85,13 @@ export default function BasicTable() {
                     }}
                   >
                     <TableCell component="th" scope="row">
-                      {row?.donorData.donorId}
+                      {row?.donorData.name}
                     </TableCell>
                     <TableCell align="left">{row.transactionId}</TableCell>
                     <TableCell align="left">{row.dateTime}</TableCell>
                     <TableCell align="left">
                       <span className="status">
-                        {row.amount}
+                       Rs. {row.amount}
                       </span>
                     </TableCell>
                   </TableRow>

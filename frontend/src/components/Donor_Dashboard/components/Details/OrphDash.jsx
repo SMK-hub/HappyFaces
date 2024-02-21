@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./OrphDash.css";
-import { fetchOrphanageDetailsData } from "../../Data/Data";
 import '@fortawesome/fontawesome-free/css/all.css';
 import ImagePopup from "./ImagePopup";
 import { jsPDF } from "jspdf";
@@ -12,12 +11,7 @@ import axios from "axios";
 import { LoadingButton } from "@mui/lab";
 import { API_BASE_URL } from "../../../../config";
  
-function srcset(image, size, rows = 1, cols = 1) {
-  return {
-    src: `${image}?w=${15 * cols}&h=${15 * rows}&fit=crop&auto=format`,
-    srcSet: `${image}?w=${15 * cols}&h=${15 * rows}&fit=crop&auto=format&dpr=2 2x`,
-  };
-}
+
  
 const OrphDash = () => {
   const [imagePopupVisible, setImagePopupVisible] = useState(false);
@@ -31,18 +25,16 @@ const OrphDash = () => {
   const [donationDescriptionVisible, setDonationDescriptionVisible] = useState(false);
   const [viewImagesPopupVisible, setViewImagesPopupVisible] = useState(false); // New state for view images pop-up
   const [donationDescription, setDonationDescription] = useState('');
-  const [allEventData, setAllEventData] = useState();
   const [RegisteringProcess,setRegisteringProcess] = useState(false);
  
-  const  {setUserData} = useUser();
   const {userDetails} = useUser();
-  console.log(userDetails);
  
   const[orphanagesData,setOrphanagesData] = useState([])
   useEffect(()=>{
     const fetch=async()=>{
-        try{
-      const res=await fetchOrphanageDetailsData();
+    try{
+      const response = await axios.get(`${API_BASE_URL}/donor/OrphanageDetails`);
+      const res=response.data;
       console.log(res);
       setOrphanagesData(res);
     }catch(error){
@@ -51,7 +43,7 @@ const OrphDash = () => {
     }
     fetch();
    
-  },[])
+  },[orphanagesData])
  
  
   const handleLocationChange = (e) => {
@@ -90,8 +82,11 @@ const OrphDash = () => {
   const fetchAllEventData = async (orpId)=>{
     try{
       const response=await axios.get(`${API_BASE_URL}/donor/VerifiedEvents/${orpId}`);
-      console.log(response.data);
-      return response.data;
+      const filteredData = response.data.filter(
+        (event) => event.eventStatus === 'PLANNED' || event.eventStatus === 'ONGOING'
+      );
+      console.log(filteredData);
+      return filteredData;
      
     }catch(error){
       console.log(error);
