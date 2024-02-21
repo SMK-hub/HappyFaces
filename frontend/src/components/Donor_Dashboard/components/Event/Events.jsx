@@ -119,8 +119,8 @@ const fetchOrphanageDetails = async (orpId)=>{
   };
 
   return (
-    <div className='main-event'>
-      <h2>EVENTS</h2>
+    <div className='main-event' >
+      <h1 class="event-heading">Events</h1>
       <div className="event-container">
         <table className="event-table">
           <thead>

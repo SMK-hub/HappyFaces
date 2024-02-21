@@ -265,7 +265,7 @@ const OrphDash = () => {
 
   return (
     <div>
-      <div className="OrphDash">
+      <div className="OrphDash" >
         <h2>Orphanages</h2>
         <div className="OrphDash-inside">
           {/* Filter options */}

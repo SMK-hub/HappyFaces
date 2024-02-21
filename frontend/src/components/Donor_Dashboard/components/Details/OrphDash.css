@@ -38,7 +38,7 @@
 }
 
 .OrphDash th {
-  background-color: #f2f2f2;
+  background-color: #b98ba0;
 }
 
 .OrphDash label {
@@ -200,4 +200,12 @@
 
 .blurred-background {
   filter: blur(5px); /* Adjust the blur intensity as needed */
+}
+
+.OrphDash-heading{
+    text-align: center;
+    font-size: 25px;
+    color: #050505; /* Match the border color */
+    margin-bottom: 20px;
+    font-family: 'Montserrat';
 }
