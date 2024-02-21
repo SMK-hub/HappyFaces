@@ -37,7 +37,7 @@ export default function BasicTable() {
 
   return (
     <div className="Table">
-      <h3>Donation Details</h3>
+      {/* <h3>Donation Details</h3>
       <TableContainer
         component={Paper}
         style={{ boxShadow: "0px 13px 20px 0px #80808029" }}
@@ -78,9 +78,9 @@ export default function BasicTable() {
             ))}
           </TableBody>
         </Table>
-      </TableContainer>
+      </TableContainer> */}
       <div className="LastTransactionsTable">
-        <h3>Last 4 Transactions</h3>
+        <h3>Donation Details</h3>
         <TableContainer component={Paper}>
           <Table aria-label="last 4 transactions table">
             <TableHead>
