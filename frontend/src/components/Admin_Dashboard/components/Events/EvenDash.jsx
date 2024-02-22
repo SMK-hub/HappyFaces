@@ -11,68 +11,54 @@ import { API_BASE_URL } from "../../../../config";
 import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 
 const EvenDash = () => {
-  // const [imagePopupVisible, setImagePopupVisible] = useState(false);
-  // const [selectedLocation, setSelectedLocation] = useState("All");
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [eventsData, setEventsData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-
-  const entriesPerPage = 5;
-
-  const [interestedDonors, setInterestedDonors] = useState([
-    { id: 1, name: "John Doe", email: "john@example.com", contactNumber: "1234567890" },
-    { id: 2, name: "Jane Smith", email: "jane@example.com", contactNumber: "9876543210" }
-  ]);
+  const [interestedDonors, setInterestedDonors] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showInterestedDonorsModal, setShowInterestedDonorsModal] = useState(false);
 
-  // const uniqueLocations = ["All", ...new Set(eventsData.map((event) => orphanage.location))];
+  const entriesPerPage = 5;
   const uniqueStatus = ["All", ...new Set(eventsData.map((event) => event.status))];
 
   useEffect(() => {
     fetchEvents();
-    // updateOrphanageStatus();
   }, []);
 
   const fetchEvents = async () => {
     try {
       const response = await axios.get(`${API_BASE_URL}/admin/eventList`);
       const data = await Promise.all(response.data.map(async(event) => {
-        const interestedDonors = await fetchInterestedDonors(event.id)
-        console.log(interestedDonors)
-        return{
-        ...event,
-        name: event.title,
-        desc: event.description,
-        state: event.eventStatus,
-        date: event.date,
-        time: event.time,
-        status: event.verificationStatus,
-        interestedDonors:interestedDonors,
-      }
-    }
-    )) 
-      console.log(data);
+        const interestedDonors = await fetchInterestedDonors(event.id);
+        return {
+          ...event,
+          name: event.title,
+          desc: event.description,
+          state: event.eventStatus,
+          date: event.date,
+          time: event.time,
+          status: event.verificationStatus,
+          interestedDonors: interestedDonors,
+        };
+      }));
+
+      // Sort events by date in descending order
+      data.sort((a, b) => new Date(b.date) - new Date(a.date));
+
       setEventsData(data);
     } catch (error) {
       console.error("Error fetching events", error);
     }
   };
-  const [showInterestedDonorsModal, setShowInterestedDonorsModal] = useState(false);
 
   const fetchInterestedDonors = async (eventId) => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await axios.get(
-        `${API_BASE_URL}/admin/event/interestedPerson/${eventId}`
-      );
-      
-      console.log(response.data);
-      if (error || interestedDonors.length === 0) {
-        setShowInterestedDonorsModal(false);
-      }return(response.data);
+      const response = await axios.get(`${API_BASE_URL}/admin/event/interestedPerson/${eventId}`);
+      return response.data;
     } catch (error) {
       setError(error.message || 'An error occurred while fetching data.');
     } finally {
@@ -80,8 +66,7 @@ const EvenDash = () => {
     }
   };
 
-
-  const updateEventStatus = async (eventId,status) => {
+  const updateEventStatus = async (eventId, status) => {
     try {
       await axios.post(`http://localhost:8079/admin/verifyEventDetails/${eventId}/${status}`);
       fetchEvents();
@@ -104,14 +89,6 @@ const EvenDash = () => {
   const closeModal = () => {
     setSelectedEvent(null);
   };
-
-  // const openImagePopup = () => {
-  //   setImagePopupVisible(true);
-  // };
-
-  // const closeImagePopup = () => {
-  //   setImagePopupVisible(false);
-  // };
 
   const downloadCertificates = (orphanage) => {
     const pdf = new jsPDF();
@@ -159,7 +136,7 @@ const EvenDash = () => {
         </div>
       </div>
     );
-  }
+  };
 
   const filteredEvents = eventsData.filter((event) => {
     return (
@@ -178,36 +155,22 @@ const EvenDash = () => {
     setCurrentPage(pageNumber);
   };
 
-  // const handleViewInterestedDonors = async(eventId) => {
-  //    await fetchInterestedDonors(eventId);
-  //   console.log('View interested donors:', interestedDonors);
-  // };
-
   return (
     <div>
       <div className="OrphDash">
         <h2>Orphanages</h2>
         
         <div className="selection">
-          {/* <label htmlFor="locationFilter">Search by Location</label>
-        
-        <select id="locationFilter" value={selectedLocation} onChange={handleLocationChange}>
-          {uniqueLocations.map((location, index) => (
-            <option key={index} value={location}>
-              {location}
-            </option>
-          ))}
-        </select> */}
-        <label htmlFor="statusFilter">Search by Status</label>
-        <select id="statusFilter" value={selectedStatus} onChange={handleStatusChange}>
-          {uniqueStatus.map((status, index) => (
-            <option key={index} value={status}>
-              {status}
-            </option>
-          ))}
-        </select>
+          <label htmlFor="statusFilter">Search by Status</label>
+          <select id="statusFilter" value={selectedStatus} onChange={handleStatusChange}>
+            {uniqueStatus.map((status, index) => (
+              <option key={index} value={status}>
+                {status}
+              </option>
+            ))}
+          </select>
         </div>
-        {/* Table */}
+        
         <table>
           <thead>
             <tr>
@@ -232,14 +195,12 @@ const EvenDash = () => {
                 </td>
                 <td>{event.status}</td>
                 <td className="requests">
-                  
                   {event.status === "VERIFIED" && (
                     <button onClick={() => showConfirmation("Decline", event.id)} style={{ fontSize: "10px", padding: "5px" }}>Decline</button>
                   )}
                   {event.status === "NOT_VERIFIED" && (
                     <button onClick={() => showConfirmation("Accept", event.id)} style={{ fontSize: "10px",padding:"5px"}}>Accept</button>
                   )}
-                  
                 </td>
               </tr>
             ))}
@@ -255,7 +216,6 @@ const EvenDash = () => {
           <p>Page {currentPage} of {totalPages}</p>
         </div>
 
-        {/* Modal */}
         {selectedEvent && (
           <div className="modal" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', backdropFilter: 'blur(5px)' }}>
             <div className="modal-content" style={{ background: '#fff', border: '1px solid #ddd', padding: '20px' }}>
@@ -267,60 +227,49 @@ const EvenDash = () => {
               <p className="field-name" style={{ margin: '10px 0' }}>Date:<span> {selectedEvent.date}</span></p>
               <p className="field-name" style={{ margin: '10px 0' }}>Time:<span> {selectedEvent.time}</span></p>
               <p className="field-name" style={{ margin: '10px 0' }}>Current Status:<span> {selectedEvent.state}</span></p>
-              <p className="field-name"style={{ margin: '10px 0' }}>Interested People:
-              <Button 
-              type="primary" 
-              onClick={()=>setShowInterestedDonorsModal(true)} 
-              disabled={isLoading || selectedEvent?.interestedDonors?.length == 0}
-              style={{ backgroundColor: '#f0f0f0', color: '#333', border: 'none' }}
-              >
-            {isLoading ? 'Loading...' : 'View Interested Donors' }
-          </Button>
-          {error && <p className="error-message">{error}</p>}
-        </p>
-          {selectedEvent?.interestedDonors?.length === 0 && (
-          <p className="no-data-message">No one has registered for this event yet.</p>
-        )}
+              <p className="field-name" style={{ margin: '10px 0' }}>Interested People:
+                <Button 
+                  type="primary" 
+                  onClick={() => setShowInterestedDonorsModal(true)} 
+                  disabled={isLoading || selectedEvent?.interestedDonors?.length === 0}
+                  style={{ backgroundColor: '#f0f0f0', color: '#333', border: 'none' }}
+                >
+                  {isLoading ? 'Loading...' : 'View Interested Donors' }
+                </Button>
+                {error && <p className="error-message">{error}</p>}
+              </p>
+              {selectedEvent?.interestedDonors?.length === 0 && (
+                <p className="no-data-message">No one has registered for this event yet.</p>
+              )}
             </div>
           </div>
         )}
-        
 
-        {/* {imagePopupVisible && (
-          <ImagePopup
-            images={selectedEvent ? selectedEvent.images : []}
-            onClose={closeImagePopup}
-          />
-        )} */}
         {showInterestedDonorsModal && (
-        <Dialog
-          open={showInterestedDonorsModal}
-          onClose={() => setShowInterestedDonorsModal(false)}
-          style={{
-            overflowY: 'auto',
-            maxHeight: '50vh',
-            borderRadius: '5px', // Added inline style for rounded corners
-            boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.1)', // Added inline style for subtle shadow
-          }}        
+          <Dialog
+            open={showInterestedDonorsModal}
+            onClose={() => setShowInterestedDonorsModal(false)}
+            style={{
+              overflowY: 'auto',
+              maxHeight: '50vh',
+              borderRadius: '5px', // Added inline style for rounded corners
+              boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.1)', // Added inline style for subtle shadow
+            }}        
           >
-          <DialogTitle>Interested Donors</DialogTitle>
-          <DialogContent>
-            <ul style={{ listStyle: 'none', padding: '0' }}>
-              {selectedEvent?.interestedDonors?.map((donor) => (
-                <li key={selectedEvent.interestedDonors.id} style={{ margin: '10px 0', padding: '10px', borderBottom: '1px solid #ddd' }}>
-                  {donor.name} ({donor.email}) - {donor.contact}
-                </li>
-              ))}
-              
-            </ul>
-          </DialogContent>
-          
-        </Dialog>
-      )}
-        
+            <DialogTitle>Interested Donors</DialogTitle>
+            <DialogContent>
+              <ul style={{ listStyle: 'none', padding: '0' }}>
+                {selectedEvent?.interestedDonors?.map((donor) => (
+                  <li key={donor.id} style={{ margin: '10px 0', padding: '10px', borderBottom: '1px solid #ddd' }}>
+                    {donor.name} ({donor.email}) - {donor.contactNumber}
+                  </li>
+                ))}
+              </ul>
+            </DialogContent>
+          </Dialog>
+        )}
       </div>
     </div>
-
   );
 };
 

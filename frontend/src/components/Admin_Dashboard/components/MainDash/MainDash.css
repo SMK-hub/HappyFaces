@@ -6,6 +6,7 @@
     margin-left: 110px;
 }
 
+
 @media screen and (max-width: 1200px) {
     .MainDash{
         justify-content:flex-start;

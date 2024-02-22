@@ -62,6 +62,5 @@ export default function BasicTable() {
           </Table>
         </TableContainer>
       </div>
-    </div>
   );
 }

@@ -32,7 +32,6 @@ const Donors = () => {
         name: donor.name,
         contact: donor.contact,
         email: donor.email,
-        role: donor.Role,
 
       }));
       setPaymentsData(data);
@@ -141,7 +140,6 @@ const Donors = () => {
               {/* <p className="field-name">Location<span> {selectedEvent.location}</span></p> */}
               <p className="field-name">Email<span> {selectedPayment.email}</span></p>
               {/* <p className="field-name">Time<span> {selectedPayment.time}</span></p> */}
-              <p className="field-name">Role<span> {selectedPayment.role}</span></p>
             </div>
           </div>
         )}
