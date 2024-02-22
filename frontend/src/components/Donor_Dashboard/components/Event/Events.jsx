@@ -8,11 +8,9 @@ import { API_BASE_URL } from '../../../../config';
 
 const EventTable = () => {
   // Use state to manage events
-  const [events, setEvents] = useState();
   const [interestedPerson,setInterestedPerson] = useState();
   const [cancelEventId,setCancelEventId] = useState();
   const [render,setRender] = useState(false);
-  const  {setUserData} = useUser();
   const {userDetails} = useUser();
   const[cancelling,setCancelling]= useState(false);
 useEffect(()=>{
@@ -22,7 +20,6 @@ useEffect(()=>{
       const status=response.status;
       const responseWithEventData = await Promise.all(response.data.map(async(interestedPerson)=>{
         const eventData=await fetchEventData(interestedPerson.eventId);
-        
         return {
           ...interestedPerson,
           eventData:eventData,
@@ -122,8 +119,8 @@ const fetchOrphanageDetails = async (orpId)=>{
   };
 
   return (
-    <div className='main-event'>
-      <h2>EVENTS</h2>
+    <div className='main-event' >
+      <h1 class="event-heading">Events</h1>
       <div className="event-container">
         <table className="event-table">
           <thead>

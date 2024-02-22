@@ -4,7 +4,7 @@ import './Orphanage-Profile.css';
 import {useUser} from '../../../../UserContext'
 import axios from 'axios';
 import { API_BASE_URL } from '../../../../config';
-import { message, Upload } from 'antd';
+import { message, Row, Upload } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { Avatar } from '@mui/material';
  
@@ -191,9 +191,9 @@ const Profile = () => {
   );
   return (
     <div className='orphanage-heading'>
-      <h1>Manager Profile</h1>
+       <h1 style={{ fontFamily: 'Anton, sans-serif', fontSize: '2em', justifyContent: 'center',flexDirection: 'column' }}>Manager Profile</h1>
       <div className="orphanage-profile-container">
-        
+     
         <div className="orphanage-profile-details">
           {isEditMode ? (
             <div style={{display:'flex',flexDirection:'row',alignItems:'center'}}>

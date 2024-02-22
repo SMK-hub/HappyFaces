@@ -1,6 +1,7 @@
 .donor-heading {
   text-align: center;
   margin: auto;
+  font-family: 'Montserrat';
 }
 .donor-editContainer{
   display:flex;

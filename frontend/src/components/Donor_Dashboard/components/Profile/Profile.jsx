@@ -190,7 +190,7 @@ const Profile = () => {
     </button>
   );
   return (
-    <div className='donor-heading' style={{ fontFamily: 'Arial, sans-serif', fontSize: '24px', fontWeight: 'bold', color: '#333' }}>
+    <div className='donor-heading' style={{ fontFamily: 'Montserrat', fontSize: '24px', fontWeight: 'bold', color: '#333' }}>
       <h1>Profile</h1>
       <div className="donor-profile-container" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', border: '4px solid #831898', height: '400px', borderRadius: '15px', maxWidth: '500px', minWidth: '500px', margin: 'auto' }}>
         <div className="donor-profile-details" style={{ textAlign: 'left' , fontFamily: 'Arial, sans-serif', fontSize: '16px', color: '#555' }}>

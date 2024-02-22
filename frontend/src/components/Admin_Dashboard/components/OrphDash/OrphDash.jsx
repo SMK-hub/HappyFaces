@@ -38,11 +38,6 @@ const OrphDash = () => {
     // updateOrphanageStatus();
   }, []);
 
-//   setSelectedOrphanage({
-//     ...orphanage,
-//     imageData:orphanageWithImageData,
-//   });
-// };
 const{userDetails}= useUser();
 
   const fetchOrphanages = async () => {

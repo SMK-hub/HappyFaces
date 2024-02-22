@@ -5,196 +5,197 @@ import ImagePopup from "./ImagePopup";
 import { jsPDF } from "jspdf";
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
-import RazorPay from '../Details/RazorPay'; // Corrected import statement
-import {useUser} from '../../../../UserContext'
+import RazorPay from '../Details/RazorPay';
+import { useUser } from '../../../../UserContext';
 import axios from "axios";
 import { LoadingButton } from "@mui/lab";
 import { API_BASE_URL } from "../../../../config";
- 
 
- 
 const OrphDash = () => {
   const [imagePopupVisible, setImagePopupVisible] = useState(false);
   const [donationRazorPayVisible, SetdonationRazorPayVisible] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState("All");
   const [selectedOrphanage, setSelectedOrphanage] = useState();
+  const [selectedImage, setSelectedImage] = useState(null); // Define selectedImage state
   const [selectedRequirement, setSelectedRequirement] = useState("All");
   const [eventDetailsVisible, setEventDetailsVisible] = useState(false);
   const [registrationSuccessVisible, setRegistrationSuccessVisible] = useState(false);
   const [donationPopupVisible, setDonationPopupVisible] = useState(false);
   const [donationDescriptionVisible, setDonationDescriptionVisible] = useState(false);
-  const [viewImagesPopupVisible, setViewImagesPopupVisible] = useState(false); // New state for view images pop-up
+  const [viewImagesPopupVisible, setViewImagesPopupVisible] = useState(false);
   const [donationDescription, setDonationDescription] = useState('');
-  const [RegisteringProcess,setRegisteringProcess] = useState(false);
- 
-  const {userDetails} = useUser();
- 
-  const[orphanagesData,setOrphanagesData] = useState([])
-  useEffect(()=>{
-    const fetch=async()=>{
-    try{
-      const response = await axios.get(`${API_BASE_URL}/donor/OrphanageDetails`);
-      const res=response.data;
-      console.log(res);
-      setOrphanagesData(res);
-    }catch(error){
-      console.log(error);    
-    }
+  const [RegisteringProcess, setRegisteringProcess] = useState(false);
+
+  const { userDetails } = useUser();
+
+  const [orphanagesData, setOrphanagesData] = useState([]);
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/donor/OrphanageDetails`);
+        const res = response.data;
+        console.log(res);
+        setOrphanagesData(res);
+      } catch (error) {
+        console.log(error);
+      }
     }
     fetch();
-   
-  },[orphanagesData])
- 
- 
+  }, []);
+
   const handleLocationChange = (e) => {
     setSelectedLocation(e.target.value);
   };
- 
+
   const handleRequirementChange = (e) => {
     setSelectedRequirement(e.target.value);
   };
- 
+
   const openModal = async (orphanage) => {
-    // const events = await fetchEvents(orphanage.orpId);
-    const orphanageWithImageData=await fetchImageData(orphanage.orpId);
-    const orphanagaeWithEventData=await fetchEventData(orphanage.orpId);
-    const orphanageWithAllEventData=await fetchAllEventData(orphanage.orpId);
+    const [orphanageWithImageData, orphanagaeWithEventData, orphanageWithAllEventData] = await Promise.all([
+      fetchImageData(orphanage.orpId),
+      fetchEventData(orphanage.orpId),
+      fetchAllEventData(orphanage.orpId),
+    ]);
     const eventParticipant = await Promise.all(
-      orphanagaeWithEventData.map(async(event)=>{        
+      orphanagaeWithEventData.map(async (event) => {
         const participant = await fetchParticipatedDonorsId(event.id);
         return {
           ...event,
-          participantData:participant,
+          participantData: participant,
         }
       })
-    )
+    );
     setSelectedOrphanage({
       ...orphanage,
-      imageData:orphanageWithImageData,
-      eventData:eventParticipant,
-      allEventData:orphanageWithAllEventData
+      imageData: orphanageWithImageData,
+      eventData: eventParticipant,
+      allEventData: orphanageWithAllEventData
     });
   };
-  console.log(selectedOrphanage);
- 
-  const fetchAllEventData = async (orpId)=>{
-    try{
-      const response=await axios.get(`${API_BASE_URL}/donor/VerifiedEvents/${orpId}`);
+
+  const fetchAllEventData = async (orpId) => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/donor/VerifiedEvents/${orpId}`);
       const filteredData = response.data.filter(
         (event) => event.eventStatus === 'PLANNED' || event.eventStatus === 'ONGOING'
       );
       console.log(filteredData);
       return filteredData;
-     
-    }catch(error){
+
+    } catch (error) {
       console.log(error);
     }
-  }
-  const fetchParticipatedDonorsId = async (eventId)=>{
-      try{
-        const response=await axios.get(`${API_BASE_URL}/donor/participatedDonorsId/${eventId}`);
-        return response.data;
-      }catch(error){
-        alert(error);
-      }
-  }
-  const fetchImageData = async (orpId)=> {
-    try{
-      const response=await axios.get(`${API_BASE_URL}/orphanage/${orpId}/orphanageDetails/viewImages`);
+  };
+
+  const fetchParticipatedDonorsId = async (eventId) => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/donor/participatedDonorsId/${eventId}`);
       return response.data;
- 
-    }catch(error)
-    {
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  const fetchImageData = async (orpId) => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/orphanage/${orpId}/orphanageDetails/viewImages`);
+      return response.data;
+
+    } catch (error) {
       console.log(error);
     }
-  }
-  const fetchEventData = async(orpId)=> {
-    try{
-      const response= await axios.get(`${API_BASE_URL}/donor/VerifiedEvents/${orpId}`);
+  };
+
+  const fetchEventData = async (orpId) => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/donor/VerifiedEvents/${orpId}`);
       return response.data;
-    }catch(error)
-  {
-    console.log(error);
-  }
-  }
- 
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const closeModal = () => {
     setSelectedOrphanage();
     setEventDetailsVisible(false);
   };
- 
-  const openImagePopup = () => {
+
+  const openImagePopup = (image) => {
+    setSelectedImage(image);
     setImagePopupVisible(true);
   };
- 
+
   const closeImagePopup = () => {
     setImagePopupVisible(false);
   };
- 
+  
   const openViewImagesPopup = () => {
     setViewImagesPopupVisible(true);
   };
- 
+
   const closeViewImagesPopup = () => {
     setViewImagesPopupVisible(false);
   };
- 
-  const downloadCertificates = async(orpId,orpName) => {
-    try{
+
+  const downloadCertificates = async (orpId, orpName) => {
+    try {
       const response = await axios.get(`${API_BASE_URL}/orphanage/getCertificate/${orpId}`, { responseType: 'blob' });
-        const status = response.status;
-        if (status === 200) {
-            const blob = new Blob([response.data], { type: 'application/pdf' });
-            if (blob.size === 0) {
-              alert('The file is empty.');
-              return;
-          }
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', `${orpName}_certificates.pdf`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            window.URL.revokeObjectURL(url);
-        } else {
-            alert(response.status);
-        }
- 
-    }catch(error){
-      console.log(error);
+      if (response.status !== 200) {
+        alert(`Error downloading certificates: ${response.status}`);
+        return;
+      }
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      if (blob.size === 0) {
+        alert('The file is empty.');
+        return;
+      }
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `${orpName}_certificates.pdf`);
+      link.click();
+      [link, url].forEach(window.URL.revokeObjectURL);
+    } catch (error) {
+      console.error("Error downloading certificates:", error);
     }
   };
- 
+
+  const viewCertificates = () => {
+    // Logic to view certificates
+    console.log("View Certificates clicked");
+    // Implement your logic to view certificates here
+  };
+
   const handleEventsButtonClick = () => {
     setEventDetailsVisible(true);
   };
- 
+
   const handleEventDetailsClose = () => {
     setEventDetailsVisible(false);
   };
- 
-  const handleRegisterEvent = async(eventId) => {
-    try{
+
+  const handleRegisterEvent = async (eventId) => {
+    try {
       setRegisteringProcess(true);
-      const response= await axios.post(`${API_BASE_URL}/donor/${userDetails?.donorId}/eventRegister/${eventId}`);
+      const response = await axios.post(`${API_BASE_URL}/donor/${userDetails?.donorId}/eventRegister/${eventId}`);
       console.log("Event registered");
-     
+
       setRegistrationSuccessVisible(true);
-    }catch(error){
+    } catch (error) {
       console.log(error);
       alert(error);
     }
-    finally{
+    finally {
       setRegisteringProcess(false);
       window.location.reload();
     }
   };
- 
+
   const handleDonateButtonClick = () => {
     setDonationPopupVisible(true);
   };
- 
+
   const handleDonationOption = (option) => {
     console.log(`Donation option selected: ${option}`);
     if (option === 'Requirements') {
@@ -203,26 +204,26 @@ const OrphDash = () => {
       // Handle the case for donating money
     }
   };
- 
+
   const handleRegistrationSuccessClose = () => {
     setRegistrationSuccessVisible(false);
   };
- 
-  const handledonationRazorPayVisible  = () => {
+
+  const handledonationRazorPayVisible = () => {
     SetdonationRazorPayVisible(!donationRazorPayVisible);
   }
- 
+
   const handleBackButtonClick = () => {
     setSelectedOrphanage({
       orphanage: null,
       events: [],
     });
   };
- 
+
   const handleDonationDescriptionClose = () => {
     setDonationDescriptionVisible(false);
   };
- 
+
   const handleDonationDescriptionSave = () => {
     const data = {
       orpId: selectedOrphanage.orpId,
@@ -234,22 +235,22 @@ const OrphDash = () => {
     setDonationDescription('');
     setDonationDescriptionVisible(false);
   };
- 
+
   const handleThumbnailClick = (index) => {
     // Handle thumbnail click, update main image with selected index
   };
- 
+
   const filteredOrphanages = orphanagesData.filter((orphanage) => {
     return (
       (selectedLocation === "All" || orphanage.location === selectedLocation) &&
       (selectedRequirement === "All" || orphanage.requirements === selectedRequirement)
     );
   });
- 
+
   const pictureUrl = (image) => {
     return `data:image/jpeg;base64,${image}`;
   };
- 
+
   const saveDonationData = async (data) => {
     try {
       // Send the data to your backend API for saving
@@ -261,34 +262,15 @@ const OrphDash = () => {
       console.error('Error saving donation data:', error);
     }
   };
-   
+
   return (
     <div>
-      <div className="OrphDash">
+      <div className="OrphDash" >
         <h2>Orphanages</h2>
         <div className="OrphDash-inside">
-          {/* <div className="search-item">
-            <label htmlFor="locationFilter">Search by Location :</label>
-            <select id="locationFilter" value={selectedLocation} onChange={handleLocationChange}>
-              {uniqueLocations?.map((location, index) => (
-                <option key={index} value={location}>
-                  {location}
-                </option>
-              ))}
-            </select>
-          </div> */}
-          {/* <div className="search-item">
-            <label htmlFor="requirementFilter">Search by Requirements :</label>
-            <select id="requirementFilter" value={selectedRequirement} onChange={handleRequirementChange}>
-              {uniqueRequirements?.map((requirements, index) => (
-                <option key={index} value={requirements}>
-                  {requirements}
-                </option>
-              ))}
-            </select>
-          </div> */}
+          {/* Filter options */}
         </div>
- 
+
         {/* Table */}
         <table>
           <thead>
@@ -304,7 +286,7 @@ const OrphDash = () => {
             {filteredOrphanages?.map((orphanage, index) => (
               <tr key={index}>
                 <td>{orphanage.orphanageName}</td>
-                <td>{orphanage.address.house_no},{orphanage.address.street},{orphanage.address.city}-{orphanage.address.postalCode},{orphanage.address.state},{orphanage.address.country}</td>
+                <td>{orphanage.address.house_no}, {orphanage.address.street}, {orphanage.address.city} - {orphanage.address.postalCode}, {orphanage.address.state}, {orphanage.address.country}</td>
                 <td>{orphanage.contact}</td>
                 <td>
                   <button onClick={() => openModal(orphanage)}>Details</button>
@@ -314,29 +296,56 @@ const OrphDash = () => {
             ))}
           </tbody>
         </table>
- 
+
         {/* Modal */}
         {selectedOrphanage && (
           <div className="modal">
             <div className="modal-content">
               <span className="close" onClick={closeModal}>&times;</span>
               <h3>{selectedOrphanage.orphanageName}</h3>
-              <p className="field-name">Orphanage Name:<span> {selectedOrphanage.orphanageName}</span></p>
-              <p className="field-name">Director:<span> {selectedOrphanage.directorName}</span></p>
-              <p className="field-name">Location:
-              <span>
-                {selectedOrphanage.address.house_no},
-                {selectedOrphanage.address.street},
-                {selectedOrphanage.address.city}-{selectedOrphanage.address.postalCode},
-                {selectedOrphanage.address.state},
-                {selectedOrphanage.address.country}
-                </span>
-              </p>
-              <p className="field-name">Email:<span>{selectedOrphanage.orphanageEmail}</span></p>
-              <p className="field-name">Description:<span>{selectedOrphanage.description}</span></p>
-              <p className="field-name">Website:<span>{selectedOrphanage.website}</span></p>
-              <p className="field-name">Certificates:{" "} <button onClick={() => downloadCertificates(selectedOrphanage.orpId,selectedOrphanage.orphanageName)}>Download</button></p>
-              <p className="field-name">View Images:{" "} <button onClick={openViewImagesPopup}>View Images</button><span></span></p>
+              <table>
+                <tbody>
+                  <tr>
+                    <td className="field-name">Orphanage Name:</td>
+                    <td>{selectedOrphanage.orphanageName}</td>
+                  </tr>
+                  <tr>
+                    <td className="field-name">Director:</td>
+                    <td>{selectedOrphanage.directorName}</td>
+                  </tr>
+                  <tr>
+                    <td className="field-name">Location:</td>
+                    <td>
+                      {selectedOrphanage.address.house_no}, {selectedOrphanage.address.street}, {selectedOrphanage.address.city} - {selectedOrphanage.address.postalCode}, {selectedOrphanage.address.state}, {selectedOrphanage.address.country}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="field-name">Email:</td>
+                    <td>{selectedOrphanage.orphanageEmail}</td>
+                  </tr>
+                  <tr>
+                    <td className="field-name">Description:</td>
+                    <td>{selectedOrphanage.description}</td>
+                  </tr>
+                  <tr>
+                    <td className="field-name">Website:</td>
+                    <td>{selectedOrphanage.website}</td>
+                  </tr>
+                  <tr>
+                    <td className="field-name">Certificates:</td>
+                    <td>
+                      <button onClick={() => downloadCertificates(selectedOrphanage.orpId, selectedOrphanage.orphanageName)}>Download</button>
+                      <button onClick={viewCertificates}>View Certificates</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="field-name">View Images:</td>
+                    <td>
+                      <button onClick={openViewImagesPopup}>View Images</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
               {/* Add "Events" and "Donate" buttons */}
               <div className="button-container">
                 <button onClick={handleEventsButtonClick}>Events</button>
@@ -465,35 +474,47 @@ const OrphDash = () => {
           </div>
         )}
  
+ {/* Other JSX content */}
         {/* View Images Pop-up */}
         {viewImagesPopupVisible && selectedOrphanage && (
-  <div className="modal">
-    <div className="view-images-content">
-      <span className="close" onClick={closeViewImagesPopup}>&times;</span>
-      <h3>{selectedOrphanage.orphanageName} Images</h3>
-      <div className="image-container" style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)', padding: '10px', borderRadius: '5px' }}>
-        {selectedOrphanage.imageData && selectedOrphanage.imageData.length > 0 ? (
-          <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164}>
-            {selectedOrphanage.imageData.map((item) => (
-              <ImageListItem key={item.img}>
-                <img style={{ minHeight: '200px', maxHeight: '200px', width: '150px', objectFit: 'cover' }}
-                  src={`${pictureUrl(item.image)}`}
-                  srcSet={`${pictureUrl(item.image)}`}
-                  loading="lazy"
-                />
-              </ImageListItem>
-            ))}
-          </ImageList>
-        ) : (
-          <p style={{ textAlign: 'center', color: '#333', marginTop: '20px', alignItems: 'center' }}>No Images to Display</p>
+          <div className="modal" onClick={closeViewImagesPopup}>
+            <div className="view-images-content" style={{ maxHeight: '80vh', overflowY: 'auto' }}> {/* Added style */}
+              <span className="close">&times;</span>
+              <h3>{selectedOrphanage.orphanageName} Images</h3>
+              <div className="image-container" style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)', padding: '10px', borderRadius: '5px' }}>
+                {selectedOrphanage.imageData && selectedOrphanage.imageData.length > 0 ? (
+                  <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164}>
+                    {selectedOrphanage.imageData.map((item, index) => (
+                      <ImageListItem key={index}>
+                        <img
+                          style={{ minHeight: '200px', maxHeight: '200px', width: '150px', objectFit: 'cover', cursor: 'pointer' }}
+                          src={`data:image/jpeg;base64,${item.image}`}
+                          onClick={() => openImagePopup(item.image)}
+                          alt={`Image ${index}`}
+                        />
+                      </ImageListItem>
+                    ))}
+                  </ImageList>
+                ) : (
+                  <p style={{ textAlign: 'center', color: '#333', marginTop: '20px', alignItems: 'center' }}>No Images to Display</p>
+                )}
+              </div>
+            </div>
+          </div>
         )}
-      </div>
-    </div>
-  </div>
-)}
- 
+
+        {/* Image Popup */}
+        {imagePopupVisible && selectedImage && (
+          <div className="modal" onClick={closeImagePopup}>
+            <div className="image-popup-content">
+              <span className="close">&times;</span>
+              <img src={`data:image/jpeg;base64,${selectedImage}`} alt="Zoomed Image" />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
 };
+ 
 export default OrphDash;

@@ -45,10 +45,18 @@
   text-align: right;
 }
 
-/* Additional styling for layout */
+/* Center the "EVENTS" heading */
 .App {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+}
+
+.event-heading {
+  text-align: center;
+  font-size: 25px;
+  color: #050505; /* Match the border color */
+  margin-bottom: 20px;
+  font-family: 'Montserrat';
 }

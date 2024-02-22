@@ -7,11 +7,11 @@ import Footer from './Footer';
 
 const AboutUs = () => {
   const emailLink = "mailto:demo@gmail.com"; // Gmail mailto link
-  const [showTeamMembersPopup, setShowTeamMembersPopup] = useState(false);
+  // const [showTeamMembersPopup, setShowTeamMembersPopup] = useState(false);
 
-  const handleViewTeamMembers = () => {
-    setShowTeamMembersPopup(true);
-  };
+  // const handleViewTeamMembers = () => {
+  //   setShowTeamMembersPopup(true);
+  
 
   return (
     <div className='about-us'>

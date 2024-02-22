@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Confetti from "react-confetti";
 import "./MainDash.css";
-import Women from "../../imgs/Women.png"; // Adjust the path based on the directory structure
  
 const MainDash = () => {
   // Define initial data for each card with different messages
@@ -12,19 +10,20 @@ const MainDash = () => {
     // Add more cards as needed
   ];
  
-  const [blink, setBlink] = useState(true);
+  // Static transaction data
+  const transactions = [
+    { orphanageName: "Orphanage A", transactionId: 12345, date: "2024-02-15", amount: 100 },
+    { orphanageName: "Orphanage B", transactionId: 12346, date: "2024-02-10", amount: 150 },
+    { orphanageName: "Orphanage C", transactionId: 12347, date: "2024-02-05", amount: 200 },
+    { orphanageName: "Orphanage D", transactionId: 12348, date: "2024-02-01", amount: 250 }
+  ];
+ 
   const [selectedCard, setSelectedCard] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
  
   useEffect(() => {
-    const blinkTimeout = setTimeout(() => {
-      setBlink(false);
-    }, 1000); // Adjust the duration of the blink animation
- 
-    return () => {
-      clearTimeout(blinkTimeout);
-    };
+    // Add any necessary side effects here
   }, []);
  
   const handleCardClick = (index) => {
@@ -42,9 +41,9 @@ const MainDash = () => {
   return (
     <div className="MainDash">
       <h1 className="dashboard-heading">Donor's Dashboard</h1>
-      <div className={`MainDashcard-container ${blink ? "blink" : ""}`}>
+      <div className="MainDashcard-container">
         {initialData.map((data, index) => (
-          <div key={index} className={`MainDashcard`} onClick={() => handleCardClick(index)}>
+          <div key={index} className="MainDashcard" onClick={() => handleCardClick(index)}>
             <h2>{data.title}</h2>
             <p>{data.value}</p>
           </div>
@@ -58,10 +57,29 @@ const MainDash = () => {
           </div>
         </div>
       )}
-      {selectedCard != null && <Confetti />}
-      <img src={Women} alt="Cartoon Woman" className="cartoon-woman" />
+      <table className="transaction-table">
+        <thead>
+          <tr>
+            <th>Orphanage Name</th>
+            <th>Transaction ID</th>
+            <th>Date</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {transactions.map((transaction, index) => (
+            <tr key={index}>
+              <td>{transaction.orphanageName}</td>
+              <td>{transaction.transactionId}</td>
+              <td>{transaction.date}</td>
+              <td>{transaction.amount}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
  
 export default MainDash;
+ 
