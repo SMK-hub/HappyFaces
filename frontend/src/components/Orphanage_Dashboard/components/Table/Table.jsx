@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -7,97 +7,61 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import "./Table.css";
+import { API_BASE_URL } from "../../../../config";
+import axios from "axios";
+import { useUser } from "../../../../UserContext";
 
-function createData(name, trackingId, date) {
-  return { name, trackingId, date };
-}
 
-const rows = [
-  createData("Tarun", 18908424, "2 January 2024"),
-  createData("Sangeeta ", 18908424, "12 January 2024"),
-  createData("Ankit", 18908424, "16 January 2024"),
-  createData("Anjali", 18908421, "18 January 2024"),
-];
 
-const transactions = [
-  { orphanageName: "ABC Orphanage", transactionId: 123456, date: "1 February 2024", amount: "$100" },
-  { orphanageName: "XYZ Orphanage", transactionId: 789012, date: "2 February 2024", amount: "$150" },
-  { orphanageName: "PQR Orphanage", transactionId: 345678, date: "3 February 2024", amount: "$200" },
-  { orphanageName: "LMN Orphanage", transactionId: 901234, date: "4 February 2024", amount: "$120" },
-];
 
 export default function BasicTable() {
-  const [selectedRow, setSelectedRow] = useState(null);
-
-  const handleDetailsClick = (index) => {
-    setSelectedRow(index);
-    // Implement logic to show details for the selected row
-    // You can use a modal or any other component to display details
-  };
+  const [transactions ,setTransactions]=useState();
+  
+  const {userDetails} = useUser();
+  useEffect(()=>{
+    const getDonationData = async()=>{
+    try{
+      const donationResponse =await axios.get(`${API_BASE_URL}/orphanage/donation/${userDetails.orpId}`);
+      const donationData = await Promise.all(
+        donationResponse.data.map(async (donation)=>{
+            const donorData = await axios.get(`${API_BASE_URL}/orphanage/donor/${donation.donorId}`);
+            console.log(donorData.data);
+            return{
+              ...donation,
+              donorData:donorData.data,
+            }
+        }));
+      console.log(donationData);
+      console.log(donationData.sort((a, b) => new Date(a.datetime) - new Date(b.datetime)).slice(0, 5));
+      setTransactions(donationData.sort((a, b) => new Date(a.datetime) - new Date(b.datetime)).slice(0, 5));
+    }catch(error){
+      console.log(error);
+    }
+    }
+    getDonationData();
+  },[])
 
   return (
     <div className="Table">
-      {/* <h3>Donation Details</h3>
-      <TableContainer
-        component={Paper}
-        style={{ boxShadow: "0px 13px 20px 0px #80808029" }}
-      >
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Orphanage Name</TableCell>
-              <TableCell align="left">Transaction ID</TableCell>
-              <TableCell align="left">Date</TableCell>
-              <TableCell align="left"></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody style={{ color: "white" }}>
-            {rows.map((row, index) => (
-              <TableRow
-                key={row.name}
-                sx={{
-                  "&:last-child td, &:last-child th": { border: 0 },
-                }}
-              >
-                <TableCell component="th" scope="row">
-                  {row.name}
-                </TableCell>
-                <TableCell align="left">{row.trackingId}</TableCell>
-                <TableCell align="left">{row.date}</TableCell>
-                <TableCell align="left" className="Details">
-                  <button
-                    onClick={() => handleDetailsClick(index)}
-                    className={`DetailsButton ${
-                      selectedRow === index ? "Active" : ""
-                    }`}
-                  >
-                    Details
-                  </button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer> */}
       <div className="LastTransactionsTable">
         <h3>Donation Details</h3>
         <TableContainer component={Paper}>
           <Table aria-label="last 4 transactions table">
             <TableHead>
               <TableRow>
-                <TableCell>Orphanage Name</TableCell>
+                <TableCell>Donor Name</TableCell>
                 <TableCell align="left">Transaction ID</TableCell>
                 <TableCell align="left">Date</TableCell>
                 <TableCell align="left">Amount</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {transactions.map((transaction, index) => (
+              {transactions?.map((transaction, index) => (
                 <TableRow key={index}>
-                  <TableCell>{transaction.orphanageName}</TableCell>
+                  <TableCell>{transaction.donorData.name}</TableCell>
                   <TableCell align="left">{transaction.transactionId}</TableCell>
-                  <TableCell align="left">{transaction.date}</TableCell>
-                  <TableCell align="left">{transaction.amount}</TableCell>
+                  <TableCell align="left">{transaction.dateTime}</TableCell>
+                  <TableCell align="left">Rs.{transaction.amount}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

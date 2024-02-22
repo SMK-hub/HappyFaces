@@ -1,10 +1,7 @@
 package com.example.Demo.Controller;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import com.example.Demo.AdminServices.AdminService;
 import com.example.Demo.Model.*;
@@ -130,7 +127,8 @@ public class OrphanageController {
         if(alpha!=null){
             return new ResponseEntity<>(alpha,HttpStatus.OK);
         }
-        return new ResponseEntity<>(alpha,HttpStatus.CONFLICT);
+        List<Events> emptyList = new ArrayList<>();
+        return new ResponseEntity<>(emptyList,HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/cancelEvent/{eventId}")
@@ -260,5 +258,10 @@ public class OrphanageController {
     @GetMapping("donor/{donorId}")
     public ResponseEntity<Donor> getDonorById(@PathVariable String donorId){
         return new ResponseEntity<>(orphanageService.getDonorById(donorId),HttpStatus.OK);
+    }
+
+    @GetMapping("/viewCount/{orpId}")
+    public ResponseEntity<Integer> getViewCountById(@PathVariable String orpId){
+        return new ResponseEntity<>(orphanageService.getViewCount(orpId),HttpStatus.OK);
     }
 }

@@ -393,4 +393,13 @@ public class OrphanageServiceImpl implements OrphanageService {
         return donor.orElse(null);
     }
 
+    @Override
+    public Integer getViewCount(String orpId) {
+        Optional<OrphanageDetails> orphanageDetails = orphanageDetailsRepository.findByOrpId(orpId);
+        if(orphanageDetails.isPresent()){
+            return orphanageDetails.get().getViewCount();
+        }
+        return 0;
+    }
+
 }

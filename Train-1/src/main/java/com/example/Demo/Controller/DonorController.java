@@ -114,7 +114,7 @@ public class DonorController {
 
     @PostMapping("/ForgetPassword/{email}/{otp}/{create}/{confirm}")
     public ResponseEntity<String> forgetPassword(@PathVariable("email") String email, @PathVariable("create") String create, @PathVariable("otp") String otp, @PathVariable("confirm") String confirm) {
-        System.out.println(create + "   " + confirm + "  " + otp);
+
         String alpha=donorService.forgetPassword(email, otp, create, confirm);
         if(alpha.equals("Password Changed Successfully")){
             return new ResponseEntity<>(alpha,HttpStatus.OK);
@@ -175,7 +175,6 @@ public class DonorController {
     @GetMapping("/donor/{donorEmail}")
     public ResponseEntity<Donor> getDonorByEmail(@PathVariable String donorEmail){
         Optional<Donor> donor=donorService.getDonorByEmail(donorEmail);
-        System.out.println(donorEmail);
         return donor.map(ResponseEntity::ok).orElseGet(()->ResponseEntity.notFound().build());
     }
     @GetMapping("/orphanageImages/{orphanageId}")

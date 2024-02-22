@@ -282,6 +282,7 @@ public class DonorServiceImpl implements DonorService {
     public Optional<OrphanageDetails> getVerifiedOrphanageDetailsById(String orpId) {
         Optional<OrphanageDetails> optionalOrphanageDetails=detailsRepository.findByOrpId(orpId);
         if(optionalOrphanageDetails.isPresent() && optionalOrphanageDetails.get().getVerificationStatus().equals(EnumClass.VerificationStatus.VERIFIED)){
+            optionalOrphanageDetails.get().setViewCount(optionalOrphanageDetails.get().getViewCount() + 1);
             return optionalOrphanageDetails;
         }else {
             return Optional.empty();

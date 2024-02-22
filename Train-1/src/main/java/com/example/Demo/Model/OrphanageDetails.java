@@ -5,6 +5,8 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import com.example.Demo.Enum.EnumClass;
 
+import java.util.Arrays;
+
 
 @Document(collection = "orphanageDetails")
 public class OrphanageDetails {
@@ -22,6 +24,16 @@ public class OrphanageDetails {
     private String website;
     private byte[] certificate;
     private Requirements requirements;
+    private Integer viewCount = 0;
+
+    public Integer getViewCount() {
+        return viewCount;
+    }
+
+
+    public void setViewCount(Integer viewCount) {
+        this.viewCount = viewCount;
+    }
 
     public byte[] getCertificate() {
         return certificate;
@@ -30,8 +42,6 @@ public class OrphanageDetails {
     public void setCertificate(byte[] certificate) {
         this.certificate = certificate;
     }
-
-
 
     public OrphanageDetails() {
         super();
@@ -127,22 +137,38 @@ public class OrphanageDetails {
         this.orphanageEmail = orphanageEmail;
     }
 
-    @Override
-    public String toString() {
-        return "OrphanageDetails{" + "id='" + id + '\'' + ", orpId='" + orpId + '\'' + ", orphanageName='" + orphanageName + '\'' + ", directorName='" + directorName + '\'' + ", contact='" + contact + '\'' + ", description='" + description + '\'' + ", address=" + address + ", verificationStatus=" + verificationStatus + ", website='" + website + '\'' + ", requirements=" + requirements + '}';
-    }
-
-    public OrphanageDetails(String id, String orpId, String orphanageName, String directorName, String contact, String description, Address address, EnumClass.VerificationStatus verificationStatus, String website, Requirements requirements,byte[] certificate) {
+    public OrphanageDetails(String id, String orpId, String orphanageName, String directorName, String contact, String orphanageEmail, String description, Address address, EnumClass.VerificationStatus verificationStatus, String website, byte[] certificate, Requirements requirements, Integer viewCount) {
         this.id = id;
         this.orpId = orpId;
         this.orphanageName = orphanageName;
         this.directorName = directorName;
         this.contact = contact;
+        this.orphanageEmail = orphanageEmail;
         this.description = description;
         this.address = address;
         this.verificationStatus = verificationStatus;
         this.website = website;
+        this.certificate = certificate;
         this.requirements = requirements;
-        this.certificate=certificate;
+        this.viewCount = viewCount;
     }
+    @Override
+    public String toString() {
+        return "OrphanageDetails{" +
+                "id='" + id + '\'' +
+                ", orpId='" + orpId + '\'' +
+                ", orphanageName='" + orphanageName + '\'' +
+                ", directorName='" + directorName + '\'' +
+                ", contact='" + contact + '\'' +
+                ", orphanageEmail='" + orphanageEmail + '\'' +
+                ", description='" + description + '\'' +
+                ", address=" + address +
+                ", verificationStatus=" + verificationStatus +
+                ", website='" + website + '\'' +
+                ", certificate=" + Arrays.toString(certificate) +
+                ", requirements=" + requirements +
+                ", viewCount=" + viewCount +
+                '}';
+    }
+
 }

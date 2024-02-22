@@ -56,4 +56,6 @@ public interface OrphanageService {
     public List<Donations> getDonationsByOrphanageId(String id);
 
     public Donor getDonorById(String donorId);
+
+    Integer getViewCount(String orpId);
 }

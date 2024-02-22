@@ -13,7 +13,7 @@ import { CloseOutlined, EditOutlined } from '@mui/icons-material';
 
 const EventTable = () => {
   const [events, setEvents] = useState();
-  const {userDetails,setUserData} = useUser();
+  const {userDetails} = useUser();
   const [refresh,setRefresh] = useState(false);
   useEffect(()=>{
     const fetchPlannedEvents =async()=>{
@@ -25,6 +25,7 @@ const EventTable = () => {
         }
         }catch(error){
           message.error(error);
+          setEvents([]);
         }
       }
       fetchPlannedEvents();
@@ -37,16 +38,19 @@ const EventTable = () => {
   const eventsPerPage = 3;
 
   const handleCancelEvent = async (eventId) => {
-       try{
+    if(window.confirm("Do you want to cancel this event?")){
+      try{
         console.log(eventId);
         const response = await axios.post(`${API_BASE_URL}/orphanage/cancelEvent/${eventId}`)
         if(response.status === 200){
-          message.info(response.data);
+          message.info("Event Cancelled Successfully");
           setRefresh(!refresh);
         }
        }catch(error){
         message.error(error);
        }
+    }
+       
   };
   const handleEditEvent = (event) =>{
     setEdit(true);
@@ -87,7 +91,15 @@ const EventTable = () => {
     }catch(error){
       message.error(error);
     }
-    setEdit(false);
+    finally{
+      setEdit(false);
+      setFormData({ 
+        title: '',
+        date: '', 
+        time:'',  
+        description: '' }); 
+    }
+    
   }
   const handleSubmit = async() => { 
     const newEvent = { 
