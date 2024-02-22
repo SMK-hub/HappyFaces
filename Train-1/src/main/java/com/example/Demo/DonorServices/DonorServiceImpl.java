@@ -56,7 +56,57 @@ public class DonorServiceImpl implements DonorService {
             newUser.setRole(EnumClass.Roles.valueOf(String.valueOf(EnumClass.Roles.DONOR)));
             donorRepository.save(newUser);
             String subject = "Registration Successful";
-            String body = "Dear " + newUser.getName() + ", Welcome to Happy Faces! Your registration as a donor brings smiles to countless faces. Thank you for joining us in making a positive impact!";
+            String body = "<!DOCTYPE html>\n" +
+                    "<html lang=\"en\">\n" +
+                    "<head>\n" +
+                    "  <meta charset=\"UTF-8\">\n" +
+                    "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                    "  <title>Welcome to Happy Faces!</title>\n" +
+                    "  <style>\n" +
+                    "    body {\n" +
+                    "      font-family: Arial, sans-serif;\n" +
+                    "      margin: 0;\n" +
+                    "      padding: 20px;\n" +
+                    "      background-color: #f9f9f9;\n" +
+                    "    }\n" +
+                    "    .container {\n" +
+                    "      max-width: 600px;\n" +
+                    "      margin: 0 auto;\n" +
+                    "      background-color: #fff;\n" +
+                    "      padding: 30px;\n" +
+                    "      border-radius: 8px;\n" +
+                    "      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\n" +
+                    "    }\n" +
+                    "    h1 {\n" +
+                    "      font-size: 28px;\n" +
+                    "      color: #333;\n" +
+                    "      margin-bottom: 20px;\n" +
+                    "    }\n" +
+                    "    p {\n" +
+                    "      line-height: 1.6;\n" +
+                    "      font-size: 16px;\n" +
+                    "      color: #555;\n" +
+                    "      margin-bottom: 15px;\n" +
+                    "    }\n" +
+                    "    .signature {\n" +
+                    "      margin-top: 30px;\n" +
+                    "      font-style: italic;\n" +
+                    "      color: #888;\n" +
+                    "    }\n" +
+                    "  </style>\n" +
+                    "</head>\n" +
+                    "<body>\n" +
+                    "  <div class=\"container\">\n" +
+                    "    <h1>Welcome to Happy Faces, "+newUser.getName()+"!</h1>\n" +
+                    "    <p>We are thrilled to welcome you to our community of generous donors!</p>\n" +
+                    "    <p>Your registration as a donor brings smiles to countless faces. Thank you for joining us in making a positive impact on the lives of children in need.</p>\n" +
+                    "    <p>We are committed to providing essential support and resources to children through your kind contributions. Together, we can make a real difference.</p>\n" +
+                    "    <p>We encourage you to explore our website to learn more about our mission, programs, and impact stories.</p>\n" +
+                    "    <p>Thank you again for joining us, "+newUser.getName()+"! We look forward to your continued support.</p>\n" +
+                    "    <p class=\"signature\">Sincerely,<br>The Happy Faces Team</p>\n" +
+                    "  </div>\n" +
+                    "</body>\n" +
+                    "</html>\n";
             emailService.sendSimpleMail(newUser.getEmail(), subject, body);
             return "Success";
         } else {
@@ -112,7 +162,7 @@ public class DonorServiceImpl implements DonorService {
     @Override
     public Donor addProfilePhoto(String donorId, MultipartFile file) throws IOException {
         byte[] photoBytes = file.getBytes();
-        System.out.println();
+
 
         Donor donor= donorRepository.findById(donorId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -144,10 +194,57 @@ public class DonorServiceImpl implements DonorService {
 
             String sixDigitCode = String.valueOf(10000 + new Random().nextInt(900000));
 
-            String body = "Dear admin OTP to change password is " + sixDigitCode;
+            String body = "<!DOCTYPE html>\n" +
+                    "<html lang=\"en\">\n" +
+                    "<head>\n" +
+                    "  <meta charset=\"UTF-8\">\n" +
+                    "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                    "  <title>OTP Verification</title>\n" +
+                    "  <style>\n" +
+                    "    body {\n" +
+                    "      font-family: Arial, sans-serif;\n" +
+                    "      margin: 0;\n" +
+                    "      padding: 20px;\n" +
+                    "      background-color: #f4f4f4;\n" +
+                    "    }\n" +
+                    "    .container {\n" +
+                    "      max-width: 600px;\n" +
+                    "      margin: 0 auto;\n" +
+                    "      background-color: #fff;\n" +
+                    "      padding: 20px;\n" +
+                    "      border-radius: 5px;\n" +
+                    "      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);\n" +
+                    "    }\n" +
+                    "    h2 {\n" +
+                    "      margin-top: 0;\n" +
+                    "    }\n" +
+                    "    p {\n" +
+                    "      font-size: 16px;\n" +
+                    "    }\n" +
+                    "    .otp {\n" +
+                    "      display: inline-block;\n" +
+                    "      padding: 8px 16px;\n" +
+                    "      font-size: 18px;\n" +
+                    "      background-color: #007bff;\n" +
+                    "      color: #fff;\n" +
+                    "      border: none;\n" +
+                    "      border-radius: 5px;\n" +
+                    "      cursor: pointer;\n" +
+                    "      text-decoration: none;\n" +
+                    "    }\n" +
+                    "  </style>\n" +
+                    "</head>\n" +
+                    "<body>\n" +
+                    "  <div class=\"container\">\n" +
+                    "    <h2>OTP Verification</h2>\n" +
+                    "    <p>Your OTP is: <strong>"+sixDigitCode+"</strong></p>\n" +
+                    "    <p>Please use this OTP to verify your account.</p>\n" +
+                    "    <p>If you didn't request this OTP, you can ignore this email.</p>\n" +
+                    "    <p>Thank you!</p>\n" +
+                    "  </div>\n" +
+                    "</body>\n" +
+                    "</html>\n";
 
-//            user.get().setOtp(sixDigitCode);
-//            saveUser(user);
             Otp=sixDigitCode;
             emailService.sendSimpleMail(user.get().getEmail(), subject, body);
 
@@ -161,7 +258,7 @@ public class DonorServiceImpl implements DonorService {
         Optional<Donor> user = donorRepository.findByEmail(email);
 //	if(saved.isPresent()) {
 
-        System.out.println("forget");
+
         if (user.isPresent()) {
             if (!Otp.equals(otp))
                 return "OTP not matched";
@@ -213,13 +310,60 @@ public class DonorServiceImpl implements DonorService {
             interestedPerson.setEventId(event.get().getId());
 
             interestedPersonRepository.save(interestedPerson);
-
+            Optional<OrphanageDetails> orphanageDetails = orphanageDetailsRepository.findByOrpId(event.get().getOrpId());
             String subject = "Event Registration is Done";
-            String body = "Dear " + donor.get().getName() + ", Your Registration on " + event.get().getTitle() + " is done. Thank You for registering for our upcoming event,Your generosity is a vital contribution to our cause.";
-            emailService.sendSimpleMail(donor.get().getEmail(), subject, body);
+            if(orphanageDetails.isPresent()) {
+                String body = generateEventRegistrationConfirmation(donor.get(), event.get(), orphanageDetails.get());
+                emailService.sendSimpleMail(donor.get().getEmail(), subject, body);
+            }
             return subject;
         }
         return "Problem in Event Registration Process";
+    }
+
+    private String generateEventRegistrationConfirmation(Donor donor, Events event, OrphanageDetails orphanageDetails) {
+        return "<!DOCTYPE html>\n" +
+                "<html lang=\"en\">\n" +
+                "<head>\n" +
+                "  <meta charset=\"UTF-8\">\n" +
+                "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                "  <title>Event Registration Confirmation</title>\n" +
+                "  <style>\n" +
+                "    body {\n" +
+                "      font-family: sans-serif;\n" +
+                "      margin: 0;\n" +
+                "      padding: 20px;\n" +
+                "    }\n" +
+                "    h2 {\n" +
+                "      font-size: 20px;\n" +
+                "      color: #333;\n" +
+                "      margin-bottom: 10px;\n" +
+                "    }\n" +
+                "    p {\n" +
+                "      line-height: 1.5;\n" +
+                "      font-size: 16px;\n" +
+                "      color: #333;\n" +
+                "    }\n" +
+                "  </style>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "  <h2>Event Registration Confirmation</h2>\n" +
+                "  <p>Dear " + donor.getName() + ",</p>\n" +
+                "  <p>We are thrilled to confirm your registration for our upcoming event, \"" + event.getTitle() + "\".</p>\n" +
+                "  <p>Your generosity in registering for this event is a vital contribution to our cause. We appreciate your support and look forward to seeing you there!</p>\n" +
+                "  <p>**Event Details:**</p>\n" +
+                "  <ul>\n" +
+                "    <li><strong>Event Title:</strong> " + event.getTitle() + "</li>\n" +
+                "    <li><strong>Date:</strong> " + event.getDate() + "</li>\n" +
+                "    <li><strong>Time:</strong> " + event.getTime() + "</li>\n" +
+                "    <li><strong>Location:</strong> " + orphanageDetails.getAddress().getHouse_no() +","+orphanageDetails.getAddress().getStreet()+ ","+orphanageDetails.getAddress().getCity()+","+orphanageDetails.getAddress().getCountry()+"-"+orphanageDetails.getAddress().getCountry()+"</li>\n" +
+                "  </ul>\n" +
+                "  <p>If you have any questions or require further information, please don't hesitate to contact us at "+ orphanageDetails.getContact()+".</p>\n" +
+                "  <p>Sincerely,</p>\n" +
+                "  <p>Happy Faces</p>\n" +
+                "</body>\n" +
+                "</html>";
+
     }
 
     @Override
@@ -228,11 +372,44 @@ public class DonorServiceImpl implements DonorService {
         Optional<InterestedPerson> cancellingEvent = donorParticipating.stream().filter(donorParticipating1->donorParticipating1.getEventId().equals(eventId)).findAny();
         if(cancellingEvent.isPresent()) {
             String donorEmail=cancellingEvent.get().getEmail();
+            Optional<Donor> donor = donorRepository.findByEmail(donorEmail);
+            Optional<Events> events = eventsRepository.findById(cancellingEvent.get().getEventId());
             interestedPersonRepository.delete(cancellingEvent.get());
             String subject = "Event Registration Cancelled";
-            String body = "We appreciate your initial commitment, and while we understand your circumstances, we hope to welcome you back as a valued donor in the future.";
+            String body =
+                    "<html lang=\"en\">\n" +
+                    "<head>\n" +
+                    "  <meta charset=\"UTF-8\">\n" +
+                    "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                    "  <title>Event Cancellation Notification</title>\n" +
+                    "  <style>\n" +
+                    "    body {\n" +
+                    "      font-family: sans-serif;\n" +
+                    "      margin: 0;\n" +
+                    "      padding: 20px;\n" +
+                    "    }\n" +
+                    "    p {\n" +
+                    "      line-height: 1.5;\n" +
+                    "      font-size: 16px;\n" +
+                    "      color: #333;\n" +
+                    "    }\n" +
+                    "    .header {\n" +
+                    "      font-weight: bold;\n" +
+                    "      margin-bottom: 10px;\n" +
+                    "    }\n" +
+                    "  </style>\n" +
+                    "</head>\n" +
+                    "<body>\n" +
+                    "  <h2 class=\"header\">Event Cancellation Notification</h2>\n" +
+                    "  <p>Dear "+donor.get().getName()+",</p>\n" +
+                    "  <p>We received your notification regarding the cancellation of your participation in the "+ events.get().getTitle() +" event. While we understand that circumstances may change, we appreciate you letting us know in advance.</p>\n" +
+                    "  <p>We appreciate your initial commitment to the event, and we hope to welcome you back as a valued participant in future endeavors.</p>\n" +
+                    "  <p>Sincerely,</p>\n" +
+                    "  <p>Happy Faces</p>\n" +
+                    "</body>\n" +
+                    "</html>\n";
             emailService.sendSimpleMail(donorEmail, subject, body);
-            System.out.println(subject);
+
             return subject;
         }
         return "Unable to Cancel the registration";
@@ -259,8 +436,102 @@ public class DonorServiceImpl implements DonorService {
 
     @Override
     public Donations saveDonationDetail(Donations donations) {
+        String orphanageId = donations.getOrpId();
+        String donorId = donations.getDonorId();
+        Optional<Orphanage> orphanage = orphanageRepository.findById(orphanageId);
+        Optional<OrphanageDetails> orphanageDetails = orphanageDetailsRepository.findByOrpId(orphanageId);
+        Optional<Donor> donor = donorRepository.findById(donorId);
+        if(orphanageDetails.isPresent() && donor.isPresent() && orphanage.isPresent()){
+            String orphanageEmail = orphanage.get().getEmail();
+            String donorEmail = donor.get().getEmail();
+            String subject = "Donation Receipt";
+            String body = generateDonorReceiptHTML(donor.get().getName(),orphanageDetails.get().getOrphanageName(),donations.getAmount(),donations.getDateTime(),donations.getTransactionId());
+            emailService.sendSimpleMail(donorEmail,subject,body);
+        }
         donationsRepository.save(donations);
         return donationsRepository.findById(donations.getId()).orElse(null);
+    }
+
+    private String generateDonorReceiptHTML(String donorName,String orpName,String amount,String dateTime,String transactionId) {
+
+        return "<!DOCTYPE html>\n" +
+                "<html lang=\"en\">\n" +
+                "<head>\n" +
+                "  <meta charset=\"UTF-8\">\n" +
+                "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                "  <title>Donation Receipt</title>\n" +
+                "  <style>\n" +
+                "    body {\n" +
+                "      font-family: sans-serif;\n" +
+                "      margin: 0;\n" +
+                "      padding: 20px;\n" +
+                "    }\n" +
+                "    h1 {\n" +
+                "      text-align: center;\n" +
+                "      font-size: 24px;\n" +
+                "      margin-bottom: 20px;\n" +
+                "    }\n" +
+                "    table {\n" +
+                "      width: 100%;\n" +
+                "      border-collapse: collapse;\n" +
+                "      margin-bottom: 20px;\n" +
+                "      border: 1px solid #ddd; /* Add a border around the entire table */\n" +
+                "    }\n" +
+                "    th, td {\n" +
+                "      padding: 10px;\n" +
+                "      border: 1px solid #ddd; /* Add borders to individual cells */\n" +
+                "    }\n" +
+                "    th {\n" +
+                "      background-color: #f2f2f2; /* Add a light gray background to table headers */\n" +
+                "      text-align: left; /* Align table headers to the left */\n" +
+                "    }\n" +
+                "    .contact-info {\n" +
+                "      text-align: center;\n" +
+                "      margin-top: 20px;\n" +
+                "    }\n" +
+                "    .logo {\n" +
+                "      width: 100px;\n" +
+                "      height: 100px;\n" +
+                "      float: left;\n" +
+                "      margin-right: 20px;\n" +
+                "    }\n" +
+                "  </style>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "  <div style=\"display: flex; align-items: center;\">\n" +
+                "    <h1>Donation Receipt</h1>\n" +
+                "  </div>\n" +
+                "  <table>\n" +
+                "    <tr>\n" +
+                "      <th style=\"width: 50%\">Transaction Id:</th>\n" +
+                "      <td>" + transactionId+ "</td>\n" +
+                "    </tr>\n" +
+                "    <tr>\n" +
+                "      <th>Date:</th>\n" +
+                "      <td>" + dateTime + "</td>\n" +
+                "    </tr>\n" +
+                "    <tr>\n" +
+                "      <th>Donor Name:</th>\n" +
+                "      <td>" + donorName + "</td>\n" +
+                "    </tr>\n" +
+                "    <tr>\n" +
+                "      <th>Recipient:</th>\n" +
+                "      <td>" + orpName + "</td>\n" +
+                "    </tr>\n" +
+                "    <tr>\n" +
+                "      <th>Amount Donated:</th>\n" +
+                "      <td> Rs." + amount + "</td>\n" +
+                "    </tr>\n" +
+                "  </table>\n" +
+                "  <p style=\"text-align: center;\">Thank you for your generous donation! Your support will make a difference in the lives of the children at " + orpName + "</p>\n" +
+                "  <p class=\"contact-info\">\n" +
+                "    Sincerely,<br>\n" +
+                "    The Happy Faces Team<br>\n" +
+                "    <a href=\"mailto:happyfacesweb@gmail.com\">happyfacesweb@gmail.com</a><br>\n" +
+                "    (555) 555-5555\n" +
+                "  </p>\n" +
+                "</body>\n" +
+                "</html>";
     }
 
     @Override
@@ -276,11 +547,34 @@ public class DonorServiceImpl implements DonorService {
         Optional<OrphanageDetails> orphanageDetails=orphanageDetailsRepository.findByOrpId(donationRequirements.getOrpId());
         Optional<Orphanage> orphanage= orphanageRepository.findById(donationRequirements.getOrpId());
         String subject="Heartfelt Thanks for Your Generous Donation";
-        String body="Dear "+donor.get().getName()+",\n" +
-                "\n" +
-                "Thank you for your generous donation to \""+orphanageDetails.get().getOrphanageName()+"\". Your kindness will make a lasting impact, providing hope and support to the children in our care. We are deeply grateful for your compassion and generosity.";
+        String body="<!DOCTYPE html>\n" +
+                "<html lang=\"en\">\n" +
+                "<head>\n" +
+                "  <meta charset=\"UTF-8\">\n" +
+                "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                "  <title>Donation Confirmation</title>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "  <p>Dear "+ donor.get().getName() +",</p>\n" +
+                "  <p>Thank you for your generous donation to \" "+ orphanageDetails.get().getOrphanageName() +"\".</p>\n" +
+                "  <p>Your kindness will make a lasting impact, providing hope and support to the children in our care.</p>\n" +
+                "  <p>We are deeply grateful for your compassion and generosity.</p>\n" +
+                "</body>\n" +
+                "</html>";
         String subjectOrp = "Generous Donation Offer from "+donor.get().getName() +"\uD83D\uDE0A";
-        String bodyOrp = "We are thrilled to inform you that "+donor.get().getName()+" has graciously offered to donate essential items to support the children in your care. In their own words, \""+donationRequirements.getDescription()+".\" We are excited to coordinate this contribution to enhance the lives of the children at your orphanage.\uD83D\uDE0A";
+        String bodyOrp = "<!DOCTYPE html>\n" +
+                "<html lang=\"en\">\n" +
+                "<head>\n" +
+                "  <meta charset=\"UTF-8\">\n" +
+                "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                "  <title>Donation Offer Confirmation</title>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "  <p>We are thrilled to inform you that  "+ donor.get().getName() +" has graciously offered to donate essential items to support the children in your care.</p>\n" +
+                "  <p>In their own words: \""+ donationRequirements.getDescription() +"\".</p>\n" +
+                "  <p>We are excited to coordinate this contribution to enhance the lives of the children at your orphanage.</p>\n" +
+                "</body>\n" +
+                "</html>";
         emailService.sendSimpleMail(donor.get().getEmail(),subject,body);
         emailService.sendSimpleMail(orphanage.get().getEmail(),subjectOrp,bodyOrp);
         return "Requirement Donation Info Saved Successfully";

@@ -36,49 +36,7 @@ export default function BasicTable() {
   };
 
   return (
-    <div className="Table">
-      <h3>Donation Details</h3>
-      <TableContainer
-        component={Paper}
-        style={{ boxShadow: "0px 13px 20px 0px #80808029" }}
-      >
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Orphanage Name</TableCell>
-              <TableCell align="left">Transaction ID</TableCell>
-              <TableCell align="left">Date</TableCell>
-              <TableCell align="left"></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody style={{ color: "white" }}>
-            {rows.map((row, index) => (
-              <TableRow
-                key={row.name}
-                sx={{
-                  "&:last-child td, &:last-child th": { border: 0 },
-                }}
-              >
-                <TableCell component="th" scope="row">
-                  {row.name}
-                </TableCell>
-                <TableCell align="left">{row.trackingId}</TableCell>
-                <TableCell align="left">{row.date}</TableCell>
-                <TableCell align="left" className="Details">
-                  <button
-                    onClick={() => handleDetailsClick(index)}
-                    className={`DetailsButton ${
-                      selectedRow === index ? "Active" : ""
-                    }`}
-                  >
-                    Details
-                  </button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+    
       <div className="LastTransactionsTable">
         <h3>Last 4 Transactions</h3>
         <TableContainer component={Paper}>

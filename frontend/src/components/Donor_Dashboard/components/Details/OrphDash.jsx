@@ -10,6 +10,8 @@ import { useUser } from '../../../../UserContext';
 import axios from "axios";
 import { LoadingButton } from "@mui/lab";
 import { API_BASE_URL } from "../../../../config";
+import { Button, message } from "antd";
+import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 
 const OrphDash = () => {
   const [imagePopupVisible, setImagePopupVisible] = useState(false);
@@ -139,7 +141,9 @@ const OrphDash = () => {
   };
 
   const downloadCertificates = async (orpId, orpName) => {
-    try {
+    if(window.confirm(`Do you want to download ${orpName}'s Certificate ?`))
+    {
+      try {
       const response = await axios.get(`${API_BASE_URL}/orphanage/getCertificate/${orpId}`, { responseType: 'blob' });
       if (response.status !== 200) {
         alert(`Error downloading certificates: ${response.status}`);
@@ -159,12 +163,41 @@ const OrphDash = () => {
     } catch (error) {
       console.error("Error downloading certificates:", error);
     }
+    }
   };
 
-  const viewCertificates = () => {
-    // Logic to view certificates
-    console.log("View Certificates clicked");
-    // Implement your logic to view certificates here
+  const fetchOrphanageCertificate = async (orpId) => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/orphanage/getCertificate/${orpId}`, {
+        responseType: 'arraybuffer'
+      });
+  
+      const status = response.status;
+  
+      if (status === 200) {
+        const blob = new Blob([response.data]);
+        const file = new File([blob], 'certificate.pdf', { type: 'application/pdf' });
+  
+        // Convert File object into a URL
+        const fileUrl = URL.createObjectURL(file);
+  
+        return fileUrl;
+      }
+    } catch (error) {
+      console.log("Error in Fetching Certificate:", error);
+    }
+  }
+  const [openPdfDialog, setOpenPdfDialog] = useState(false);
+  const [certificateUrl, setCertificateUrl] = useState(null);
+  const [isLoading, setIsLoading] = useState(false); // Initial state is false
+  const viewCertificates = async(orpId) => {
+    const certificateUrl = await fetchOrphanageCertificate(orpId);
+    setCertificateUrl(certificateUrl);
+    setOpenPdfDialog(true);
+  };
+  const handleClosePdfDialog = () => {
+    setOpenPdfDialog(false);
+    setCertificateUrl(''); // Clear the certificate URL
   };
 
   const handleEventsButtonClick = () => {
@@ -176,7 +209,8 @@ const OrphDash = () => {
   };
 
   const handleRegisterEvent = async (eventId) => {
-    try {
+    if(window.confirm(`Do you want to Register in this Event?`)){
+      try {
       setRegisteringProcess(true);
       const response = await axios.post(`${API_BASE_URL}/donor/${userDetails?.donorId}/eventRegister/${eventId}`);
       console.log("Event registered");
@@ -188,9 +222,10 @@ const OrphDash = () => {
     }
     finally {
       setRegisteringProcess(false);
-      window.location.reload();
     }
   };
+    }
+    
 
   const handleDonateButtonClick = () => {
     setDonationPopupVisible(true);
@@ -253,12 +288,9 @@ const OrphDash = () => {
 
   const saveDonationData = async (data) => {
     try {
-      // Send the data to your backend API for saving
       const response = await axios.post(`${API_BASE_URL}/donor/save/DonationRequirement`, data);
-      // Handle success response if needed
-      console.log(response.data);
+      message.success(`Great news! Your interest in donating to ${selectedOrphanage.orphanageName} has been successfully sent.`);
     } catch (error) {
-      // Handle error
       console.error('Error saving donation data:', error);
     }
   };
@@ -301,7 +333,7 @@ const OrphDash = () => {
         {selectedOrphanage && (
           <div className="modal">
             <div className="modal-content">
-              <span className="close" onClick={closeModal}>&times;</span>
+              <span className="close" onClick={()=>closeModal()}>&times;</span>
               <h3>{selectedOrphanage.orphanageName}</h3>
               <table>
                 <tbody>
@@ -335,21 +367,21 @@ const OrphDash = () => {
                     <td className="field-name">Certificates:</td>
                     <td>
                       <button onClick={() => downloadCertificates(selectedOrphanage.orpId, selectedOrphanage.orphanageName)}>Download</button>
-                      <button onClick={viewCertificates}>View Certificates</button>
+                      <button onClick={()=>viewCertificates(selectedOrphanage.orpId)}>View Certificates</button>
                     </td>
                   </tr>
                   <tr>
                     <td className="field-name">View Images:</td>
                     <td>
-                      <button onClick={openViewImagesPopup}>View Images</button>
+                      <button onClick={()=>openViewImagesPopup()}>View Images</button>
                     </td>
                   </tr>
                 </tbody>
               </table>
               {/* Add "Events" and "Donate" buttons */}
               <div className="button-container">
-                <button onClick={handleEventsButtonClick}>Events</button>
-                <button onClick={handleDonateButtonClick}>Donate</button>
+                <button onClick={()=>handleEventsButtonClick()}>Events</button>
+                <button onClick={()=>handleDonateButtonClick()}>Donate</button>
               </div>
             </div>
           </div>
@@ -358,16 +390,45 @@ const OrphDash = () => {
         {imagePopupVisible && (
           <ImagePopup
             images={selectedOrphanage.orphanage ? selectedOrphanage.orphanage.images : []}
-            onClose={closeImagePopup}
-            onBack={handleBackButtonClick}
+            onClose={()=>closeImagePopup()}
+            onBack={()=>handleBackButtonClick()}
           />
         )}
- 
+
+
+        {/*View Certificate*/}
+      <Dialog
+        open={openPdfDialog}
+        onClose={()=>handleClosePdfDialog()}
+        fullWidth
+        maxWidth="md"
+      >
+        <DialogTitle>View Certificate</DialogTitle>
+        <DialogContent>
+          {certificateUrl ? (<>
+        {isLoading ? (
+          <CircularProgress sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} />
+        ) : (
+          <iframe
+            title="certificate"
+            src={certificateUrl}
+            width="100%"
+            height="600"
+          />
+        )}
+      </>
+    ): (<div>No Certificate to view</div>)}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={()=>handleClosePdfDialog()}>Close</Button>
+        </DialogActions>
+      </Dialog>
+
         {/* Event Details Card Box */}
         {eventDetailsVisible && selectedOrphanage && (
           <div className="modal">
             <div className="event-details-content">
-              <span className="close" onClick={handleEventDetailsClose}>&times;</span>
+              <span className="close" onClick={()=>handleEventDetailsClose()}>&times;</span>
               <h3>{selectedOrphanage.orphanageName} - Event Details</h3>
  
               {/* Display Events in a Table */}
@@ -392,6 +453,7 @@ const OrphDash = () => {
                       <td>{event.date} {event.time}</td>
                       <td>
                         {console.log(selectedOrphanage.eventData[index].participantData)}
+                        {console.log(selectedOrphanage.eventData[index])}
                       <LoadingButton
                           disabled={selectedOrphanage.eventData[index].participantData?.includes(userDetails.donorId)}  
                           loading={RegisteringProcess}
@@ -410,7 +472,7 @@ const OrphDash = () => {
               </table>
  
               <p>"Unlock a world of inspiration at our upcoming event. Join us for an enriching experience. Register now to secure your spot, connect with like-minded individuals, and contribute to a meaningful cause. Don't miss out on this transformative event!"</p>
-              <button className="back-button" onClick={handleEventDetailsClose}>Back</button>
+              <button className="back-button" onClick={()=>handleEventDetailsClose()}>Back</button>
             </div>
           </div>
         )}
@@ -419,9 +481,9 @@ const OrphDash = () => {
         {registrationSuccessVisible && (
           <div className="modal">
             <div className="event-details-content registration-success-popup">
-              <span className="close" onClick={handleRegistrationSuccessClose}>&times;</span>
+              <span className="close" onClick={()=>handleRegistrationSuccessClose()}>&times;</span>
               <h3>Thank you for successful registration!</h3>
-              <button className="close-button" onClick={handleRegistrationSuccessClose}>X</button>
+              <button className="close-button" onClick={()=>handleRegistrationSuccessClose()}>X</button>
             </div>
           </div>
         )}
@@ -447,7 +509,7 @@ const OrphDash = () => {
         {donationDescriptionVisible && (
       <div className="modal donation-description-modal">
         <div className="donation-description-popup-content">
-          <span className="close" onClick={handleDonationDescriptionClose}>&times;</span>
+          <span className="close" onClick={()=>handleDonationDescriptionClose()}>&times;</span>
           <h3>Donate Requirements - {selectedOrphanage.orphanageName}</h3>
           <p>Enter a description of the requirements you wish to donate:</p>
           <textarea
@@ -458,7 +520,7 @@ const OrphDash = () => {
             onChange={(e) => setDonationDescription(e.target.value)}
           ></textarea>
           <div className="button-container">
-            <button onClick={handleDonationDescriptionSave}>Notify Orphanage</button>
+            <button onClick={()=>handleDonationDescriptionSave()}>Notify Orphanage</button>
             <button onClick={() => { handleDonationDescriptionClose(); setDonationDescription(''); }}>Close</button>
           </div>
         </div>
@@ -468,8 +530,7 @@ const OrphDash = () => {
 {donationRazorPayVisible && (
           <div className="modal donation-description-modal">
             <div className="donation-description-popup-content">
-              <RazorPay onClose={handledonationRazorPayVisible} selectedOrphanage={selectedOrphanage}/>
-             
+              <RazorPay onClose={()=>handledonationRazorPayVisible()} selectedOrphanage={selectedOrphanage}/>
             </div>
           </div>
         )}
@@ -477,7 +538,7 @@ const OrphDash = () => {
  {/* Other JSX content */}
         {/* View Images Pop-up */}
         {viewImagesPopupVisible && selectedOrphanage && (
-          <div className="modal" onClick={closeViewImagesPopup}>
+          <div className="modal" onClick={()=>closeViewImagesPopup()}>
             <div className="view-images-content" style={{ maxHeight: '80vh', overflowY: 'auto' }}> {/* Added style */}
               <span className="close">&times;</span>
               <h3>{selectedOrphanage.orphanageName} Images</h3>
@@ -505,7 +566,7 @@ const OrphDash = () => {
 
         {/* Image Popup */}
         {imagePopupVisible && selectedImage && (
-          <div className="modal" onClick={closeImagePopup}>
+          <div className="modal" onClick={()=>closeImagePopup()}>
             <div className="image-popup-content">
               <span className="close">&times;</span>
               <img src={`data:image/jpeg;base64,${selectedImage}`} alt="Zoomed Image" />
