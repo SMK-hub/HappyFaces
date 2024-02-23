@@ -152,11 +152,13 @@ const SignInAdmin = () => {
             <span className="forgot-password-link" onClick={handleForgotPassword}>
               Forgot Password?
             </span>
-          </div>
-        </form>
-        <Link to="/signin" className="back-link">
+            <Link to="/signin" className="back-link">
           Back
         </Link>
+          </div>
+          
+        </form>
+        
       </div>
 
       {/* Forgot Password Popup */}

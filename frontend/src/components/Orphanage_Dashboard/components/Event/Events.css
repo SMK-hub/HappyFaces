@@ -21,7 +21,7 @@
 
 .event-table th, .event-table td {
   border: 2px solid #ddd;
-  stroke: rgb(20, 88, 147);
+  /* stroke: rgb(20, 88, 147); */
   stroke-width: 4rem;
   padding: 10px;
   text-align: left;
@@ -53,6 +53,23 @@
   height: 100vh;
 }
 
+/* Edit icon */
+.edit-icon {
+  color: #007bff; /* Blue color */
+  cursor: pointer;
+}
+
+/* View icon */
+.view-icon {
+  color: #28a745; /* Green color */
+  cursor: pointer;
+}
+
+/* Cancel icon */
+.cancel-icon {
+  color: #dc3545; /* Red color */
+  cursor: pointer;
+}
 /* .AppGlass {
   display: flex;
   width: 80%;

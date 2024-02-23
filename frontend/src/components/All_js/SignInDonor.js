@@ -147,10 +147,13 @@ const SignInDonor = () => {
             <button type="submit" className="don-button">
               Sign In
             </button>
-            {/* Changed "Forgot Password" button to text */}
+            {/* Changed "Forgot Password" button to text
             <span className="donor-forgot-password-link" onClick={handleForgotPassword}>
               Forgot Password?
-            </span>
+            </span> */}
+             <a href="#" onClick={handleForgotPassword} className="donor-forgot-password-link">
+              Forgot Password?
+            </a>
             <Link to="/signin" className="donor-back-link">
           Back
         </Link>
@@ -163,7 +166,7 @@ const SignInDonor = () => {
       {/* Forgot Password Popup */}
       {showForgotPasswordPopup && (
         <div className="donor-forgot-password-popup">
-          <button className="close-btn" onClick={handleBack}>X</button>
+          {/* <button className="close-btn" onClick={handleBack}>X</button> */}
           <h2>Forgot Password</h2>
           <form onSubmit={handleOtpSubmit}>
             <label>Email:</label>
@@ -186,7 +189,7 @@ const SignInDonor = () => {
       {showOtpVerificationPopup && (
         <div className="donor-popup">
           <div className="donor-popup-inner">
-            <button className="close-btn" onClick={handleBack}>X</button>
+            {/* <button className="close-btn" onClick={handleBack}>X</button> */}
             <h2>OTP Verification</h2>
             <form onSubmit={handleNewPasswordSubmit}>
               <label>Enter OTP:</label>

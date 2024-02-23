@@ -1,9 +1,10 @@
 /* SignInAdmin.css */
 .sign-up-admin{
   background-image:linear-gradient( 106.37deg, #ffe1bc 29.63%, #ffcfd1 51.55%, #f3c6f1 90.85% );
-  height: 120vh;
+  height: 100vh;
   display:flex;
-  flex-direction: column;
+  overflow: hidden;
+    flex-direction: column;
 }
 .sign-up-admin-container {
     display: flex;
@@ -21,6 +22,7 @@
   
   .sign-up-admin-heading {
     font-size: 28px;
+    margin-top: -50px;
     margin-bottom: 20px;
     color: #333;
     position: relative;
@@ -69,14 +71,16 @@
   
   .back-link {
     margin-top: 20px;
-    color: #ffe1bc;
+    position: relative;
+    color: #000000;
     text-decoration: none;
     font-size: 16px;
     transition: color 0.3s ease;
-  }
+    
+}
   
   .back-link:hover {
-    color: #f3c6f1;
+    color: #e81470;
   }
   
   .form-buttons {

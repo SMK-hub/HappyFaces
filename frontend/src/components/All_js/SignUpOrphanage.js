@@ -81,10 +81,10 @@ const SignUpOrphanage = () => {
             Sign Up
           </button>
         </div>
-      </form>
-      <Link to="/signup" className="back-link">
+        <Link to="/signup" className="back-link">
         Back
       </Link>
+      </form>      
     </div>
     )}
     </div>
