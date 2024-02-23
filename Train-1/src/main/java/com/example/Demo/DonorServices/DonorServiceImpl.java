@@ -352,14 +352,14 @@ public class DonorServiceImpl implements DonorService {
                 "  <p>Dear " + donor.getName() + ",</p>\n" +
                 "  <p>We are thrilled to confirm your registration for our upcoming event, \"" + event.getTitle() + "\".</p>\n" +
                 "  <p>Your generosity in registering for this event is a vital contribution to our cause. We appreciate your support and look forward to seeing you there!</p>\n" +
-                "  <p>**Event Details:**</p>\n" +
+                "  <p><strong>Event Details:</strong></p>\n" +
                 "  <ul>\n" +
                 "    <li><strong>Event Title:</strong> " + event.getTitle() + "</li>\n" +
                 "    <li><strong>Date:</strong> " + event.getDate() + "</li>\n" +
                 "    <li><strong>Time:</strong> " + event.getTime() + "</li>\n" +
                 "    <li><strong>Location:</strong> " + orphanageDetails.getAddress().getHouse_no() +","+orphanageDetails.getAddress().getStreet()+ ","+orphanageDetails.getAddress().getCity()+","+orphanageDetails.getAddress().getCountry()+"-"+orphanageDetails.getAddress().getCountry()+"</li>\n" +
                 "  </ul>\n" +
-                "  <p>If you have any questions or require further information, please don't hesitate to contact us at "+ orphanageDetails.getContact()+".</p>\n" +
+                "  <p>If you have any questions or require further information, please don't hesitate to contact orphanage at "+ orphanageDetails.getContact()+".</p>\n" +
                 "  <p>Sincerely,</p>\n" +
                 "  <p>Happy Faces</p>\n" +
                 "</body>\n" +
