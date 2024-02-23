@@ -47,4 +47,5 @@ public interface DonorService {
     List<DonationRequirements> getAllDonationRequirementByDonorId(String donorId);
     List<InterestedPerson> findAllInterestedPersonByDonorId(String donorId);
     Events findEventByEventId(String eventId);
+    void increaseViewCount(String orpId);
 }

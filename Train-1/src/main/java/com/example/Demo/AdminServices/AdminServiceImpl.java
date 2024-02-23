@@ -130,8 +130,61 @@ public class AdminServiceImpl implements AdminService {
                 newUser.setRole(EnumClass.Roles.ADMIN);
                 adminRepo.save(newUser);
                 String subject = "Registration Successful";
-                String body = "Dear Admin, congratulations on taking the lead in maintaining the Happy Faces website! Your dedication will make a positive impact on our mission to support and uplift the lives of those in need.";
-                emailService.sendSimpleMail(newUser.getEmail(), subject, body);
+                String body = "<!DOCTYPE html>\n" +
+                        "<html lang=\"en\">\n" +
+                        "<head>\n" +
+                        "  <meta charset=\"UTF-8\">\n" +
+                        "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                        "  <title>Happy Faces - Welcome Admin!</title>\n" +
+                        "  <style>\n" +
+                        "    body {\n" +
+                        "      font-family: Arial, sans-serif;\n" +
+                        "      margin: 20px;\n" +
+                        "      background-color: #f4f4f4;\n" +
+                        "    }\n" +
+                        "    .container {\n" +
+                        "      max-width: 600px;\n" +
+                        "      margin: 0 auto;\n" +
+                        "      background-color: #fff;\n" +
+                        "      padding: 20px;\n" +
+                        "      border-radius: 5px;\n" +
+                        "      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);\n" +
+                        "    }\n" +
+                        "    h2 {\n" +
+                        "      margin-top: 0;\n" +
+                        "      color: #222;\n" +
+                        "    }\n" +
+                        "    p {\n" +
+                        "      font-size: 16px;\n" +
+                        "      line-height: 1.5;\n" +
+                        "    }\n" +
+                        "    .button {\n" +
+                        "      display: inline-block;\n" +
+                        "      padding: 8px 16px;\n" +
+                        "      font-size: 16px;\n" +
+                        "      background-color: #007bff;\n" +
+                        "      color: #fff;\n" +
+                        "      border: none;\n" +
+                        "      border-radius: 5px;\n" +
+                        "      cursor: pointer;\n" +
+                        "      text-decoration: none;\n" +
+                        "    }\n" +
+                        "  </style>\n" +
+                        "</head>\n" +
+                        "<body>\n" +
+                        "  <div class=\"container\">\n" +
+                        "    <h2>Welcome to the Happy Faces Family, "+newUser.getName()+"!</h2>\n" +
+                        "    <p>We're thrilled to have you join our team as a registered admin.</p>\n" +
+                        "    <p>Your dedication and commitment will play a crucial role in maintaining the Happy Faces website and ensuring it continues to support and uplift the lives of those in need.</p>\n" +
+                        "    <p>With your contributions, we can make a real difference in the world. We're excited to see your ideas and passion come to life on the platform.</p>\n" +
+                        "    <p>Get started by exploring the admin panel, accessing valuable resources, and connecting with our community.</p>\n" +
+                        "    <p>Thank you for choosing to be a part of our mission. We're confident that you'll make a significant impact.</p>\n" +
+                        "    <p>Sincerely,</p>\n" +
+                        "    <p>The Happy Faces Team</p>\n" +
+                        "  </div>\n" +
+                        "</body>\n" +
+                        "</html>";
+                emailService.sendHtmlMail(newUser.getEmail(), subject, body);
                 return "Success";
             } else {
                 return "Enter Correct Passcode";
@@ -212,9 +265,6 @@ public class AdminServiceImpl implements AdminService {
         return null;
     }
 
-
-
-
     @Override
     public Orphanage getOrphanageById(String id) {
         Optional<Orphanage> orphanage = orphanageRepo.findById(id);
@@ -272,13 +322,58 @@ public class AdminServiceImpl implements AdminService {
 
             String sixDigitCode = String.valueOf(10000 + new Random().nextInt(900000));
 
-            String body = "Dear admin OTP to change password is " + sixDigitCode;
-
-//            user.get().setOtp(sixDigitCode);
-//            saveUser(user);
+            String body = "<!DOCTYPE html>\n" +
+                    "<html lang=\"en\">\n" +
+                    "<head>\n" +
+                    "  <meta charset=\"UTF-8\">\n" +
+                    "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                    "  <title>OTP Verification</title>\n" +
+                    "  <style>\n" +
+                    "    body {\n" +
+                    "      font-family: Arial, sans-serif;\n" +
+                    "      margin: 0;\n" +
+                    "      padding: 20px;\n" +
+                    "      background-color: #f4f4f4;\n" +
+                    "    }\n" +
+                    "    .container {\n" +
+                    "      max-width: 600px;\n" +
+                    "      margin: 0 auto;\n" +
+                    "      background-color: #fff;\n" +
+                    "      padding: 20px;\n" +
+                    "      border-radius: 5px;\n" +
+                    "      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);\n" +
+                    "    }\n" +
+                    "    h2 {\n" +
+                    "      margin-top: 0;\n" +
+                    "    }\n" +
+                    "    p {\n" +
+                    "      font-size: 16px;\n" +
+                    "    }\n" +
+                    "    .otp {\n" +
+                    "      display: inline-block;\n" +
+                    "      padding: 8px 16px;\n" +
+                    "      font-size: 18px;\n" +
+                    "      background-color: #007bff;\n" +
+                    "      color: #fff;\n" +
+                    "      border: none;\n" +
+                    "      border-radius: 5px;\n" +
+                    "      cursor: pointer;\n" +
+                    "      text-decoration: none;\n" +
+                    "    }\n" +
+                    "  </style>\n" +
+                    "</head>\n" +
+                    "<body>\n" +
+                    "  <div class=\"container\">\n" +
+                    "    <h2>OTP Verification</h2>\n" +
+                    "    <p>Your OTP is: <strong>"+sixDigitCode+"</strong></p>\n" +
+                    "    <p>Please use this OTP to verify your account.</p>\n" +
+                    "    <p>If you didn't request this OTP, you can ignore this email.</p>\n" +
+                    "    <p>Thank you!</p>\n" +
+                    "  </div>\n" +
+                    "</body>\n" +
+                    "</html>\n";
             Otp = sixDigitCode;
-
-            emailService.sendSimpleMail(user.get().getEmail(), subject, body);
+            emailService.sendHtmlMail(user.get().getEmail(), subject, body);
 
             return sixDigitCode;
         }

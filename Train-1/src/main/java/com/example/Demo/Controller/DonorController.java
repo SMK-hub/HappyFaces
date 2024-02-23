@@ -230,4 +230,9 @@ public class DonorController {
     public ResponseEntity<Events> getEventByEventId(@PathVariable String eventId){
         return new ResponseEntity<>(donorService.findEventByEventId(eventId),HttpStatus.OK);
     }
+    @PutMapping("/addViewCount/{orpId}")
+    public ResponseEntity<String> addOrphanageViewCount(@PathVariable String orpId){
+        donorService.increaseViewCount(orpId);
+        return new ResponseEntity<>("View count Increased",HttpStatus.OK);
+    }
 }

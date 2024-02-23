@@ -59,6 +59,7 @@ const OrphDash = () => {
       fetchEventData(orphanage.orpId),
       fetchAllEventData(orphanage.orpId),
     ]);
+    const addviewCount = await axios.put(`${API_BASE_URL}/donor/addViewCount/${orphanage.orpId}`);
     const eventParticipant = await Promise.all(
       orphanagaeWithEventData.map(async (event) => {
         const participant = await fetchParticipatedDonorsId(event.id);

@@ -55,9 +55,67 @@ public class OrphanageServiceImpl implements OrphanageService {
             newUser.setRole(EnumClass.Roles.ORPHANAGE);
             orphanageRepository.save(newUser);
             String subject = "Registration Successful";
-            String body = "Dear " + newUser.getName()
-                    + ", thank you for registering with Happy Faces! Your commitment to our cause brings hope and happiness to the lives of many. Welcome to our compassionate community!";
-            emailService.sendSimpleMail(newUser.getEmail(), subject, body);
+            String body = "<!DOCTYPE html>\n" +
+                    "<html lang=\"en\">\n" +
+                    "<head>\n" +
+                    "  <meta charset=\"UTF-8\">\n" +
+                    "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                    "  <title>Happy Faces - Welcome, [Orphanage Name]!</title>\n" +
+                    "  <style>\n" +
+                    "    body {\n" +
+                    "      font-family: Arial, sans-serif;\n" +
+                    "      margin: 20px;\n" +
+                    "      background-color: #f4f4f4;\n" +
+                    "    }\n" +
+                    "    .container {\n" +
+                    "      max-width: 600px;\n" +
+                    "      margin: 0 auto;\n" +
+                    "      background-color: #fff;\n" +
+                    "      padding: 20px;\n" +
+                    "      border-radius: 5px;\n" +
+                    "      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);\n" +
+                    "    }\n" +
+                    "    h2 {\n" +
+                    "      margin-top: 0;\n" +
+                    "      color: #222;\n" +
+                    "    }\n" +
+                    "    p {\n" +
+                    "      font-size: 16px;\n" +
+                    "      line-height: 1.5;\n" +
+                    "    }\n" +
+                    "    .logo {\n" +
+                    "      max-width: 150px;\n" +
+                    "      display: block;\n" +
+                    "      margin-bottom: 20px;\n" +
+                    "    }\n" +
+                    "    .button {\n" +
+                    "      display: inline-block;\n" +
+                    "      padding: 8px 16px;\n" +
+                    "      font-size: 16px;\n" +
+                    "      background-color: #007bff;\n" +
+                    "      color: #fff;\n" +
+                    "      border: none;\n" +
+                    "      border-radius: 5px;\n" +
+                    "      cursor: pointer;\n" +
+                    "      text-decoration: none;\n" +
+                    "    }\n" +
+                    "  </style>\n" +
+                    "</head>\n" +
+                    "<body>\n" +
+                    "  <div class=\"container\">\n" +
+                    "     <h2>Welcome to the Happy Faces Family, "+newUser.getName()+"!</h2>\n" +
+                    "    <p>We are thrilled to welcome you to our community of dedicated individuals and organizations committed to supporting children in need.</p>\n" +
+                    "    <p>Your decision to register your orphanage with Happy Faces demonstrates your unwavering commitment to providing a safe and loving environment for the children under your care.</p>\n" +
+                    "    <p>With your participation, we can collectively create a brighter future for these children by offering them access to resources, opportunities, and support that will help them thrive.</p>\n" +
+                    "    <p>Whether it's volunteering, fundraising, or simply connecting with other like-minded organizations, there are many ways you can contribute to our mission.</p>\n" +
+                    "    <p>We encourage you to explore our website and resources to learn more about how you can get involved and make a difference.</p>\n" +
+                    "    <p>Thank you for choosing to partner with Happy Faces. Together, we can build a world where every child has the chance to reach their full potential.</p>\n" +
+                    "    <p>Sincerely,</p>\n" +
+                    "    <p>The Happy Faces Team</p>\n" +
+                    "  </div>\n" +
+                    "</body>\n" +
+                    "</html>\n";
+            emailService.sendHtmlMail(newUser.getEmail(), subject, body);
             return "Success";
         } else {
             return "You are an existing user.\nPlease Login";
@@ -67,11 +125,7 @@ public class OrphanageServiceImpl implements OrphanageService {
     @Override
     public boolean loginUser(String email, String password) {
         Optional<Orphanage> user = orphanageRepository.findByEmail(email);
-        if (user.isPresent()) {
-            return user != null && user.get().getPassword().equals(password);
-        } else {
-            return false;
-        }
+        return user.map(orphanage -> orphanage.getPassword().equals(password)).orElse(false);
     }
 
     @Override
@@ -190,19 +244,65 @@ public class OrphanageServiceImpl implements OrphanageService {
     public String sendOtp(Orphanage orphanage) {
 
         Optional<Orphanage> user = orphanageRepository.findByEmail(orphanage.getEmail());
-//		if (saved.isPresent()) {
+
         if (user.isPresent()) {
             String subject = "OTP";
 
             String sixDigitCode = String.valueOf(10000 + new Random().nextInt(900000));
 
-            String body = "Dear admin OTP to change password is " + sixDigitCode;
+            String body = "<!DOCTYPE html>\n" +
+                    "<html lang=\"en\">\n" +
+                    "<head>\n" +
+                    "  <meta charset=\"UTF-8\">\n" +
+                    "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                    "  <title>OTP Verification</title>\n" +
+                    "  <style>\n" +
+                    "    body {\n" +
+                    "      font-family: Arial, sans-serif;\n" +
+                    "      margin: 0;\n" +
+                    "      padding: 20px;\n" +
+                    "      background-color: #f4f4f4;\n" +
+                    "    }\n" +
+                    "    .container {\n" +
+                    "      max-width: 600px;\n" +
+                    "      margin: 0 auto;\n" +
+                    "      background-color: #fff;\n" +
+                    "      padding: 20px;\n" +
+                    "      border-radius: 5px;\n" +
+                    "      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);\n" +
+                    "    }\n" +
+                    "    h2 {\n" +
+                    "      margin-top: 0;\n" +
+                    "    }\n" +
+                    "    p {\n" +
+                    "      font-size: 16px;\n" +
+                    "    }\n" +
+                    "    .otp {\n" +
+                    "      display: inline-block;\n" +
+                    "      padding: 8px 16px;\n" +
+                    "      font-size: 18px;\n" +
+                    "      background-color: #007bff;\n" +
+                    "      color: #fff;\n" +
+                    "      border: none;\n" +
+                    "      border-radius: 5px;\n" +
+                    "      cursor: pointer;\n" +
+                    "      text-decoration: none;\n" +
+                    "    }\n" +
+                    "  </style>\n" +
+                    "</head>\n" +
+                    "<body>\n" +
+                    "  <div class=\"container\">\n" +
+                    "    <h2>OTP Verification</h2>\n" +
+                    "    <p>Your OTP is: <strong>"+sixDigitCode+"</strong></p>\n" +
+                    "    <p>Please use this OTP to verify your account.</p>\n" +
+                    "    <p>If you didn't request this OTP, you can ignore this email.</p>\n" +
+                    "    <p>Thank you!</p>\n" +
+                    "  </div>\n" +
+                    "</body>\n" +
+                    "</html>\n";
 
-//            user.get().setOtp(sixDigitCode);
-//            saveUser(user);
             Otp = sixDigitCode;
-            emailService.sendSimpleMail(user.get().getEmail(), subject, body);
-
+            emailService.sendHtmlMail(user.get().getEmail(), subject, body);
             return Otp;
         }
         return null;
