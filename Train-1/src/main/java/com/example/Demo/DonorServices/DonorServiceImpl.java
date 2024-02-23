@@ -107,7 +107,7 @@ public class DonorServiceImpl implements DonorService {
                     "  </div>\n" +
                     "</body>\n" +
                     "</html>\n";
-            emailService.sendSimpleMail(newUser.getEmail(), subject, body);
+            emailService.sendHtmlMail(newUser.getEmail(), subject, body);
             return "Success";
         } else {
             return "You are an existing user.\nPlease Login";
@@ -246,7 +246,7 @@ public class DonorServiceImpl implements DonorService {
                     "</html>\n";
 
             Otp=sixDigitCode;
-            emailService.sendSimpleMail(user.get().getEmail(), subject, body);
+            String res = emailService.sendHtmlMail(user.get().getEmail(), subject, body);
 
             return sixDigitCode;
         }
@@ -315,7 +315,7 @@ public class DonorServiceImpl implements DonorService {
             String subject = "Event Registration is Done";
             if(orphanageDetails.isPresent()) {
                 String body = generateEventRegistrationConfirmation(donor.get(), event.get(), orphanageDetails.get());
-                emailService.sendSimpleMail(donor.get().getEmail(), subject, body);
+                emailService.sendHtmlMail(donor.get().getEmail(), subject, body);
             }
             return subject;
         }
@@ -409,7 +409,7 @@ public class DonorServiceImpl implements DonorService {
                     "  <p>Happy Faces</p>\n" +
                     "</body>\n" +
                     "</html>\n";
-            emailService.sendSimpleMail(donorEmail, subject, body);
+            emailService.sendHtmlMail(donorEmail, subject, body);
 
             return subject;
         }
@@ -447,7 +447,7 @@ public class DonorServiceImpl implements DonorService {
             String donorEmail = donor.get().getEmail();
             String subject = "Donation Receipt";
             String body = generateDonorReceiptHTML(donor.get().getName(),orphanageDetails.get().getOrphanageName(),donations.getAmount(),donations.getDateTime(),donations.getTransactionId());
-            emailService.sendSimpleMail(donorEmail,subject,body);
+            emailService.sendHtmlMail(donorEmail,subject,body);
         }
         donationsRepository.save(donations);
         return donationsRepository.findById(donations.getId()).orElse(null);
@@ -576,8 +576,8 @@ public class DonorServiceImpl implements DonorService {
                 "  <p>We are excited to coordinate this contribution to enhance the lives of the children at your orphanage.</p>\n" +
                 "</body>\n" +
                 "</html>";
-        emailService.sendSimpleMail(donor.get().getEmail(),subject,body);
-        emailService.sendSimpleMail(orphanage.get().getEmail(),subjectOrp,bodyOrp);
+        emailService.sendHtmlMail(donor.get().getEmail(),subject,body);
+        emailService.sendHtmlMail(orphanage.get().getEmail(),subjectOrp,bodyOrp);
         return "Requirement Donation Info Saved Successfully";
     }
 
