@@ -23,6 +23,7 @@
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
+  text-align: center;
 }
 
 .OrphDash-inside {
@@ -33,12 +34,12 @@
 .OrphDash table,
 .OrphDash th,
 .OrphDash td {
-  border: 1px solid #ddd;
+  border: 2px solid #000;
   padding: 8px;
 }
 
 .OrphDash th {
-  background-color: #b98ba0;
+  background-color: #c99fb2;
 }
 
 .OrphDash label {

@@ -95,12 +95,12 @@
  
 .transaction-table th,
 .transaction-table td {
-  border: 1px solid #dfa9c2;
+  border: 1px solid #ddd6d9;
   padding: 12px; /* Increase padding for better readability */
 }
  
 .transaction-table th {
-  background-color: #b98ba0;
+  background-color: #c9a4b5;
   text-align: left;
 }
  

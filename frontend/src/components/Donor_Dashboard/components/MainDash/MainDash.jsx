@@ -29,7 +29,7 @@ const MainDash = () => {
         console.log(response.data);
         setTransaction(response.data.sort((a, b) => new Date(a.datetime) - new Date(b.datetime)).slice(0,5));
       }catch(error){
-        ConsoleSqlOutlined.log(error);
+        console.log(error);
       }
     }
     getTransactionData();
