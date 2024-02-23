@@ -12,11 +12,13 @@ import { useUser } from '../../../../UserContext';
 import EditIcon from '@mui/icons-material/ModeEdit'; // Import Edit icon
 import ClearIcon from '@mui/icons-material/Clear'; // Import Clear icon
 import VisibilityIcon from '@mui/icons-material/Visibility'; // Import Visibility icon
+import Tooltip from '@mui/material/Tooltip'; // Import Tooltip component
 
 const EventTable = () => {
   const [events, setEvents] = useState();
   const { userDetails } = useUser();
   const [refresh, setRefresh] = useState(false);
+  const [view, setView] = useState(false); // Define view state
   useEffect(() => {
     const fetchPlannedEvents = async () => {
       try {
@@ -35,6 +37,7 @@ const EventTable = () => {
   const [open, setOpen] = useState(false);
   const [edit, setEdit] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState();
+  const [interestedPersons, setInterestedPersons] = useState([]);
   const [formData, setFormData] = useState({ title: '', date: '', time: '', description: '' });
   const [currentPage, setCurrentPage] = useState(1);
   const eventsPerPage = 3;
@@ -58,9 +61,19 @@ const EventTable = () => {
     setSelectedEvent(event);
   };
 
-  const handleViewEvent = (event) => {
+  const handleViewEvent = async (event) => {
     setSelectedEvent(event);
-    setOpen(true);
+    // try {
+    //   const response = await axios.get(`${API_BASE_URL}/orphanage/interestedPersons/${event.id}`);
+    //   if (response.status === 200) {
+    //     setInterestedPersons(response.data);
+    //     setOpen(true);
+    //   }
+    // } catch (error) {
+    //   message.error(error);
+    //   setInterestedPersons([]);
+    // }
+    setView(true);
   };
 
   const handleCreateNewEvent = () => {
@@ -69,6 +82,7 @@ const EventTable = () => {
 
   const handleClose = () => {
     setOpen(false);
+    setView(false); // Reset view state
     setEdit(false);
     setFormData({
       title: '',
@@ -76,6 +90,7 @@ const EventTable = () => {
       time: '',
       description: ''
     });
+    setInterestedPersons([]);
   };
 
   const handleSubmitEditEvent = async (eventId) => {
@@ -175,9 +190,15 @@ const EventTable = () => {
                 <td>{event.description}</td>
                 <td>{event.verificationStatus}</td>
                 <td>
-                  <EditIcon className="edit-icon" onClick={() => handleEditEvent(event)} />
-                  <VisibilityIcon className="view-icon" onClick={() => handleViewEvent(event)} />
-                  <ClearIcon className="cancel-icon" onClick={() => handleCancelEvent(event.id)} />
+                  <Tooltip title="Edit Event">
+                    <EditIcon className="edit-icon" onClick={() => handleEditEvent(event)} />
+                  </Tooltip>
+                  <Tooltip title="View Event">
+                    <VisibilityIcon className="view-icon" onClick={() => handleViewEvent(event)} />
+                  </Tooltip>
+                  <Tooltip title="Cancel Event">
+                    <ClearIcon className="cancel-icon" onClick={() => handleCancelEvent(event.id)} />
+                  </Tooltip>
                 </td>
               </tr>
             ))}
@@ -188,6 +209,7 @@ const EventTable = () => {
             Create New Event
           </button>
         </div>
+
         {/*New Event*/}
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Create New Event</DialogTitle>
@@ -204,13 +226,33 @@ const EventTable = () => {
             </form>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
+            <Button onClick={handleClose}>Close</Button>
             <Button onClick={handleSubmit}>Create</Button>
           </DialogActions>
         </Dialog>
 
-        {/*Edit Event*/}
+        {/*View Event*/}
+        <Dialog open={view} onClose={handleClose}>
+          <DialogTitle>{selectedEvent?.title}</DialogTitle>
+          <DialogContent>
+            <p>Date: {selectedEvent?.date}</p>
+            <p>Time: {selectedEvent?.time}</p>
+            <p>Description: {selectedEvent?.description}</p>
+            <h4>Interested Persons:</h4>
+            <ul>
+              {interestedPersons?.map((person, index) => (
+                <li key={index}>
+                  Name: {person.name}, Email: {person.email}, Contact Number: {person.contactNumber}
+                </li>
+              ))}
+            </ul>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Close</Button>
+          </DialogActions>
+        </Dialog>
 
+        {/*Edit Event*/}
         <Dialog open={edit} onClose={handleClose}>
           <DialogTitle>Edit Event</DialogTitle>
           <DialogContent>

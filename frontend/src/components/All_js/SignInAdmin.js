@@ -149,9 +149,9 @@ const SignInAdmin = () => {
               Sign In
             </button>
             {/* Changed "Forgot Password" button to text */}
-            <span className="forgot-password-link" onClick={handleForgotPassword}>
+            <a href="#" onClick={handleForgotPassword} className="donor-forgot-password-link">
               Forgot Password?
-            </span>
+            </a>
             <Link to="/signin" className="back-link">
           Back
         </Link>
@@ -164,7 +164,7 @@ const SignInAdmin = () => {
       {/* Forgot Password Popup */}
       {showForgotPasswordPopup && (
         <div className="forgot-password-popup">
-          <button className="close-btn" onClick={handleBack}>X</button>
+          {/* <button className="close-btn" onClick={handleBack}>X</button> */}
           <h2>Forgot Password</h2>
           <form onSubmit={handleOtpSubmit}>
             <label>Email:</label>
@@ -187,7 +187,7 @@ const SignInAdmin = () => {
       {showOtpVerificationPopup && (
         <div className="popup">
           <div className="popup-inner">
-            <button className="close-btn" onClick={handleBack}>X</button>
+            {/* <button className="close-btn" onClick={handleBack}>X</button> */}
             <h2>OTP Verification</h2>
             <form onSubmit={handleNewPasswordSubmit}>
               <label>Enter OTP:</label>

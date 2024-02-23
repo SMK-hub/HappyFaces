@@ -170,7 +170,7 @@ const SignInOrphanage = () => {
       {showForgotPasswordPopup && (
         <div className="orphanage-popup">
           <div className="orphanage-popup-inner">
-            <button className="orphanage-close-btn" onClick={handleBack}>X</button>
+            {/* <button className="orphanage-close-btn" onClick={handleBack}>X</button> */}
             <h2>Forgot Password</h2>
             <form onSubmit={handleOtpSubmit}>
               <label>Email:</label>
@@ -194,7 +194,7 @@ const SignInOrphanage = () => {
       {showOtpVerificationPopup && (
         <div className="orphanage-popup">
           <div className="orphanage-popup-inner">
-            <button className="orphanage-close-btn" onClick={handleBack}>X</button>
+            {/* <button className="orphanage-close-btn" onClick={handleBack}>X</button> */}
             <h2>OTP Verification</h2>
             <form onSubmit={handleNewPasswordSubmit}>
               <label>Enter OTP:</label>
