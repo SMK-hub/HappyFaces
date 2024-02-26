@@ -63,16 +63,17 @@ const EventTable = () => {
 
   const handleViewEvent = async (event) => {
     setSelectedEvent(event);
-    // try {
-    //   const response = await axios.get(`${API_BASE_URL}/orphanage/interestedPersons/${event.id}`);
-    //   if (response.status === 200) {
-    //     setInterestedPersons(response.data);
-    //     setOpen(true);
-    //   }
-    // } catch (error) {
-    //   message.error(error);
-    //   setInterestedPersons([]);
-    // }
+    try {
+      const response = await axios.get(`${API_BASE_URL}/orphanage/getInterestedPersons/${event.id}`);
+      console.log(response.data);
+      if (response.status === 200) {
+        setInterestedPersons(response.data);
+        setOpen(true);
+      }
+    } catch (error) {
+      console.log(error);
+      setInterestedPersons([]);
+    }
     setView(true);
   };
 
@@ -239,12 +240,32 @@ const EventTable = () => {
             <p>Time: {selectedEvent?.time}</p>
             <p>Description: {selectedEvent?.description}</p>
             <h4>Interested Persons:</h4>
-            <ul>
-              {interestedPersons?.map((person, index) => (
-                <li key={index}>
-                  Name: {person.name}, Email: {person.email}, Contact Number: {person.contactNumber}
-                </li>
-              ))}
+            <ul style={{ 
+                overflowY: 'scroll', 
+                maxHeight: '200px',
+                listStyleType: 'none',
+                padding: '10px',
+                border: '1px solid #ccc',
+                borderRadius: '5px',
+                boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
+            }}>
+              {interestedPersons?.length > 0 ? (
+            interestedPersons.map((person, index) => (
+            <li 
+            key={index}
+            style={{
+            marginBottom: '10px',
+            padding: '5px',
+            background: '#f9f9f9',
+            borderRadius: '3px',
+            }}
+            >
+            <strong>Name:</strong> {person.name}, <strong>Email:</strong> {person.email}, <strong>Contact Number:</strong> {person.contactNumber}
+            </li>
+            ))
+            ) : (
+            <li style={{ textAlign: 'center' }}>No people have registered their interest yet!</li>
+            )}
             </ul>
           </DialogContent>
           <DialogActions>

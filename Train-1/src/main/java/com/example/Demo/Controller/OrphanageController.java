@@ -148,6 +148,11 @@ public class OrphanageController {
         }
         return new ResponseEntity<>(alpha,HttpStatus.CONFLICT);
     }
+    @GetMapping("/getInterestedPerson/{eventId}")
+    public  ResponseEntity<List<InterestedPerson>> getInterestedPersonByEventId(@PathVariable String eventId){
+        List<InterestedPerson> interestedPersonList = orphanageService.getInterestedPersonByEventId(eventId);
+        return new ResponseEntity<>(interestedPersonList,HttpStatus.OK);
+    }
     @PostMapping("/sendOtp")
     public ResponseEntity<String> sendOtp(@RequestBody Orphanage orphanage) {
         String alpha = orphanageService.sendOtp(orphanage);

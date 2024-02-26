@@ -5,6 +5,7 @@ import com.example.Demo.Enum.EnumClass;
 import com.example.Demo.Enum.EnumClass.VerificationStatus;
 import com.example.Demo.Model.*;
 import com.example.Demo.Repository.*;
+import jdk.jfr.Event;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
@@ -33,6 +34,8 @@ public class OrphanageServiceImpl implements OrphanageService {
     private EventsRepository eventsRepository;
     @Autowired
     private OrphanageDetailsRepository detailRepository;
+    @Autowired
+    private InterestedPersonRepository interestedPersonRepository;
     @Autowired
     private EmailService emailService;
     @Autowired
@@ -228,6 +231,22 @@ public class OrphanageServiceImpl implements OrphanageService {
         }
         return "Problem in Event Cancellation";
 
+    }
+
+    @Override
+    public List<InterestedPerson> getInterestedPersonByEventId(String eventId) {
+        try {
+            List<InterestedPerson> interestedPersonList = interestedPersonRepository.findAllInterestedPersonByEventId(eventId);
+            if(!interestedPersonList.isEmpty()){
+                return interestedPersonList;
+            }
+        } catch (Exception e) {
+            // Log the exception or handle it appropriately
+            e.printStackTrace(); // Example: Print stack trace
+            // You can also rethrow a custom exception if needed
+            throw new RuntimeException("Failed to retrieve interested persons by event ID: " + eventId, e);
+        }
+        return new ArrayList<>();
     }
 
     @Override
