@@ -190,11 +190,11 @@ const EventTable = () => {
           <tbody>
             {currentEvents?.map((event, index) => (
               <tr key={index}>
-                <td>{event.title}</td>
-                <td>{event.date}</td>
-                <td>{event.time}</td>
-                <td>{event.description}</td>
-                <td>{event.verificationStatus}</td>
+                <td>{event?.title}</td>
+                <td>{event?.date}</td>
+                <td>{event?.time}</td>
+                <td>{event?.description}</td>
+                <td>{event?.verificationStatus}</td>
                 <td>
                   <Tooltip title="Edit Event">
                     <EditIcon className="edit-icon" onClick={() => handleEditEvent(event)} />

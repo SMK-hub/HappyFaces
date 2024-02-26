@@ -40,3 +40,41 @@ th {
     width: 23rem;
   }
 }
+
+.DonationDetailsTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.DonationDetailsTable th,
+.DonationDetailsTable td {
+  padding: 10px;
+  border: none !important;
+}
+
+.DonationDetailsTable th {
+  font-weight: bold !important;
+}
+
+.Status {
+  padding: 8px;
+  border-radius: 9px;
+}
+
+.Details {
+  color: #00b5ff !important;
+}
+
+@media screen and (max-width: 1200px) {
+  .DonationDetailsTable {
+      width: 170%;
+      margin-top: 2rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .DonationDetailsTable {
+      width: 23rem;
+  }
+}

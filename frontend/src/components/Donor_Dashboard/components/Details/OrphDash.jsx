@@ -484,7 +484,7 @@ const OrphDash = () => {
             <div className="event-details-content registration-success-popup">
               <span className="close" onClick={()=>handleRegistrationSuccessClose()}>&times;</span>
               <h3>Thank you for successful registration!</h3>
-              <button className="close-button" onClick={()=>handleRegistrationSuccessClose()}>X</button>
+              {/* <button className="close-button" onClick={()=>handleRegistrationSuccessClose()}>X</button> */}
             </div>
           </div>
         )}

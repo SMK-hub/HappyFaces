@@ -1,40 +1,32 @@
 import React, { useState, useEffect } from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import "./Table.css";
 import axios from "axios";
-import {API_BASE_URL} from '../../../../config'
+import { API_BASE_URL } from "../../../../config";
+import "./Table.css";
 
-const makeStyle=(status)=>{
-  if(status === 'NOT_VERIFIED')
-  {
+const makeStyle = (status) => {
+  if (status === "NOT_VERIFIED") {
     return {
-      background: 'rgb(145 254 159 / 47%)',
-      color: 'red',
-    }
+      background: "rgb(145 254 159 / 47%)",
+      color: "red",
+    };
   }
-}
+};
 
 export default function BasicTable() {
-
   const [orphanagesData, setOrphanagesData] = useState([]);
-  
+
   useEffect(() => {
     fetchOrphanages();
-    // updateOrphanageStatus();
   }, []);
 
   const fetchOrphanages = async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/admin/orphanageDetailsList`);
+      const response = await axios.get(
+        `${API_BASE_URL}/admin/orphanageDetailsList`
+      );
       const data = response.data
-        .filter(orphanage => orphanage.verificationStatus !== 'VERIFIED')
-        .map(orphanage => ({
+        .filter((orphanage) => orphanage.verificationStatus !== "VERIFIED")
+        .map((orphanage) => ({
           ...orphanage,
           name: orphanage.orphanageName,
           location: orphanage.address.city,
@@ -49,41 +41,35 @@ export default function BasicTable() {
   };
 
   return (
-      <div className="Table">
+    <div className="OrphTable">
       <h3>Recent Orphanages</h3>
-        <TableContainer
-          component={Paper}
-          style={{ boxShadow: "0px 13px 20px 0px #80808029" }}
-        >
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell align="left">Location</TableCell>
-                <TableCell align="left">Contact</TableCell>
-                <TableCell align="left">Status</TableCell>
-                <TableCell align="left"></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody style={{ color: "white" }}>
-              {orphanagesData.map((orphanage,index) => (
-                <TableRow
-                  key={index}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Contact</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {orphanagesData.map((orphanage, index) => (
+            <tr key={index}>
+              <td>{orphanage.name}</td>
+              <td>{orphanage.location}</td>
+              <td>{orphanage.contact}</td>
+              <td>
+                <span
+                  className="Orphstatus"
+                  // style={makeStyle(orphanage.status)}
                 >
-                  <TableCell component="th" scope="row">
-                    {orphanage.name}
-                  </TableCell>
-                  <TableCell align="left">{orphanage.location}</TableCell>
-                  <TableCell align="left">{orphanage.contact}</TableCell>
-                  <TableCell align="left">
-                    <span className="status" style={makeStyle(orphanage.status)}>{orphanage.status}</span>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </div>
+                  {orphanage.status}
+                </span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }

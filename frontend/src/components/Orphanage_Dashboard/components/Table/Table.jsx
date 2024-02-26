@@ -11,9 +11,6 @@ import { API_BASE_URL } from "../../../../config";
 import axios from "axios";
 import { useUser } from "../../../../UserContext";
 
-
-
-
 export default function BasicTable() {
   const [transactions ,setTransactions]=useState();
   
@@ -43,16 +40,16 @@ export default function BasicTable() {
 
   return (
     <div className="Table">
-      <div className="LastTransactionsTable">
+      <div className="DonationDetailsTable">
         <h3>Donation Details</h3>
-        <TableContainer component={Paper}>
+        <TableContainer >
           <Table aria-label="last 4 transactions table">
             <TableHead>
-              <TableRow>
-                <TableCell>Donor Name</TableCell>
-                <TableCell align="left">Transaction ID</TableCell>
-                <TableCell align="left">Date</TableCell>
-                <TableCell align="left">Amount</TableCell>
+              <TableRow sx={{backgroundColor:'lightpink'}}>
+                <TableCell sx={{backgroundColor:'lightpink'}} >Donor Name</TableCell>
+                <TableCell sx={{backgroundColor:'lightpink'}} align="left">Transaction ID</TableCell>
+                <TableCell sx={{backgroundColor:'lightpink'}} align="left">Date</TableCell>
+                <TableCell sx={{backgroundColor:'lightpink'}} align="left">Amount</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
