@@ -290,7 +290,7 @@ public class DonorServiceImpl implements DonorService {
 
     @Override
     public List<Events> getVerifiedEvents(String orpId) {
-        return eventsRepository.findByVerificationStatus(String.valueOf(EnumClass.VerificationStatus.VERIFIED),orpId);
+        return eventsRepository.findByVerificationStatusAndOrpId(String.valueOf(EnumClass.VerificationStatus.VERIFIED),orpId);
     }
 
     @Override

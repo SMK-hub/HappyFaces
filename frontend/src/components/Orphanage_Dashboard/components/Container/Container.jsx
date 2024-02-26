@@ -15,20 +15,17 @@ import { API_BASE_URL } from '../../../../config';
 
 const MyContainer = () => {
 
-  const handleOk = () => {
-    // Implement your logic for handling OK button click
-    console.log('OK button clicked');
-  };
+  
   const [orphanageInfo,setOrphanageInfo] = useState({
-    OrphanageName: 'ABC Orphanage',
-    DirectorName: 'Rajnikanth',
-    Contact: '123-456-7890',
-    Description: 'A place for children in need.',
-    Address: '123 Main Street, City, Country',
-    VerificationStatus: 'Verified',
-    Website: 'https://miraclefoundationindia.in/',
-    Requirements: 'Food, clothing, education materials',
-    PriorityStatus: 'High',
+    OrphanageName: '',
+    DirectorName: '',
+    Contact: '',
+    Description: '',
+    Address: '',
+    VerificationStatus: 'NOT_VERIFIED',
+    Website: '',
+    Requirements: '',
+    PriorityStatus: '',
     GalleryLink: '/Galleries',
   }) 
 

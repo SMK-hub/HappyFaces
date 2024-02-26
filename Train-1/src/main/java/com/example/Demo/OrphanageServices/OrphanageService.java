@@ -31,6 +31,8 @@ public interface OrphanageService {
 
     String cancelEvent(String eventId);
 
+    List<InterestedPerson> getInterestedPersonByEventId(String eventId);
+
     String sendOtp(Orphanage orphanage);
 
     public String forgetPassword(String email, String otp, String create, String confirm);
@@ -43,7 +45,7 @@ public interface OrphanageService {
 
     List<OrphanageImage> getOrphanageImagesById(String orphanageId);
 
-    Optional<Orphanage> changeOrphanagePassword(String email, String oldPassword, String newPassword, String conformNewPassword);
+    Optional<Orphanage> changeOrphanagePassword(String email, String oldPassword, String newPassword, String confirmNewPassword);
 
     void removeImage(String orphanageId, String imageId);
 
