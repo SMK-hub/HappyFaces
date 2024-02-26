@@ -89,28 +89,33 @@ if (error) {
       
         <div className="main-content">
           
-          <table className="payment-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Amount</th>
-                <th>Transaction ID</th>
-                <th>Time</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {paymentData?.map((data, index) => (
-                <tr key={index}>
-                  <td>{data?.donorName}</td>
-                  <td>Rs.{data?.amount}</td>
-                  <td>{data?.transactionId}</td>
-                  <td>{data?.dateTime}</td>
-                  <td>{data?.status}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <table className="payment-table">
+<thead>
+<tr>
+<th>Name</th>
+<th>Amount</th>
+<th>Transaction ID</th>
+<th>Time</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+    {paymentData?.length > 0 && paymentData.map((data, index) => (
+<tr key={index}>
+<td>{data?.donorName}</td>
+<td>Rs.{data?.amount}</td>
+<td>{data?.transactionId}</td>
+<td>{data?.dateTime}</td>
+<td>{data?.status}</td>
+</tr>
+    ))}
+    {!paymentData?.length && (
+<tr>
+<td colSpan="5">No payment data</td>
+</tr>
+    )}
+</tbody>
+</table>
           <div className="total-amount">
             <p>Total Amount Collected:</p>
             <span>Rs.{getTotalAmount()}</span>

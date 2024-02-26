@@ -19,8 +19,6 @@
     justify-content:center ;
     
   }
-
-  
   
   .main-content {
     flex: 1;
@@ -38,7 +36,7 @@
   .payment-table td {
     border: 1px solid #000;
     padding: 10px;
-    text-align: left;
+    text-align: center;
   }
   
   .payment-table th {
