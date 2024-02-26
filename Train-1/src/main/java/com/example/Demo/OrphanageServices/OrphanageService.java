@@ -31,6 +31,8 @@ public interface OrphanageService {
 
     String cancelEvent(String eventId);
 
+    List<InterestedPerson> getInterestedPersonByEventId(String eventId);
+
     String sendOtp(Orphanage orphanage);
 
     public String forgetPassword(String email, String otp, String create, String confirm);
