@@ -227,10 +227,60 @@ public class OrphanageServiceImpl implements OrphanageService {
         if(optionalEvent.isPresent()){
             optionalEvent.get().setEventStatus(EnumClass.EventStatus.CANCELLED);
             eventsRepository.save(optionalEvent.get());
+            List<InterestedPerson> interestedPersonList = interestedPersonRepository.findAllInterestedPersonByEventId(eventId);
+            for(InterestedPerson person:interestedPersonList){
+                String email = person.getEmail();
+                String subject = "Event Cancelled";
+                String body = "<!DOCTYPE html>\n" +
+                        "<html lang=\"en\">\n" +
+                        "<head>\n" +
+                        "<meta charset=\"UTF-8\">\n" +
+                        "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                        "<title>Event Cancellation</title>\n" +
+                        "<style>\n" +
+                        "  body {\n" +
+                        "    font-family: Arial, sans-serif;\n" +
+                        "    margin: 0;\n" +
+                        "    padding: 0;\n" +
+                        "    background-color: #f8f8f8;\n" +
+                        "  }\n" +
+                        "  .container {\n" +
+                        "    max-width: 600px;\n" +
+                        "    margin: 20px auto;\n" +
+                        "    padding: 20px;\n" +
+                        "    background-color: #ffffff;\n" +
+                        "    border-radius: 5px;\n" +
+                        "    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\n" +
+                        "  }\n" +
+                        "  h1, p {\n" +
+                        "    margin: 0 0 20px;\n" +
+                        "  }\n" +
+                        "  .button {\n" +
+                        "    display: inline-block;\n" +
+                        "    padding: 10px 20px;\n" +
+                        "    background-color: #007bff;\n" +
+                        "    color: #ffffff;\n" +
+                        "    text-decoration: none;\n" +
+                        "    border-radius: 3px;\n" +
+                        "  }\n" +
+                        "</style>\n" +
+                        "</head>\n" +
+                        "<body>\n" +
+                        "<div class=\"container\">\n" +
+                        "  <h1>Event Cancellation</h1>\n" +
+                        "  <p>Dear "+person.getName()+",</p>\n" +
+                        "  <p>We regret to inform you that the event <strong>"+optionalEvent.get().getTitle()+"</strong> has been cancelled due to unforeseen circumstances. We apologize for any inconvenience this may cause.</p>\n" +
+                        "  <p>We appreciate your interest and participation, and we sincerely apologize for any disappointment this cancellation may bring. Your support means a lot to us, and we hope to have the opportunity to welcome you to future events.</p>\n" +
+                        "  <p>Once again, we apologize for any inconvenience caused and thank you for your understanding.</p>\n" +
+                        "  <p>Best regards,<br>[Donor Name]</p>\n" +
+                        "</div>\n" +
+                        "</body>\n" +
+                        "</html>";
+                emailService.sendHtmlMail(email,subject,body);
+            }
             return "Event Cancelled Successfully";
         }
         return "Problem in Event Cancellation";
-
     }
 
     @Override

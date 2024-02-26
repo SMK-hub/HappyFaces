@@ -41,9 +41,11 @@ const EventTable = () => {
   const [formData, setFormData] = useState({ title: '', date: '', time: '', description: '' });
   const [currentPage, setCurrentPage] = useState(1);
   const eventsPerPage = 3;
+  const [loading, setLoading] = useState(false);
 
   const handleCancelEvent = async (eventId) => {
     if (window.confirm("Do you want to cancel this event?")) {
+      setLoading(true);
       try {
         const response = await axios.post(`${API_BASE_URL}/orphanage/cancelEvent/${eventId}`);
         if (response.status === 200) {
@@ -52,6 +54,9 @@ const EventTable = () => {
         }
       } catch (error) {
         message.error(error);
+      }
+      finally{
+        setLoading(false);
       }
     }
   };
@@ -305,6 +310,11 @@ const EventTable = () => {
           </li>
         ))}
       </ul>
+      {loading && (
+        <div className="loading-screen">
+          <div className="loading-spinner"></div>
+        </div>
+      )}
     </div>
   );
 };
