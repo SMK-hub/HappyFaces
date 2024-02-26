@@ -29,16 +29,23 @@ const Profile = () => {
     reader.addEventListener('load', () => callback(reader.result));
     reader.readAsDataURL(img);
   };
+
   const beforeUpload = (file) => {
+    console.log("kldfhka");
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    const isLt2M = file.size / 1024 / 1024 < 1;
     if (!isJpgOrPng) {
       message.error('You can only upload JPG/PNG file!');
+      return false;
     }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-      message.error('Image must smaller than 2MB!');
+    else if (!isLt2M) {
+      message.error('Image must smaller than 1MB!');
+      return false;
     }
-    return isJpgOrPng && isLt2M;
+    else{
+       return true;
+    }
+   
   };
  
   const [orphanageDetail,setOrphanageDetail] = useState({
@@ -142,6 +149,7 @@ const Profile = () => {
       };
       reader.readAsDataURL(file);
       try{
+        console.log("fjghfh")
         const response=await axios.post(`${API_BASE_URL}/orphanage/addPhoto/${userDetails?.orpId}`,formData);
         const status=response.status;
         console.log(status);
@@ -155,19 +163,19 @@ const Profile = () => {
     }
   };
   const handleChange = (info) => {
-    if (info.file.status === 'uploading') {
-      setLoading(true);
-      return;
+    
+    if(beforeUpload(info.file)){
+      if (info.file.status === 'uploading') {
+        console.log("fasdfa")
+        // Get this url from response in real world.
+        getBase64(info.file.originFileObj, (url) => {
+          setImageUrl(url);
+          console.log(info.file);
+          handleImageChange(info.file.originFileObj);
+        });
+      }
     }
-    if (info.file.status === 'done') {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj, (url) => {
-        setLoading(false);
-        setImageUrl(url);
-        console.log(info.file);
-        handleImageChange(info.file.originFileObj);
-      });
-    }
+      
   };
   const uploadButton = (
     <button
@@ -204,9 +212,7 @@ const Profile = () => {
         listType="picture-circle"
         className="orphanage-avatar-uploader"
         showUploadList={false}
-        action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
-        beforeUpload={beforeUpload}
-        onChange={handleChange}
+        onChange={(e)=>handleChange(e)}
       >
         {imageUrl ? (
           

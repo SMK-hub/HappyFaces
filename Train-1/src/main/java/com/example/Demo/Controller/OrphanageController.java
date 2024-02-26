@@ -166,8 +166,8 @@ public class OrphanageController {
        return new ResponseEntity<>(alpha,HttpStatus.CONFLICT);
     }
     @PostMapping("/ChangePassword/{email}/{oldPassword}/{newPassword}/{confirmNewPassword}")
-    public ResponseEntity<Optional<Orphanage>> changeOrphanagePassword(@PathVariable("email") String email,@PathVariable("oldPassword") String oldPassword,@PathVariable("newPassword") String newPassword,@PathVariable("conformNewPassword") String conformNewPassword){
-        Optional<Orphanage> alpha=orphanageService.changeOrphanagePassword(email,oldPassword,newPassword,conformNewPassword);
+    public ResponseEntity<Optional<Orphanage>> changeOrphanagePassword(@PathVariable("email") String email,@PathVariable("oldPassword") String oldPassword,@PathVariable("newPassword") String newPassword,@PathVariable("confirmNewPassword") String confirmNewPassword){
+        Optional<Orphanage> alpha=orphanageService.changeOrphanagePassword(email,oldPassword,newPassword,confirmNewPassword);
         if(alpha.isPresent()){
             return new ResponseEntity<>(alpha,HttpStatus.OK);
         }
@@ -190,7 +190,7 @@ public class OrphanageController {
         }
         return new ResponseEntity<>(null,HttpStatus.CONFLICT);
     }
-    @PutMapping("/{orphanageId}/editDetails")
+    @PostMapping("/{orphanageId}/editDetails")
     public ResponseEntity<String> editDetails(@PathVariable("orphanageId") String orphanageId,@RequestBody OrphanageDetails orphanageDetails){
         String alpha = orphanageService.editDetails(orphanageId,orphanageDetails);
         if(alpha.equals("Details Updated Successfully")){

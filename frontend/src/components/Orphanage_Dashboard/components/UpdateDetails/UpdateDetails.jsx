@@ -3,9 +3,9 @@ import './UpdateDetails.css';
 import axios from 'axios';
 import { API_BASE_URL } from '../../../../config';
 import { useUser } from '../../../../UserContext';
+import { message } from 'antd';
 
 const FormComponent = () => {
-
 
   const [formData, setFormData] = useState({
     orphanageName: '',
@@ -29,13 +29,11 @@ const FormComponent = () => {
     },
   });
 
-  const{userDetails} = useUser();
-
-  
+  const { userDetails } = useUser();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
       [name]: value,
     }));
@@ -43,7 +41,7 @@ const FormComponent = () => {
 
   const handleAddressChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
       address: {
         ...prevState.address,
@@ -54,7 +52,7 @@ const FormComponent = () => {
 
   const handleRequirementChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
       requirements: {
         ...prevState.requirements,
@@ -63,29 +61,31 @@ const FormComponent = () => {
     }));
   };
 
-  
-    const handleSubmit = (e) => {
-      console.log("Form Data:", formData);
-      updateOrphanageDetails();
-    };
-  
-
-  const updateOrphanageDetails = async()=>{
-    try{
-      const response=await axios.put(`${API_BASE_URL}/orphanage/${userDetails.orpId}/editDetails`,formData);
-      const status= response.status;
-      if(status===200){
+  const updateOrphanageDetails = async () => {
+    try {
+      const response = await axios.post(
+        `${API_BASE_URL}/orphanage/${userDetails.orpId}/editDetails`,
+        formData
+      );
+      const status = response.status;
+      if (status === 200) {
         console.log(response.data);
+        message.success(response.data);
+        window.location.reload();
       }
-
-    }catch(error){
+    } catch (error) {
       console.log(error);
     }
-  }
+  };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log('Form Data:', formData);
+    await updateOrphanageDetails();
+  };
   return (
     <div>
-      <form onSubmit={()=>handleSubmit()}>
+      <form>
   <h1>Orphanage Details</h1>
   <label>
     Orphanage Name<span className="required-star">*</span>:
@@ -160,7 +160,7 @@ const FormComponent = () => {
   </label>
 
   <div className="button-container">
-    <button type="submit">Update</button>
+    <button onClick={(e)=>handleSubmit(e)}>Update</button>
   </div>
 </form>
 

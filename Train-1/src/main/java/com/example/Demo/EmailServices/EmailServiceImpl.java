@@ -35,7 +35,6 @@ public class EmailServiceImpl implements EmailService {
 		}
 	}
 
-
 	@Override
 	public String sendSimpleMail(String email, String subject, String body) 
 	{	

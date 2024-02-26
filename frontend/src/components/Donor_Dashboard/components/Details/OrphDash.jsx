@@ -312,19 +312,19 @@ const OrphDash = () => {
               <th>Address</th>
               <th>Contact</th>
               <th>Details</th>
-              <th>Requirement</th>
+              <th>Requirement(Priority)</th>
             </tr>
           </thead>
           <tbody>
             {filteredOrphanages?.map((orphanage, index) => (
               <tr key={index}>
-                <td>{orphanage.orphanageName}</td>
-                <td>{orphanage.address.house_no}, {orphanage.address.street}, {orphanage.address.city} - {orphanage.address.postalCode}, {orphanage.address.state}, {orphanage.address.country}</td>
-                <td>{orphanage.contact}</td>
+                <td>{orphanage?.orphanageName}</td>
+                <td>{orphanage?.address.house_no}, {orphanage.address.street}, {orphanage.address.city} - {orphanage.address.postalCode}, {orphanage.address.state}, {orphanage.address.country}</td>
+                <td>{orphanage?.contact}</td>
                 <td>
                   <button onClick={() => openModal(orphanage)}>Details</button>
                 </td>
-                <td>{orphanage.requirements?.need}</td>
+                <td>{orphanage.requirements?.need}({orphanage.requirements?.priority})</td>
               </tr>
             ))}
           </tbody>

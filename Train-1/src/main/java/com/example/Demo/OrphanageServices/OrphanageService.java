@@ -43,7 +43,7 @@ public interface OrphanageService {
 
     List<OrphanageImage> getOrphanageImagesById(String orphanageId);
 
-    Optional<Orphanage> changeOrphanagePassword(String email, String oldPassword, String newPassword, String conformNewPassword);
+    Optional<Orphanage> changeOrphanagePassword(String email, String oldPassword, String newPassword, String confirmNewPassword);
 
     void removeImage(String orphanageId, String imageId);
 
