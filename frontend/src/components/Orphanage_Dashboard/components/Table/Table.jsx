@@ -11,9 +11,6 @@ import { API_BASE_URL } from "../../../../config";
 import axios from "axios";
 import { useUser } from "../../../../UserContext";
 
-
-
-
 export default function BasicTable() {
   const [transactions ,setTransactions]=useState();
   
@@ -42,40 +39,32 @@ export default function BasicTable() {
   },[])
 
   return (
-<div className="Table">
-  <div className="DonationDetailsTable">
-    <h3>Donation Details</h3>
-    <TableContainer>
-      <Table aria-label="last 4 transactions table">
-        <TableHead>
-          <TableRow sx={{backgroundColor:'lightpink'}}>
-            <TableCell sx={{backgroundColor:'lightpink'}}>Donor Name</TableCell>
-            <TableCell sx={{backgroundColor:'lightpink'}} align="left">Transaction ID</TableCell>
-            <TableCell sx={{backgroundColor:'lightpink'}} align="left">Date</TableCell>
-            <TableCell sx={{backgroundColor:'lightpink'}} align="left">Amount</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {transactions && transactions.length === 0 ? (
-            <TableRow>
-              <TableCell colSpan={4} align="center">No Donation Data</TableCell>
-            </TableRow>
-          ) : (
-            transactions && transactions.map((transaction, index) => (
-              <TableRow key={index}>
-                <TableCell>{transaction.donorData.name}</TableCell>
-                <TableCell align="left">{transaction.transactionId}</TableCell>
-                <TableCell align="left">{transaction.dateTime}</TableCell>
-                <TableCell align="left">Rs.{transaction.amount}</TableCell>
+    <div className="Table">
+      <div className="DonationDetailsTable">
+        <h3>Donation Details</h3>
+        <TableContainer >
+          <Table aria-label="last 4 transactions table">
+            <TableHead>
+              <TableRow sx={{backgroundColor:'lightpink'}}>
+                <TableCell sx={{backgroundColor:'lightpink'}} >Donor Name</TableCell>
+                <TableCell sx={{backgroundColor:'lightpink'}} align="left">Transaction ID</TableCell>
+                <TableCell sx={{backgroundColor:'lightpink'}} align="left">Date</TableCell>
+                <TableCell sx={{backgroundColor:'lightpink'}} align="left">Amount</TableCell>
               </TableRow>
-            ))
-          )}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  </div>
-</div>
-
-
+            </TableHead>
+            <TableBody>
+              {transactions?.map((transaction, index) => (
+                <TableRow key={index}>
+                  <TableCell>{transaction.donorData.name}</TableCell>
+                  <TableCell align="left">{transaction.transactionId}</TableCell>
+                  <TableCell align="left">{transaction.dateTime}</TableCell>
+                  <TableCell align="left">Rs.{transaction.amount}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
+    </div>
   );
 }

@@ -358,7 +358,7 @@ public class OrphanageServiceImpl implements OrphanageService {
         Optional<OrphanageDetails> existingDetails = detailRepository.findByOrpId(orphanageId);
         if (existingDetails.isPresent()) {
             OrphanageDetails updatedDetails = existingDetails.get();
-
+            System.out.println(incomingDetails);
             String[] excludedFields = {"id","orpId","verificationStatus","certificate"};
 
             BeanUtils.copyProperties(incomingDetails, updatedDetails, excludedFields);
@@ -382,7 +382,6 @@ public class OrphanageServiceImpl implements OrphanageService {
 
             BeanUtils.copyProperties(incomingDetails, newOrphanageDetails, excludedFields);
 
-            // Handle nested data selectively (optional)
             if (incomingDetails.getAddress() != null) {
                 BeanUtils.copyProperties(incomingDetails.getAddress(), newOrphanageDetails.getAddress());
             }

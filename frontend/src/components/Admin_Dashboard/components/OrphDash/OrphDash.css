@@ -39,20 +39,6 @@
     background-color: #f2f2f2;
   }
   
-  /* Add more styling as needed */
-  
-  /* Add these styles to your existing OrphDash.css file */
-
-/* Add these styles to your existing OrphDash.css file */
-
-/* Add these styles to your existing OrphDash.css file */
-
-/* OrphDash.css */
-
-/* Additional styling for the dropdown search bar */
-/* OrphDash.css */
-
-/* Additional styling for the dropdown search bar */
 .OrphDash label {
   margin-right: 8px;
   margin-bottom: 8px; /* Add margin at the bottom */
@@ -63,13 +49,6 @@
   margin-bottom: 1rem;
 }
 
-
-/* OrphDash.css */
-
-/* Add styling for the modal */
-/* OrphDash.css */
-
-/* Add styling for the modal */
 .modal {
   display: flex;
   position: fixed;
@@ -88,7 +67,7 @@
   padding: 20px;
   border-radius: 10px;
   position: relative;
-  text-align: left; /* Align text to the left */
+  text-align: center; /* Align text to the left */
   max-width: 400px; /* Adjust the maximum width as needed */
   width: 100%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add box shadow */
@@ -133,7 +112,6 @@
 .modal-content h3 {
   text-align: center;
 }
-
 
 .smallButton {
   padding: 5px;
