@@ -43,6 +43,7 @@ public interface DonorService {
     List<String> getDonorIdFromEvent(String eventId);
 
     String saveDonationRequirements(DonationRequirements donationRequirements);
+    List<DonationRequirements> getDonationRequirementsByDonorId(String donorId);
 
     List<DonationRequirements> getAllDonationRequirementByDonorId(String donorId);
     List<InterestedPerson> findAllInterestedPersonByDonorId(String donorId);

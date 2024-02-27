@@ -19,6 +19,7 @@ const PaymentDashboard = () => {
   const { userDetails } = useUser();
  
   const [paymentData, setPaymentData] = useState([]);
+  const [requirementData, setRequirementData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
  
@@ -26,20 +27,39 @@ const PaymentDashboard = () => {
     const fetchPaymentData = async () => {
       try {
         const response = await axios.get(`${API_BASE_URL}/donor/DonationList/${userDetails?.donorId}`);
+        const responseReq = await axios.get(`${API_BASE_URL}/donor/${userDetails.donorId}/DonationRequirement`)
+        const reqStatus = responseReq.status;
         const status = response.status;
-        console.log(response);
-        if (status !== 200) {
+        if (status !== 200 && reqStatus !== 200) {
           throw new Error('Failed to fetch data');
         }
         const data = await response.data;
-        console.log(data);
+        const reqData = await Promise.all( 
+          responseReq.data.map(async (requirement)=>{
+            const orphanageDetails = await fetchOrphanageDetails(requirement.orpId);
+            return{
+              ...requirement,
+              orphanageDetails:orphanageDetails,
+            }
+          }));
         setPaymentData(data);
+        setRequirementData(reqData);
       } catch (error) {
         setError(error.message);
       } finally {
         setLoading(false);
       }
     };
+    const fetchOrphanageDetails = async (orpId) => {
+      try{
+          const response = await axios.get(`${API_BASE_URL}/donor/${orpId}/OrphanageDetails`);
+          return response.data;
+          
+      }catch(error){
+        console.log(error);
+      }
+     
+    }
     fetchPaymentData();
   }, [userDetails?.donorId]);
  

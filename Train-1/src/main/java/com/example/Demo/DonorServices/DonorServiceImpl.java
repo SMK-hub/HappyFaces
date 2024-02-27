@@ -570,7 +570,8 @@ public class DonorServiceImpl implements DonorService {
                 "  <title>Donation Offer Confirmation</title>\n" +
                 "</head>\n" +
                 "<body>\n" +
-                "  <p>We are thrilled to inform you that  "+ donor.get().getName() +" has graciously offered to donate essential items to support the children in your care.</p>\n" +
+                "  <p>Dear "+ orphanageDetails.get().getOrphanageName() +",</p>\n" +
+                "  <p>We are thrilled to inform you that  <strong>"+ donor.get().getName() +"</strong> has graciously offered to donate essential items to support the children in your care.</p>\n" +
                 "  <p>In their own words: \""+ donationRequirements.getDescription() +"\".</p>\n" +
                 "  <p>We are excited to coordinate this contribution to enhance the lives of the children at your orphanage.</p>\n" +
                 "</body>\n" +
@@ -578,6 +579,11 @@ public class DonorServiceImpl implements DonorService {
         emailService.sendHtmlMail(donor.get().getEmail(),subject,body);
         emailService.sendHtmlMail(orphanage.get().getEmail(),subjectOrp,bodyOrp);
         return "Requirement Donation Info Saved Successfully";
+    }
+
+    @Override
+    public List<DonationRequirements> getDonationRequirementsByDonorId(String donorId) {
+        return donationRequirementRepository.findAllDonationsRequirementByDonorId(donorId);
     }
 
     @Override
