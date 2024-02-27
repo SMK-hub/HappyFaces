@@ -185,7 +185,7 @@ const SignInAdmin = () => {
 
       {/* OTP Verification Popup */}
       {showOtpVerificationPopup && (
-        <div className="popup">
+        <div className="popup" style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
           <div className="popup-inner">
             {/* <button className="close-btn" onClick={handleBack}>X</button> */}
             <h2>OTP Verification</h2>
