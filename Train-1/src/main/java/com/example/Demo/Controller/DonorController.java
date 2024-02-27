@@ -222,6 +222,10 @@ public class DonorController {
     public ResponseEntity<String> saveDonationRequirement(@RequestBody DonationRequirements donationRequirements){
         return new ResponseEntity<>(donorService.saveDonationRequirements(donationRequirements),HttpStatus.OK);
     }
+    @GetMapping("{donorId}/DonationRequirement")
+    public ResponseEntity<List<DonationRequirements>> getDonationRequirementByDonorId(@PathVariable String donorId){
+        return new ResponseEntity<>(donorService.getDonationRequirementsByDonorId(donorId),HttpStatus.OK);
+    }
     @GetMapping("/RegisteredEvents/{donorId}")
     public ResponseEntity<List<InterestedPerson>> getAllInterestedPersonByDonorId(@PathVariable String donorId){
         return new ResponseEntity<>(donorService.findAllInterestedPersonByDonorId(donorId),HttpStatus.OK);

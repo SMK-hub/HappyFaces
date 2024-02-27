@@ -212,7 +212,7 @@ const EventTable = () => {
             </tbody>
           </table>
         ) : (
-          <p>No Events Created</p>
+        <p><center>No Events Created</center></p>
         )}
 
         <div className="button-container">
