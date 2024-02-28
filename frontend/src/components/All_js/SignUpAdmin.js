@@ -50,68 +50,68 @@ const SignUpAdmin = () => {
   return (
     <div className='sign-up-admin'><Header/>
       {loading ? (
-        <div className="loading-screen">Loading...</div>
+        <div className="admin-signUp-loading-screen">Loading...</div>
       ) : (
         <div>
           <h2 className="sign-up-admin-heading">ADMIN SIGN UP</h2>
           <form onSubmit={handleSignUp} className="sign-up-admin-form">
-            <label className="form-label">
+            <label className="admin-signUp-form-label">
               Username:
               <input
                 type="text"
                 value={admindetails.name}
                 onChange={(e) => setAdminDetails({...admindetails, name: e.target.value})}
                 required
-                className="form-input"
+                className="admin-signUp-form-input"
               />
             </label>
-            <label className="form-label">
+            <label className="admin-signUp-form-label">
               Email:
               <input
                 type="email"
                 value={admindetails.email}
                 onChange={(e) => setAdminDetails({...admindetails, email: e.target.value})}
                 required
-                className="form-input"
+                className="admin-signUp-form-input"
               />
             </label>
-            <label className="form-label">
+            <label className="admin-signUp-form-label">
               New Password:
               <input
                 type="password"
                 value={admindetails.password}
                 onChange={(e) => setAdminDetails({...admindetails, password: e.target.value})}
                 required
-                className="form-input"
+                className="admin-signUp-form-input"
               />
             </label>
-            <label className="form-label">
+            <label className="admin-signUp-form-label">
               Confirm Password:
               <input
                 type="password"
                 value={admindetails.confirmPassword}
                 onChange={(e) => setAdminDetails({...admindetails, confirmPassword: e.target.value})}
                 required
-                className="form-input"
+                className="admin-signUp-form-input"
               />
             </label>
             {passwordMatchError && <p style={{ color: 'red' }}>Passwords do not match!</p>}
-            <label className="form-label">
+            <label className="admin-signUp-form-label">
               Passcode:
               <input
                 type="password"
                 value={admindetails.passcode}
                 onChange={(e) => setAdminDetails({...admindetails, passcode: e.target.value})}
                 required
-                className="form-input"
+                className="admin-signUp-form-input"
               />
             </label>
-            <div className="form-buttons">
-              <button type="submit" className="form-button">
+            <div className="admin-signUp-form-buttons">
+              <button type="submit" className="admin-signUp-form-button">
                 Sign Up
               </button>
             </div>
-            <Link to="/signin" className="back-link">
+            <Link to="/signin" className="admin-signUp-back-link">
               Back
             </Link>
           </form>

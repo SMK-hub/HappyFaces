@@ -47,58 +47,58 @@ const SignUpDonor = () => {
   return (
     <div className='sign-up-donor'><Header/>
       {loading ? (
-        <div className="loading-screen">Loading...</div>
+        <div className="sign-up-donor-loading-screen">Loading...</div>
       ) : (
         <div>
           <h2 className="sign-up-donor-heading">DONOR SIGN UP</h2>
           <form onSubmit={handleSignUp} className="sign-up-donor-form">
-            <label className="form-label">
+            <label className="sign-up-donor-form-label">
               Username:
               <input
                 type="text"
                 value={donordetails.name}
                 onChange={(e) => setDonorDetails({ ...donordetails, name: e.target.value })}
                 required
-                className="form-input"
+                className="sign-up-donor-form-input"
               />
             </label>
-            <label className="form-label">
+            <label className="sign-up-donor-form-label">
               Email:
               <input
                 type="email"
                 value={donordetails.email}
                 onChange={(e) => setDonorDetails({ ...donordetails, email: e.target.value })}
                 required
-                className="form-input"
+                className="sign-up-donor-form-input"
               />
             </label>
-            <label className="form-label">
+            <label className="sign-up-donor-form-label">
               Password:
               <input
                 type="password"
                 value={donordetails.password}
                 onChange={(e) => setDonorDetails({ ...donordetails, password: e.target.value })}
                 required
-                className="form-input"
+                className="sign-up-donor-form-input"
               />
             </label>
-            <label className="form-label">
+            <label className="sign-up-donor-form-label">
               Confirm Password:
               <input
                 type="password"
                 value={donordetails.confirmPassword}
                 onChange={(e) => setDonorDetails({ ...donordetails, confirmPassword: e.target.value })}
                 required
-                className="form-input"
+                className="sign-up-donor-form-input"
               />
             </label>
             {passwordMatchError && <p style={{ color: 'red' }}>Passwords do not match!</p>}
-            <div className="form-buttons">
-              <button type="submit" className="form-button">
+            <div className="sign-up-donor-form-buttons">
+              <button type="submit" className="sign-up-donor-form-button">
                 Sign Up
               </button>
             </div>
-            <Link to="/signin" className="back-link">
+            <Link to="/signin" className="sign-up-donor-back-link">
               Back
             </Link>
           </form>
