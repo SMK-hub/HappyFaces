@@ -13,6 +13,13 @@ public class OrphanageImage {
     private String orphanageId;
     private byte[] image;
 
+    public OrphanageImage(String imageId1, String image, byte[] bytes) {
+    }
+
+    public OrphanageImage() {
+
+    }
+
     @Override
     public String toString() {
         return "OrphanageImage{" +

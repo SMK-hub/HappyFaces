@@ -29,6 +29,9 @@ public class OrphanageController {
     @Autowired
     private OrphanageRepository orphanageRepo;
 
+    public OrphanageController(OrphanageService orphanageService) {
+    }
+
     @GetMapping
     public ResponseEntity<List<Orphanage>> getAll() {
         return new ResponseEntity<>(orphanageRepo.findAll(),HttpStatus.OK);

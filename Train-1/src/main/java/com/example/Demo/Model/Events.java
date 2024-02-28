@@ -32,7 +32,10 @@ public class Events {
 		this.verificationStatus = verificationStatus;
 	}
 
-	public String getOrpId() {
+    public Events(String updatedEvent) {
+    }
+
+    public String getOrpId() {
 		return orpId;
 	}
 

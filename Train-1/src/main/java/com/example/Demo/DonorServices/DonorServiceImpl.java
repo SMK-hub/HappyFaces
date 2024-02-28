@@ -41,6 +41,12 @@ public class DonorServiceImpl implements DonorService {
     @Autowired
     private DonationsRepository donationsRepository;
 
+
+
+    public DonorServiceImpl(DonorRepository donorRepository) {
+        this.donorRepository = donorRepository;
+    }
+
     public void saveUser(Optional<Donor> optionalDonor) {
         optionalDonor.ifPresent(donor -> {
             donorRepository.save(donor);

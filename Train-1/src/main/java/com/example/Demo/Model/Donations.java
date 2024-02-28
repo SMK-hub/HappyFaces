@@ -21,6 +21,15 @@ public class Donations {
     private String dateTime;
     private String transactionId;
 
+    public Donations(String number, String donor1, String number1, EnumClass.Status status, String s, String number2) {
+    }
+
+    public Donations(String number, String orp1, String donor1, int i) {
+    }
+
+    public Donations(String number, String donor2, String orpId, String orphanageA, String number1, EnumClass.Status status, String date, String transaction456) {
+    }
+
 
     public String getDonorId() {
         return donorId;

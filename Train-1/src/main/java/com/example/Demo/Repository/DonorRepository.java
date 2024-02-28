@@ -9,7 +9,4 @@ import com.example.Demo.Model.Donor;
 public interface DonorRepository extends MongoRepository<Donor, String>{
 
     Optional<Donor> findByEmail(String email);
-
-
-	
 }
