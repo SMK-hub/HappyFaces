@@ -43,6 +43,10 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class AdminServiceImplTest {
+	
+	@Mock
+    private OrphanageService orphanageServiceMock;
+
 
 	 @Mock
 	    private AdminRepository adminRepository;
@@ -91,11 +95,7 @@ public class AdminServiceImplTest {
 	        id = "exampleId"; // Set an example id
 	       
 	        }
-	        
 	    
-
-	    
-
     @Test
     void testSaveUser() {
         // Arrange
