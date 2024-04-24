@@ -4,7 +4,7 @@ Excited to unveil our innovative capstone project, "Happy Faces," aimed at revol
 
 Key Features Include:
 
-🔐 **User Authentication and Authorization**: Ensuring secure access with Passport.js authentication and role-based controls.
+🔐 **User Authentication and Authorization**: Ensuring secure access, authentication and role-based controls.
 
 📅 **Event Operations**: Empowering orphanages to efficiently create, edit, and manage events through a centralized dashboard.
 
@@ -12,10 +12,10 @@ Key Features Include:
 
 💰 **Donation System**: Implementing an intuitive dashboard for donors to track and fulfill orphanage requirements, with real-time notifications.
 
-📬 **Notification System**: Providing seamless email messaging for donor acknowledgment and communication.
+📬 **Notification System**: Providing seamless email messaging for donor acknowledgment, Orphanage Updates and communication.
 
 👤 **User Profiles**: Enabling users to create and manage profiles, showcasing their contributions and participation.
 
-💳 **Payment Integration**: Securely facilitating financial transactions through integrated gateways like Razor Pay.
+💳 **Payment Integration**: Securely facilitating financial transactions through integrated gateways using Razor Pay.
 
 Designed to cater to orphanages seeking efficient digital presence and donor engagement, "Happy Faces" prioritizes data security, scalability, and user-centric design. Our aim is to create a socially impactful ecosystem, fostering meaningful connections and positive change in the lives of orphaned children.
