@@ -1,21 +1,27 @@
 package com.example.Demo.Model;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.example.Demo.Enum.EnumClass;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document("event")
 public class Events {
 	@Id
 	private String id;
-	@Field
-	private ObjectId orpId;
+	private String orpId;
+    private String title;
+    private String description;
+    private String date;
+    private String time;
+    private EnumClass.EventStatus eventStatus;
+    private EnumClass.VerificationStatus verificationStatus;
 	
-	public Events(String id, ObjectId orpId, String title, String description, String date, String time,
-			VerificationStatus verificationStatus, List<InterestedPerson> interestedPersons) {
+	public Events(String id, String orpId, String title, String description, String date, String time,
+			EnumClass.VerificationStatus verificationStatus, List<InterestedPerson> interestedPersons) {
 		super();
 		this.id = id;
 		this.orpId = orpId;
@@ -24,14 +30,16 @@ public class Events {
 		this.date = date;
 		this.time = time;
 		this.verificationStatus = verificationStatus;
-		this.interestedPersons = interestedPersons;
 	}
 
-	public ObjectId getOrpId() {
+    public Events(String updatedEvent) {
+    }
+
+    public String getOrpId() {
 		return orpId;
 	}
 
-	public void setOrpId(ObjectId orpId) {
+	public void setOrpId(String orpId) {
 		this.orpId = orpId;
 	}
 
@@ -43,26 +51,27 @@ public class Events {
 		this.id = id;
 	}
 
-	private String title;
-	private String description;
-	private String date;
-	private String time;
-	private VerificationStatus verificationStatus;
-	private List<InterestedPerson> interestedPersons;
 
-    public enum VerificationStatus {
-        NOT_VERIFIED, VALID, IN_VALID
+
+    public EnumClass.EventStatus getEventStatus() {
+        return eventStatus;
     }
+
+    public EnumClass.EventStatus setEventStatus(EnumClass.EventStatus eventStatus) {
+        this.eventStatus = eventStatus;
+        return eventStatus;
+    }
+
 	public Events() {
     }
 
-    public void Event(String title, String description, String date, String time, VerificationStatus verificationStatus, List<InterestedPerson> interestedPersons) {
+    public void Event(String title, String description, String date, String time, EnumClass.VerificationStatus verificationStatus) {
         this.title = title;
         this.description = description;
         this.date = date;
         this.time = time;
         this.verificationStatus = verificationStatus;
-        this.interestedPersons = interestedPersons;
+
     }
 
     // Getters and setters
@@ -98,21 +107,14 @@ public class Events {
         this.time = time;
     }
 
-    public VerificationStatus getVerificationStatus() {
+    public EnumClass.VerificationStatus getVerificationStatus() {
         return verificationStatus;
     }
 
-    public void setVerificationStatus(VerificationStatus verificationStatus) {
+    public void setVerificationStatus(EnumClass.VerificationStatus verificationStatus) {
         this.verificationStatus = verificationStatus;
     }
 
-    public List<InterestedPerson> getInterestedPersons() {
-        return interestedPersons;
-    }
-
-    public void setInterestedPersons(List<InterestedPerson> interestedPersons) {
-        this.interestedPersons = interestedPersons;
-    }
 
     // toString() method
     @Override
@@ -123,51 +125,8 @@ public class Events {
                 ", date='" + date + '\'' +
                 ", time='" + time + '\'' +
                 ", verificationStatus=" + verificationStatus +
-                ", interestedPersons=" + interestedPersons +
                 '}';
     }
-    
-    
-}
-class   InterestedPerson {
-    private String name;
-    private String contact;
 
-    // Constructors, Getters, Setters, etc.
 
-    // Constructors
-    public InterestedPerson() {
-        // Default constructor
-    }
-
-    public InterestedPerson(String name, String contact) {
-        this.name = name;
-        this.contact = contact;
-    }
-
-    // Getters and setters
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getContact() {
-        return contact;
-    }
-
-    public void setContact(String contact) {
-        this.contact = contact;
-    }
-
-    // toString() method
-    @Override
-    public String toString() {
-        return "InterestedPerson{" +
-                "name='" + name + '\'' +
-                ", contact='" + contact + '\'' +
-                '}';
-    }
 }

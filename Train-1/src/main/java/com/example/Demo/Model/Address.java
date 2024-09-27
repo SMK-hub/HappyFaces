@@ -1,7 +1,7 @@
 package com.example.Demo.Model;
 
 public class Address {
-	
+	private String house_no;
 	private String street;
     private String city;
     private String state;
@@ -22,6 +22,13 @@ public class Address {
 	public String toString() {
 		return "Address [street=" + street + ", city=" + city + ", state=" + state + ", postalCode=" + postalCode
 				+ ", country=" + country + "]";
+	}
+	public String getHouse_no() {
+		return house_no;
+	}
+
+	public void setHouse_no(String house_no) {
+		this.house_no = house_no;
 	}
 	public String getStreet() {
 		return street;

@@ -1,7 +1,10 @@
 package com.example.Demo.Model;
 
+import com.example.Demo.Enum.EnumClass;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.Arrays;
 
 @Document(collection = "admin")
 public class Admin {
@@ -10,21 +13,42 @@ public class Admin {
     private String adminId;
     private String name;
     private String email;
+	private byte[] profilePhoto;
     private String password;
-    private String role;
-    private String passcode;
-	
-    
-    public String getId() {
+    private EnumClass.Roles Role;
+	private String passcode;
+	private String contact;
+	public String getContact() {
+		return contact;
+	}
+	public void setContact(String contact) {
+		this.contact = contact;
+	}
+
+	public String getAdminId() {
 		return adminId;
 	}
-    
+
+	@Override
+	public String toString() {
+		return "Admin{" +
+				"adminId='" + adminId + '\'' +
+				", name='" + name + '\'' +
+				", email='" + email + '\'' +
+				", profilePhoto=" + Arrays.toString(profilePhoto) +
+				", password='" + password + '\'' +
+				", Role='" + Role + '\'' +
+				", passcode='" + passcode + '\'' +
+				", contact='" + contact + '\'' +
+				'}';
+	}
+
+	public void setAdminId(String adminId) {
+		this.adminId = adminId;
+	}
+
 	public Admin() {
 		super();
-	}
-	
-	public void setId(String id) {
-		this.adminId = id;
 	}
 	public String getName() {
 		return name;
@@ -45,12 +69,12 @@ public class Admin {
 		this.password = password;
 	}
 
-	public String getRole() {
-		return role;
+	public EnumClass.Roles getRole() {
+		return Role;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
+	public void setRole(EnumClass.Roles Role) {
+		this.Role = Role;
 	}
 
 	public String getPasscode() {
@@ -59,5 +83,11 @@ public class Admin {
 
 	public void setPasscode(String passcode) {
 		this.passcode = passcode;
+	}
+	public byte[] getProfilePhoto() {
+		return profilePhoto;
+	}
+	public void setProfilePhoto(byte[] profilePhoto) {
+		this.profilePhoto = profilePhoto;
 	}
 }

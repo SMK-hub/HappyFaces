@@ -3,131 +3,172 @@ package com.example.Demo.Model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
+import com.example.Demo.Enum.EnumClass;
+
+import java.util.Arrays;
+
 
 @Document(collection = "orphanageDetails")
 public class OrphanageDetails {
 
-	@Id
-	private String id;
-	@Field
-	private String orpId;
+    @Id
+    private String id;
+    private String orpId;
+    private String orphanageName;
+    private String directorName;
+    private String contact;
+    private String orphanageEmail;
+    private String description;
+    private Address address;
+    private EnumClass.VerificationStatus verificationStatus;
+    private String website;
+    private byte[] certificate;
+    private Requirements requirements;
+    private Integer viewCount = 0;
 
-	public String getOrpId() {
-		return orpId;
-	}
+    public Integer getViewCount() {
+        return viewCount;
+    }
 
-	public void setOrpId(String orpId) {
-		this.orpId = orpId;
-	}
 
-	private String orphanageName;
-	private String directorName;
-	private String contact;
-	private String description;
-	private Address address;
-	private VerificationStatus verificationStatus;
-	private String website;
+    public void setViewCount(Integer viewCount) {
+        this.viewCount = viewCount;
+    }
 
-	@DBRef
-	private Requirement requirements;
+    public byte[] getCertificate() {
+        return certificate;
+    }
 
-	public OrphanageDetails() {
-		super();
-	}
+    public void setCertificate(byte[] certificate) {
+        this.certificate = certificate;
+    }
 
-	public OrphanageDetails(String directorName, String contact, String description, Address address,
-			VerificationStatus verificationStatus, String website, Requirement requirements) {
-		this.directorName = directorName;
-		this.contact = contact;
-		this.description = description;
-		this.address = address;
-		this.verificationStatus = verificationStatus;
-		this.website = website;
-		this.requirements = requirements;
-	}
+    public OrphanageDetails() {
+        super();
+    }
 
-	public String getId() {
-		return id;
-	}
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public String getOrpId() {
+        return orpId;
+    }
 
-	public String getDirectorName() {
-		return directorName;
-	}
+    public void setOrpId(String orpId) {
+        this.orpId = orpId;
+    }
 
-	public void setDirectorName(String directorName) {
-		this.directorName = directorName;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public String getContact() {
-		return contact;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public void setContact(String contact) {
-		this.contact = contact;
-	}
+    public String getDirectorName() {
+        return directorName;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public void setDirectorName(String directorName) {
+        this.directorName = directorName;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getContact() {
+        return contact;
+    }
 
-	public Address getAddress() {
-		return address;
-	}
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
 
-	public void setAddress(Address address) {
-		this.address = address;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public VerificationStatus getVerificationStatus() {
-		return verificationStatus;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setVerificationStatus(VerificationStatus verificationStatus) {
-		this.verificationStatus = verificationStatus;
-	}
+    public Address getAddress() {
+        return address;
+    }
 
-	public String getWebsite() {
-		return website;
-	}
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
-	public void setWebsite(String website) {
-		this.website = website;
-	}
+    public EnumClass.VerificationStatus getVerificationStatus() {
+        return verificationStatus;
+    }
 
-	public Requirement getRequirements() {
-		return requirements;
-	}
+    public void setVerificationStatus(EnumClass.VerificationStatus verificationStatus) {
+        this.verificationStatus = verificationStatus;
+    }
 
-	public void setRequirements(Requirement requirements) {
-		this.requirements = requirements;
-	}
+    public String getWebsite() {
+        return website;
+    }
 
-	@Override
-	public String toString() {
-		return "OrphanageDetails{" + "id='" + id + '\'' + ", directorName='" + directorName + '\'' + ", contact='"
-				+ contact + '\'' + ", description='" + description + '\'' + ", address=" + address
-				+ ", verificationStatus=" + verificationStatus + ", website='" + website + '\'' + ", requirements="
-				+ requirements + '}';
-	}
+    public void setWebsite(String website) {
+        this.website = website;
+    }
 
-	public String getOrphanageName() {
-		return orphanageName;
-	}
+    public Requirements getRequirements() {
+        return requirements;
+    }
 
-	public void setOrphanageName(String orphanageName) {
-		this.orphanageName = orphanageName;
-	}
+    public void setRequirements(Requirements requirements) {
+        this.requirements = requirements;
+    }
 
-	public enum VerificationStatus {
-		NOT_VERIFIED, VALID, IN_VALID
-	}
+
+    public String getOrphanageName() {
+        return orphanageName;
+    }
+
+    public void setOrphanageName(String orphanageName) {
+        this.orphanageName = orphanageName;
+    }
+
+    public String getOrphanageEmail() {
+        return orphanageEmail;
+    }
+
+    public void setOrphanageEmail(String orphanageEmail) {
+        this.orphanageEmail = orphanageEmail;
+    }
+
+    public OrphanageDetails(String id, String orpId, String orphanageName, String directorName, String contact, String orphanageEmail, String description, Address address, EnumClass.VerificationStatus verificationStatus, String website, byte[] certificate, Requirements requirements, Integer viewCount) {
+        this.id = id;
+        this.orpId = orpId;
+        this.orphanageName = orphanageName;
+        this.directorName = directorName;
+        this.contact = contact;
+        this.orphanageEmail = orphanageEmail;
+        this.description = description;
+        this.address = address;
+        this.verificationStatus = verificationStatus;
+        this.website = website;
+        this.certificate = certificate;
+        this.requirements = requirements;
+        this.viewCount = viewCount;
+    }
+    @Override
+    public String toString() {
+        return "OrphanageDetails{" +
+                "id='" + id + '\'' +
+                ", orpId='" + orpId + '\'' +
+                ", orphanageName='" + orphanageName + '\'' +
+                ", directorName='" + directorName + '\'' +
+                ", contact='" + contact + '\'' +
+                ", orphanageEmail='" + orphanageEmail + '\'' +
+                ", description='" + description + '\'' +
+                ", address=" + address +
+                ", verificationStatus=" + verificationStatus +
+                ", website='" + website + '\'' +
+                ", certificate=" + Arrays.toString(certificate) +
+                ", requirements=" + requirements +
+                ", viewCount=" + viewCount +
+                '}';
+    }
+
 }

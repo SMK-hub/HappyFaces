@@ -2,8 +2,8 @@ package com.example.Demo.Repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.example.Demo.Model.Requirement;
+import com.example.Demo.Model.Requirements;
 
-public interface RequirementsRepository extends MongoRepository<Requirement,String>{
+public interface RequirementsRepository extends MongoRepository<Requirements,String>{
 
 }
